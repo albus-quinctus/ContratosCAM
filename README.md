@@ -53,7 +53,7 @@ contratoscam/
 
 ```bash
 # 1. Clona el repositorio
-git clone https://github.com/tu-usuario/contratoscam.git
+git clone https://github.com/albus-quinctus/ContratosCAM.git
 cd contratoscam
 
 # 2. Instala las dependencias

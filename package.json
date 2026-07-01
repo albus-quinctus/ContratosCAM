@@ -2,12 +2,12 @@
   "name": "contratoscam",
   "version": "0.1.0",
   "description": "Transparencia en la contratación pública de la Comunidad de Madrid",
-  "author": "Tu Nombre <tu@email.com>",
+  "author": "Albus Quinctus",
   "license": "MIT",
-  "homepage": "https://tu-usuario.github.io/contratoscam",
+  "homepage": "https://github.com/albus-quinctus/ContratosCAM",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tu-usuario/contratoscam.git"
+    "url": "https://github.com/albus-quinctus/ContratosCAM.git"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -90,7 +90,7 @@ Crear una web de transparencia pública que permita a cualquier ciudadano buscar
 - [ ] Probar que el deploy automático funciona
 - [ ] Configurar dominio personalizado (opcional)
 
-**Entregable:** Web publicada en `tu-usuario.github.io/contratoscam`
+**Entregable:** Web publicada en `https://github.com/albus-quinctus/ContratosCAM`
 
 ---
 
