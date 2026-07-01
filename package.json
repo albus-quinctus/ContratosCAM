@@ -1,0 +1,40 @@
+{
+  "name": "contratoscam",
+  "version": "0.1.0",
+  "description": "Transparencia en la contratación pública de la Comunidad de Madrid",
+  "author": "Tu Nombre <tu@email.com>",
+  "license": "MIT",
+  "homepage": "https://tu-usuario.github.io/contratoscam",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/contratoscam.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "download": "node scripts/download.js",
+    "parse": "node scripts/parse.js",
+    "transform": "node scripts/transform.js",
+    "import-db": "node scripts/import-db.js",
+    "etl": "npm run download && npm run parse && npm run transform && npm run import-db",
+    "serve": "npx serve src/web",
+    "dev": "npm run etl && npm run serve"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.3",
+    "csv-parse": "^5.5.3",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "keywords": [
+    "transparencia",
+    "contratacion-publica",
+    "datos-abiertos",
+    "comunidad-de-madrid",
+    "open-data"
+  ]
+}

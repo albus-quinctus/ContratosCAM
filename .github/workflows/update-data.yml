@@ -1,0 +1,47 @@
+name: Actualizar datos de contratos
+
+on:
+  # Ejecutar automáticamente cada lunes a las 6:00 UTC
+  schedule:
+    - cron: '0 6 * * 1'
+
+  # Permitir ejecución manual desde GitHub
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    name: Descargar y procesar contratos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Descargar datos
+        run: npm run download
+
+      - name: Parsear datos
+        run: npm run parse
+
+      - name: Transformar y limpiar datos
+        run: npm run transform
+
+      - name: Importar a base de datos
+        run: npm run import-db
+
+      - name: Commit y push de los datos actualizados
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: actualización automática de contratos [skip ci]"
+          file_pattern: "data/processed/*.json data/db/*.db"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
