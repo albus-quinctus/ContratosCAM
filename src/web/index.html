@@ -101,11 +101,11 @@
         </div>
 
         <div class="filter-group filter-group--range">
-          <label class="filter-label">Importe (€)</label>
+          <label class="filter-label" for="filtro-importe-min">Importe (€)</label>
           <div class="range-inputs">
-            <input type="number" id="filtro-importe-min" class="filter-input" placeholder="Mín." min="0" />
+            <input type="number" id="filtro-importe-min" class="filter-input" placeholder="Mín." min="0" aria-label="Importe mínimo" />
             <span class="range-separator">—</span>
-            <input type="number" id="filtro-importe-max" class="filter-input" placeholder="Máx." min="0" />
+            <input type="number" id="filtro-importe-max" class="filter-input" placeholder="Máx." min="0" aria-label="Importe máximo" />
           </div>
         </div>
 
@@ -224,8 +224,9 @@
 
   <!-- Modal de detalle de contrato -->
   <div class="modal-overlay" id="modal-overlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
       <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+      <h2 id="modal-heading" class="sr-only">Detalle del contrato</h2>
       <div class="modal-content" id="modal-content"></div>
     </div>
   </div>

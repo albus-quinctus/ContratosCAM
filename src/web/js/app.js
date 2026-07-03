@@ -12,6 +12,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CONFIG = {
+  // Ruta relativa al index.html (no al archivo JS).
+  // Con `npx serve src/web` el servidor sirve desde src/web/,
+  // así que subimos dos niveles para llegar a data/processed/.
+  // Con GitHub Pages (repo en raíz) la ruta sería la misma.
   DATA_URL: '../../data/processed/contratos-normalizados.json',
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,

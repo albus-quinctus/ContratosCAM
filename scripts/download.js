@@ -70,6 +70,7 @@ async function main() {
 
   const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   let totalBytes = 0;
+  const fuentesConError = [];
 
   for (const fuente of FUENTES) {
     console.log(`\n📥 Fuente: ${fuente.nombre}`);
@@ -91,11 +92,16 @@ async function main() {
       await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error(`  ❌ Error descargando ${fuente.nombre}: ${error.message}`);
-      process.exit(1);
+      // No salir inmediatamente: intentar las demás fuentes
+      fuentesConError.push(fuente.nombre);
     }
   }
 
   console.log('\n' + '═'.repeat(50));
+  if (fuentesConError.length > 0) {
+    console.error(`❌ Fuentes con error: ${fuentesConError.join(', ')}`);
+    process.exit(1);
+  }
   console.log(`✅ Descarga completada. Total: ${(totalBytes / 1024).toFixed(1)} KB`);
   console.log(`📁 Archivos en: ${RAW_DIR}`);
 }

@@ -82,16 +82,34 @@ function parsearAtom(contenido) {
 
 /**
  * Extrae el contenido de una etiqueta XML.
+ * Soporta etiquetas con namespace (cbc:ID, cac:PartyName, etc.)
+ * buscando tanto el nombre completo como solo la parte local.
  * @param {string} xml - Fragmento XML
- * @param {string} etiqueta - Nombre de la etiqueta
+ * @param {string} etiqueta - Nombre de la etiqueta (con o sin namespace)
  * @returns {string|null}
  */
 function extraerEtiqueta(xml, etiqueta) {
-  // Escapar caracteres especiales en el nombre de la etiqueta
-  const tag = etiqueta.replace(':', '\\:');
-  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
-  const match = xml.match(regex);
-  return match ? match[1].trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>') : null;
+  // Intentar primero con el nombre completo (escapando : para regex)
+  const tagEscapado = etiqueta.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let regex = new RegExp(`<${tagEscapado}[^>]*>([\\s\\S]*?)<\\/${tagEscapado}>`, 'i');
+  let match = xml.match(regex);
+
+  // Si no encuentra, intentar solo con la parte local (después del :)
+  if (!match && etiqueta.includes(':')) {
+    const parteLocal = etiqueta.split(':')[1];
+    const parteLocalEsc = parteLocal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    regex = new RegExp(`<[^:>]*:${parteLocalEsc}[^>]*>([\\s\\S]*?)<\\/[^:>]*:${parteLocalEsc}>`, 'i');
+    match = xml.match(regex);
+  }
+
+  return match
+    ? match[1].trim()
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'")
+    : null;
 }
 
 /**
