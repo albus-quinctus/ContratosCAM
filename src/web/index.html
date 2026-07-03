@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ContratosCAM — Contratación pública de la Comunidad de Madrid</title>
+  <meta name="description" content="Busca y explora los contratos públicos adjudicados por la Comunidad de Madrid. Datos oficiales en abierto." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ContratosCAM" />
+  <meta property="og:description" content="Transparencia en la contratación pública de la Comunidad de Madrid" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/albus-quinctus/ContratosCAM" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════ CABECERA -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-brand">
+        <span class="header-icon">🏛️</span>
+        <div>
+          <h1 class="header-title">ContratosCAM</h1>
+          <p class="header-subtitle">Contratación pública de la Comunidad de Madrid</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#buscador" class="nav-link active">Contratos</a>
+        <a href="#estadisticas" class="nav-link">Estadísticas</a>
+        <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener">
+          GitHub ↗
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ═══════════════════════════════════════════════════ ESTADÍSTICAS RÁPIDAS -->
+    <section class="stats-bar" id="stats-bar">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total">—</span>
+        <span class="stat-label">Contratos</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-importe">—</span>
+        <span class="stat-label">Importe total</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-organismos">—</span>
+        <span class="stat-label">Organismos</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-adjudicatarios">—</span>
+        <span class="stat-label">Adjudicatarios</span>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ BUSCADOR -->
+    <section class="search-section" id="buscador">
+      <div class="search-bar">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input
+            type="search"
+            id="input-busqueda"
+            class="search-input"
+            placeholder="Buscar por objeto del contrato, organismo o adjudicatario..."
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters">
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-tipo">Tipo</label>
+          <select id="filtro-tipo" class="filter-select">
+            <option value="">Todos los tipos</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-organismo">Organismo</label>
+          <select id="filtro-organismo" class="filter-select">
+            <option value="">Todos los organismos</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-procedimiento">Procedimiento</label>
+          <select id="filtro-procedimiento" class="filter-select">
+            <option value="">Todos los procedimientos</option>
+          </select>
+        </div>
+
+        <div class="filter-group filter-group--range">
+          <label class="filter-label">Importe (€)</label>
+          <div class="range-inputs">
+            <input type="number" id="filtro-importe-min" class="filter-input" placeholder="Mín." min="0" />
+            <span class="range-separator">—</span>
+            <input type="number" id="filtro-importe-max" class="filter-input" placeholder="Máx." min="0" />
+          </div>
+        </div>
+
+        <div class="filter-group filter-group--range">
+          <label class="filter-label" for="filtro-fecha-desde">Fecha publicación</label>
+          <div class="range-inputs">
+            <input type="date" id="filtro-fecha-desde" class="filter-input" title="Fecha desde" aria-label="Fecha desde" />
+            <span class="range-separator">—</span>
+            <input type="date" id="filtro-fecha-hasta" class="filter-input" title="Fecha hasta" aria-label="Fecha hasta" />
+          </div>
+        </div>
+
+        <button id="btn-limpiar" class="btn btn--secondary">✕ Limpiar filtros</button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ RESULTADOS -->
+    <section class="results-section">
+      <div class="results-header">
+        <p class="results-count" id="results-count">Cargando datos...</p>
+        <div class="results-actions">
+          <button id="btn-exportar" class="btn btn--secondary btn--sm">⬇ Exportar CSV</button>
+        </div>
+      </div>
+
+      <!-- Tabla de contratos -->
+      <div class="table-wrapper">
+        <table class="contratos-table" id="tabla-contratos">
+          <thead>
+            <tr>
+              <th class="col-objeto sortable" data-col="objeto">Objeto del contrato <span class="sort-icon">↕</span></th>
+              <th class="col-organismo sortable" data-col="organismo">Organismo <span class="sort-icon">↕</span></th>
+              <th class="col-tipo">Tipo</th>
+              <th class="col-importe sortable" data-col="importe">Importe <span class="sort-icon">↕</span></th>
+              <th class="col-fecha sortable" data-col="fecha_publicacion">Fecha <span class="sort-icon">↕</span></th>
+              <th class="col-adjudicatario">Adjudicatario</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body">
+            <tr>
+              <td colspan="6" class="loading-cell">
+                <div class="loading-spinner"></div>
+                <p>Cargando contratos...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination" id="paginacion">
+        <button id="btn-anterior" class="btn btn--secondary btn--sm" disabled>← Anterior</button>
+        <span class="pagination-info" id="pagination-info">Página 1</span>
+        <button id="btn-siguiente" class="btn btn--secondary btn--sm" disabled>Siguiente →</button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ ESTADÍSTICAS -->
+    <section class="charts-section" id="estadisticas">
+      <h2 class="section-title">📊 Estadísticas</h2>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="chart-title">Contratos por tipo</h3>
+          <div class="chart-container">
+            <canvas id="chart-tipos"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Top 10 organismos por número de contratos</h3>
+          <div class="chart-container">
+            <canvas id="chart-organismos"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card chart-card--wide">
+          <h3 class="chart-title">Evolución mensual de contratos</h3>
+          <div class="chart-container chart-container--wide">
+            <canvas id="chart-evolucion"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Distribución por procedimiento</h3>
+          <div class="chart-container">
+            <canvas id="chart-procedimientos"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════ FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          Datos procedentes del
+          <a href="https://contrataciondelestado.es" target="_blank" rel="noopener">Portal de Contratación del Estado</a>
+          y del
+          <a href="https://www.comunidad.madrid/transparencia" target="_blank" rel="noopener">Portal de Transparencia de la CAM</a>.
+          Reutilización amparada por la
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener">Ley 37/2007</a>.
+        </p>
+        <p class="footer-text">
+          Proyecto de portfolio por
+          <a href="https://github.com/albus-quinctus" target="_blank" rel="noopener">Albus Quinctus</a>.
+          Inspirado en <a href="https://contratosdecantabria.es" target="_blank" rel="noopener">contratosdecantabria.es</a>
+          de <a href="https://github.com/JaimeObregon" target="_blank" rel="noopener">Jaime Gómez-Obregón</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de detalle de contrato -->
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>
