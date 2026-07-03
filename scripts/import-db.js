@@ -13,9 +13,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
+import initSqlJs from 'sql.js';
 
-const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PROCESSED_DIR = path.join(__dirname, '../data/processed');
@@ -67,7 +66,7 @@ const SQL_CREAR_TABLAS = `
     fecha        TEXT DEFAULT (datetime('now')),
     registros    INTEGER,
     insertados   INTEGER,
-    actualizados INTEGER
+    errores      INTEGER DEFAULT 0
   );
 `;
 
@@ -76,7 +75,7 @@ const SQL_CREAR_TABLAS = `
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('🗄️  ContratosCAM — Importación a base de datos (sql.js)');
+  console.log('🗄️  ContratosCAM — Importación a base de datos');
   console.log('═'.repeat(50));
 
   // Verificar que existe el JSON normalizado
@@ -94,11 +93,10 @@ async function main() {
   // Leer datos normalizados
   console.log('\n📂 Leyendo datos normalizados...');
   const contratos = JSON.parse(fs.readFileSync(JSON_PATH, 'utf-8'));
-  console.log('   Registros a importar: ' + contratos.length);
+  console.log(`   Registros a importar: ${contratos.length}`);
 
   // Inicializar sql.js
   console.log('\n⚙️  Inicializando SQLite (sql.js)...');
-  const initSqlJs = require('sql.js');
   const SQL = await initSqlJs();
 
   // Cargar BD existente o crear nueva
@@ -125,7 +123,6 @@ async function main() {
   // Usar transacción para mayor velocidad
   db.run('BEGIN TRANSACTION');
 
-  // Preparar los parámetros comunes para cada registro
   const camposInsert = [
     'expediente', 'objeto', 'tipo', 'procedimiento', 'organismo',
     'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
@@ -143,8 +140,7 @@ async function main() {
       const params = camposInsert.map(campo => contrato[campo] ?? null);
 
       if (contrato.expediente) {
-        // UPSERT: INSERT con ON CONFLICT maneja tanto inserción como actualización
-        // No necesitamos un SELECT previo — SQLite lo resuelve atómicamente
+        // UPSERT: INSERT con ON CONFLICT maneja inserción y actualización atómicamente
         db.run(`
           INSERT INTO contratos (
             expediente, objeto, tipo, procedimiento, organismo,
@@ -167,9 +163,6 @@ async function main() {
             url_origen          = excluded.url_origen,
             updated_at          = datetime('now')
         `, params);
-
-        procesados++;
-
       } else {
         // Sin expediente: insertar sin clave única (no se puede deduplicar)
         db.run(`
@@ -180,12 +173,13 @@ async function main() {
             url_origen
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, params);
-        procesados++;
       }
+
+      procesados++;
     } catch (err) {
       errores++;
       if (errores <= 5) {
-        console.error('  ⚠️  Error en registro:', err.message);
+        console.error(`  ⚠️  Error en registro: ${err.message}`);
       }
     }
   }
@@ -194,16 +188,16 @@ async function main() {
 
   // Registrar la importación
   db.run(
-    'INSERT INTO importaciones (registros, insertados, actualizados) VALUES (?, ?, ?)',
-    [contratos.length, procesados, 0]
+    'INSERT INTO importaciones (registros, insertados, errores) VALUES (?, ?, ?)',
+    [contratos.length, procesados, errores]
   );
 
   // Estadísticas finales
-  const totalEnBD = db.exec('SELECT COUNT(*) as total FROM contratos')[0]?.values[0][0] ?? 0;
-  const organismos = db.exec('SELECT COUNT(DISTINCT organismo) as total FROM contratos')[0]?.values[0][0] ?? 0;
-  const importeRow = db.exec('SELECT SUM(importe) as total FROM contratos')[0]?.values[0][0];
+  const totalEnBD = db.exec('SELECT COUNT(*) FROM contratos')[0]?.values[0][0] ?? 0;
+  const organismos = db.exec('SELECT COUNT(DISTINCT organismo) FROM contratos')[0]?.values[0][0] ?? 0;
+  const importeRow = db.exec('SELECT SUM(importe) FROM contratos')[0]?.values[0][0];
 
-  // Guardar la BD en disco (sql.js trabaja en memoria, hay que exportar)
+  // Guardar la BD en disco
   console.log('\n💾 Guardando base de datos en disco...');
   const data = db.export();
   fs.writeFileSync(DB_PATH, Buffer.from(data));
@@ -211,17 +205,17 @@ async function main() {
 
   console.log('\n' + '═'.repeat(50));
   console.log('✅ Importación completada.');
-  console.log('   Procesados:   ' + procesados);
-  if (errores > 0) console.log('   Errores:      ' + errores);
+  console.log(`   Procesados:   ${procesados}`);
+  if (errores > 0) console.log(`   Errores:      ${errores}`);
   console.log('\n📊 Estado de la base de datos:');
-  console.log('   Total contratos: ' + Number(totalEnBD).toLocaleString('es-ES'));
-  console.log('   Organismos:      ' + Number(organismos).toLocaleString('es-ES'));
+  console.log(`   Total contratos: ${Number(totalEnBD).toLocaleString('es-ES')}`);
+  console.log(`   Organismos:      ${Number(organismos).toLocaleString('es-ES')}`);
   if (importeRow) {
-    console.log('   Importe total:   ' + Number(importeRow).toLocaleString('es-ES', {
+    console.log(`   Importe total:   ${Number(importeRow).toLocaleString('es-ES', {
       style: 'currency', currency: 'EUR',
-    }));
+    })}`);
   }
-  console.log('\n📁 Base de datos: ' + DB_PATH);
+  console.log(`\n📁 Base de datos: ${DB_PATH}`);
 }
 
 main().catch(err => {

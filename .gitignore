@@ -1,56 +1,54 @@
-# Dependencias de Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# ═══════════════════════════════════════════════════════════════════════════════
+# ContratosCAM — .gitignore
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# Datos crudos (pueden ser muy grandes para el repositorio)
+# ── Dependencias ─────────────────────────────────────────────────────────────
+node_modules/
+
+# ── Datos crudos (pueden ser muy grandes para el repositorio) ────────────────
 data/raw/*.csv
 data/raw/*.xml
 data/raw/*.json
 data/raw/*.xlsx
 data/raw/*.atom
 
-# Base de datos SQLite (se genera localmente, no se sube al repo)
+# ── Base de datos SQLite (se genera localmente) ──────────────────────────────
 data/db/*.db
 data/db/*.db-shm
 data/db/*.db-wal
 
-# Los JSON procesados SÍ se suben (los consume el frontend en GitHub Pages)
+# ── Los JSON procesados SÍ se suben (los consume el frontend en GitHub Pages)
 # data/processed/*.json  ← NO excluir
 
-# Mantener la estructura de directorios vacíos
+# ── Mantener estructura de directorios vacíos ────────────────────────────────
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/db/.gitkeep
 
-# Variables de entorno
+# ── Variables de entorno ─────────────────────────────────────────────────────
 .env
 .env.local
 .env.*.local
 
-# Editores
+# ── Editores e IDEs ──────────────────────────────────────────────────────────
 .vscode/settings.json
+.vscode/launch.json
 .idea/
 *.swp
 *.swo
 *~
 
-# Sistema operativo
+# ── Sistema operativo ────────────────────────────────────────────────────────
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Logs
-logs/
+# ── Logs ─────────────────────────────────────────────────────────────────────
 *.log
+npm-debug.log*
 
-# Archivos temporales
+# ── Temporales ───────────────────────────────────────────────────────────────
 tmp/
 temp/
 *.tmp
+_site/

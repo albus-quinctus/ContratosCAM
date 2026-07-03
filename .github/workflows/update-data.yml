@@ -10,9 +10,9 @@ on:
 
 # Permisos mínimos a nivel de workflow (principio de mínimo privilegio)
 permissions:
-  contents: write    # Para auto-commit de datos procesados
-  pages: write       # Para deploy a GitHub Pages
-  id-token: write    # Para autenticación OIDC de Pages
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   update-data:
@@ -28,23 +28,17 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Descargar datos
-        run: npm run download
+      - name: Ejecutar pipeline ETL completo
+        run: npm run etl
 
-      - name: Parsear datos
-        run: npm run parse
-
-      - name: Transformar y limpiar datos
-        run: npm run transform
-
-      - name: Importar a base de datos
-        run: npm run import-db
+      - name: Validar datos generados
+        run: npm run validate
 
       - name: Commit y push de los datos actualizados
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -53,14 +47,6 @@ jobs:
           file_pattern: "data/processed/*.json"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
-
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v4
-
-      - name: Subir artefacto para Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
 
   deploy:
     name: Desplegar en GitHub Pages
@@ -72,7 +58,28 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Preparar artefacto para Pages
+        run: |
+          mkdir -p _site
+          cp -r src/web/* _site/
+          mkdir -p _site/data/processed
+          cp data/processed/*.json _site/data/processed/ 2>/dev/null || echo "Sin datos procesados aún"
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Subir artefacto para Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
       - name: Desplegar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

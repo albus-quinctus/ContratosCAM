@@ -11,23 +11,15 @@
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
-const CONFIG = {
-  // Ruta al JSON de datos.
-  // Detecta automáticamente si estamos en desarrollo local (npx serve src/web)
-  // o en producción (GitHub Pages, donde el repo está en la raíz).
-  DATA_URL: detectarRutaDatos(),
+const CONFIG = Object.freeze({
+  // Rutas posibles al JSON de datos (se prueban en orden)
+  DATA_URLS: [
+    './data/processed/contratos-normalizados.json',
+    '../../data/processed/contratos-normalizados.json',
+  ],
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
-};
-
-function detectarRutaDatos() {
-  // Si la URL actual contiene /src/web/ estamos en desarrollo local
-  if (window.location.pathname.includes('/src/web/')) {
-    return '../../data/processed/contratos-normalizados.json';
-  }
-  // En GitHub Pages el repo se sirve desde la raíz
-  return './data/processed/contratos-normalizados.json';
-}
+});
 
 const COLORES = [
   '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
@@ -119,15 +111,19 @@ function valoresUnicos(datos, campo) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function cargarDatos() {
-  try {
-    const res = await fetch(CONFIG.DATA_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const datos = await res.json();
-    return Array.isArray(datos) ? datos : [];
-  } catch (err) {
-    console.warn('Usando datos de ejemplo (no se encontró el JSON):', err.message);
-    return generarDatosEjemplo();
+  // Intentar cada URL en orden hasta encontrar los datos
+  for (const url of CONFIG.DATA_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const datos = await res.json();
+      if (Array.isArray(datos) && datos.length > 0) return datos;
+    } catch {
+      // Intentar la siguiente URL
+    }
   }
+  console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
+  return generarDatosEjemplo();
 }
 
 function generarDatosEjemplo() {

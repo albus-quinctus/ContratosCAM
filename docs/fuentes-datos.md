@@ -2,26 +2,37 @@
 
 ## Introducción
 
-Los contratos públicos de la Comunidad de Madrid están disponibles en varias fuentes oficiales. Esta guía explica dónde encontrarlos, en qué formato están y cómo descargarlos.
+ContratosCAM es una herramienta de transparencia ciudadana. Su valor depende directamente de la calidad y completitud de los datos que procesa. Esta guía documenta las fuentes de datos oficiales utilizadas, cómo acceder a ellas, en qué formato están y qué problemas de calidad presentan.
+
+**Principio fundamental:** Cada contrato que aparece en la web incluye siempre un enlace a su fuente oficial original. Los datos nunca se modifican de forma que induzcan a error; solo se normalizan para facilitar la búsqueda y comparación.
 
 ---
 
 ## Fuente Principal: Plataforma de Contratación del Sector Público (PLACSP)
 
 **URL:** https://contrataciondelestado.es
+**Mantenida por:** Ministerio de Hacienda
 
-Esta es la fuente más completa y estructurada. Gestiona el Ministerio de Hacienda y contiene contratos de **todas las administraciones públicas españolas**, incluyendo la Comunidad de Madrid.
+Esta es la fuente más completa y estructurada. Contiene contratos de **todas las administraciones públicas españolas**, incluyendo la Comunidad de Madrid. Es la fuente de referencia para licitaciones y adjudicaciones.
 
-### Cómo descargar datos
+### Cómo descargar datos manualmente
 
 1. Ve a https://contrataciondelestado.es/wps/portal/plataforma
 2. Sección **"Datos Estadísticos"** → **"Descargas"**
 3. Filtra por **Comunidad Autónoma: Madrid**
 4. Descarga en formato **CSV** o **XML (CODICE)**
 
-### Formato de los datos
+### Feed Atom (usado por el pipeline)
 
-Los datos en CSV incluyen estos campos principales:
+PLACSP publica feeds Atom con las licitaciones más recientes. El pipeline de ContratosCAM usa el feed completo de perfiles de contratante:
+
+```
+https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom
+```
+
+> ⚠️ **Nota:** Este feed contiene licitaciones de toda España. El script `transform.js` debe filtrar por los organismos de la Comunidad de Madrid.
+
+### Formato de los datos (CSV)
 
 | Campo | Descripción | Ejemplo |
 |-------|-------------|---------|
@@ -38,26 +49,29 @@ Los datos en CSV incluyen estos campos principales:
 | `FechaAdjudicacion` | Fecha de adjudicación | `2024-04-20` |
 | `URLPublicacion` | Enlace al anuncio oficial | `https://...` |
 
-### API REST (avanzado)
+### Formato de los datos (Atom/XML CODICE)
 
-PLACSP ofrece una API para consultas programáticas:
+El feed Atom usa el estándar CODICE (Common Data Interface for Contracting Entities), basado en UBL. Los campos relevantes son:
 
-```
-GET https://contrataciondelestado.es/api/v1/contratos?
-    comunidadAutonoma=13&    # 13 = Comunidad de Madrid
-    fechaDesde=2024-01-01&
-    fechaHasta=2024-12-31&
-    page=1&
-    pageSize=100
-```
+| Campo XML | Campo normalizado | Notas |
+|-----------|------------------|-------|
+| `cbc:ID` | `expediente` | Número de expediente |
+| `cbc:Description` | `objeto` | Descripción del contrato |
+| `cbc:ContractTypeCode` | `tipo` | Código de tipo de contrato |
+| `cbc:ProcedureCode` | `procedimiento` | Código de procedimiento |
+| `cac:PartyName/cbc:Name` | `organismo` | Nombre del órgano de contratación |
+| `cbc:TaxExclusiveAmount` | `importe` | Importe sin IVA |
+| `cbc:TaxInclusiveAmount` | `importe_iva` | Importe con IVA |
+| `cbc:StatusCode` | — | Estado de la licitación |
 
 ---
 
 ## Fuente Secundaria: Portal de Transparencia de la CAM
 
 **URL:** https://www.comunidad.madrid/transparencia/contratacion
+**Mantenida por:** Comunidad de Madrid
 
-La Comunidad de Madrid publica sus propios datos de contratación en su portal de transparencia.
+La Comunidad de Madrid publica sus propios datos de contratación en su portal de transparencia, incluyendo **contratos menores** que no siempre aparecen en PLACSP.
 
 ### Cómo acceder
 
@@ -67,114 +81,137 @@ La Comunidad de Madrid publica sus propios datos de contratación en su portal d
 
 ### Formato
 
-- Generalmente en **CSV** o **Excel (.xlsx)**
+- Generalmente en **CSV** con separador `;`
+- Codificación: UTF-8 con BOM o ISO-8859-1
 - Actualización: variable (mensual o trimestral)
+
+> ⚠️ **Nota:** Las URLs de descarga directa de este portal cambian con frecuencia. Verificar periódicamente que siguen siendo válidas.
 
 ---
 
 ## Fuente Terciaria: Datos Abiertos CAM
 
 **URL:** https://datos.comunidad.madrid
+**Mantenida por:** Comunidad de Madrid
 
-El portal de datos abiertos de la CAM puede tener datasets específicos de contratación.
+El portal de datos abiertos de la CAM puede tener datasets específicos de contratación, especialmente contratos menores y datos históricos.
 
 ### Búsqueda recomendada
 
 1. Ve a https://datos.comunidad.madrid/catalogo
 2. Busca: `contratos` o `contratación pública`
 3. Filtra por formato: **CSV** o **JSON**
+4. Anota el UUID del dataset para construir la URL de descarga directa
+
+### Formato de URL de descarga
+
+```
+https://datos.comunidad.madrid/catalogo/dataset/{UUID_DATASET}/resource/{UUID_RECURSO}/download/{NOMBRE_ARCHIVO}.csv
+```
+
+> ⚠️ **Nota:** Los UUIDs de los recursos cambian cuando el dataset se actualiza. El pipeline debe verificar periódicamente que las URLs siguen siendo válidas.
 
 ---
 
-## Diario Oficial de la Comunidad de Madrid (BOCAM)
+## Fuente de Verificación: BOCAM
 
 **URL:** https://www.bocm.es
+**Mantenida por:** Comunidad de Madrid
 
-Los contratos también se publican en el Boletín Oficial de la Comunidad de Madrid. Útil para:
-- Verificar datos
+El Boletín Oficial de la Comunidad de Madrid publica los contratos como anuncios oficiales. Útil para:
+- Verificar datos de contratos específicos
 - Obtener información adicional no disponible en CSV
-- Contratos históricos
+- Consultar contratos históricos anteriores a la digitalización de las otras fuentes
+
+No se usa como fuente primaria del pipeline por la dificultad de parsear PDFs, pero es la referencia legal definitiva.
 
 ---
 
-## Estrategia de Descarga Recomendada
-
-Para este proyecto, la estrategia recomendada es:
+## Estrategia de Descarga del Pipeline
 
 ```
-1. PLACSP (fuente principal)
-   └── Descarga CSV mensual filtrado por CAM
-   └── Automatizar con GitHub Actions (cron mensual)
+Prioridad 1: PLACSP (feed Atom)
+└── Licitaciones y adjudicaciones de todos los organismos CAM
+└── Actualización: diaria (el feed se actualiza continuamente)
+└── Automatizado en scripts/download.js
 
-2. Portal Transparencia CAM (complementario)
-   └── Para datos específicos de la CAM no en PLACSP
-   └── Descarga manual o semi-automática
+Prioridad 2: Portal Transparencia CAM (CSV)
+└── Contratos menores y datos específicos de la CAM
+└── Actualización: mensual o trimestral
+└── Automatizado en scripts/download.js (verificar URL periódicamente)
 
-3. Cruzar datos cuando sea posible
-   └── Usar NumExpediente como clave de unión
+Prioridad 3: Datos Abiertos CAM (CSV)
+└── Datasets históricos o temáticos específicos
+└── Incorporar manualmente cuando se identifiquen datasets relevantes
+
+Deduplicación:
+└── Usar NumExpediente + OrganoContratacion como clave de unión entre fuentes
+└── En caso de conflicto, PLACSP tiene prioridad sobre las demás fuentes
 ```
-
----
-
-## Consideraciones Legales
-
-### Marco legal
-- **Ley 37/2007** de reutilización de la información del sector público
-- **Real Decreto 1495/2011** que desarrolla la ley anterior
-- **Ley 19/2013** de transparencia, acceso a la información pública y buen gobierno
-
-### Lo que puedes hacer
-- ✅ Descargar y almacenar los datos
-- ✅ Procesar, transformar y enriquecer los datos
-- ✅ Publicar los datos procesados
-- ✅ Crear aplicaciones basadas en los datos
-- ✅ Uso comercial (con atribución)
-
-### Lo que debes hacer
-- ✅ Citar siempre la fuente original
-- ✅ Incluir enlace al anuncio oficial en cada contrato
-- ✅ No modificar datos de forma que induzca a error
-- ✅ Respetar el `robots.txt` si haces scraping web
 
 ---
 
 ## Problemas Conocidos de Calidad de Datos
 
-| Problema | Frecuencia | Solución |
-|----------|-----------|---------|
-| Importes en formato texto con comas | Alta | Reemplazar `,` por `.` y parsear a float |
+Estos son los problemas más frecuentes que el script `scripts/transform.js` debe resolver:
+
+| Problema | Frecuencia | Solución implementada |
+|----------|-----------|----------------------|
+| Importes como texto con comas (`45.000,00 €`) | Alta | Eliminar `.`, reemplazar `,` por `.`, parsear a float |
 | Fechas en formato `DD/MM/YYYY` | Alta | Convertir a `YYYY-MM-DD` (ISO 8601) |
-| Nombres de organismos inconsistentes | Media | Normalizar con tabla de equivalencias |
-| NIF con/sin guiones | Media | Eliminar guiones y espacios |
-| Campos vacíos en contratos menores | Alta | Marcar como `null`, no como string vacío |
-| Duplicados por múltiples fuentes | Baja | Deduplicar por `NumExpediente` |
+| Nombres de organismos inconsistentes | Media | Tabla de equivalencias + normalización de mayúsculas |
+| NIF con guiones o espacios (`B-12.345.678`) | Media | Eliminar caracteres no alfanuméricos |
+| Campos vacíos como string vacío (`""`) | Alta | Convertir a `null` |
+| Duplicados entre fuentes | Baja-Media | Deduplicar por `expediente` + `organismo` |
+| Codificación ISO-8859-1 en algunos CSV | Media | Detectar y convertir a UTF-8 al leer |
+| Campos con saltos de línea dentro de comillas | Baja | Usar `relax_column_count: true` en csv-parse |
+| Importes negativos (correcciones) | Baja | Registrar como `null` con nota en logs |
 
 ---
 
-## Script de Descarga de Ejemplo
+## Consideraciones Legales
 
-```javascript
-// scripts/download.js
-const fs = require('fs');
-const path = require('path');
+### Marco legal de reutilización
 
-const PLACSP_URL = 'https://contrataciondelestado.es/...'; // URL real a determinar
-const OUTPUT_DIR = path.join(__dirname, '../data/raw');
+- **Ley 37/2007** de reutilización de la información del sector público
+- **Real Decreto 1495/2011** que desarrolla la ley anterior
+- **Ley 19/2013** de transparencia, acceso a la información pública y buen gobierno
+- **Reglamento (UE) 2019/1024** sobre datos abiertos y reutilización de la información del sector público
 
-async function downloadContratos() {
-  const fecha = new Date().toISOString().split('T')[0];
-  const filename = `contratos-cam-${fecha}.csv`;
-  const outputPath = path.join(OUTPUT_DIR, filename);
+### Lo que puedes hacer con estos datos
 
-  console.log(`Descargando contratos de la CAM...`);
+- ✅ Descargar y almacenar los datos
+- ✅ Procesar, transformar y normalizar los datos
+- ✅ Publicar los datos procesados con atribución a la fuente
+- ✅ Crear aplicaciones basadas en los datos
+- ✅ Uso comercial (con atribución)
+- ✅ Análisis periodístico e investigación
 
-  const response = await fetch(PLACSP_URL);
-  const data = await response.text();
+### Lo que debes hacer siempre
 
-  fs.writeFileSync(outputPath, data, 'utf-8');
-  console.log(`✅ Guardado en: ${outputPath}`);
-  console.log(`   Tamaño: ${(data.length / 1024).toFixed(1)} KB`);
-}
+- ✅ Citar la fuente original en cada contrato (enlace al anuncio oficial)
+- ✅ No modificar los datos de forma que induzcan a error
+- ✅ Respetar el `robots.txt` si se hace scraping web (no aplica a descargas de datos abiertos)
+- ✅ Añadir delays entre peticiones para no sobrecargar los servidores públicos
+- ✅ Indicar claramente la fecha de última actualización de los datos
 
-downloadContratos().catch(console.error);
+---
+
+## Cómo Verificar que las URLs Siguen Siendo Válidas
+
+Las URLs de descarga de datos públicos cambian con frecuencia. Para verificarlas:
+
+```bash
+# Verificar que una URL devuelve datos (no un error 404)
+curl -I "https://datos.comunidad.madrid/catalogo/dataset/.../download/contratos.csv"
+
+# Descargar manualmente y verificar el contenido
+curl -L "https://..." -o test.csv
+head -5 test.csv
 ```
+
+Si una URL deja de funcionar:
+1. Busca el dataset en el portal correspondiente
+2. Localiza la nueva URL de descarga directa
+3. Actualiza `scripts/download.js` con la nueva URL
+4. Abre un issue en el repositorio documentando el cambio
