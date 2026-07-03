@@ -147,15 +147,16 @@ function limpiarString(str) {
 
 /**
  * Normaliza el nombre de un organismo.
+ * Elimina el prefijo "COMUNIDAD DE MADRID —" si existe.
  * @param {string} nombre
  * @returns {string|null}
  */
 function normalizarOrganismo(nombre) {
   if (!nombre) return null;
-  return limpiarString(nombre)
-    ?.replace(/^COMUNIDAD DE MADRID\s*[-–—]\s*/i, '')
-    ?.replace(/\s+/g, ' ')
-    ?.trim() || null;
+  const limpio = limpiarString(nombre);
+  if (!limpio) return null;
+  // Eliminar prefijo institucional redundante
+  return limpio.replace(/^COMUNIDAD DE MADRID\s*[-–—]\s*/i, '').trim() || null;
 }
 
 /**

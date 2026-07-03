@@ -119,12 +119,19 @@ async function main() {
   // Importar registros
   console.log('\n⬆️  Importando registros...');
 
-  let insertados = 0;
-  let actualizados = 0;
+  let procesados = 0;
   let errores = 0;
 
   // Usar transacción para mayor velocidad
   db.run('BEGIN TRANSACTION');
+
+  // Preparar los parámetros comunes para cada registro
+  const camposInsert = [
+    'expediente', 'objeto', 'tipo', 'procedimiento', 'organismo',
+    'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
+    'fecha_publicacion', 'fecha_adjudicacion', 'fecha_formalizacion',
+    'url_origen',
+  ];
 
   for (const contrato of contratos) {
     try {
@@ -133,14 +140,11 @@ async function main() {
         contrato.objeto = contrato.expediente || 'Sin descripción';
       }
 
-      if (contrato.expediente) {
-        // Comprobar si ya existe
-        const resultado = db.exec(
-          'SELECT id FROM contratos WHERE expediente = ?',
-          [contrato.expediente]
-        );
-        const existe = resultado.length > 0 && resultado[0].values.length > 0;
+      const params = camposInsert.map(campo => contrato[campo] ?? null);
 
+      if (contrato.expediente) {
+        // UPSERT: INSERT con ON CONFLICT maneja tanto inserción como actualización
+        // No necesitamos un SELECT previo — SQLite lo resuelve atómicamente
         db.run(`
           INSERT INTO contratos (
             expediente, objeto, tipo, procedimiento, organismo,
@@ -162,47 +166,21 @@ async function main() {
             fecha_formalizacion = excluded.fecha_formalizacion,
             url_origen          = excluded.url_origen,
             updated_at          = datetime('now')
-        `, [
-          contrato.expediente,
-          contrato.objeto,
-          contrato.tipo ?? null,
-          contrato.procedimiento ?? null,
-          contrato.organismo ?? null,
-          contrato.importe ?? null,
-          contrato.importe_iva ?? null,
-          contrato.adjudicatario ?? null,
-          contrato.nif_adjudicatario ?? null,
-          contrato.fecha_publicacion ?? null,
-          contrato.fecha_adjudicacion ?? null,
-          contrato.fecha_formalizacion ?? null,
-          contrato.url_origen ?? null,
-        ]);
+        `, params);
 
-        if (existe) actualizados++; else insertados++;
+        procesados++;
 
       } else {
+        // Sin expediente: insertar sin clave única (no se puede deduplicar)
         db.run(`
           INSERT INTO contratos (
-            objeto, tipo, procedimiento, organismo,
+            expediente, objeto, tipo, procedimiento, organismo,
             importe, importe_iva, adjudicatario, nif_adjudicatario,
             fecha_publicacion, fecha_adjudicacion, fecha_formalizacion,
             url_origen
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
-          contrato.objeto,
-          contrato.tipo ?? null,
-          contrato.procedimiento ?? null,
-          contrato.organismo ?? null,
-          contrato.importe ?? null,
-          contrato.importe_iva ?? null,
-          contrato.adjudicatario ?? null,
-          contrato.nif_adjudicatario ?? null,
-          contrato.fecha_publicacion ?? null,
-          contrato.fecha_adjudicacion ?? null,
-          contrato.fecha_formalizacion ?? null,
-          contrato.url_origen ?? null,
-        ]);
-        insertados++;
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, params);
+        procesados++;
       }
     } catch (err) {
       errores++;
@@ -217,7 +195,7 @@ async function main() {
   // Registrar la importación
   db.run(
     'INSERT INTO importaciones (registros, insertados, actualizados) VALUES (?, ?, ?)',
-    [contratos.length, insertados, actualizados]
+    [contratos.length, procesados, 0]
   );
 
   // Estadísticas finales
@@ -233,8 +211,7 @@ async function main() {
 
   console.log('\n' + '═'.repeat(50));
   console.log('✅ Importación completada.');
-  console.log('   Insertados:   ' + insertados);
-  console.log('   Actualizados: ' + actualizados);
+  console.log('   Procesados:   ' + procesados);
   if (errores > 0) console.log('   Errores:      ' + errores);
   console.log('\n📊 Estado de la base de datos:');
   console.log('   Total contratos: ' + Number(totalEnBD).toLocaleString('es-ES'));
