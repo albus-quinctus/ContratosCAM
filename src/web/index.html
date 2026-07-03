@@ -10,13 +10,21 @@
   <meta property="og:title" content="ContratosCAM" />
   <meta property="og:description" content="Transparencia en la contratación pública de la Comunidad de Madrid" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://github.com/albus-quinctus/ContratosCAM" />
+  <meta property="og:url" content="https://albus-quinctus.github.io/ContratosCAM" />
+
+  <!-- Seguridad -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="no-referrer" />
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Chart.js con Subresource Integrity (SRI) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+    integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g"
+    crossorigin="anonymous"
+  ></script>
 
   <!-- Estilos propios -->
   <link rel="stylesheet" href="css/styles.css" />
@@ -27,13 +35,13 @@
   <header class="site-header">
     <div class="container">
       <div class="header-brand">
-        <span class="header-icon">🏛️</span>
+        <span class="header-icon" aria-hidden="true">🏛️</span>
         <div>
           <h1 class="header-title">ContratosCAM</h1>
           <p class="header-subtitle">Contratación pública de la Comunidad de Madrid</p>
         </div>
       </div>
-      <nav class="header-nav">
+      <nav class="header-nav" aria-label="Navegación principal">
         <a href="#buscador" class="nav-link active">Contratos</a>
         <a href="#estadisticas" class="nav-link">Estadísticas</a>
         <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">
@@ -46,7 +54,7 @@
   <main class="container">
 
     <!-- ═══════════════════════════════════════════════════ ESTADÍSTICAS RÁPIDAS -->
-    <section class="stats-bar" id="stats-bar">
+    <section class="stats-bar" id="stats-bar" aria-label="Resumen de datos">
       <div class="stat-card">
         <span class="stat-number" id="stat-total">—</span>
         <span class="stat-label">Contratos</span>
@@ -66,16 +74,17 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ BUSCADOR -->
-    <section class="search-section" id="buscador">
+    <section class="search-section" id="buscador" aria-label="Búsqueda y filtros">
       <div class="search-bar">
         <div class="search-input-wrapper">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon" aria-hidden="true">🔍</span>
           <input
             type="search"
             id="input-busqueda"
             class="search-input"
             placeholder="Buscar por objeto del contrato, organismo o adjudicatario..."
             autocomplete="off"
+            aria-label="Buscar contratos"
           />
         </div>
       </div>
@@ -115,22 +124,22 @@
         <div class="filter-group filter-group--range">
           <label class="filter-label" for="filtro-fecha-desde">Fecha publicación</label>
           <div class="range-inputs">
-            <input type="date" id="filtro-fecha-desde" class="filter-input" title="Fecha desde" aria-label="Fecha desde" />
+            <input type="date" id="filtro-fecha-desde" class="filter-input" aria-label="Fecha desde" />
             <span class="range-separator">—</span>
-            <input type="date" id="filtro-fecha-hasta" class="filter-input" title="Fecha hasta" aria-label="Fecha hasta" />
+            <input type="date" id="filtro-fecha-hasta" class="filter-input" aria-label="Fecha hasta" />
           </div>
         </div>
 
-        <button id="btn-limpiar" class="btn btn--secondary">✕ Limpiar filtros</button>
+        <button id="btn-limpiar" class="btn btn--secondary" type="button">✕ Limpiar filtros</button>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ RESULTADOS -->
-    <section class="results-section">
+    <section class="results-section" aria-label="Resultados de búsqueda">
       <div class="results-header">
-        <p class="results-count" id="results-count">Cargando datos...</p>
+        <p class="results-count" id="results-count" aria-live="polite">Cargando datos...</p>
         <div class="results-actions">
-          <button id="btn-exportar" class="btn btn--secondary btn--sm">⬇ Exportar CSV</button>
+          <button id="btn-exportar" class="btn btn--secondary btn--sm" type="button">⬇ Exportar CSV</button>
         </div>
       </div>
 
@@ -159,43 +168,43 @@
       </div>
 
       <!-- Paginación -->
-      <div class="pagination" id="paginacion">
-        <button id="btn-anterior" class="btn btn--secondary btn--sm" disabled>← Anterior</button>
-        <span class="pagination-info" id="pagination-info">Página 1</span>
-        <button id="btn-siguiente" class="btn btn--secondary btn--sm" disabled>Siguiente →</button>
-      </div>
+      <nav class="pagination" id="paginacion" aria-label="Paginación de resultados">
+        <button id="btn-anterior" class="btn btn--secondary btn--sm" type="button" disabled>← Anterior</button>
+        <span class="pagination-info" id="pagination-info" aria-live="polite">Página 1</span>
+        <button id="btn-siguiente" class="btn btn--secondary btn--sm" type="button" disabled>Siguiente →</button>
+      </nav>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════ ESTADÍSTICAS -->
-    <section class="charts-section" id="estadisticas">
+    <section class="charts-section" id="estadisticas" aria-label="Estadísticas y gráficas">
       <h2 class="section-title">📊 Estadísticas</h2>
 
       <div class="charts-grid">
         <div class="chart-card">
           <h3 class="chart-title">Contratos por tipo</h3>
           <div class="chart-container">
-            <canvas id="chart-tipos"></canvas>
+            <canvas id="chart-tipos" aria-label="Gráfica de contratos por tipo"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
           <h3 class="chart-title">Top 10 organismos por número de contratos</h3>
           <div class="chart-container">
-            <canvas id="chart-organismos"></canvas>
+            <canvas id="chart-organismos" aria-label="Gráfica de top 10 organismos"></canvas>
           </div>
         </div>
 
         <div class="chart-card chart-card--wide">
           <h3 class="chart-title">Evolución mensual de contratos</h3>
           <div class="chart-container chart-container--wide">
-            <canvas id="chart-evolucion"></canvas>
+            <canvas id="chart-evolucion" aria-label="Gráfica de evolución mensual"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
           <h3 class="chart-title">Distribución por procedimiento</h3>
           <div class="chart-container">
-            <canvas id="chart-procedimientos"></canvas>
+            <canvas id="chart-procedimientos" aria-label="Gráfica de distribución por procedimiento"></canvas>
           </div>
         </div>
       </div>
@@ -216,7 +225,7 @@
           <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener noreferrer">Ley 37/2007</a>.
         </p>
         <p class="footer-text">
-          Proyecto de portfolio por
+          Proyecto de código abierto por
           <a href="https://github.com/albus-quinctus" target="_blank" rel="noopener noreferrer">Albus Quinctus</a>.
           Inspirado en <a href="https://contratosdecantabria.es" target="_blank" rel="noopener noreferrer">contratosdecantabria.es</a>
           de <a href="https://github.com/JaimeObregon" target="_blank" rel="noopener noreferrer">Jaime Gómez-Obregón</a>.
@@ -228,7 +237,7 @@
   <!-- Modal de detalle de contrato -->
   <div class="modal-overlay" id="modal-overlay" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
-      <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar detalle">✕</button>
       <h2 id="modal-heading" class="sr-only">Detalle del contrato</h2>
       <div class="modal-content" id="modal-content"></div>
     </div>
