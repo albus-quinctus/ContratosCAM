@@ -13,6 +13,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { parse as parseCsv } from 'csv-parse/sync';
+import { XMLParser } from 'fast-xml-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
@@ -40,35 +41,46 @@ function parsearCsv(contenido) {
 
 /**
  * Parsea un archivo Atom/XML de PLACSP a array de objetos.
- * Extrae los campos principales de cada <entry>.
+ * Usa fast-xml-parser para un parseo robusto del XML.
  * @param {string} contenido - Contenido del archivo XML/Atom
  * @returns {Object[]} Array de registros
  */
 function parsearAtom(contenido) {
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+    removeNSPrefix: true,       // Elimina prefijos de namespace (cbc:, cac:, etc.)
+    isArray: (name) => {
+      // Forzar que 'entry' siempre sea un array
+      return name === 'entry';
+    },
+    parseTagValue: true,
+    trimValues: true,
+  });
+
+  const resultado = parser.parse(contenido);
   const registros = [];
 
-  // Extraer cada <entry> del feed Atom
-  const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
-  let match;
+  // Navegar la estructura del feed Atom
+  const feed = resultado.feed || resultado;
+  const entries = feed.entry || [];
 
-  while ((match = entryRegex.exec(contenido)) !== null) {
-    const entry = match[1];
-
+  for (const entry of entries) {
     const registro = {
-      id: extraerEtiqueta(entry, 'id'),
-      titulo: extraerEtiqueta(entry, 'title'),
-      publicado: extraerEtiqueta(entry, 'published'),
-      actualizado: extraerEtiqueta(entry, 'updated'),
-      enlace: extraerAtributo(entry, 'link', 'href'),
-      // Campos específicos de PLACSP (namespace cac-place-ext)
-      expediente: extraerEtiqueta(entry, 'cbc:ID'),
-      objeto: extraerEtiqueta(entry, 'cbc:Description'),
-      tipo_contrato: extraerEtiqueta(entry, 'cbc:ContractTypeCode'),
-      procedimiento: extraerEtiqueta(entry, 'cbc:ProcedureCode'),
-      importe: extraerEtiqueta(entry, 'cbc:TaxExclusiveAmount'),
-      importe_iva: extraerEtiqueta(entry, 'cbc:TaxInclusiveAmount'),
-      organismo: extraerEtiqueta(entry, 'cac:PartyName'),
-      estado: extraerEtiqueta(entry, 'cbc:StatusCode'),
+      id: extraerValor(entry, 'id'),
+      titulo: extraerValor(entry, 'title'),
+      publicado: extraerValor(entry, 'published'),
+      actualizado: extraerValor(entry, 'updated'),
+      enlace: extraerEnlace(entry),
+      // Campos específicos de PLACSP (sin prefijo de namespace gracias a removeNSPrefix)
+      expediente: buscarCampo(entry, 'ID'),
+      objeto: buscarCampo(entry, 'Description'),
+      tipo_contrato: buscarCampo(entry, 'ContractTypeCode'),
+      procedimiento: buscarCampo(entry, 'ProcedureCode'),
+      importe: buscarCampo(entry, 'TaxExclusiveAmount'),
+      importe_iva: buscarCampo(entry, 'TaxInclusiveAmount'),
+      organismo: buscarCampoAnidado(entry, 'PartyName', 'Name'),
+      estado: buscarCampo(entry, 'StatusCode'),
     };
 
     // Solo incluir si tiene datos mínimos
@@ -81,48 +93,112 @@ function parsearAtom(contenido) {
 }
 
 /**
- * Extrae el contenido de una etiqueta XML.
- * Soporta etiquetas con namespace (cbc:ID, cac:PartyName, etc.)
- * buscando tanto el nombre completo como solo la parte local.
- * @param {string} xml - Fragmento XML
- * @param {string} etiqueta - Nombre de la etiqueta (con o sin namespace)
+ * Extrae un valor simple de un objeto parseado.
+ * Maneja el caso donde el valor puede ser un objeto con #text.
+ * @param {Object} obj - Objeto parseado
+ * @param {string} campo - Nombre del campo
  * @returns {string|null}
  */
-function extraerEtiqueta(xml, etiqueta) {
-  // Intentar primero con el nombre completo (escapando : para regex)
-  const tagEscapado = etiqueta.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  let regex = new RegExp(`<${tagEscapado}[^>]*>([\\s\\S]*?)<\\/${tagEscapado}>`, 'i');
-  let match = xml.match(regex);
-
-  // Si no encuentra, intentar solo con la parte local (después del :)
-  if (!match && etiqueta.includes(':')) {
-    const parteLocal = etiqueta.split(':')[1];
-    const parteLocalEsc = parteLocal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    regex = new RegExp(`<[^:>]*:${parteLocalEsc}[^>]*>([\\s\\S]*?)<\\/[^:>]*:${parteLocalEsc}>`, 'i');
-    match = xml.match(regex);
-  }
-
-  return match
-    ? match[1].trim()
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&apos;/g, "'")
-    : null;
+function extraerValor(obj, campo) {
+  if (!obj || !obj[campo]) return null;
+  const val = obj[campo];
+  if (typeof val === 'string') return val;
+  if (typeof val === 'number') return String(val);
+  if (val['#text']) return String(val['#text']);
+  return null;
 }
 
 /**
- * Extrae el valor de un atributo de una etiqueta XML.
- * @param {string} xml - Fragmento XML
- * @param {string} etiqueta - Nombre de la etiqueta
- * @param {string} atributo - Nombre del atributo
+ * Extrae el href del link de un entry Atom.
+ * @param {Object} entry - Entry parseado
  * @returns {string|null}
  */
-function extraerAtributo(xml, etiqueta, atributo) {
-  const regex = new RegExp(`<${etiqueta}[^>]*${atributo}="([^"]*)"`, 'i');
-  const match = xml.match(regex);
-  return match ? match[1] : null;
+function extraerEnlace(entry) {
+  if (!entry || !entry.link) return null;
+  const link = Array.isArray(entry.link) ? entry.link[0] : entry.link;
+  if (typeof link === 'string') return link;
+  return link['@_href'] || null;
+}
+
+/**
+ * Busca un campo en un objeto de forma recursiva (profundidad limitada).
+ * Útil para encontrar campos PLACSP que pueden estar anidados.
+ * @param {Object} obj - Objeto donde buscar
+ * @param {string} campo - Nombre del campo a buscar
+ * @param {number} maxDepth - Profundidad máxima de búsqueda
+ * @returns {string|null}
+ */
+function buscarCampo(obj, campo, maxDepth = 5) {
+  if (!obj || maxDepth <= 0) return null;
+
+  // Buscar directamente
+  if (obj[campo] !== undefined) {
+    const val = obj[campo];
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number') return String(val);
+    if (val && val['#text']) return String(val['#text']);
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      // Puede ser un objeto con un valor de texto
+      const keys = Object.keys(val).filter(k => !k.startsWith('@_'));
+      if (keys.length === 1) return extraerValor(val, keys[0]);
+    }
+  }
+
+  // Buscar recursivamente en sub-objetos
+  for (const key of Object.keys(obj)) {
+    if (key.startsWith('@_')) continue;
+    const val = obj[key];
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      const found = buscarCampo(val, campo, maxDepth - 1);
+      if (found) return found;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Busca un campo anidado (ej: PartyName > Name).
+ * @param {Object} obj - Objeto donde buscar
+ * @param {string} padre - Nombre del campo padre
+ * @param {string} hijo - Nombre del campo hijo
+ * @returns {string|null}
+ */
+function buscarCampoAnidado(obj, padre, hijo) {
+  if (!obj) return null;
+
+  // Buscar el padre recursivamente
+  const padreObj = buscarObjeto(obj, padre);
+  if (!padreObj) return buscarCampo(obj, padre); // Fallback: buscar como campo simple
+
+  // Extraer el hijo
+  return extraerValor(padreObj, hijo) || buscarCampo(padreObj, hijo, 2);
+}
+
+/**
+ * Busca un objeto por nombre de forma recursiva.
+ * @param {Object} obj
+ * @param {string} nombre
+ * @param {number} maxDepth
+ * @returns {Object|null}
+ */
+function buscarObjeto(obj, nombre, maxDepth = 5) {
+  if (!obj || maxDepth <= 0) return null;
+
+  if (obj[nombre] && typeof obj[nombre] === 'object') {
+    return obj[nombre];
+  }
+
+  for (const key of Object.keys(obj)) {
+    if (key.startsWith('@_')) continue;
+    const val = obj[key];
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      const found = buscarObjeto(val, nombre, maxDepth - 1);
+      if (found) return found;
+    }
+  }
+
+  return null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -9,11 +9,15 @@ data/raw/*.csv
 data/raw/*.xml
 data/raw/*.json
 data/raw/*.xlsx
+data/raw/*.atom
 
-# Base de datos SQLite (puede ser muy grande para git)
+# Base de datos SQLite (se genera localmente, no se sube al repo)
 data/db/*.db
 data/db/*.db-shm
 data/db/*.db-wal
+
+# Los JSON procesados SÍ se suben (los consume el frontend en GitHub Pages)
+# data/processed/*.json  ← NO excluir
 
 # Mantener la estructura de directorios vacíos
 !data/raw/.gitkeep

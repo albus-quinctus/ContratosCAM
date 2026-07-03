@@ -8,10 +8,18 @@ on:
   # Permitir ejecución manual desde GitHub
   workflow_dispatch:
 
+# Permisos mínimos a nivel de workflow (principio de mínimo privilegio)
+permissions:
+  contents: write    # Para auto-commit de datos procesados
+  pages: write       # Para deploy a GitHub Pages
+  id-token: write    # Para autenticación OIDC de Pages
+
 jobs:
   update-data:
     name: Descargar y procesar contratos
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout del repositorio
@@ -42,6 +50,29 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "data: actualización automática de contratos [skip ci]"
-          file_pattern: "data/processed/*.json data/db/*.db"
+          file_pattern: "data/processed/*.json"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Subir artefacto para Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    name: Desplegar en GitHub Pages
+    needs: update-data
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -116,8 +116,8 @@ Los datos son de **dominio público** y su reutilización está amparada por la 
 
 ## 🛠️ Tecnologías
 
-- **Backend/ETL:** Node.js, `node-fetch`, `csv-parse`, `better-sqlite3`
-- **Base de datos:** SQLite
+- **Backend/ETL:** Node.js, `csv-parse`, `fast-xml-parser`, `sql.js`
+- **Base de datos:** SQLite (via sql.js — WebAssembly, sin compilación nativa)
 - **Frontend:** HTML5, CSS3, JavaScript Vanilla
 - **Gráficas:** Chart.js
 - **Tablas:** DataTables.js

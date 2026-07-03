@@ -345,6 +345,27 @@ a:hover { text-decoration: underline; }
 
 .contratos-table th.sortable:hover { background: rgba(255,255,255,.1); }
 
+.contratos-table th.sortable .sort-icon {
+  opacity: .4;
+  font-size: .7rem;
+  margin-left: .25rem;
+  transition: opacity var(--transition);
+}
+
+.contratos-table th.sorted-asc .sort-icon::after { content: '▲'; }
+.contratos-table th.sorted-desc .sort-icon::after { content: '▼'; }
+
+.contratos-table th.sorted-asc .sort-icon,
+.contratos-table th.sorted-desc .sort-icon {
+  opacity: 1;
+  font-size: 0; /* Oculta el ↕ original */
+}
+
+.contratos-table th.sorted-asc,
+.contratos-table th.sorted-desc {
+  background: rgba(255,255,255,.12);
+}
+
 .contratos-table tbody tr {
   border-bottom: 1px solid var(--color-border);
   transition: background var(--transition);

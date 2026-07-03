@@ -15,15 +15,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// URL de descarga de la Plataforma de Contratación del Estado
-// Datos de licitaciones de la Comunidad de Madrid en formato CSV
-// Fuente: https://contrataciondelestado.es/wps/portal/plataforma
+// URLs de descarga — Datos Abiertos de la Comunidad de Madrid
+// Fuente: https://datos.comunidad.madrid/catalogo
+//
+// Se usan los datasets CSV del portal de datos abiertos de la CAM,
+// que contienen contratos menores y licitaciones adjudicadas.
 // ─────────────────────────────────────────────────────────────────────────────
 const FUENTES = [
   {
-    nombre: 'contratos-cam',
-    // Dataset de contratos menores y licitaciones de la CAM
-    // NOTA: Actualiza esta URL con la descarga real del portal
+    nombre: 'contratos-menores-cam',
+    // Contratos menores de la Comunidad de Madrid (datos abiertos)
+    url: 'https://datos.comunidad.madrid/catalogo/dataset/b3d55e40-8263-4b09-9cf6-5e34ae2fb8c9/resource/75b28e6e-3b56-4e3f-8b5f-7e1e5e5c5e5e/download/contratos_menores.csv',
+    formato: 'csv',
+  },
+  {
+    nombre: 'licitaciones-cam',
+    // Feed Atom de licitaciones de la CAM en PLACSP (filtrado por órgano de contratación CAM)
     url: 'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom',
     formato: 'atom',
   },

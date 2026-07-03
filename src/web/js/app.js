@@ -12,14 +12,22 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CONFIG = {
-  // Ruta relativa al index.html (no al archivo JS).
-  // Con `npx serve src/web` el servidor sirve desde src/web/,
-  // así que subimos dos niveles para llegar a data/processed/.
-  // Con GitHub Pages (repo en raíz) la ruta sería la misma.
-  DATA_URL: '../../data/processed/contratos-normalizados.json',
+  // Ruta al JSON de datos.
+  // Detecta automáticamente si estamos en desarrollo local (npx serve src/web)
+  // o en producción (GitHub Pages, donde el repo está en la raíz).
+  DATA_URL: detectarRutaDatos(),
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
 };
+
+function detectarRutaDatos() {
+  // Si la URL actual contiene /src/web/ estamos en desarrollo local
+  if (window.location.pathname.includes('/src/web/')) {
+    return '../../data/processed/contratos-normalizados.json';
+  }
+  // En GitHub Pages el repo se sirve desde la raíz
+  return './data/processed/contratos-normalizados.json';
+}
 
 const COLORES = [
   '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
@@ -74,7 +82,24 @@ function esc(str) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+/**
+ * Valida que una URL tenga un protocolo seguro (http/https).
+ * Previene inyección de javascript: en atributos href.
+ * @param {string} url
+ * @returns {string} URL segura o cadena vacía
+ */
+function sanitizarUrl(url) {
+  if (!url) return '';
+  const urlTrimmed = String(url).trim();
+  // Solo permitir http:// y https://
+  if (/^https?:\/\//i.test(urlTrimmed)) {
+    return urlTrimmed;
+  }
+  return '';
 }
 
 function debounce(fn, ms) {
@@ -301,10 +326,10 @@ function abrirModal(c) {
     '<div class="modal-field"><div class="modal-field-label">Fecha formalización</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_formalizacion) + '</div></div>' +
     '</div>' +
-    (c.url_origen
+    (sanitizarUrl(c.url_origen)
       ? '<hr class="modal-divider" />' +
         '<div class="modal-field"><div class="modal-field-label">Fuente oficial</div>' +
-        '<div class="modal-field-value"><a href="' + esc(c.url_origen) + '" target="_blank" rel="noopener">Ver anuncio original ↗</a></div></div>'
+        '<div class="modal-field-value"><a href="' + esc(sanitizarUrl(c.url_origen)) + '" target="_blank" rel="noopener noreferrer">Ver anuncio original ↗</a></div></div>'
       : '');
 
   overlay.hidden = false;
@@ -328,17 +353,33 @@ function exportarCsv() {
     'fecha_publicacion', 'fecha_adjudicacion', 'url_origen',
   ];
 
+  /**
+   * Escapa un valor para CSV de forma segura:
+   * - Envuelve en comillas si contiene separador, comillas o saltos de línea
+   * - Escapa comillas dobles duplicándolas ("")
+   * - Previene CSV injection: si empieza con =, +, -, @ se prefija con apóstrofe
+   */
+  function escaparCsv(valor) {
+    let v = String(valor ?? '');
+    // Prevenir CSV injection (fórmulas en Excel)
+    if (/^[=+\-@\t\r]/.test(v)) {
+      v = "'" + v;
+    }
+    // Si contiene separador, comillas o saltos de línea, envolver en comillas
+    if (v.includes(';') || v.includes('"') || v.includes('\n') || v.includes('\r')) {
+      return '"' + v.replace(/"/g, '""') + '"';
+    }
+    return v;
+  }
+
   const filas = [
     campos.join(';'),
     ...estado.filtrados.map(c =>
-      campos.map(k => {
-        const v = c[k] ?? '';
-        return String(v).includes(';') ? '"' + v + '"' : v;
-      }).join(';')
+      campos.map(k => escaparCsv(c[k])).join(';')
     ),
   ];
 
-  const blob = new Blob(['\uFEFF' + filas.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob(['\uFEFF' + filas.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
