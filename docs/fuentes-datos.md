@@ -66,26 +66,27 @@ El feed Atom usa el estándar CODICE (Common Data Interface for Contracting Enti
 
 ---
 
-## Fuente Secundaria: Portal de Transparencia de la CAM
+## Fuente Secundaria: Portal de Contratos Públicos de la CAM
 
-**URL:** https://www.comunidad.madrid/transparencia/contratacion
-**Mantenida por:** Comunidad de Madrid
+**URL:** https://contratos-publicos.comunidad.madrid
+**Mantenida por:** Comunidad de Madrid (Dirección General de Patrimonio y Contratación)
 
-La Comunidad de Madrid publica sus propios datos de contratación en su portal de transparencia, incluyendo **contratos menores** que no siempre aparecen en PLACSP.
+Portal informativo de la Comunidad de Madrid sobre contratación pública. Incluye:
+- Perfil de contratante
+- Publicidad de las contrataciones
+- Sistema Licit@ (licitación electrónica)
+- Contratación centralizada
 
-### Cómo acceder
+### Estado actual (verificado julio 2026)
 
-1. Ve a https://www.comunidad.madrid/transparencia
-2. Sección **"Contratación"**
-3. Busca el enlace de **"Descarga de datos"** o **"Datos abiertos"**
+⚠️ **Este portal NO ofrece datos descargables** (CSV, JSON, XML) de contratos individuales. Es un portal informativo construido con Drupal que enlaza a PLACSP para la publicación de licitaciones.
 
-### Formato
+Los contratos de la CAM (incluidos los menores desde 2018) se publican **a través de PLACSP**, que es la fuente que usa nuestro pipeline.
 
-- Generalmente en **CSV** con separador `;`
-- Codificación: UTF-8 con BOM o ISO-8859-1
-- Actualización: variable (mensual o trimestral)
+### Contacto
 
-> ⚠️ **Nota:** Las URLs de descarga directa de este portal cambian con frecuencia. Verificar periódicamente que siguen siendo válidas.
+- Email: contratospublicos@madrid.org
+- Subdirección General de Coordinación de la Contratación Pública
 
 ---
 
@@ -93,23 +94,34 @@ La Comunidad de Madrid publica sus propios datos de contratación en su portal d
 
 **URL:** https://datos.comunidad.madrid
 **Mantenida por:** Comunidad de Madrid
+**API CKAN:** https://datos.comunidad.madrid/catalogo/api/3/action/package_search
 
-El portal de datos abiertos de la CAM puede tener datasets específicos de contratación, especialmente contratos menores y datos históricos.
+### Estado actual (verificado julio 2026)
 
-### Búsqueda recomendada
+⚠️ **Este portal NO tiene contratos individuales.** Los datasets disponibles sobre contratación son exclusivamente **datos estadísticos agregados**:
 
-1. Ve a https://datos.comunidad.madrid/catalogo
-2. Busca: `contratos` o `contratación pública`
-3. Filtra por formato: **CSV** o **JSON**
-4. Anota el UUID del dataset para construir la URL de descarga directa
+| Dataset | Contenido | Útil para nosotros |
+|---------|-----------|-------------------|
+| Contratos administrativos por tipo de contrato | Importes totales por año y tipo | ❌ No (agregado) |
+| Contratos administrativos por formas de adjudicación | Importes totales por año y forma | ❌ No (agregado) |
+| Contratos administrativos por procedimientos de adjudicación | Importes totales por año y procedimiento | ❌ No (agregado) |
 
-### Formato de URL de descarga
+### Cómo se verificó
+
+```bash
+# API CKAN funcional
+curl -s -L "https://datos.comunidad.madrid/catalogo/api/3/action/package_search?q=contratacion&rows=20"
+
+# Resultado: solo 3 datasets, todos con datos agregados por año (no contratos individuales)
+```
+
+### Formato de URL de descarga (para referencia futura)
 
 ```
-https://datos.comunidad.madrid/catalogo/dataset/{UUID_DATASET}/resource/{UUID_RECURSO}/download/{NOMBRE_ARCHIVO}.csv
+https://datos.comunidad.madrid/dataset/{UUID_DATASET}/resource/{UUID_RECURSO}/download/{NOMBRE_ARCHIVO}.csv
 ```
 
-> ⚠️ **Nota:** Los UUIDs de los recursos cambian cuando el dataset se actualiza. El pipeline debe verificar periódicamente que las URLs siguen siendo válidas.
+> 💡 **Nota:** Si en el futuro la CAM publica un dataset de contratos individuales en este portal, se puede integrar fácilmente al pipeline añadiendo una fuente CSV en `scripts/download.js`.
 
 ---
 

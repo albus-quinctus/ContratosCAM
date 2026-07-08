@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ranking de Adjudicatarios — ContratosCAM</title>
+  <meta name="description" content="Ranking de empresas y adjudicatarios que más contratos públicos han recibido de la Comunidad de Madrid, ordenados por importe total." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ranking de Adjudicatarios — ContratosCAM" />
+  <meta property="og:description" content="¿Qué empresas se llevan más dinero público de la Comunidad de Madrid?" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://albus-quinctus.github.io/ContratosCAM/ranking.html" />
+
+  <!-- Seguridad -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="no-referrer" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
+
+  <!-- Chart.js con Subresource Integrity (SRI) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+    integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════ CABECERA -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-brand">
+        <span class="header-icon" aria-hidden="true">🏛️</span>
+        <div>
+          <h1 class="header-title">ContratosCAM</h1>
+          <p class="header-subtitle">Contratación pública de la Comunidad de Madrid</p>
+        </div>
+      </div>
+      <nav class="header-nav" aria-label="Navegación principal">
+        <a href="index.html" class="nav-link nav-link--page">Contratos</a>
+        <a href="ranking.html" class="nav-link active">🏆 Ranking</a>
+        <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">
+          GitHub ↗
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ═══════════════════════════════════════════════════ CABECERA DE SECCIÓN -->
+    <section class="ranking-hero" aria-label="Introducción al ranking">
+      <div class="ranking-hero-text">
+        <h2 class="ranking-hero-title">🏆 Ranking de Adjudicatarios</h2>
+        <p class="ranking-hero-desc">
+          ¿Qué empresas reciben más dinero público de la Comunidad de Madrid?
+          Explora el ranking de adjudicatarios ordenado por importe total acumulado o por número de contratos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ ESTADÍSTICAS RÁPIDAS -->
+    <section class="stats-bar" id="stats-bar" aria-label="Resumen del ranking">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total-adj">—</span>
+        <span class="stat-label">Adjudicatarios únicos</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total-contratos">—</span>
+        <span class="stat-label">Contratos adjudicados</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-importe-total">—</span>
+        <span class="stat-label">Importe total</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-top-empresa">—</span>
+        <span class="stat-label">Mayor adjudicatario</span>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ CONTROLES -->
+    <section class="ranking-controls" aria-label="Controles del ranking">
+
+      <!-- Búsqueda -->
+      <div class="search-bar">
+        <div class="search-input-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="input-busqueda"
+            class="search-input"
+            placeholder="Buscar empresa o adjudicatario..."
+            autocomplete="off"
+            aria-label="Buscar adjudicatario"
+          />
+        </div>
+      </div>
+
+      <!-- Filtros y ordenación -->
+      <div class="ranking-filters">
+
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-tipo">Tipo de contrato</label>
+          <select id="filtro-tipo" class="filter-select">
+            <option value="">Todos los tipos</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-organismo">Organismo</label>
+          <select id="filtro-organismo" class="filter-select">
+            <option value="">Todos los organismos</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-anio">Año</label>
+          <select id="filtro-anio" class="filter-select">
+            <option value="">Todos los años</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="ordenar-por">Ordenar por</label>
+          <select id="ordenar-por" class="filter-select">
+            <option value="importe">Mayor importe total</option>
+            <option value="contratos">Más contratos</option>
+            <option value="media">Mayor importe medio</option>
+            <option value="nombre">Nombre (A-Z)</option>
+          </select>
+        </div>
+
+        <button id="btn-limpiar" class="btn btn--secondary" type="button">✕ Limpiar</button>
+        <button id="btn-exportar" class="btn btn--secondary" type="button">⬇ Exportar CSV</button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ GRÁFICA TOP 10 -->
+    <section class="chart-section-ranking" aria-label="Gráfica top 10 adjudicatarios">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h3 class="chart-title">Top 10 adjudicatarios por importe total</h3>
+          <div class="chart-toggle" role="group" aria-label="Cambiar métrica de la gráfica">
+            <button class="chart-toggle-btn active" data-metric="importe" type="button">Por importe</button>
+            <button class="chart-toggle-btn" data-metric="contratos" type="button">Por contratos</button>
+          </div>
+        </div>
+        <div class="chart-container chart-container--ranking">
+          <canvas id="chart-top10" aria-label="Gráfica de top 10 adjudicatarios"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ TABLA RANKING -->
+    <section class="results-section" aria-label="Tabla de ranking de adjudicatarios">
+      <div class="results-header">
+        <p class="results-count" id="results-count" aria-live="polite">Cargando datos...</p>
+        <div class="results-actions">
+            <dl class="ranking-legend">
+              <dt><span class="medal medal--gold"   aria-hidden="true">🥇</span></dt><dd>Top 1–3</dd>
+              <dt><span class="medal medal--silver" aria-hidden="true">🥈</span></dt><dd>Top 4–10</dd>
+              <dt><span class="medal medal--bronze" aria-hidden="true">🥉</span></dt><dd>Top 11–25</dd>
+            </dl>
+          </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="contratos-table ranking-table" id="tabla-ranking">
+          <thead>
+            <tr>
+              <th class="col-pos">#</th>
+              <th class="col-empresa">Empresa / Adjudicatario</th>
+              <th class="col-ncontratos">Contratos</th>
+              <th class="col-importe-total">Importe total</th>
+              <th class="col-importe-medio">Importe medio</th>
+              <th class="col-tipos">Tipos</th>
+              <th class="col-acciones">Detalle</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body">
+            <tr>
+              <td colspan="7" class="loading-cell">
+                <div class="loading-spinner"></div>
+                <p>Cargando ranking...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <nav class="pagination" id="paginacion" aria-label="Paginación del ranking">
+        <button id="btn-anterior" class="btn btn--secondary btn--sm" type="button" disabled>← Anterior</button>
+        <span class="pagination-info" id="pagination-info" aria-live="polite">Página 1</span>
+        <button id="btn-siguiente" class="btn btn--secondary btn--sm" type="button" disabled>Siguiente →</button>
+      </nav>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════ FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          Datos procedentes del
+          <a href="https://contrataciondelestado.es" target="_blank" rel="noopener noreferrer">Portal de Contratación del Estado</a>
+          y del
+          <a href="https://www.comunidad.madrid/transparencia" target="_blank" rel="noopener noreferrer">Portal de Transparencia de la CAM</a>.
+          Reutilización amparada por la
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener noreferrer">Ley 37/2007</a>.
+        </p>
+        <p class="footer-text">
+          Proyecto de código abierto por
+          <a href="https://github.com/albus-quinctus" target="_blank" rel="noopener noreferrer">Albus Quinctus</a>.
+          Inspirado en <a href="https://contratosdecantabria.es" target="_blank" rel="noopener noreferrer">contratosdecantabria.es</a>
+          de <a href="https://github.com/JaimeObregon" target="_blank" rel="noopener noreferrer">Jaime Gómez-Obregón</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════ PANEL LATERAL DE DETALLE DE EMPRESA -->
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal modal--wide" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar detalle">✕</button>
+      <!-- El texto de este h2 se actualiza dinámicamente en abrirModal() con el nombre de la empresa -->
+      <h2 id="modal-heading" class="sr-only"></h2>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="js/ranking.js" defer></script>
+</body>
+</html>

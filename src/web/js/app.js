@@ -7,15 +7,20 @@
  * paginación, ordenación, modal de detalle, exportación CSV y gráficas.
  */
 
+;(function () {
+'use strict';
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CONFIG = Object.freeze({
   // Rutas posibles al JSON de datos (se prueban en orden)
+  // - Producción (GitHub Pages): data/ está al mismo nivel que index.html
+  // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
   DATA_URLS: [
     './data/processed/contratos-normalizados.json',
-    '../../data/processed/contratos-normalizados.json',
+    '/data/processed/contratos-normalizados.json',
   ],
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
@@ -215,6 +220,8 @@ function aplicarFiltros() {
   estado.paginaActual = 1;
   renderizarTabla();
   renderizarPaginacion();
+  actualizarEstadisticas();
+  renderizarGraficas();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -389,7 +396,7 @@ function exportarCsv() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function actualizarEstadisticas() {
-  const datos = estado.datos;
+  const datos = estado.filtrados;
 
   document.getElementById('stat-total').textContent =
     datos.length.toLocaleString('es-ES');
@@ -408,16 +415,26 @@ function actualizarEstadisticas() {
 function crearOActualizarChart(canvasId, tipo, data, opciones) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
-  if (estado.charts[canvasId]) estado.charts[canvasId].destroy();
+
+  const opcionesCompletas = Object.assign(
+    { responsive: true, maintainAspectRatio: false, animation: { duration: 300 } },
+    opciones
+  );
+
+  // Destruir chart existente y recrear (necesario cuando cambian labels/datasets)
+  if (estado.charts[canvasId]) {
+    estado.charts[canvasId].destroy();
+  }
+
   estado.charts[canvasId] = new Chart(canvas, {
     type: tipo,
     data,
-    options: Object.assign({ responsive: true, maintainAspectRatio: false }, opciones),
+    options: opcionesCompletas,
   });
 }
 
 function renderizarGraficas() {
-  const datos = estado.datos;
+  const datos = estado.filtrados;
 
   // Gráfica 1: Contratos por tipo (donut)
   const conteoTipos = {};
@@ -534,9 +551,7 @@ async function init() {
   // 2. Inicializar UI
   inicializarFiltros();
   inicializarOrdenacion();
-  actualizarEstadisticas();
-  renderizarGraficas();
-  aplicarFiltros();
+  aplicarFiltros(); // También actualiza estadísticas y gráficas
 
   // 3. Eventos de búsqueda y filtros
   const debouncedFiltrar = debounce(aplicarFiltros, CONFIG.DEBOUNCE_MS);
@@ -592,3 +607,5 @@ async function init() {
 
 // Arrancar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', init);
+
+})();

@@ -1,10 +1,11 @@
 /**
  * scripts/parse.js
  *
- * Lee los archivos descargados en data/raw/ y los convierte
- * a un formato JSON normalizado en data/processed/.
+ * Parsea los archivos Atom XML descargados de PLACSP y los convierte
+ * a un formato JSON intermedio (un array de objetos con campos crudos).
  *
- * Soporta: CSV, XML/Atom (PLACSP)
+ * Entrada: data/raw/placsp-licitaciones-*.atom
+ * Salida:  data/raw/parsed-licitaciones.json
  *
  * Uso: node scripts/parse.js
  */
@@ -12,257 +13,319 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { parse as parseCsv } from 'csv-parse/sync';
 import { XMLParser } from 'fast-xml-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
-const PROCESSED_DIR = path.join(__dirname, '../data/processed');
+const OUTPUT_FILE = path.join(RAW_DIR, 'parsed-licitaciones.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Parsers por formato
+// Configuración del parser XML
+// ─────────────────────────────────────────────────────────────────────────────
+
+const parser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+  removeNSPrefix: false,
+  isArray: (name) => {
+    // Forzar arrays para elementos que pueden repetirse
+    const arrayElements = [
+      'entry',
+      'cac:PartyIdentification',
+      'cac:TechnicalEvaluationCriteria',
+      'cac:FinancialEvaluationCriteria',
+      'cac:SpecificTendererRequirement',
+      'cac:RequiredFinancialGuarantee',
+      'cac:RequiredCommodityClassification',
+      'cbc:ActivityCode',
+      'cac:TenderResult',
+      'cac:AwardedTenderedProject',
+    ];
+    return arrayElements.includes(name);
+  },
+  textNodeName: '#text',
+  parseTagValue: true,
+  trimValues: true,
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Funciones de extracción
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Parsea un archivo CSV a array de objetos.
- * @param {string} contenido - Contenido del archivo CSV
- * @returns {Object[]} Array de registros
+ * Extrae de forma segura un valor anidado de un objeto.
+ * @param {object} obj - Objeto fuente
+ * @param {string[]} keys - Ruta de claves
+ * @returns {*} Valor encontrado o undefined
  */
-function parsearCsv(contenido) {
-  return parseCsv(contenido, {
-    columns: true,           // Primera fila como cabeceras
-    skip_empty_lines: true,
-    trim: true,
-    bom: true,               // Eliminar BOM si existe
-    delimiter: ';',          // Los CSV españoles suelen usar punto y coma
-    relax_column_count: true,
-  });
-}
-
-/**
- * Parsea un archivo Atom/XML de PLACSP a array de objetos.
- * Usa fast-xml-parser para un parseo robusto del XML.
- * @param {string} contenido - Contenido del archivo XML/Atom
- * @returns {Object[]} Array de registros
- */
-function parsearAtom(contenido) {
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    attributeNamePrefix: '@_',
-    removeNSPrefix: true,       // Elimina prefijos de namespace (cbc:, cac:, etc.)
-    isArray: (name) => {
-      // Forzar que 'entry' siempre sea un array
-      return name === 'entry';
-    },
-    parseTagValue: true,
-    trimValues: true,
-  });
-
-  const resultado = parser.parse(contenido);
-  const registros = [];
-
-  // Navegar la estructura del feed Atom
-  const feed = resultado.feed || resultado;
-  const entries = feed.entry || [];
-
-  for (const entry of entries) {
-    const registro = {
-      id: extraerValor(entry, 'id'),
-      titulo: extraerValor(entry, 'title'),
-      publicado: extraerValor(entry, 'published'),
-      actualizado: extraerValor(entry, 'updated'),
-      enlace: extraerEnlace(entry),
-      // Campos específicos de PLACSP (sin prefijo de namespace gracias a removeNSPrefix)
-      expediente: buscarCampo(entry, 'ID'),
-      objeto: buscarCampo(entry, 'Description'),
-      tipo_contrato: buscarCampo(entry, 'ContractTypeCode'),
-      procedimiento: buscarCampo(entry, 'ProcedureCode'),
-      importe: buscarCampo(entry, 'TaxExclusiveAmount'),
-      importe_iva: buscarCampo(entry, 'TaxInclusiveAmount'),
-      organismo: buscarCampoAnidado(entry, 'PartyName', 'Name'),
-      estado: buscarCampo(entry, 'StatusCode'),
-    };
-
-    // Solo incluir si tiene datos mínimos
-    if (registro.titulo || registro.objeto) {
-      registros.push(registro);
-    }
+function get(obj, ...keys) {
+  let current = obj;
+  for (const key of keys) {
+    if (current == null || typeof current !== 'object') return undefined;
+    current = current[key];
   }
-
-  return registros;
+  return current;
 }
 
 /**
- * Extrae un valor simple de un objeto parseado.
- * Maneja el caso donde el valor puede ser un objeto con #text.
- * @param {Object} obj - Objeto parseado
- * @param {string} campo - Nombre del campo
+ * Extrae el texto de un nodo XML que puede ser string o {#text: string, @_attr: ...}
+ * @param {*} node
  * @returns {string|null}
  */
-function extraerValor(obj, campo) {
-  if (!obj || !obj[campo]) return null;
-  const val = obj[campo];
-  if (typeof val === 'string') return val;
-  if (typeof val === 'number') return String(val);
-  if (val['#text']) return String(val['#text']);
+function texto(node) {
+  if (node == null) return null;
+  if (typeof node === 'string') return node.trim() || null;
+  if (typeof node === 'number') return String(node);
+  if (typeof node === 'object' && node['#text'] != null) {
+    return String(node['#text']).trim() || null;
+  }
   return null;
 }
 
 /**
- * Extrae el href del link de un entry Atom.
- * @param {Object} entry - Entry parseado
- * @returns {string|null}
+ * Extrae un importe numérico de un nodo XML.
+ * @param {*} node
+ * @returns {number|null}
  */
-function extraerEnlace(entry) {
-  if (!entry || !entry.link) return null;
-  const link = Array.isArray(entry.link) ? entry.link[0] : entry.link;
-  if (typeof link === 'string') return link;
-  return link['@_href'] || null;
+function importe(node) {
+  const val = texto(node);
+  if (val == null) return null;
+  const num = parseFloat(val);
+  return isNaN(num) ? null : num;
 }
 
 /**
- * Busca un campo en un objeto de forma recursiva (profundidad limitada).
- * Útil para encontrar campos PLACSP que pueden estar anidados.
- * @param {Object} obj - Objeto donde buscar
- * @param {string} campo - Nombre del campo a buscar
- * @param {number} maxDepth - Profundidad máxima de búsqueda
- * @returns {string|null}
+ * Extrae los datos relevantes de una entrada del feed Atom.
+ * @param {object} entry - Objeto parseado de un <entry>
+ * @returns {object|null} Datos extraídos o null si no es válido
  */
-function buscarCampo(obj, campo, maxDepth = 5) {
-  if (!obj || maxDepth <= 0) return null;
+function extraerContrato(entry) {
+  const contractFolder = get(entry, 'cac-place-ext:ContractFolderStatus');
+  if (!contractFolder) return null;
 
-  // Buscar directamente
-  if (obj[campo] !== undefined) {
-    const val = obj[campo];
-    if (typeof val === 'string') return val;
-    if (typeof val === 'number') return String(val);
-    if (val && val['#text']) return String(val['#text']);
-    if (val && typeof val === 'object' && !Array.isArray(val)) {
-      // Puede ser un objeto con un valor de texto
-      const keys = Object.keys(val).filter(k => !k.startsWith('@_'));
-      if (keys.length === 1) return extraerValor(val, keys[0]);
-    }
+  // Expediente
+  const expediente = texto(get(contractFolder, 'cbc:ContractFolderID'));
+
+  // Estado (PUB, ADJ, RES, etc.)
+  const estadoNode = get(contractFolder, 'cbc-place-ext:ContractFolderStatusCode');
+  const estado = texto(estadoNode);
+
+  // Organismo contratante
+  const locatedParty = get(contractFolder, 'cac-place-ext:LocatedContractingParty');
+  const party = get(locatedParty, 'cac:Party');
+  const organismoNombre = texto(get(party, 'cac:PartyName', 'cbc:Name'));
+
+  // NIF del organismo
+  let nifOrganismo = null;
+  const partyIds = get(party, 'cac:PartyIdentification');
+  if (Array.isArray(partyIds)) {
+    const nifEntry = partyIds.find(p => {
+      const id = get(p, 'cbc:ID');
+      return id && id['@_schemeName'] === 'NIF';
+    });
+    if (nifEntry) nifOrganismo = texto(get(nifEntry, 'cbc:ID'));
   }
 
-  // Buscar recursivamente en sub-objetos
-  for (const key of Object.keys(obj)) {
-    if (key.startsWith('@_')) continue;
-    const val = obj[key];
-    if (val && typeof val === 'object' && !Array.isArray(val)) {
-      const found = buscarCampo(val, campo, maxDepth - 1);
-      if (found) return found;
+  // Jerarquía de organismos padre (para filtrar por CAM)
+  const jerarquia = extraerJerarquia(locatedParty);
+
+  // Proyecto de contratación
+  const project = get(contractFolder, 'cac:ProcurementProject');
+  const objeto = texto(get(project, 'cbc:Name')) || texto(get(entry, 'title'));
+
+  // Tipo de contrato (código numérico PLACSP)
+  const tipoCode = texto(get(project, 'cbc:TypeCode'));
+
+  // Subtipo
+  const subtipoCode = texto(get(project, 'cbc:SubTypeCode'));
+
+  // Importes del presupuesto
+  const budget = get(project, 'cac:BudgetAmount');
+  const importeSinIva = importe(get(budget, 'cbc:TaxExclusiveAmount'));
+  const importeTotal = importe(get(budget, 'cbc:TotalAmount'));
+  const importeEstimado = importe(get(budget, 'cbc:EstimatedOverallContractAmount'));
+
+  // Ubicación
+  const location = get(project, 'cac:RealizedLocation');
+  const provincia = texto(get(location, 'cbc:CountrySubentity'));
+  const nutsCode = texto(get(location, 'cbc:CountrySubentityCode'));
+
+  // Procedimiento
+  const tenderingProcess = get(contractFolder, 'cac:TenderingProcess');
+  const procedimientoCode = texto(get(tenderingProcess, 'cbc:ProcedureCode'));
+
+  // Resultado de adjudicación (si existe)
+  const tenderResults = get(contractFolder, 'cac:TenderResult');
+  let adjudicatario = null;
+  let nifAdjudicatario = null;
+  let importeAdjudicacion = null;
+  let importeAdjudicacionIva = null;
+  let fechaAdjudicacion = null;
+
+  if (tenderResults) {
+    const results = Array.isArray(tenderResults) ? tenderResults : [tenderResults];
+    const result = results[0]; // Tomar el primer resultado
+
+    // Adjudicatario
+    const winningParty = get(result, 'cac:WinningParty', 'cac:PartyIdentification');
+    if (winningParty) {
+      const ids = Array.isArray(winningParty) ? winningParty : [winningParty];
+      for (const id of ids) {
+        const idNode = get(id, 'cbc:ID');
+        const scheme = idNode && idNode['@_schemeName'];
+        if (scheme === 'NIF' || scheme === 'ID_PLATAFORMA') {
+          if (scheme === 'NIF') nifAdjudicatario = texto(idNode);
+        }
+      }
     }
+
+    const winningPartyName = get(result, 'cac:WinningParty', 'cac:PartyName', 'cbc:Name');
+    adjudicatario = texto(winningPartyName);
+
+    // Importe de adjudicación
+    const awardedProject = get(result, 'cac:AwardedTenderedProject');
+    const awarded = Array.isArray(awardedProject) ? awardedProject[0] : awardedProject;
+    if (awarded) {
+      const legalTotal = get(awarded, 'cac:LegalMonetaryTotal');
+      importeAdjudicacion = importe(get(legalTotal, 'cbc:TaxExclusiveAmount'));
+      importeAdjudicacionIva = importe(get(legalTotal, 'cbc:PayableAmount'));
+    }
+
+    // Fecha de adjudicación
+    fechaAdjudicacion = texto(get(result, 'cbc:AwardDate'));
   }
 
-  return null;
+  // URL del anuncio
+  const urlOrigen = texto(get(entry, 'link', '@_href'));
+
+  // Fecha de actualización
+  const fechaActualizacion = texto(get(entry, 'updated'));
+
+  return {
+    expediente,
+    objeto,
+    estado,
+    tipo_code: tipoCode,
+    subtipo_code: subtipoCode,
+    procedimiento_code: procedimientoCode,
+    organismo: organismoNombre,
+    nif_organismo: nifOrganismo,
+    jerarquia,
+    importe_sin_iva: importeSinIva,
+    importe_total: importeTotal,
+    importe_estimado: importeEstimado,
+    importe_adjudicacion: importeAdjudicacion,
+    importe_adjudicacion_iva: importeAdjudicacionIva,
+    adjudicatario,
+    nif_adjudicatario: nifAdjudicatario,
+    fecha_adjudicacion: fechaAdjudicacion,
+    fecha_actualizacion: fechaActualizacion,
+    provincia,
+    nuts_code: nutsCode,
+    url_origen: urlOrigen,
+    fuente: 'placsp',
+  };
 }
 
 /**
- * Busca un campo anidado (ej: PartyName > Name).
- * @param {Object} obj - Objeto donde buscar
- * @param {string} padre - Nombre del campo padre
- * @param {string} hijo - Nombre del campo hijo
- * @returns {string|null}
+ * Extrae la jerarquía de organismos padre de un LocatedContractingParty.
+ * Devuelve un array con los nombres de la jerarquía de arriba a abajo.
+ * @param {object} locatedParty
+ * @returns {string[]}
  */
-function buscarCampoAnidado(obj, padre, hijo) {
-  if (!obj) return null;
+function extraerJerarquia(locatedParty) {
+  const jerarquia = [];
 
-  // Buscar el padre recursivamente
-  const padreObj = buscarObjeto(obj, padre);
-  if (!padreObj) return buscarCampo(obj, padre); // Fallback: buscar como campo simple
-
-  // Extraer el hijo
-  return extraerValor(padreObj, hijo) || buscarCampo(padreObj, hijo, 2);
-}
-
-/**
- * Busca un objeto por nombre de forma recursiva.
- * @param {Object} obj
- * @param {string} nombre
- * @param {number} maxDepth
- * @returns {Object|null}
- */
-function buscarObjeto(obj, nombre, maxDepth = 5) {
-  if (!obj || maxDepth <= 0) return null;
-
-  if (obj[nombre] && typeof obj[nombre] === 'object') {
-    return obj[nombre];
+  function recorrer(node) {
+    if (!node) return;
+    const nombre = texto(get(node, 'cac:PartyName', 'cbc:Name'));
+    if (nombre) jerarquia.push(nombre);
+    recorrer(get(node, 'cac-place-ext:ParentLocatedParty'));
   }
 
-  for (const key of Object.keys(obj)) {
-    if (key.startsWith('@_')) continue;
-    const val = obj[key];
-    if (val && typeof val === 'object' && !Array.isArray(val)) {
-      const found = buscarObjeto(val, nombre, maxDepth - 1);
-      if (found) return found;
-    }
-  }
-
-  return null;
+  recorrer(get(locatedParty, 'cac-place-ext:ParentLocatedParty'));
+  return jerarquia.reverse(); // De arriba (Estado) a abajo (organismo concreto)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Función principal
+// Main
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('📄 ContratosCAM — Parseo de datos');
-  console.log('═'.repeat(50));
+  console.log('📄 ContratosCAM — Parseo de feeds Atom');
+  console.log('═'.repeat(60));
 
-  // Crear directorio si no existe
-  if (!fs.existsSync(PROCESSED_DIR)) {
-    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
-  }
-
-  // Leer todos los archivos en data/raw/
-  const archivos = fs.readdirSync(RAW_DIR).filter(f => !f.startsWith('.'));
+  // Buscar archivos .atom en data/raw/
+  const archivos = fs.readdirSync(RAW_DIR)
+    .filter(f => f.startsWith('placsp-') && f.endsWith('.atom'))
+    .sort();
 
   if (archivos.length === 0) {
-    console.log('⚠️  No hay archivos en data/raw/');
-    console.log('   Ejecuta primero: npm run download');
-    process.exit(0);
+    console.error('❌ No se encontraron archivos .atom en data/raw/');
+    console.error('   Ejecuta primero: npm run download');
+    process.exit(1);
   }
 
-  let totalRegistros = 0;
+  console.log(`📁 Archivos encontrados: ${archivos.length}`);
+  archivos.forEach(f => console.log(`   • ${f}`));
+  console.log('');
+
+  const todosLosContratos = [];
+  let totalEntradas = 0;
+  let entradasParseadas = 0;
+  let errores = 0;
 
   for (const archivo of archivos) {
-    const rutaArchivo = path.join(RAW_DIR, archivo);
-    const extension = path.extname(archivo).toLowerCase().replace('.', '');
-    const nombreBase = path.basename(archivo, path.extname(archivo));
+    console.log(`\n🔍 Parseando: ${archivo}`);
+    const ruta = path.join(RAW_DIR, archivo);
+    const contenido = fs.readFileSync(ruta, 'utf-8');
 
-    console.log(`\n📂 Procesando: ${archivo}`);
-
-    let registros = [];
-
+    let parsed;
     try {
-      const contenido = fs.readFileSync(rutaArchivo, 'utf-8');
+      parsed = parser.parse(contenido);
+    } catch (err) {
+      console.error(`  ❌ Error parseando XML: ${err.message}`);
+      errores++;
+      continue;
+    }
 
-      if (extension === 'csv') {
-        registros = parsearCsv(contenido);
-      } else if (extension === 'atom' || extension === 'xml') {
-        registros = parsearAtom(contenido);
-      } else {
-        console.log(`  ⚠️  Formato no soportado: .${extension} — omitiendo`);
-        continue;
+    const feed = parsed.feed || parsed;
+    let entries = feed.entry || [];
+    if (!Array.isArray(entries)) entries = [entries];
+
+    totalEntradas += entries.length;
+    console.log(`  📝 Entradas en el feed: ${entries.length}`);
+
+    for (const entry of entries) {
+      try {
+        const contrato = extraerContrato(entry);
+        if (contrato && contrato.objeto) {
+          todosLosContratos.push(contrato);
+          entradasParseadas++;
+        }
+      } catch (err) {
+        errores++;
       }
-
-      console.log(`  📊 Registros encontrados: ${registros.length}`);
-
-      // Guardar como JSON
-      const rutaSalida = path.join(PROCESSED_DIR, `${nombreBase}.json`);
-      fs.writeFileSync(rutaSalida, JSON.stringify(registros, null, 2), 'utf-8');
-      console.log(`  ✅ Guardado: ${path.basename(rutaSalida)}`);
-
-      totalRegistros += registros.length;
-
-    } catch (error) {
-      console.error(`  ❌ Error procesando ${archivo}: ${error.message}`);
     }
   }
 
-  console.log('\n' + '═'.repeat(50));
-  console.log(`✅ Parseo completado. Total registros: ${totalRegistros}`);
-  console.log(`📁 Archivos en: ${PROCESSED_DIR}`);
+  // Guardar resultado
+  console.log('\n' + '═'.repeat(60));
+  console.log('📊 RESUMEN DE PARSEO');
+  console.log('─'.repeat(60));
+  console.log(`  📄 Archivos procesados: ${archivos.length}`);
+  console.log(`  📝 Total entradas en feeds: ${totalEntradas}`);
+  console.log(`  ✅ Contratos parseados: ${entradasParseadas}`);
+  console.log(`  ❌ Errores: ${errores}`);
+  console.log('─'.repeat(60));
+
+  // Guardar JSON intermedio
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(todosLosContratos, null, 2), 'utf-8');
+  const tamano = (fs.statSync(OUTPUT_FILE).size / 1024).toFixed(1);
+  console.log(`\n💾 Guardado: ${path.basename(OUTPUT_FILE)} (${tamano} KB)`);
+  console.log(`   ${todosLosContratos.length} contratos en formato JSON intermedio`);
+  console.log('\n✅ Parseo completado.');
+  console.log('💡 Siguiente paso: npm run transform');
 }
 
 main().catch(err => {

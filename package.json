@@ -19,13 +19,13 @@
     "transform": "node scripts/transform.js",
     "import-db": "node scripts/import-db.js",
     "validate": "node scripts/validate.js",
-    "etl": "npm run download && npm run parse && npm run transform && npm run import-db",
+    "etl": "npm run download && npm run parse && npm run transform",
     "etl:validate": "npm run etl && npm run validate",
-    "serve": "npx serve src/web --listen 3000",
+    "etl:full": "npm run download && npm run parse && npm run transform && npm run import-db",
+    "serve": "npx serve . --listen 3000",
     "dev": "npm run serve"
   },
   "dependencies": {
-    "csv-parse": "^5.5.3",
     "fast-xml-parser": "^5.9.3",
     "sql.js": "^1.12.0"
   },

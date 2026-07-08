@@ -2,7 +2,11 @@
  * scripts/download.js
  *
  * Descarga los datos de contratos de la Comunidad de Madrid
- * desde fuentes oficiales de datos abiertos.
+ * desde la Plataforma de Contratación del Sector Público (PLACSP).
+ *
+ * Fuente principal: Feed Atom paginado de licitaciones.
+ * El feed contiene contratos de toda España; el filtrado por CAM
+ * se realiza en la fase de transformación (transform.js).
  *
  * Uso: node scripts/download.js
  */
@@ -19,35 +23,32 @@ const RAW_DIR = path.join(__dirname, '../data/raw');
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Timeout máximo por descarga (ms) */
-const TIMEOUT_MS = 60_000;
+const TIMEOUT_MS = 120_000;
 
-/** Pausa entre descargas para no sobrecargar servidores (ms) */
-const DELAY_ENTRE_DESCARGAS_MS = 2_000;
+/** Pausa entre descargas de páginas para no sobrecargar servidores (ms) */
+const DELAY_ENTRE_PAGINAS_MS = 3_000;
+
+/** Número máximo de páginas a descargar del feed Atom (seguridad anti-loop) */
+const MAX_PAGINAS = 50;
 
 /** User-Agent identificativo del proyecto */
 const USER_AGENT = 'ContratosCAM/0.1 (https://github.com/albus-quinctus/ContratosCAM)';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// URLs de descarga — Datos Abiertos de la Comunidad de Madrid
-// Fuente: https://datos.comunidad.madrid/catalogo
+// URLs de descarga
 //
-// ⚠️ Las URLs de los portales de datos abiertos cambian con frecuencia.
-//    Verificar periódicamente que siguen siendo válidas.
+// Fuente: Plataforma de Contratación del Sector Público (PLACSP)
+// https://contrataciondelestado.es
+//
+// El feed Atom v3 contiene licitaciones de todos los perfiles de contratante
+// de España. Es paginado: cada página tiene un enlace <link rel="next">
+// que apunta a la siguiente página.
+//
+// Documentación de sindicación PLACSP:
+// https://contrataciondelestado.es/wps/portal/plataforma/es/Sindicacion
 // ─────────────────────────────────────────────────────────────────────────────
-const FUENTES = [
-  {
-    nombre: 'contratos-menores-cam',
-    url: 'https://datos.comunidad.madrid/catalogo/dataset/b3d55e40-8263-4b09-9cf6-5e34ae2fb8c9/resource/75b28e6e-3b56-4e3f-8b5f-7e1e5e5c5e5e/download/contratos_menores.csv',
-    formato: 'csv',
-    descripcion: 'Contratos menores de la Comunidad de Madrid (datos abiertos)',
-  },
-  {
-    nombre: 'licitaciones-cam',
-    url: 'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom',
-    formato: 'atom',
-    descripcion: 'Feed Atom de licitaciones PLACSP (toda España, filtrar por CAM)',
-  },
-];
+
+const FEED_ATOM_URL = 'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones
@@ -57,10 +58,10 @@ const FUENTES = [
  * Descarga un archivo desde una URL con timeout y validación.
  * @param {string} url - URL del archivo a descargar
  * @param {string} destino - Ruta local donde guardar el archivo
- * @returns {Promise<number>} Bytes descargados
+ * @returns {Promise<{bytes: number, contenido: string}>} Bytes descargados y contenido
  */
 async function descargarArchivo(url, destino) {
-  console.log(`  ↓ Descargando: ${url}`);
+  console.log(`  ↓ Descargando: ${url.substring(0, 100)}...`);
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -75,17 +76,17 @@ async function descargarArchivo(url, destino) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const contentType = response.headers.get('content-type') || '';
     const contenido = await response.text();
 
     // Validación básica: verificar que no es una página de error HTML
-    if (contenido.length < 100 && contenido.includes('<html')) {
+    if (contenido.length < 200 && contenido.includes('<html')) {
       throw new Error('La respuesta parece una página de error HTML, no un archivo de datos');
     }
 
-    // Verificar que CSV tiene al menos una cabecera
-    if (destino.endsWith('.csv') && !contenido.includes(';') && !contenido.includes(',')) {
-      throw new Error('El archivo CSV no contiene separadores válidos');
+    // Verificar que es XML/Atom válido (debe empezar con <?xml o <feed)
+    const trimmed = contenido.trimStart();
+    if (!trimmed.startsWith('<?xml') && !trimmed.startsWith('<feed')) {
+      throw new Error('La respuesta no parece ser un feed Atom válido');
     }
 
     fs.writeFileSync(destino, contenido, 'utf-8');
@@ -93,10 +94,37 @@ async function descargarArchivo(url, destino) {
     const kb = (contenido.length / 1024).toFixed(1);
     console.log(`  ✅ Guardado: ${path.basename(destino)} (${kb} KB)`);
 
-    return contenido.length;
+    return { bytes: contenido.length, contenido };
   } finally {
     clearTimeout(timeout);
   }
+}
+
+/**
+ * Extrae la URL de la siguiente página del feed Atom.
+ * Busca <link rel="next" href="..."/> en cualquier orden de atributos.
+ * @param {string} xml - Contenido XML del feed
+ * @returns {string|null} URL de la siguiente página o null si no hay más
+ */
+function extraerUrlSiguientePagina(xml) {
+  // Buscar cualquier <link> que contenga rel="next" y extraer su href
+  const regex = /<link\s+[^>]*rel=["']next["'][^>]*>/i;
+  const linkMatch = xml.match(regex);
+  if (!linkMatch) return null;
+
+  const hrefRegex = /href=["']([^"']+)["']/i;
+  const hrefMatch = linkMatch[0].match(hrefRegex);
+  return hrefMatch ? hrefMatch[1] : null;
+}
+
+/**
+ * Cuenta el número de entradas (<entry>) en un feed Atom.
+ * @param {string} xml - Contenido XML del feed
+ * @returns {number}
+ */
+function contarEntradas(xml) {
+  const matches = xml.match(/<entry>/gi);
+  return matches ? matches.length : 0;
 }
 
 /**
@@ -108,11 +136,21 @@ function esperar(ms) {
 }
 
 /**
- * Función principal
+ * Función principal: descarga el feed Atom paginado de PLACSP.
+ *
+ * Estrategia:
+ * 1. Descarga la primera página del feed (las licitaciones más recientes)
+ * 2. Sigue los enlaces <link rel="next"> para obtener más páginas
+ * 3. Se detiene cuando no hay más páginas o se alcanza MAX_PAGINAS
+ * 4. Guarda cada página como un archivo separado en data/raw/
  */
 async function main() {
-  console.log('🔽 ContratosCAM — Descarga de datos');
-  console.log('═'.repeat(50));
+  console.log('🔽 ContratosCAM — Descarga de datos de PLACSP');
+  console.log('═'.repeat(60));
+  console.log(`📡 Fuente: Plataforma de Contratación del Sector Público`);
+  console.log(`📄 Feed: licitacionesPerfilesContratanteCompleto3 (Atom v3)`);
+  console.log(`📑 Máximo de páginas: ${MAX_PAGINAS}`);
+  console.log('');
 
   // Crear directorio si no existe
   if (!fs.existsSync(RAW_DIR)) {
@@ -121,48 +159,95 @@ async function main() {
 
   const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   let totalBytes = 0;
-  const fuentesConError = [];
+  let totalEntradas = 0;
+  let paginaActual = 1;
+  let urlActual = FEED_ATOM_URL;
+  const archivosDescargados = [];
 
-  for (let i = 0; i < FUENTES.length; i++) {
-    const fuente = FUENTES[i];
-    console.log(`\n📥 [${i + 1}/${FUENTES.length}] ${fuente.nombre}`);
-    console.log(`   ${fuente.descripcion}`);
+  while (urlActual && paginaActual <= MAX_PAGINAS) {
+    console.log(`\n📥 Página ${paginaActual}/${MAX_PAGINAS}`);
 
-    const nombreArchivo = `${fuente.nombre}-${fecha}.${fuente.formato}`;
+    const nombreArchivo = `placsp-licitaciones-${fecha}-p${String(paginaActual).padStart(2, '0')}.atom`;
     const rutaDestino = path.join(RAW_DIR, nombreArchivo);
 
     // No volver a descargar si ya existe el archivo de hoy
     if (fs.existsSync(rutaDestino)) {
       const tamano = (fs.statSync(rutaDestino).size / 1024).toFixed(1);
       console.log(`  ⏭️  Ya existe: ${nombreArchivo} (${tamano} KB) — omitiendo`);
+
+      // Leer para extraer el enlace next
+      const contenidoExistente = fs.readFileSync(rutaDestino, 'utf-8');
+      const entradas = contarEntradas(contenidoExistente);
+      totalEntradas += entradas;
+      totalBytes += contenidoExistente.length;
+      archivosDescargados.push(nombreArchivo);
+
+      urlActual = extraerUrlSiguientePagina(contenidoExistente);
+      paginaActual++;
       continue;
     }
 
     try {
-      const bytes = await descargarArchivo(fuente.url, rutaDestino);
+      const { bytes, contenido } = await descargarArchivo(urlActual, rutaDestino);
       totalBytes += bytes;
+      archivosDescargados.push(nombreArchivo);
+
+      const entradas = contarEntradas(contenido);
+      totalEntradas += entradas;
+      console.log(`  📊 Entradas en esta página: ${entradas}`);
+
+      // Extraer URL de la siguiente página
+      urlActual = extraerUrlSiguientePagina(contenido);
+
+      if (urlActual) {
+        console.log(`  ➡️  Siguiente página disponible`);
+      } else {
+        console.log(`  🏁 No hay más páginas`);
+      }
     } catch (error) {
       const mensaje = error.name === 'AbortError'
         ? `Timeout (>${TIMEOUT_MS / 1000}s)`
         : error.message;
       console.error(`  ❌ Error: ${mensaje}`);
-      fuentesConError.push(fuente.nombre);
+
+      // Si falla una página intermedia, no abortar todo
+      if (paginaActual === 1) {
+        console.error('\n❌ Error en la primera página. Abortando.');
+        process.exit(1);
+      }
+      console.error('  ⚠️  Continuando con las páginas ya descargadas.');
+      break;
     }
+
+    paginaActual++;
 
     // Pausa entre descargas (excepto la última)
-    if (i < FUENTES.length - 1) {
-      await esperar(DELAY_ENTRE_DESCARGAS_MS);
+    if (urlActual && paginaActual <= MAX_PAGINAS) {
+      console.log(`  ⏳ Esperando ${DELAY_ENTRE_PAGINAS_MS / 1000}s antes de la siguiente página...`);
+      await esperar(DELAY_ENTRE_PAGINAS_MS);
     }
   }
 
-  console.log('\n' + '═'.repeat(50));
-  if (fuentesConError.length > 0) {
-    console.error(`❌ Fuentes con error: ${fuentesConError.join(', ')}`);
-    console.error('   Verifica que las URLs siguen siendo válidas.');
+  // Resumen
+  console.log('\n' + '═'.repeat(60));
+  console.log('📊 RESUMEN DE DESCARGA');
+  console.log('─'.repeat(60));
+  console.log(`  📄 Páginas descargadas: ${archivosDescargados.length}`);
+  console.log(`  📝 Total de entradas (licitaciones): ${totalEntradas}`);
+  console.log(`  💾 Tamaño total: ${(totalBytes / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`  📁 Directorio: ${RAW_DIR}`);
+  console.log('─'.repeat(60));
+  console.log('  Archivos:');
+  archivosDescargados.forEach(f => console.log(`    • ${f}`));
+  console.log('═'.repeat(60));
+
+  if (archivosDescargados.length === 0) {
+    console.error('\n❌ No se descargó ningún archivo.');
     process.exit(1);
   }
-  console.log(`✅ Descarga completada. Total: ${(totalBytes / 1024).toFixed(1)} KB`);
-  console.log(`📁 Archivos en: ${RAW_DIR}`);
+
+  console.log('\n✅ Descarga completada.');
+  console.log('💡 Siguiente paso: npm run parse');
 }
 
 main().catch(err => {

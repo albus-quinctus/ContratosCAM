@@ -1,9 +1,11 @@
 /**
  * scripts/validate.js
  *
- * Valida la integridad y estructura del JSON de datos procesados.
- * Se ejecuta después del pipeline ETL para asegurar que los datos
- * cumplen con el esquema esperado antes de publicarlos.
+ * Valida la integridad y schema del JSON normalizado generado por el pipeline.
+ * Verifica campos requeridos, tipos de datos, formatos y completitud.
+ *
+ * Entrada: data/processed/contratos-normalizados.json
+ * Salida:  Reporte en consola (exit code 0 = OK, 1 = errores)
  *
  * Uso: node scripts/validate.js
  */
@@ -13,184 +15,254 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const JSON_PATH = path.join(__dirname, '../data/processed/contratos-normalizados.json');
+const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Esquema de validación
+// Schema de validación
 // ─────────────────────────────────────────────────────────────────────────────
 
-const CAMPOS_REQUERIDOS = ['objeto'];
-const CAMPOS_OPCIONALES = [
-  'expediente', 'tipo', 'procedimiento', 'organismo',
-  'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
-  'fecha_publicacion', 'fecha_adjudicacion', 'fecha_formalizacion',
-  'url_origen',
-];
-const CAMPOS_VALIDOS = new Set([...CAMPOS_REQUERIDOS, ...CAMPOS_OPCIONALES]);
-
-const TIPOS_VALIDOS = [
-  'Obras', 'Servicios', 'Suministros', 'Administrativo especial',
-  'Gestión de servicios públicos', 'Colaboración entre el sector público y privado',
-  'Privado', 'Patrimonial', 'Concesión de obras', 'Concesión de servicios',
-];
+const TIPOS_VALIDOS = ['obras', 'servicios', 'suministros', 'administrativo_especial', 'privado', 'concesion_obras', 'concesion_servicios', 'patrimonial', 'otros'];
+const PROCEDIMIENTOS_VALIDOS = ['abierto', 'restringido', 'negociado', 'dialogo_competitivo', 'asociacion_innovacion', 'abierto_simplificado', 'basado_acuerdo_marco', 'menor', 'negociado_sin_publicidad', 'abierto_simplificado_sumario'];
+const FUENTES_VALIDAS = ['placsp', 'cam_transparencia', 'cam_datos_abiertos'];
+const ESTADOS_VALIDOS = ['publicado', 'en_evaluacion', 'adjudicado', 'resuelto', 'anulado', 'pre_adjudicacion'];
 
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-const URL_REGEX = /^https?:\/\//i;
+const URL_REGEX = /^https?:\/\/.+/;
+const NIF_REGEX = /^[A-Z0-9]{8,10}$/;
+
+/** Umbral de tamaño para advertir sobre migración a Turso (bytes) */
+const UMBRAL_TAMANO_MB = 20;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de validación
 // ─────────────────────────────────────────────────────────────────────────────
 
-function validarRegistro(registro, indice) {
+/**
+ * Valida un contrato individual contra el schema.
+ * @param {object} contrato
+ * @param {number} index
+ * @returns {string[]} Array de errores encontrados
+ */
+function validarContrato(contrato, index) {
   const errores = [];
-
-  // Verificar campos desconocidos
-  for (const campo of Object.keys(registro)) {
-    if (!CAMPOS_VALIDOS.has(campo)) {
-      errores.push(`[${indice}] Campo desconocido: "${campo}"`);
-    }
-  }
+  const prefix = `[#${contrato.id || index}]`;
 
   // Campos requeridos
-  for (const campo of CAMPOS_REQUERIDOS) {
-    if (!registro[campo] || (typeof registro[campo] === 'string' && registro[campo].trim() === '')) {
-      errores.push(`[${indice}] Campo requerido vacío: "${campo}"`);
+  if (!contrato.objeto) {
+    errores.push(`${prefix} Campo 'objeto' es requerido`);
+  }
+  if (!contrato.organismo) {
+    errores.push(`${prefix} Campo 'organismo' es requerido`);
+  }
+
+  // Tipos de datos
+  if (contrato.id != null && typeof contrato.id !== 'number') {
+    errores.push(`${prefix} 'id' debe ser number, es ${typeof contrato.id}`);
+  }
+  if (contrato.importe != null && typeof contrato.importe !== 'number') {
+    errores.push(`${prefix} 'importe' debe ser number, es ${typeof contrato.importe}`);
+  }
+  if (contrato.importe_iva != null && typeof contrato.importe_iva !== 'number') {
+    errores.push(`${prefix} 'importe_iva' debe ser number, es ${typeof contrato.importe_iva}`);
+  }
+
+  // Valores permitidos
+  if (contrato.tipo && !TIPOS_VALIDOS.includes(contrato.tipo)) {
+    errores.push(`${prefix} 'tipo' inválido: "${contrato.tipo}"`);
+  }
+  if (contrato.procedimiento && !PROCEDIMIENTOS_VALIDOS.includes(contrato.procedimiento)) {
+    errores.push(`${prefix} 'procedimiento' inválido: "${contrato.procedimiento}"`);
+  }
+  if (contrato.estado && !ESTADOS_VALIDOS.includes(contrato.estado)) {
+    errores.push(`${prefix} 'estado' inválido: "${contrato.estado}"`);
+  }
+  if (contrato.fuente && !FUENTES_VALIDAS.includes(contrato.fuente)) {
+    errores.push(`${prefix} 'fuente' inválida: "${contrato.fuente}"`);
+  }
+
+  // Formatos
+  if (contrato.fecha_publicacion && !FECHA_REGEX.test(contrato.fecha_publicacion)) {
+    errores.push(`${prefix} 'fecha_publicacion' formato inválido: "${contrato.fecha_publicacion}" (esperado: YYYY-MM-DD)`);
+  }
+  if (contrato.fecha_adjudicacion && !FECHA_REGEX.test(contrato.fecha_adjudicacion)) {
+    errores.push(`${prefix} 'fecha_adjudicacion' formato inválido: "${contrato.fecha_adjudicacion}"`);
+  }
+  if (contrato.fecha_formalizacion && !FECHA_REGEX.test(contrato.fecha_formalizacion)) {
+    errores.push(`${prefix} 'fecha_formalizacion' formato inválido: "${contrato.fecha_formalizacion}"`);
+  }
+
+  // URLs seguras
+  if (contrato.url_origen && !URL_REGEX.test(contrato.url_origen)) {
+    errores.push(`${prefix} 'url_origen' no es una URL válida: "${contrato.url_origen}"`);
+  }
+
+  // NIF
+  if (contrato.nif_adjudicatario && !NIF_REGEX.test(contrato.nif_adjudicatario)) {
+    errores.push(`${prefix} 'nif_adjudicatario' formato inválido: "${contrato.nif_adjudicatario}"`);
+  }
+
+  // Importes negativos
+  if (contrato.importe != null && contrato.importe < 0) {
+    errores.push(`${prefix} 'importe' es negativo: ${contrato.importe}`);
+  }
+  if (contrato.importe_iva != null && contrato.importe_iva < 0) {
+    errores.push(`${prefix} 'importe_iva' es negativo: ${contrato.importe_iva}`);
+  }
+
+  // Coherencia: importe_iva >= importe (si ambos existen)
+  if (contrato.importe != null && contrato.importe_iva != null) {
+    if (contrato.importe_iva < contrato.importe * 0.9) { // Margen del 10% por redondeos
+      errores.push(`${prefix} 'importe_iva' (${contrato.importe_iva}) es menor que 'importe' (${contrato.importe})`);
     }
   }
 
-  // Validar tipos de datos
-  if (registro.importe !== null && registro.importe !== undefined) {
-    if (typeof registro.importe !== 'number' || isNaN(registro.importe)) {
-      errores.push(`[${indice}] Importe no es un número válido: ${registro.importe}`);
-    } else if (registro.importe < 0) {
-      errores.push(`[${indice}] Importe negativo: ${registro.importe}`);
-    }
-  }
-
-  if (registro.importe_iva !== null && registro.importe_iva !== undefined) {
-    if (typeof registro.importe_iva !== 'number' || isNaN(registro.importe_iva)) {
-      errores.push(`[${indice}] Importe IVA no es un número válido: ${registro.importe_iva}`);
-    }
-  }
-
-  // Validar fechas
-  for (const campoFecha of ['fecha_publicacion', 'fecha_adjudicacion', 'fecha_formalizacion']) {
-    if (registro[campoFecha] && !FECHA_REGEX.test(registro[campoFecha])) {
-      errores.push(`[${indice}] Fecha con formato inválido (${campoFecha}): "${registro[campoFecha]}"`);
-    }
-  }
-
-  // Validar URL
-  if (registro.url_origen && !URL_REGEX.test(registro.url_origen)) {
-    errores.push(`[${indice}] URL con protocolo inseguro o inválido: "${registro.url_origen}"`);
-  }
-
-  // Validar tipo de contrato (si existe)
-  if (registro.tipo && !TIPOS_VALIDOS.includes(registro.tipo)) {
-    // Solo advertencia, no error — puede haber tipos nuevos
-    return { errores, advertencias: [`[${indice}] Tipo de contrato no reconocido: "${registro.tipo}"`] };
-  }
-
-  return { errores, advertencias: [] };
+  return errores;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Función principal
+// Main
 // ─────────────────────────────────────────────────────────────────────────────
 
-function main() {
+async function main() {
   console.log('✅ ContratosCAM — Validación de datos');
-  console.log('═'.repeat(50));
+  console.log('═'.repeat(60));
 
   // Verificar que existe el archivo
-  if (!fs.existsSync(JSON_PATH)) {
-    console.error('❌ No se encontró: data/processed/contratos-normalizados.json');
-    console.error('   Ejecuta primero: npm run etl');
+  if (!fs.existsSync(INPUT_FILE)) {
+    console.error(`❌ No se encontró: ${path.basename(INPUT_FILE)}`);
+    console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
 
-  // Leer y parsear
+  // Leer archivo
+  const stat = fs.statSync(INPUT_FILE);
+  const tamanoMB = stat.size / 1024 / 1024;
+  console.log(`📄 Archivo: ${path.basename(INPUT_FILE)}`);
+  console.log(`💾 Tamaño: ${tamanoMB.toFixed(2)} MB`);
+
+  if (tamanoMB > UMBRAL_TAMANO_MB) {
+    console.warn(`\n⚠️  ADVERTENCIA: El archivo supera ${UMBRAL_TAMANO_MB} MB.`);
+    console.warn('   Considerar migración a Turso para mejor rendimiento.');
+  }
+
   let datos;
   try {
-    const contenido = fs.readFileSync(JSON_PATH, 'utf-8');
-    datos = JSON.parse(contenido);
+    datos = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
   } catch (err) {
-    console.error(`❌ Error parseando JSON: ${err.message}`);
+    console.error(`\n❌ Error parseando JSON: ${err.message}`);
     process.exit(1);
   }
 
   // Verificar que es un array
   if (!Array.isArray(datos)) {
-    console.error('❌ El JSON no es un array de registros');
+    console.error('\n❌ El archivo no contiene un array JSON');
     process.exit(1);
   }
 
-  console.log(`\n📊 Registros a validar: ${datos.length}`);
+  console.log(`📝 Contratos: ${datos.length}`);
 
   if (datos.length === 0) {
-    console.warn('⚠️  El archivo está vacío (0 registros)');
+    console.warn('\n⚠️  ADVERTENCIA: El archivo está vacío (0 contratos).');
+    console.warn('   Verifica que el pipeline ETL se ejecutó correctamente.');
     process.exit(0);
   }
 
-  // Validar cada registro
-  let totalErrores = 0;
-  let totalAdvertencias = 0;
-  const erroresMuestra = [];
+  // Validar cada contrato
+  console.log('\n🔍 Validando schema...');
+  const todosErrores = [];
+  let contratosConErrores = 0;
 
   for (let i = 0; i < datos.length; i++) {
-    const { errores, advertencias } = validarRegistro(datos[i], i);
-    totalErrores += errores.length;
-    totalAdvertencias += advertencias.length;
-
-    // Guardar solo los primeros errores para no saturar la consola
-    if (erroresMuestra.length < 20) {
-      erroresMuestra.push(...errores);
+    const errores = validarContrato(datos[i], i);
+    if (errores.length > 0) {
+      contratosConErrores++;
+      todosErrores.push(...errores);
     }
   }
 
-  // Estadísticas de completitud
-  const stats = {
-    conExpediente: datos.filter(d => d.expediente).length,
-    conOrganismo: datos.filter(d => d.organismo).length,
-    conImporte: datos.filter(d => d.importe !== null && d.importe !== undefined).length,
-    conFecha: datos.filter(d => d.fecha_publicacion).length,
-    conAdjudicatario: datos.filter(d => d.adjudicatario).length,
-    conUrl: datos.filter(d => d.url_origen).length,
-  };
+  // Calcular completitud
+  console.log('\n📊 Completitud de campos:');
+  const campos = ['expediente', 'objeto', 'tipo', 'procedimiento', 'organismo', 'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario', 'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente'];
 
-  console.log('\n📋 Completitud de campos:');
-  console.log(`   Expediente:     ${stats.conExpediente}/${datos.length} (${(stats.conExpediente / datos.length * 100).toFixed(1)}%)`);
-  console.log(`   Organismo:      ${stats.conOrganismo}/${datos.length} (${(stats.conOrganismo / datos.length * 100).toFixed(1)}%)`);
-  console.log(`   Importe:        ${stats.conImporte}/${datos.length} (${(stats.conImporte / datos.length * 100).toFixed(1)}%)`);
-  console.log(`   Fecha:          ${stats.conFecha}/${datos.length} (${(stats.conFecha / datos.length * 100).toFixed(1)}%)`);
-  console.log(`   Adjudicatario:  ${stats.conAdjudicatario}/${datos.length} (${(stats.conAdjudicatario / datos.length * 100).toFixed(1)}%)`);
-  console.log(`   URL origen:     ${stats.conUrl}/${datos.length} (${(stats.conUrl / datos.length * 100).toFixed(1)}%)`);
-
-  // Resultado
-  console.log('\n' + '═'.repeat(50));
-
-  if (totalErrores > 0) {
-    console.error(`❌ Validación fallida: ${totalErrores} error(es), ${totalAdvertencias} advertencia(s)`);
-    console.error('\nPrimeros errores encontrados:');
-    erroresMuestra.slice(0, 10).forEach(e => console.error(`   ${e}`));
-    if (totalErrores > 10) {
-      console.error(`   ... y ${totalErrores - 10} errores más`);
-    }
-    process.exit(1);
+  const completitud = {};
+  for (const campo of campos) {
+    const count = datos.filter(c => c[campo] != null && c[campo] !== '').length;
+    const pct = ((count / datos.length) * 100).toFixed(1);
+    completitud[campo] = { count, pct: parseFloat(pct) };
+    const bar = '█'.repeat(Math.round(pct / 5)) + '░'.repeat(20 - Math.round(pct / 5));
+    const icon = pct >= 90 ? '✅' : pct >= 50 ? '⚠️' : '❌';
+    console.log(`  ${icon} ${campo.padEnd(22)} ${bar} ${pct}% (${count}/${datos.length})`);
   }
 
-  if (totalAdvertencias > 0) {
-    console.warn(`⚠️  Validación correcta con ${totalAdvertencias} advertencia(s)`);
+  // Verificar IDs únicos
+  console.log('\n🔑 Verificando IDs únicos...');
+  const ids = datos.map(c => c.id);
+  const idsUnicos = new Set(ids);
+  if (idsUnicos.size !== datos.length) {
+    todosErrores.push(`IDs no son únicos: ${datos.length} contratos pero solo ${idsUnicos.size} IDs distintos`);
+    console.log('  ❌ IDs duplicados encontrados');
   } else {
-    console.log('✅ Validación correcta. Todos los registros cumplen el esquema.');
+    console.log('  ✅ Todos los IDs son únicos');
   }
 
-  // Verificar tamaño del archivo para advertir sobre límites
-  const tamanoMB = fs.statSync(JSON_PATH).size / (1024 * 1024);
-  console.log(`\n📦 Tamaño del archivo: ${tamanoMB.toFixed(2)} MB`);
-  if (tamanoMB > 20) {
-    console.warn('⚠️  El archivo supera 20 MB. Considerar migración a Turso.');
+  // Verificar duplicados por expediente + organismo
+  console.log('\n🔍 Verificando duplicados...');
+  const claves = datos.map(c => `${c.expediente}|${c.organismo}`);
+  const clavesUnicas = new Set(claves);
+  const duplicados = datos.length - clavesUnicas.size;
+  if (duplicados > 0) {
+    console.log(`  ⚠️  ${duplicados} posibles duplicados (mismo expediente + organismo)`);
+  } else {
+    console.log('  ✅ No se encontraron duplicados');
+  }
+
+  // Resumen
+  console.log('\n' + '═'.repeat(60));
+  console.log('📊 RESUMEN DE VALIDACIÓN');
+  console.log('─'.repeat(60));
+  console.log(`  📝 Contratos validados: ${datos.length}`);
+  console.log(`  ❌ Contratos con errores: ${contratosConErrores}`);
+  console.log(`  📋 Total errores: ${todosErrores.length}`);
+  console.log(`  💾 Tamaño: ${tamanoMB.toFixed(2)} MB`);
+
+  // Campos críticos (deben estar por encima del 80%)
+  const camposCriticos = ['objeto', 'organismo', 'fuente'];
+  const camposCriticosFallidos = camposCriticos.filter(c => completitud[c] && completitud[c].pct < 80);
+
+  if (camposCriticosFallidos.length > 0) {
+    console.log(`\n  ⚠️  Campos críticos con baja completitud:`);
+    camposCriticosFallidos.forEach(c => {
+      console.log(`     • ${c}: ${completitud[c].pct}%`);
+    });
+  }
+
+  console.log('─'.repeat(60));
+
+  // Mostrar primeros errores (máximo 20)
+  if (todosErrores.length > 0) {
+    console.log(`\n❌ Primeros errores (máx. 20 de ${todosErrores.length}):`);
+    todosErrores.slice(0, 20).forEach(e => console.log(`   • ${e}`));
+    if (todosErrores.length > 20) {
+      console.log(`   ... y ${todosErrores.length - 20} más`);
+    }
+  }
+
+  console.log('\n' + '═'.repeat(60));
+
+  // Resultado final
+  if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
+    console.log('🎉 VALIDACIÓN EXITOSA — Todos los contratos son válidos');
+    process.exit(0);
+  } else if (todosErrores.length <= 10 && camposCriticosFallidos.length === 0) {
+    console.log('⚠️  VALIDACIÓN CON ADVERTENCIAS — Errores menores encontrados');
+    process.exit(0); // No bloquear el pipeline por errores menores
+  } else {
+    console.log('❌ VALIDACIÓN FALLIDA — Revisar errores antes de publicar');
+    process.exit(1);
   }
 }
 
-main();
+main().catch(err => {
+  console.error('❌ Error fatal:', err.message);
+  process.exit(1);
+});

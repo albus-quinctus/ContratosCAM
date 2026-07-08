@@ -38,26 +38,40 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 
 ---
 
-### FASE 1 — Pipeline ETL Funcional
+### FASE 1 — Pipeline ETL Funcional ✅
 > El corazón del proyecto son los datos reales
 
-- [ ] Verificar y corregir las URLs de descarga en `scripts/download.js`
-  - [ ] Confirmar URL del CSV de contratos menores de la CAM
-  - [ ] Confirmar URL del feed Atom de PLACSP filtrado por CAM
-- [ ] Implementar `scripts/transform.js`:
-  - [ ] Mapear campos de CSV de contratos menores al esquema normalizado
-  - [ ] Mapear campos del feed Atom de PLACSP al esquema normalizado
-  - [ ] Limpiar importes (texto con comas → float)
-  - [ ] Normalizar fechas a ISO 8601 (`YYYY-MM-DD`)
-  - [ ] Normalizar nombres de organismos (tabla de equivalencias)
-  - [ ] Limpiar NIFs (eliminar guiones y espacios)
-  - [ ] Convertir campos vacíos a `null`
-  - [ ] Deduplicar por `expediente` + `organismo`
-  - [ ] Generar `data/processed/contratos-normalizados.json`
-- [ ] Explorar los datos reales: ¿cuántos contratos hay? ¿qué organismos? ¿qué rango de fechas?
-- [ ] Documentar problemas de calidad encontrados
+- [x] Verificar y corregir las URLs de descarga en `scripts/download.js`
+  - [x] ~~Confirmar URL del CSV de contratos menores de la CAM~~ — No disponible como datos individuales en datos.comunidad.madrid (solo datos agregados)
+  - [x] Confirmar URL del feed Atom de PLACSP — ✅ Funciona con paginación
+- [x] Implementar `scripts/download.js` con descarga paginada del feed Atom (10 páginas, ~135 MB)
+- [x] Implementar `scripts/parse.js` con fast-xml-parser v5 para extraer datos del feed CODICE
+- [x] Implementar `scripts/transform.js`:
+  - [x] Filtrar contratos por jerarquía "Comunidad de Madrid" en ParentLocatedParty
+  - [x] Mapear campos del feed Atom de PLACSP al esquema normalizado
+  - [x] Mapear códigos de tipo (1=suministros, 2=servicios, 3=obras, etc.)
+  - [x] Mapear códigos de procedimiento (1=abierto, 9=negociado_sin_publicidad, etc.)
+  - [x] Limpiar importes (texto con comas → float)
+  - [x] Normalizar fechas a ISO 8601 (`YYYY-MM-DD`)
+  - [x] Normalizar nombres de organismos (tabla de equivalencias)
+  - [x] Limpiar NIFs (eliminar guiones y espacios)
+  - [x] Convertir campos vacíos a `null`
+  - [x] Deduplicar por `expediente` + `organismo`
+  - [x] Generar `data/processed/contratos-normalizados.json`
+- [x] Implementar `scripts/validate.js` con validación de schema, completitud y coherencia
+- [x] Explorar los datos reales (50 páginas, 24.572 licitaciones de toda España):
+  - **1.393 contratos únicos de la CAM** (tras deduplicar 1.698 filtrados)
+  - Tipos: servicios (696), suministros (372), obras (227), privado (48), otros (26)
+  - Procedimientos: abierto (763), negociado_sin_publicidad (468), negociado (80), restringido (39)
+  - Importes: 0,41€ — 558M€ (media: 1,65M€)
+  - Completitud: 100% en campos críticos, 49.1% en adjudicatario (normal para licitaciones en curso)
+- [x] Investigar fuentes adicionales:
+  - ❌ **datos.comunidad.madrid** — Solo tiene datos estadísticos/agregados (importes totales por año y tipo), NO contratos individuales
+  - ❌ **contratos-publicos.comunidad.madrid** — Portal informativo Drupal sin datos descargables (CSV/JSON)
+  - ❌ **Portal de Transparencia CAM** — No tiene URLs de descarga directa de contratos menores
+  - ✅ **PLACSP** — Es la ÚNICA fuente con contratos individuales accesibles programáticamente (la CAM publica aquí sus contratos desde 2018 por Ley 9/2017)
 
-**Entregable:** `data/processed/contratos-normalizados.json` con datos reales y limpios.
+**Entregable:** `data/processed/contratos-normalizados.json` con 1.393 contratos reales y limpios (1.03 MB). ✅
 
 ---
 

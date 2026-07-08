@@ -90,7 +90,7 @@ npm run etl
 
 # 4. Sirve el frontend localmente
 npm run serve
-# Abre http://localhost:3000 en tu navegador
+# Abre http://localhost:3000/src/web/ en tu navegador
 ```
 
 ### Scripts disponibles
@@ -104,7 +104,7 @@ npm run serve
 | `npm run validate` | Valida integridad y schema del JSON generado |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db) |
 | `npm run etl:validate` | Pipeline completo + validación |
-| `npm run serve` | Sirve el frontend en `localhost:3000` |
+| `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
 | `npm run dev` | Alias de `serve` para desarrollo local |
 
 ---
@@ -194,7 +194,7 @@ El frontend no usa ningún framework de forma deliberada:
 Ver [`plans/roadmap.md`](plans/roadmap.md) para el plan completo de desarrollo.
 
 - [x] Fase 0 — Preparación, estructura e infraestructura segura
-- [ ] Fase 1 — Pipeline ETL funcional con datos reales
+- [x] Fase 1 — Pipeline ETL funcional con datos reales (1.393 contratos CAM)
 - [ ] Fase 2 — Base de datos SQLite local y JSON para el frontend
 - [ ] Fase 3 — Web pública en GitHub Pages (MVP)
 - [ ] Fase 4 — Visualizaciones y estadísticas
