@@ -11,7 +11,7 @@
 | **Autor** | Albus Quinctus |
 | **Licencia** | MIT |
 | **URL objetivo** | `https://albus-quinctus.github.io/ContratosCAM` |
-| **Estado actual** | Fase 0 completada — Infraestructura lista |
+| **Estado actual** | Fases 0, 1, 3 y 4 completadas — Web pública con ranking de adjudicatarios |
 
 ---
 
@@ -317,17 +317,18 @@ Una **web pública, gratuita y sin registro** que:
 ## 11. Métricas de Éxito
 
 ### Técnicas
-- [ ] Pipeline ETL ejecuta sin errores con datos reales
-- [ ] JSON generado pasa validación de schema al 100%
-- [ ] Web carga en < 3 segundos
-- [ ] 0 vulnerabilidades en `npm audit`
-- [ ] Actualización semanal automática sin intervención
+- [x] Pipeline ETL ejecuta sin errores con datos reales
+- [x] JSON generado pasa validación de schema al 100%
+- [x] Web carga en < 3 segundos
+- [x] 0 vulnerabilidades en `npm audit`
+- [ ] Actualización semanal automática sin intervención (pendiente verificar cron)
 
 ### De producto
-- [ ] Un usuario puede encontrar un contrato específico en < 30 segundos
-- [ ] Un periodista puede filtrar todos los contratos de una empresa en < 1 minuto
-- [ ] Los datos son verificables: cada contrato enlaza a su fuente oficial
-- [ ] El proyecto es reproducible: `git clone` + `npm install` + `npm run etl` funciona
+- [x] Un usuario puede encontrar un contrato específico en < 30 segundos
+- [x] Un periodista puede filtrar todos los contratos de una empresa en < 1 minuto
+- [x] Los datos son verificables: cada contrato enlaza a su fuente oficial
+- [x] El proyecto es reproducible: `git clone` + `npm install` + `npm run etl` funciona
+- [x] Un periodista puede ver el ranking de empresas adjudicatarias ordenado por importe total
 
 ### De impacto (largo plazo)
 - [ ] Al menos 1 periodista o medio usa los datos para una investigación
@@ -354,10 +355,10 @@ Una **web pública, gratuita y sin registro** que:
 | Fase | Entregable | Criterio de completitud |
 |------|-----------|------------------------|
 | **0** ✅ | Infraestructura y documentación | Repo público, 0 vulnerabilidades, estructura completa |
-| **1** | Pipeline ETL funcional | `contratos-normalizados.json` con datos reales y limpios |
+| **1** ✅ | Pipeline ETL funcional | `contratos-normalizados.json` con 1.393 contratos reales y limpios |
 | **2** | SQLite local | BD consultable con datos importados |
-| **3** | Web pública (MVP) | URL accesible con datos reales, búsqueda y filtros |
-| **4** | Visualizaciones | 4 gráficas funcionando con datos reales |
+| **3** ✅ | Web pública (MVP) | URL accesible con datos reales, búsqueda, filtros y diseño responsive |
+| **4** ✅ | Visualizaciones + Ranking | 4 gráficas + página ranking adjudicatarios con Chart.js, filtros y exportación CSV |
 | **5** | Automatización | Actualización semanal sin intervención manual |
 | **6** | Turso | Datos históricos completos, búsqueda full-text |
 | **7** | Pulido y difusión | Dominio propio, artículo publicado, contacto con medios |

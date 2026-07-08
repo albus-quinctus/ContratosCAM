@@ -38,8 +38,9 @@ graph TD
     G --> H1["Buscador de contratos"]
     G --> H2["Filtros por organismo\nimporte y fecha"]
     G --> H3["Fichas de contrato\ncon enlace a fuente oficial"]
-    G --> H4["Estadísticas y graficas"]
+    G --> H4["Estadísticas y gráficas (4 Chart.js)"]
     G --> H5["Exportar resultados CSV"]
+    G --> H6["Ranking de adjudicatarios\ncon filtros, gráfica y modal"]
 
     I["GitHub Actions\nCron Job semanal"] -->|Actualización periódica| B
     I -->|Deploy automático| E
@@ -134,7 +135,7 @@ contratoscam/
 │   │   └── .gitkeep
 │   ├── processed/                # JSON normalizado (commiteado al repo)
 │   │   ├── .gitkeep
-│   │   └── contratos-normalizados.json   # Generado por el pipeline ETL
+│   │   └── contratos-normalizados.json   # 1.393 contratos reales de la CAM (~1 MB)
 │   └── db/
 │       └── contratos.db          # SQLite local para desarrollo (gitignored)
 ├── docs/
@@ -142,6 +143,7 @@ contratoscam/
 │   └── capturas/                 # Screenshots para el README
 ├── plans/
 │   ├── arquitectura.md           # Este archivo
+│   ├── PRD.md                    # Product Requirements Document
 │   └── roadmap.md                # Hoja de ruta por fases
 ├── scripts/
 │   ├── download.js               # Descarga datos (con timeout y validación)
@@ -151,11 +153,13 @@ contratoscam/
 │   └── validate.js               # Valida schema e integridad del JSON
 ├── src/
 │   └── web/
-│       ├── index.html            # Página principal (con SRI y meta seguridad)
+│       ├── index.html            # Página principal (buscador, filtros, tabla, gráficas)
+│       ├── ranking.html          # Página de ranking de adjudicatarios
 │       ├── css/
-│       │   └── styles.css        # Estilos con variables CSS, responsive
+│       │   └── styles.css        # Estilos con variables CSS, responsive (900/600/400px)
 │       └── js/
-│           └── app.js            # Lógica principal (búsqueda, filtros, gráficas, modal)
+│           ├── app.js            # Lógica del buscador principal
+│           └── ranking.js        # Lógica del ranking de adjudicatarios (730 líneas)
 ├── .gitignore
 ├── .nvmrc                        # Versión de Node.js (20)
 ├── package.json

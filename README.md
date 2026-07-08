@@ -25,7 +25,7 @@ El código es completamente abierto. Cualquiera puede revisar cómo se descargan
 
 ## 🌐 Demo
 
-> 🚧 En construcción — Próximamente en `https://albus-quinctus.github.io/ContratosCAM`
+> 🌐 Disponible en [`https://albus-quinctus.github.io/ContratosCAM`](https://albus-quinctus.github.io/ContratosCAM)
 
 ---
 
@@ -33,9 +33,11 @@ El código es completamente abierto. Cualquiera puede revisar cómo se descargan
 
 - 🔍 **Búsqueda** por objeto del contrato, organismo o adjudicatario
 - 🔎 **Filtros** por tipo de contrato, procedimiento, importe y fecha
-- 📊 **Estadísticas** y gráficas de distribución de contratos
+- 📊 **Estadísticas** y gráficas de distribución de contratos (4 gráficas Chart.js)
+- 🏆 **Ranking de adjudicatarios** — empresas ordenadas por importe total, nº de contratos o importe medio, con filtros, gráfica y exportación CSV
 - 📄 **Ficha detallada** de cada contrato con enlace a la fuente oficial original
-- 📥 **Exportación** de resultados en CSV
+- 📥 **Exportación** de resultados en CSV (con protección contra CSV injection)
+- 📱 **Diseño responsive** — funcional en móvil, tablet y escritorio
 - 🔄 **Actualización automática** semanal de los datos
 - 🌐 **Acceso público** sin registro ni instalación
 
@@ -49,11 +51,13 @@ contratoscam/
 ├── data/
 │   ├── raw/               # Datos descargados sin procesar (CSV, XML, Atom)
 │   ├── processed/         # Datos limpios en JSON (generados por el pipeline)
+│   │   └── contratos-normalizados.json   # 1.393 contratos reales de la CAM
 │   └── db/                # Base de datos SQLite local (para desarrollo)
 ├── docs/                  # Documentación adicional
 │   └── fuentes-datos.md   # Guía de fuentes de datos oficiales
 ├── plans/                 # Arquitectura técnica y hoja de ruta
 │   ├── arquitectura.md    # Decisiones técnicas y diagramas
+│   ├── PRD.md             # Product Requirements Document
 │   └── roadmap.md         # Fases del proyecto
 ├── scripts/               # Pipeline ETL (descarga → parseo → transformación → BD)
 │   ├── download.js        # Descarga datos de fuentes oficiales
@@ -62,6 +66,12 @@ contratoscam/
 │   ├── import-db.js       # Importa a SQLite / genera JSON para el frontend
 │   └── validate.js        # Valida integridad y schema del JSON generado
 ├── src/web/               # Frontend de la aplicación (HTML + CSS + JS Vanilla)
+│   ├── index.html         # Página principal: buscador, filtros, tabla, gráficas
+│   ├── ranking.html       # Página de ranking de adjudicatarios
+│   ├── css/styles.css     # Estilos responsive (breakpoints 900/600/400px)
+│   └── js/
+│       ├── app.js         # Lógica del buscador principal
+│       └── ranking.js     # Lógica del ranking de adjudicatarios
 ├── .nvmrc                 # Versión de Node.js del proyecto (20)
 └── package.json           # Dependencias y scripts npm
 ```
@@ -195,10 +205,10 @@ Ver [`plans/roadmap.md`](plans/roadmap.md) para el plan completo de desarrollo.
 
 - [x] Fase 0 — Preparación, estructura e infraestructura segura
 - [x] Fase 1 — Pipeline ETL funcional con datos reales (1.393 contratos CAM)
-- [ ] Fase 2 — Base de datos SQLite local y JSON para el frontend
-- [ ] Fase 3 — Web pública en GitHub Pages (MVP)
-- [ ] Fase 4 — Visualizaciones y estadísticas
-- [ ] Fase 5 — Deploy automático y actualización semanal
+- [x] Fase 3 — Web pública en GitHub Pages (MVP) con buscador, filtros, gráficas y diseño responsive ✅
+- [x] Fase 4 — Visualizaciones, estadísticas y **página de ranking de adjudicatarios** ✅
+- [ ] Fase 2 — Base de datos SQLite local (pendiente)
+- [ ] Fase 5 — Automatización y actualización semanal completa
 - [ ] Fase 6 — Migración a Turso para datos históricos completos
 - [ ] Fase 7 — Pulido, dominio propio y difusión
 

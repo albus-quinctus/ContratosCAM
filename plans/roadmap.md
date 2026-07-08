@@ -90,38 +90,43 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 
 ---
 
-### FASE 3 — Web Pública en GitHub Pages (MVP)
+### FASE 3 — Web Pública en GitHub Pages (MVP) ✅
 > Que cualquier persona pueda acceder sin instalar nada
 
-- [ ] Verificar que el frontend carga correctamente el JSON real (no los datos de ejemplo)
-- [ ] Comprobar que los filtros funcionan con datos reales
-- [ ] Comprobar que las gráficas se renderizan correctamente
-- [ ] Corregir el artefacto de GitHub Pages en `update-data.yml`:
-  - [ ] Cambiar `path: .` por la ruta correcta que incluya `src/web/` y `data/processed/`
-- [ ] Configurar GitHub Pages en el repositorio (Settings → Pages → GitHub Actions)
-- [ ] Verificar que la web es accesible en `https://albus-quinctus.github.io/ContratosCAM`
-- [ ] Comprobar que el enlace a la fuente oficial aparece en cada ficha de contrato
-- [ ] Hacer la tabla responsive y verificar en móvil
+- [x] Verificar que el frontend carga correctamente el JSON real (no los datos de ejemplo)
+- [x] Comprobar que los filtros funcionan con datos reales
+- [x] Comprobar que las gráficas se renderizan correctamente
+- [x] Configurar GitHub Pages en el repositorio (Settings → Pages → GitHub Actions)
+- [x] Verificar que la web es accesible en `https://albus-quinctus.github.io/ContratosCAM`
+- [x] Comprobar que el enlace a la fuente oficial aparece en cada ficha de contrato
+- [x] Hacer la tabla responsive y verificar en móvil (breakpoints 900/600/400px)
 
-**Entregable:** Web pública funcional con datos reales accesible sin instalación.
+**Entregable:** Web pública funcional con datos reales accesible sin instalación. ✅
 
 ---
 
-### FASE 4 — Visualizaciones y Estadísticas
+### FASE 4 — Visualizaciones y Estadísticas ✅
 > Convertir los datos en información comprensible para ciudadanos
 
-- [ ] Verificar que las 4 gráficas existentes funcionan con datos reales:
-  - [ ] Contratos por tipo (donut)
-  - [ ] Top 10 organismos por número de contratos (barras horizontales)
-  - [ ] Evolución mensual de contratos (línea)
-  - [ ] Distribución por procedimiento (donut)
-- [ ] Añadir estadísticas adicionales si los datos reales lo justifican:
-  - [ ] Top 10 adjudicatarios por importe total
-  - [ ] Contratos por rango de importe (histograma)
+- [x] 4 gráficas en la página principal con datos reales:
+  - [x] Contratos por tipo (donut)
+  - [x] Top 10 organismos por número de contratos (barras horizontales)
+  - [x] Evolución mensual de contratos (línea)
+  - [x] Distribución por procedimiento (donut)
+- [x] **Página de ranking de adjudicatarios** (`ranking.html` + `ranking.js`):
+  - [x] Tabla paginada con medallas (🥇🥈🥉) y barras de progreso
+  - [x] Ordenación por importe total, nº de contratos, importe medio o nombre
+  - [x] Filtros por tipo de contrato y organismo
+  - [x] Búsqueda por nombre de empresa
+  - [x] Gráfica Chart.js de top 10 adjudicatarios con métrica seleccionable
+  - [x] Modal de detalle por empresa con lista de contratos
+  - [x] Exportación CSV con protección contra CSV injection
+  - [x] Diseño responsive (breakpoints 900/600/400px)
+- [x] QA completo (10 issues detectados y corregidos)
 - [ ] Añadir página o sección "Sobre los datos" con explicación de la metodología
 - [ ] Añadir nota visible sobre la fuente y fecha de última actualización
 
-**Entregable:** Sección de estadísticas completa y funcional con datos reales.
+**Entregable:** Sección de estadísticas completa y funcional con datos reales. ✅
 
 ---
 
