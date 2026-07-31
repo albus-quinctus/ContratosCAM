@@ -46,6 +46,7 @@ const estado = {
   ordenCol: 'fecha_publicacion',
   ordenDir: 'desc',
   charts: {},
+  terminosBusqueda: [],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,6 +86,24 @@ function esc(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;');
+}
+
+/**
+ * Escapa HTML y resalta los términos de búsqueda con <mark>.
+ * Primero escapa para prevenir XSS, luego aplica el resaltado.
+ * @param {string} str - Texto a mostrar
+ * @returns {string} HTML seguro con términos resaltados
+ */
+function resaltar(str) {
+  if (!str) return '';
+  let html = esc(str);
+  const terminos = estado.terminosBusqueda;
+  if (!terminos || terminos.length === 0) return html;
+
+  // Construir regex con todos los términos (escapando caracteres especiales de regex)
+  const escaped = terminos.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const regex = new RegExp('(' + escaped.join('|') + ')', 'gi');
+  return html.replace(regex, '<mark class="search-highlight">$1</mark>');
 }
 
 /**
@@ -222,10 +241,21 @@ function obtenerFiltros() {
 function aplicarFiltros() {
   const f = obtenerFiltros();
 
+  // Búsqueda multi-término: dividir por espacios, todos deben coincidir (AND)
+  const terminos = f.busqueda
+    ? f.busqueda.split(/\s+/).filter(t => t.length > 0)
+    : [];
+
+  // Guardar términos en el estado para resaltado posterior
+  estado.terminosBusqueda = terminos;
+
   estado.filtrados = estado.datos.filter(c => {
-    if (f.busqueda) {
-      const texto = [c.objeto, c.organismo, c.adjudicatario].join(' ').toLowerCase();
-      if (!texto.includes(f.busqueda)) return false;
+    if (terminos.length > 0) {
+      // Incluir NIF en el texto de búsqueda
+      const texto = [c.objeto, c.organismo, c.adjudicatario, c.nif_adjudicatario, c.expediente]
+        .join(' ').toLowerCase();
+      // Todos los términos deben aparecer (AND)
+      if (!terminos.every(t => texto.includes(t))) return false;
     }
     if (f.tipo && c.tipo !== f.tipo) return false;
     if (f.organismo && c.organismo !== f.organismo) return false;
@@ -247,10 +277,34 @@ function aplicarFiltros() {
   });
 
   estado.paginaActual = 1;
+  renderizarTerminosBusqueda();
   renderizarTabla();
   renderizarPaginacion();
   actualizarEstadisticas();
   renderizarGraficas();
+}
+
+/**
+ * Muestra chips con los términos de búsqueda activos.
+ */
+function renderizarTerminosBusqueda() {
+  const container = document.getElementById('search-terms');
+  if (!container) return;
+
+  const terminos = estado.terminosBusqueda;
+  if (terminos.length === 0) {
+    container.hidden = true;
+    container.innerHTML = '';
+    return;
+  }
+
+  container.hidden = false;
+  container.innerHTML =
+    '<span class="search-terms-label">Buscando:</span> ' +
+    terminos.map(t =>
+      '<span class="search-term-chip">' + esc(t) + '</span>'
+    ).join(' ') +
+    '<span class="search-terms-mode">( todos deben coincidir )</span>';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -279,12 +333,12 @@ function renderizarTabla() {
 
   tbody.innerHTML = pagina.map((c, i) =>
     '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
-    '<td class="col-objeto"><div class="cell-objeto">' + (esc(c.objeto) || '—') + '</div></td>' +
-    '<td class="col-organismo"><div class="cell-organismo">' + (esc(c.organismo) || '—') + '</div></td>' +
+    '<td class="col-objeto"><div class="cell-objeto">' + (resaltar(c.objeto) || '—') + '</div></td>' +
+    '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
     '<td class="col-tipo"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
-    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (esc(c.adjudicatario) || '—') + '</div></td>' +
+    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + '</div></td>' +
     '</tr>'
   ).join('');
 
