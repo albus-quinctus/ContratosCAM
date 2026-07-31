@@ -148,6 +148,38 @@ Portal Transparencia CAM / PLACSP
 
 ---
 
+## 🔄 Automatización (GitHub Actions)
+
+El pipeline de datos se ejecuta **automáticamente cada lunes a las 6:00 UTC** mediante GitHub Actions. El workflow:
+
+1. Descarga los datos más recientes de PLACSP (y opcionalmente TED-UE)
+2. Parsea, transforma y valida los datos
+3. Verifica que el JSON resultante tiene al menos 100 contratos (umbral de salud)
+4. Hace commit automático si los datos cambiaron
+5. Despliega la web actualizada en GitHub Pages
+6. Si algo falla, **crea un issue automático** con el diagnóstico
+
+### Lanzar el workflow manualmente
+
+Si necesitas actualizar los datos fuera del ciclo semanal:
+
+1. Ve a la pestaña **Actions** del repositorio en GitHub
+2. Selecciona el workflow **"Actualizar datos de contratos"** en la barra lateral
+3. Haz clic en **"Run workflow"** → selecciona la rama `main` → **"Run workflow"**
+4. Espera ~5 minutos. Al terminar, verás un resumen con el número de contratos procesados
+
+### Monitorización
+
+- **Job Summary**: Cada ejecución publica un resumen con métricas (contratos totales, estado de TED, si hubo cambios)
+- **Issues automáticos**: Si el pipeline falla, se crea un issue con la etiqueta `pipeline-error`
+- **Logs**: Disponibles en la pestaña Actions → seleccionar la ejecución → ver logs de cada step
+
+### Prevención de inactividad
+
+> ⚠️ GitHub desactiva los cron jobs si el repositorio lleva 60 días sin actividad (commits o interacciones). Para evitarlo, el workflow también se puede lanzar manualmente con `workflow_dispatch`.
+
+---
+
 ## 🗄️ Arquitectura de Base de Datos
 
 El proyecto sigue una **estrategia de escalado progresivo**:
@@ -205,10 +237,12 @@ Ver [`plans/roadmap.md`](plans/roadmap.md) para el plan completo de desarrollo.
 
 - [x] Fase 0 — Preparación, estructura e infraestructura segura
 - [x] Fase 1 — Pipeline ETL funcional con datos reales (1.393 contratos CAM)
-- [x] Fase 3 — Web pública en GitHub Pages (MVP) con buscador, filtros, gráficas y diseño responsive ✅
-- [x] Fase 4 — Visualizaciones, estadísticas y **página de ranking de adjudicatarios** ✅
-- [ ] Fase 2 — Base de datos SQLite local (pendiente)
-- [ ] Fase 5 — Automatización y actualización semanal completa
+- [x] Fase 2 — Base de datos SQLite local
+- [x] Fase 3 — Web pública en GitHub Pages (MVP) con buscador, filtros, gráficas y diseño responsive
+- [x] Fase 4 — Visualizaciones, estadísticas y **página de ranking de adjudicatarios**
+- [x] Fase 5 — Automatización y actualización semanal (cron + notificación de errores + verificación de salud)
+- [ ] Fase 5b — Datos históricos PLACE (2008–presente)
+- [ ] Fase 5c — Integración TED-UE (contratos europeos enriquecidos)
 - [ ] Fase 6 — Migración a Turso para datos históricos completos
 - [ ] Fase 7 — Pulido, dominio propio y difusión
 

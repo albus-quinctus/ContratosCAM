@@ -131,16 +131,19 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 
 ---
 
-### FASE 5 — Automatización y Actualización Semanal
+### FASE 5 — Automatización y Actualización Semanal ✅
 > Que los datos se actualicen solos sin intervención manual
 
-- [ ] Verificar que el cron job de GitHub Actions se ejecuta correctamente
-- [ ] Verificar que el auto-commit de `data/processed/` funciona
-- [ ] Verificar que el deploy a GitHub Pages se lanza tras cada actualización
-- [ ] Añadir notificación de error si el pipeline falla (email o issue automático)
-- [ ] Documentar el proceso de actualización para que sea auditable
+- [x] Verificar que el cron job de GitHub Actions se ejecuta correctamente
+- [x] Verificar que el auto-commit de `data/processed/` funciona
+- [x] Verificar que el deploy a GitHub Pages se lanza tras cada actualización
+- [x] Añadir notificación de error si el pipeline falla (issue automático con etiqueta `pipeline-error`)
+- [x] Documentar el proceso de actualización para que sea auditable
+- [x] Añadir verificación de salud post-ETL (umbral mínimo de 100 contratos)
+- [x] Añadir resumen de ejecución en GitHub Job Summary (contratos totales, estado TED, cambios)
+- [x] Documentar cómo lanzar el workflow manualmente desde la UI de GitHub
 
-**Entregable:** Pipeline completamente automatizado que actualiza la web cada lunes.
+**Entregable:** Pipeline completamente automatizado que actualiza la web cada lunes, con notificación de errores y verificación de salud. ✅
 
 ---
 

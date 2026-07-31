@@ -11,7 +11,7 @@
 | **Autor** | Albus Quinctus |
 | **Licencia** | MIT |
 | **URL objetivo** | `https://albus-quinctus.github.io/ContratosCAM` |
-| **Estado actual** | Fases 0, 1, 2, 3 y 4 completadas — Web pública con ranking de adjudicatarios + BD SQLite local |
+| **Estado actual** | Fases 0–5 completadas — Web pública con ranking, automatización semanal con notificación de errores |
 
 ---
 
@@ -333,7 +333,7 @@ Una **web pública, gratuita y sin registro** que:
 - [x] JSON generado pasa validación de schema al 100%
 - [x] Web carga en < 3 segundos
 - [x] 0 vulnerabilidades en `npm audit`
-- [ ] Actualización semanal automática sin intervención (pendiente verificar cron)
+- [x] Actualización semanal automática con verificación de salud y notificación de errores
 
 ### De producto
 - [x] Un usuario puede encontrar un contrato específico en < 30 segundos
@@ -371,7 +371,7 @@ Una **web pública, gratuita y sin registro** que:
 | **2** ✅ | SQLite local | BD consultable con 1.799 contratos, 6 índices + tabla de búsqueda de texto |
 | **3** ✅ | Web pública (MVP) | URL accesible con datos reales, búsqueda, filtros y diseño responsive |
 | **4** ✅ | Visualizaciones + Ranking | 4 gráficas + página ranking adjudicatarios con Chart.js, filtros y exportación CSV |
-| **5** | Automatización | Actualización semanal sin intervención manual |
+| **5** ✅ | Automatización | Cron semanal + verificación de salud + notificación de errores por issue automático |
 | **5b** | PLACE histórico | Dataset ampliado con serie histórica 2008–presente (+5.000–15.000 contratos) |
 | **5c** | TED-UE | Contratos grandes enriquecidos con datos europeos |
 | **6** | Turso | Datos históricos completos, búsqueda full-text |

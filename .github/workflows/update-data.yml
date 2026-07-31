@@ -13,6 +13,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 jobs:
   update-data:
@@ -20,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
+    outputs:
+      total_contratos: ${{ steps.verificar.outputs.total_contratos }}
+      datos_actualizados: ${{ steps.commit.outputs.changes_detected }}
 
     steps:
       - name: Checkout del repositorio
@@ -38,8 +43,13 @@ jobs:
         run: npm run download && npm run parse
 
       - name: Descargar y parsear datos TED-UE
+        id: ted
         run: npm run download:ted && npm run parse:ted
         continue-on-error: true  # TED es fuente complementaria, no bloquear si falla
+
+      - name: Registrar estado de TED
+        if: steps.ted.outcome == 'failure'
+        run: echo "⚠️ TED-UE falló en esta ejecución. Los datos se publican solo con PLACSP." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Transformar e importar datos combinados
         run: npm run transform && npm run import-db
@@ -47,13 +57,52 @@ jobs:
       - name: Validar datos generados
         run: npm run validate
 
+      - name: Verificar salud de los datos
+        id: verificar
+        run: |
+          # Comprobar que el JSON existe y tiene un mínimo de contratos
+          FILE="data/processed/contratos-normalizados.json"
+          if [ ! -f "$FILE" ]; then
+            echo "❌ ERROR: No se generó el archivo $FILE"
+            exit 1
+          fi
+
+          # Contar contratos (el archivo es un array JSON)
+          TOTAL=$(node -e "const d=JSON.parse(require('fs').readFileSync('$FILE','utf-8')); console.log(d.length)")
+          echo "total_contratos=$TOTAL" >> "$GITHUB_OUTPUT"
+
+          # Umbral mínimo: si hay menos de 100 contratos, algo fue mal
+          if [ "$TOTAL" -lt 100 ]; then
+            echo "❌ ERROR: Solo se encontraron $TOTAL contratos (mínimo esperado: 100)"
+            echo "Esto indica un problema con la fuente de datos o el pipeline."
+            exit 1
+          fi
+
+          echo "✅ Verificación de salud OK: $TOTAL contratos"
+
       - name: Commit y push de los datos actualizados
+        id: commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "data: actualización automática de contratos [skip ci]"
           file_pattern: "data/processed/*.json"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
+
+      - name: Publicar resumen del pipeline
+        run: |
+          echo "## 📊 Resumen de actualización de datos" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Métrica | Valor |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Contratos totales** | ${{ steps.verificar.outputs.total_contratos }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **TED-UE** | ${{ steps.ted.outcome == 'success' && '✅ OK' || '⚠️ Falló (no bloqueante)' }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Datos actualizados** | ${{ steps.commit.outputs.changes_detected == 'true' && '✅ Sí (commit realizado)' || '⏭️ Sin cambios' }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Fecha** | $(date -u '+%Y-%m-%d %H:%M UTC') |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "---" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "📁 Archivo: \`data/processed/contratos-normalizados.json\`" >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     name: Desplegar en GitHub Pages
@@ -67,21 +116,33 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout del repositorio (con último commit de datos)
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
 
-      - name: Actualizar rama local tras el commit de datos
-        run: git pull origin main --rebase
+      - name: Verificar que tenemos los datos actualizados
+        run: |
+          # Comprobar que el JSON de datos existe
+          if [ ! -f "data/processed/contratos-normalizados.json" ]; then
+            echo "⚠️ No se encontró el JSON de datos. Intentando pull..."
+            git pull origin main --ff-only
+          fi
+
+          # Verificación final
+          if [ ! -f "data/processed/contratos-normalizados.json" ]; then
+            echo "❌ ERROR: No se pudo obtener el JSON de datos actualizado"
+            exit 1
+          fi
+
+          echo "✅ Datos disponibles para deploy"
 
       - name: Preparar artefacto para Pages
         run: |
           mkdir -p _site
           cp -r src/web/* _site/
           mkdir -p _site/data/processed
-          cp data/processed/*.json _site/data/processed/ 2>/dev/null || echo "Sin datos procesados aún"
+          cp data/processed/*.json _site/data/processed/
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
@@ -94,3 +155,70 @@ jobs:
       - name: Desplegar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Publicar resumen del deploy
+        run: |
+          echo "## 🚀 Deploy completado" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Contratos publicados:** ${{ needs.update-data.outputs.total_contratos }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Fecha:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_STEP_SUMMARY"
+
+  notify-failure:
+    name: Notificar error
+    needs: [update-data, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Crear issue de error
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🚨 Pipeline de datos falló — ${new Date().toISOString().split('T')[0]}`;
+            const body = `## Error en la actualización automática de datos
+
+            El workflow de actualización semanal ha fallado.
+
+            **Fecha:** ${new Date().toISOString()}
+            **Run:** [Ver logs](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+
+            ### Posibles causas
+            - La API de PLACSP no responde o cambió su formato
+            - Error en el parseo de datos XML
+            - El JSON generado no pasa la validación de schema
+            - Error de red o timeout
+
+            ### Acción requerida
+            1. Revisar los logs del workflow
+            2. Ejecutar el pipeline manualmente en local: \`npm run etl:full\`
+            3. Si la fuente cambió, actualizar los scripts de descarga/parseo
+
+            ---
+            *Este issue fue creado automáticamente por GitHub Actions.*`;
+
+            // Buscar si ya existe un issue abierto con el mismo título (evitar duplicados)
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'pipeline-error',
+            });
+
+            const alreadyExists = existingIssues.data.some(issue =>
+              issue.title.startsWith('🚨 Pipeline de datos falló')
+            );
+
+            if (!alreadyExists) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['pipeline-error', 'automated'],
+              });
+              console.log('Issue de error creado');
+            } else {
+              console.log('Ya existe un issue abierto de error de pipeline, no se crea duplicado');
+            }
