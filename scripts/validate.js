@@ -119,6 +119,40 @@ function validarContrato(contrato, index) {
     }
   }
 
+  // ─── Campos adicionales (Fase mejora calidad) ─────────────────────────────
+  // CPV: código de 8 dígitos (puede tener sufijo -N)
+  if (contrato.cpv != null && typeof contrato.cpv === 'string') {
+    if (!/^\d{8}(-\d)?$/.test(contrato.cpv) && !/^\d+$/.test(contrato.cpv)) {
+      // Solo advertencia, no error bloqueante — CPV puede tener formatos variados
+    }
+  }
+
+  // duracion_meses: debe ser entero positivo si existe
+  if (contrato.duracion_meses != null) {
+    if (typeof contrato.duracion_meses !== 'number' || !Number.isInteger(contrato.duracion_meses)) {
+      errores.push(`${prefix} 'duracion_meses' debe ser entero, es ${typeof contrato.duracion_meses}: ${contrato.duracion_meses}`);
+    } else if (contrato.duracion_meses < 0) {
+      errores.push(`${prefix} 'duracion_meses' debe ser >= 0, es ${contrato.duracion_meses}`);
+    }
+  }
+
+  // num_lotes: debe ser entero positivo si existe
+  if (contrato.num_lotes != null) {
+    if (typeof contrato.num_lotes !== 'number' || !Number.isInteger(contrato.num_lotes)) {
+      errores.push(`${prefix} 'num_lotes' debe ser entero, es ${typeof contrato.num_lotes}: ${contrato.num_lotes}`);
+    } else if (contrato.num_lotes < 0) {
+      errores.push(`${prefix} 'num_lotes' debe ser >= 0, es ${contrato.num_lotes}`);
+    }
+  }
+
+  // valor_estimado: debe ser número positivo si existe
+  if (contrato.valor_estimado != null && typeof contrato.valor_estimado !== 'number') {
+    errores.push(`${prefix} 'valor_estimado' debe ser number, es ${typeof contrato.valor_estimado}`);
+  }
+  if (contrato.valor_estimado != null && contrato.valor_estimado < 0) {
+    errores.push(`${prefix} 'valor_estimado' es negativo: ${contrato.valor_estimado}`);
+  }
+
   // ─── Campos enriquecidos (TED) ──────────────────────────────────────────
   // num_ofertas: debe ser entero positivo si existe
   if (contrato.num_ofertas != null) {
@@ -210,8 +244,9 @@ async function main() {
   // Calcular completitud
   console.log('\n📊 Completitud de campos:');
   const campos = [
-    'expediente', 'objeto', 'tipo', 'procedimiento', 'organismo',
-    'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
+    'expediente', 'objeto', 'tipo', 'subtipo', 'procedimiento', 'organismo',
+    'importe', 'importe_iva', 'valor_estimado', 'cpv', 'cpv_descripcion',
+    'duracion_meses', 'num_lotes', 'adjudicatario', 'nif_adjudicatario',
     'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente',
     'num_ofertas', 'ted_publication_number',
   ];

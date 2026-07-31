@@ -40,6 +40,7 @@ const parser = new XMLParser({
       'cbc:ActivityCode',
       'cac:TenderResult',
       'cac:AwardedTenderedProject',
+      'cac:ProcurementProjectLot',
     ];
     return arrayElements.includes(name);
   },
@@ -145,6 +146,42 @@ function extraerContrato(entry) {
   const importeTotal = importe(get(budget, 'cbc:TotalAmount'));
   const importeEstimado = importe(get(budget, 'cbc:EstimatedOverallContractAmount'));
 
+  // CPV (código de producto/servicio)
+  const cpvClassifications = get(project, 'cac:RequiredCommodityClassification');
+  let cpv = null;
+  let cpvDescripcion = null;
+  if (cpvClassifications) {
+    const cpvArr = Array.isArray(cpvClassifications) ? cpvClassifications : [cpvClassifications];
+    const cpvPrincipal = cpvArr[0];
+    if (cpvPrincipal) {
+      const cpvNode = get(cpvPrincipal, 'cbc:ItemClassificationCode');
+      cpv = texto(cpvNode);
+      if (cpvNode && typeof cpvNode === 'object') {
+        cpvDescripcion = cpvNode['@_name'] || null;
+      }
+    }
+  }
+
+  // Duración del contrato (meses o días)
+  const periodo = get(project, 'cac:PlannedPeriod');
+  const duracionMedida = get(periodo, 'cbc:DurationMeasure');
+  let duracionMeses = null;
+  if (duracionMedida) {
+    const valor = parseFloat(texto(duracionMedida));
+    const unidad = duracionMedida['@_unitCode'] || 'MON';
+    if (!isNaN(valor)) {
+      // Convertir a meses si está en días
+      duracionMeses = unidad === 'DAY' ? Math.round(valor / 30) : Math.round(valor);
+    }
+  }
+
+  // Número de lotes
+  const lotes = get(contractFolder, 'cac:ProcurementProjectLot');
+  let numLotes = null;
+  if (lotes) {
+    numLotes = Array.isArray(lotes) ? lotes.length : 1;
+  }
+
   // Ubicación
   const location = get(project, 'cac:RealizedLocation');
   const provincia = texto(get(location, 'cbc:CountrySubentity'));
@@ -224,6 +261,11 @@ function extraerContrato(entry) {
     nuts_code: nutsCode,
     url_origen: urlOrigen,
     fuente: 'placsp',
+    // Campos adicionales (Fase mejora calidad)
+    cpv,
+    cpv_descripcion: cpvDescripcion,
+    duracion_meses: duracionMeses,
+    num_lotes: numLotes,
   };
 }
 

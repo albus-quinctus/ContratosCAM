@@ -100,6 +100,57 @@ const NORMALIZACION_ORGANISMOS = {
   'CONSEJERÍA DE EDUCACIÓN, CIENCIA Y UNIVERSIDADES': 'Consejería de Educación, Ciencia y Universidades',
 };
 
+/**
+ * Tabla de divisiones CPV (2 primeros dígitos → descripción).
+ * Fuente: Reglamento (CE) nº 213/2008 — Vocabulario Común de Contratos Públicos.
+ */
+const CPV_DIVISIONES = {
+  '03': 'Productos agrícolas y ganaderos',
+  '09': 'Productos petrolíferos y combustibles',
+  '14': 'Productos de minería y canteras',
+  '15': 'Alimentos y bebidas',
+  '16': 'Maquinaria agrícola',
+  '18': 'Prendas de vestir y accesorios',
+  '19': 'Cuero y textiles',
+  '22': 'Material impreso y productos relacionados',
+  '24': 'Productos químicos',
+  '30': 'Equipos informáticos y suministros',
+  '31': 'Maquinaria y aparatos eléctricos',
+  '32': 'Equipos de telecomunicaciones',
+  '33': 'Equipamiento médico y farmacéutico',
+  '34': 'Vehículos y equipos de transporte',
+  '35': 'Equipos de seguridad y defensa',
+  '37': 'Instrumentos musicales y deportivos',
+  '38': 'Equipos de laboratorio y científicos',
+  '39': 'Mobiliario y equipamiento',
+  '42': 'Maquinaria industrial',
+  '43': 'Maquinaria de minería y construcción',
+  '44': 'Materiales de construcción',
+  '45': 'Trabajos de construcción',
+  '48': 'Software y sistemas informáticos',
+  '50': 'Servicios de reparación y mantenimiento',
+  '51': 'Servicios de instalación',
+  '55': 'Servicios de hostelería y restauración',
+  '60': 'Servicios de transporte',
+  '63': 'Servicios auxiliares de transporte',
+  '64': 'Servicios postales y telecomunicaciones',
+  '65': 'Servicios públicos (agua, energía)',
+  '66': 'Servicios financieros y de seguros',
+  '70': 'Servicios inmobiliarios',
+  '71': 'Servicios de arquitectura e ingeniería',
+  '72': 'Servicios informáticos y TI',
+  '73': 'Servicios de investigación y desarrollo',
+  '75': 'Servicios de administración pública',
+  '76': 'Servicios de petróleo y gas',
+  '77': 'Servicios agrícolas y forestales',
+  '79': 'Servicios empresariales y consultoría',
+  '80': 'Servicios de educación y formación',
+  '85': 'Servicios sanitarios y sociales',
+  '90': 'Servicios medioambientales',
+  '92': 'Servicios recreativos y culturales',
+  '98': 'Otros servicios comunitarios',
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de transformación
 // ─────────────────────────────────────────────────────────────────────────────
@@ -263,11 +314,17 @@ function transformarContrato(crudo, id) {
     expediente: limpiarVacio(crudo.expediente),
     objeto: limpiarVacio(crudo.objeto),
     tipo: normalizarTipo(crudo.tipo_code),
+    subtipo: limpiarVacio(crudo.subtipo_code),
     procedimiento: normalizarProcedimiento(crudo.procedimiento_code),
     estado: ESTADOS[crudo.estado] || crudo.estado || null,
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(importeFinal),
     importe_iva: normalizarImporte(importeIvaFinal),
+    valor_estimado: normalizarImporte(crudo.importe_estimado),
+    cpv: limpiarVacio(crudo.cpv),
+    cpv_descripcion: limpiarVacio(crudo.cpv_descripcion) || (crudo.cpv ? (CPV_DIVISIONES[crudo.cpv.substring(0, 2)] || null) : null),
+    duracion_meses: crudo.duracion_meses != null ? (Number.isFinite(crudo.duracion_meses) ? crudo.duracion_meses : null) : null,
+    num_lotes: crudo.num_lotes || null,
     adjudicatario: limpiarVacio(crudo.adjudicatario),
     nif_adjudicatario: normalizarNIF(crudo.nif_adjudicatario),
     fecha_publicacion: normalizarFecha(crudo.fecha_actualizacion),
@@ -298,11 +355,17 @@ function transformarContratoTED(crudo, id) {
     expediente: limpiarVacio(crudo.expediente),
     objeto: limpiarVacio(crudo.objeto),
     tipo: tiposTED[crudo.tipo_code] || normalizarTipo(crudo.tipo_code) || 'otros',
+    subtipo: null,
     procedimiento: procsTED[crudo.procedimiento_code] || normalizarProcedimiento(crudo.procedimiento_code) || 'abierto',
     estado: ESTADOS[crudo.estado] || crudo.estado || null,
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(crudo.importe_sin_iva || crudo.importe_total),
     importe_iva: normalizarImporte(crudo.importe_total),
+    valor_estimado: null,
+    cpv: null, // TED usa CPV pero con formato diferente; se puede mapear en el futuro
+    cpv_descripcion: null,
+    duracion_meses: null,
+    num_lotes: null,
     adjudicatario: limpiarVacio(crudo.adjudicatario),
     nif_adjudicatario: null, // TED no proporciona NIF español
     fecha_publicacion: normalizarFecha(crudo.fecha_publicacion),
@@ -416,8 +479,12 @@ async function main() {
     con_procedimiento: todosLosContratos.filter(c => c.procedimiento).length,
     con_importe: todosLosContratos.filter(c => c.importe).length,
     con_adjudicatario: todosLosContratos.filter(c => c.adjudicatario).length,
+    con_nif: todosLosContratos.filter(c => c.nif_adjudicatario).length,
     con_fecha: todosLosContratos.filter(c => c.fecha_publicacion).length,
     con_url: todosLosContratos.filter(c => c.url_origen).length,
+    con_cpv: todosLosContratos.filter(c => c.cpv).length,
+    con_duracion: todosLosContratos.filter(c => c.duracion_meses).length,
+    con_valor_estimado: todosLosContratos.filter(c => c.valor_estimado).length,
   };
 
   console.log('\n   Completitud de campos:');
