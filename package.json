@@ -15,6 +15,7 @@
   "type": "module",
   "scripts": {
     "download": "node scripts/download.js",
+    "download:full": "node scripts/download.js --full",
     "download:ted": "node scripts/download-ted.js",
     "parse": "node scripts/parse.js",
     "parse:ted": "node scripts/parse-ted.js",

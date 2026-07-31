@@ -28,8 +28,16 @@ const TIMEOUT_MS = 120_000;
 /** Pausa entre descargas de páginas para no sobrecargar servidores (ms) */
 const DELAY_ENTRE_PAGINAS_MS = 3_000;
 
-/** Número máximo de páginas a descargar del feed Atom (seguridad anti-loop) */
-const MAX_PAGINAS = 50;
+/**
+ * Número máximo de páginas a descargar del feed Atom.
+ * - Modo normal (semanal): 50 páginas (~22.500 licitaciones)
+ * - Modo full (--full): 500 páginas (~225.000 licitaciones, toda la historia disponible)
+ *
+ * El feed tiene ~451 entries por página. Con 500 páginas cubrimos todo el histórico
+ * disponible en PLACSP (desde 2018 aprox).
+ */
+const MODO_FULL = process.argv.includes('--full');
+const MAX_PAGINAS = MODO_FULL ? 500 : 50;
 
 /** User-Agent identificativo del proyecto */
 const USER_AGENT = 'ContratosCAM/0.1 (https://github.com/albus-quinctus/ContratosCAM)';
@@ -149,7 +157,10 @@ async function main() {
   console.log('═'.repeat(60));
   console.log(`📡 Fuente: Plataforma de Contratación del Sector Público`);
   console.log(`📄 Feed: licitacionesPerfilesContratanteCompleto3 (Atom v3)`);
-  console.log(`📑 Máximo de páginas: ${MAX_PAGINAS}`);
+  console.log(`📑 Máximo de páginas: ${MAX_PAGINAS} (modo: ${MODO_FULL ? 'FULL — descarga histórica completa' : 'normal — últimas semanas'})`);
+  if (MODO_FULL) {
+    console.log(`⚠️  Modo FULL: esto puede tardar 30-60 minutos y descargar ~1-2 GB`);
+  }
   console.log('');
 
   // Crear directorio si no existe

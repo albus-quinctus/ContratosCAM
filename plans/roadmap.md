@@ -147,30 +147,30 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 
 ---
 
-### FASE 5b — Integración de Datos Históricos (Registro de Contratos PLACE)
-> Multiplicar el dataset con datos históricos desde 2008
+### FASE 5b — Ampliación del Dataset con Descarga Histórica y Acumulación Incremental ✅
+> Multiplicar el dataset acumulando datos semana a semana
 
-El Ministerio de Hacienda publica ficheros XML anuales del Registro de Contratos del Sector Público. Usan el mismo formato CODICE que ya parsea nuestro pipeline, lo que minimiza el esfuerzo de integración.
+**Investigación realizada (julio 2026):**
+- ❌ Los ficheros XML anuales del Registro de Contratos PLACE (Ministerio de Hacienda) **no están accesibles** — todas las URLs conocidas devuelven 404
+- ❌ La IGAE no publica los datos en formato descargable
+- ❌ datos.gob.es tiene el dataset registrado pero sin distribuciones (items vacío)
+- ✅ El feed Atom de PLACSP es la **única fuente accesible** con contratos individuales
 
-**Fuente:** https://www.hacienda.gob.es/es-ES/Areas%20Tematicas/Patrimonio%20del%20Estado/Contratacion/Paginas/Registro-de-Contratos.aspx
+**Estrategia implementada:**
+1. **Descarga ampliada** — `npm run download:full` descarga hasta 500 páginas del feed Atom (~225.000 licitaciones de toda España), cubriendo todo el histórico disponible en PLACSP
+2. **Acumulación incremental** — `transform.js` combina los datos nuevos con el JSON histórico existente, deduplicando por `expediente + organismo`. Cada ejecución semanal acumula contratos nuevos sin perder los anteriores
+3. **Deduplicación cruzada** — PLACSP ↔ TED ↔ histórico, priorizando datos más completos
 
-**¿Qué aporta?**
-- Datos históricos de contratos formalizados (2008–presente)
-- Contratos que no pasaron por el feed Atom de PLACSP (ya adjudicados antes de la digitalización)
-- Dato definitivo de lo que se pagó (no solo lo licitado)
-- Potencialmente +5.000–15.000 contratos de la CAM
-
-- [ ] Investigar y verificar las URLs de descarga de ficheros XML anuales del Registro PLACE
-- [ ] Confirmar que el formato es CODICE compatible con `fast-xml-parser` v5
-- [ ] Implementar descarga de ficheros anuales en `scripts/download.js` (nuevo bloque `downloadPLACE()`)
-- [ ] Implementar parser para datos PLACE en `scripts/parse.js` (reutilizar lógica CODICE existente)
-- [ ] Implementar filtrado por CAM y mapeo en `scripts/transform.js` (nuevo campo `fuente: "place_historico"`)
-- [ ] Implementar deduplicación cruzada PLACSP ↔ PLACE por `expediente` + `organismo`
-- [ ] Actualizar `scripts/validate.js` para aceptar la nueva fuente
-- [ ] Ejecutar pipeline completo y verificar integridad de datos combinados
+- [x] Investigar URLs de PLACE (Registro de Contratos del Ministerio de Hacienda) — 404, no accesible
+- [x] Investigar datos.gob.es — dataset vacío, solo referencia
+- [x] Investigar PLACSP feed Atom — feed rolling con paginación next, 451 entries/página
+- [x] Implementar modo `--full` en `download.js` (500 páginas vs 50 normal)
+- [x] Implementar acumulación incremental en `transform.js` (merge con histórico + deduplicación)
+- [x] Verificar que el pipeline completo funciona con acumulación (validación exitosa)
+- [ ] Ejecutar `npm run download:full` para la primera descarga masiva (30-60 min)
 - [ ] Evaluar si el volumen resultante requiere activar la migración a Turso (Fase 6)
 
-**Entregable:** Dataset ampliado con serie histórica completa de contratos de la CAM (2008–presente).
+**Entregable:** Pipeline con acumulación incremental que crece semana a semana. Primera descarga masiva pendiente de ejecutar.
 
 ---
 

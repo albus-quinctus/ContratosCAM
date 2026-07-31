@@ -427,10 +427,29 @@ async function main() {
     console.log(`     ${campo.padEnd(20)} ${bar} ${pct}% (${count})`);
   }
 
-  // Paso 3: Deduplicar (cruce entre fuentes)
-  console.log('\n🔍 Paso 3: Deduplicar (cruce PLACSP ↔ TED)...');
-  const contratosUnicos = deduplicar(todosLosContratos);
-  const duplicados = todosLosContratos.length - contratosUnicos.length;
+  // Paso 3: Acumular con datos históricos existentes
+  console.log('\n📚 Paso 3: Acumular con datos históricos...');
+  let contratosAcumulados = [...todosLosContratos];
+
+  if (fs.existsSync(OUTPUT_FILE)) {
+    try {
+      const historico = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+      if (Array.isArray(historico) && historico.length > 0) {
+        console.log(`   📂 Histórico existente: ${historico.length} contratos`);
+        contratosAcumulados = [...todosLosContratos, ...historico];
+        console.log(`   📊 Total antes de deduplicar: ${contratosAcumulados.length}`);
+      }
+    } catch (e) {
+      console.log(`   ⚠️  Error leyendo histórico (se ignora): ${e.message}`);
+    }
+  } else {
+    console.log('   📂 Sin histórico previo (primera ejecución)');
+  }
+
+  // Paso 4: Deduplicar (cruce entre fuentes + histórico)
+  console.log('\n🔍 Paso 4: Deduplicar (cruce PLACSP ↔ TED ↔ histórico)...');
+  const contratosUnicos = deduplicar(contratosAcumulados);
+  const duplicados = contratosAcumulados.length - contratosUnicos.length;
   console.log(`   ${duplicados} duplicados eliminados`);
   console.log(`   ${contratosUnicos.length} contratos únicos`);
 
@@ -444,8 +463,8 @@ async function main() {
     console.log(`     • ${fuente}: ${count}`);
   }
 
-  // Paso 4: Ordenar por fecha (más recientes primero)
-  console.log('\n📅 Paso 4: Ordenar por fecha...');
+  // Paso 5: Ordenar por fecha (más recientes primero)
+  console.log('\n📅 Paso 5: Ordenar por fecha...');
   contratosUnicos.sort((a, b) => {
     if (!a.fecha_publicacion && !b.fecha_publicacion) return 0;
     if (!a.fecha_publicacion) return 1;
