@@ -11,7 +11,7 @@
 | **Autor** | Albus Quinctus |
 | **Licencia** | MIT |
 | **URL objetivo** | `https://albus-quinctus.github.io/ContratosCAM` |
-| **Estado actual** | Fases 0, 1, 3 y 4 completadas — Web pública con ranking de adjudicatarios |
+| **Estado actual** | Fases 0, 1, 2, 3 y 4 completadas — Web pública con ranking de adjudicatarios + BD SQLite local |
 
 ---
 
@@ -78,19 +78,24 @@ Una **web pública, gratuita y sin registro** que:
 | ID | Requisito | Prioridad |
 |----|-----------|-----------|
 | F-01 | Descargar datos de PLACSP (feed Atom filtrado por CAM) | Alta |
-| F-02 | Descargar datos del Portal de Transparencia CAM (CSV contratos menores) | Alta |
-| F-03 | Descargar datos de Datos Abiertos CAM (CSV/JSON) | Media |
+| F-02 | ~~Descargar datos del Portal de Transparencia CAM (CSV contratos menores)~~ — No disponible | ~~Alta~~ N/A |
+| F-03 | ~~Descargar datos de Datos Abiertos CAM (CSV/JSON)~~ — Solo datos agregados | ~~Media~~ N/A |
 | F-04 | Parsear CSV a JSON intermedio | Alta |
 | F-05 | Parsear XML/Atom a JSON intermedio | Alta |
 | F-06 | Normalizar campos al esquema unificado | Alta |
 | F-07 | Limpiar importes (texto con comas → float) | Alta |
 | F-08 | Normalizar fechas a ISO 8601 | Alta |
 | F-09 | Normalizar nombres de organismos | Media |
-| F-10 | Deduplicar contratos por expediente + organismo | Alta |
+| F-10 | Deduplicar contratos por expediente + organismo (cruce entre fuentes) | Alta |
 | F-11 | Validar schema e integridad del JSON generado | Alta |
 | F-12 | Generar `contratos-normalizados.json` para el frontend | Alta |
 | F-13 | Importar datos a SQLite local para desarrollo | Media |
 | F-14 | Ejecutar pipeline automáticamente cada semana (GitHub Actions) | Alta |
+| F-15 | Descargar ficheros XML anuales del Registro de Contratos PLACE (histórico 2008–presente) | Alta |
+| F-16 | Parsear XML CODICE de PLACE y filtrar por CAM | Alta |
+| F-17 | Descargar datos de TED-UE vía API REST (contratos sobre umbrales europeos) | Media |
+| F-18 | Parsear JSON de TED y mapear al esquema normalizado | Media |
+| F-19 | Enriquecer contratos con datos TED: num_ofertas, criterios_adjudicacion | Media |
 
 ### 5.2 Frontend (Aplicación web)
 
@@ -161,17 +166,21 @@ Una **web pública, gratuita y sin registro** que:
   "fecha_adjudicacion": "2024-04-20",
   "fecha_formalizacion": "2024-05-01",
   "url_origen": "https://contrataciondelestado.es/...",
-  "fuente": "placsp"
+  "fuente": "placsp",
+  "num_ofertas": 5,
+  "criterios_adjudicacion": "precio: 60%, calidad: 40%"
 }
 ```
+
+> **Nota:** Los campos `num_ofertas` y `criterios_adjudicacion` son opcionales y solo se rellenan cuando el contrato se enriquece con datos de TED-UE (Fase 5c).
 
 ### Valores permitidos
 
 | Campo | Valores |
 |-------|---------|
-| `tipo` | `obras`, `servicios`, `suministros`, `administrativo_especial` |
-| `procedimiento` | `abierto`, `abierto_simplificado`, `negociado`, `menor` |
-| `fuente` | `placsp`, `cam_transparencia`, `cam_datos_abiertos` |
+| `tipo` | `obras`, `servicios`, `suministros`, `administrativo_especial`, `privado`, `otros` |
+| `procedimiento` | `abierto`, `abierto_simplificado`, `negociado`, `negociado_sin_publicidad`, `restringido`, `menor` |
+| `fuente` | `placsp`, `place_historico`, `ted_ue` |
 
 ---
 
@@ -300,17 +309,20 @@ Una **web pública, gratuita y sin registro** que:
 
 ## 10. Fuentes de Datos
 
-| Fuente | Tipo de datos | Formato | Frecuencia actualización |
-|--------|--------------|---------|--------------------------|
-| **PLACSP** | Contratos > umbral (todos los procedimientos) | Atom/XML (CODICE) | Diaria |
-| **Portal Transparencia CAM** | Contratos menores (< 15.000€ servicios, < 40.000€ obras) | CSV | Trimestral |
-| **Datos Abiertos CAM** | Datasets complementarios | CSV / JSON | Variable |
+| Fuente | Tipo de datos | Formato | Frecuencia actualización | Estado |
+|--------|--------------|---------|--------------------------|--------|
+| **PLACSP** (feed Atom) | Licitaciones recientes de todos los procedimientos | Atom/XML (CODICE) | Diaria | ✅ Activo |
+| **PLACE** (Registro de Contratos) | Contratos formalizados históricos (2008–presente) | XML (CODICE) | Anual | 🔜 Fase 5b |
+| **TED-UE** (API v3) | Contratos sobre umbrales europeos con datos enriquecidos | JSON (REST API) | Diaria | 🔜 Fase 5c |
+| ~~Portal Transparencia CAM~~ | ~~Contratos menores~~ | ~~CSV~~ | — | ❌ No disponible |
+| ~~Datos Abiertos CAM~~ | ~~Datasets complementarios~~ | ~~CSV/JSON~~ | — | ❌ Solo agregados |
 
 ### Cobertura esperada
 
-- **Contratos menores:** Miles por trimestre (la mayoría del volumen).
-- **Contratos mayores (PLACSP):** Cientos por mes (los de mayor importe).
-- **Rango temporal objetivo:** Últimos 2-3 años disponibles.
+- **PLACSP (actual):** ~1.400 contratos recientes (feed rolling de últimas semanas).
+- **PLACE histórico (Fase 5b):** +5.000–15.000 contratos formalizados desde 2008.
+- **TED-UE (Fase 5c):** ~200 contratos/año sobre umbrales europeos con datos enriquecidos.
+- **Rango temporal objetivo:** 2008–presente (con PLACE histórico).
 
 ---
 
@@ -356,10 +368,12 @@ Una **web pública, gratuita y sin registro** que:
 |------|-----------|------------------------|
 | **0** ✅ | Infraestructura y documentación | Repo público, 0 vulnerabilidades, estructura completa |
 | **1** ✅ | Pipeline ETL funcional | `contratos-normalizados.json` con 1.393 contratos reales y limpios |
-| **2** | SQLite local | BD consultable con datos importados |
+| **2** ✅ | SQLite local | BD consultable con 1.799 contratos, 6 índices + tabla de búsqueda de texto |
 | **3** ✅ | Web pública (MVP) | URL accesible con datos reales, búsqueda, filtros y diseño responsive |
 | **4** ✅ | Visualizaciones + Ranking | 4 gráficas + página ranking adjudicatarios con Chart.js, filtros y exportación CSV |
 | **5** | Automatización | Actualización semanal sin intervención manual |
+| **5b** | PLACE histórico | Dataset ampliado con serie histórica 2008–presente (+5.000–15.000 contratos) |
+| **5c** | TED-UE | Contratos grandes enriquecidos con datos europeos |
 | **6** | Turso | Datos históricos completos, búsqueda full-text |
 | **7** | Pulido y difusión | Dominio propio, artículo publicado, contacto con medios |
 
@@ -383,8 +397,9 @@ Una **web pública, gratuita y sin registro** que:
 |-------------|--------|-------------|
 | GitHub Pages | Bajo (servicio estable y gratuito) | Netlify, Cloudflare Pages |
 | GitHub Actions | Bajo (2.000 min/mes gratis) | GitLab CI, cron local |
-| PLACSP (fuente de datos) | Medio (puede cambiar URLs) | Scraping directo del portal |
-| Portal Transparencia CAM | Medio (actualización irregular) | Solicitud formal de datos |
+| PLACSP (fuente de datos — feed Atom) | Medio (puede cambiar URLs) | Ficheros XML anuales de PLACE |
+| PLACE (Registro de Contratos — XML anuales) | Bajo (ficheros estáticos publicados por Hacienda) | PLACSP como fallback |
+| TED-UE (API v3) | Bajo (API pública de la UE, estable) | Descarga bulk de TED |
 | Chart.js CDN (jsdelivr) | Bajo (CDN redundante) | Servir localmente |
 
 ---
@@ -394,6 +409,9 @@ Una **web pública, gratuita y sin registro** que:
 | Término | Definición |
 |---------|-----------|
 | **PLACSP** | Plataforma de Contratación del Sector Público — portal nacional de licitaciones |
+| **PLACE** | Registro de Contratos del Sector Público — ficheros XML históricos publicados por el Ministerio de Hacienda |
+| **TED** | Tenders Electronic Daily — diario oficial de licitaciones de la Unión Europea |
+| **NUTS** | Nomenclatura de Unidades Territoriales Estadísticas — ES3 = Comunidad de Madrid |
 | **CAM** | Comunidad Autónoma de Madrid |
 | **ETL** | Extract, Transform, Load — proceso de obtención y limpieza de datos |
 | **SRI** | Subresource Integrity — verificación de integridad de recursos externos |
@@ -401,3 +419,4 @@ Una **web pública, gratuita y sin registro** que:
 | **Contrato menor** | Contrato < 15.000€ (servicios) o < 40.000€ (obras) que no requiere licitación pública |
 | **CODICE** | Componentes y Documentos Interoperables de Comercio Electrónico — estándar XML de PLACSP |
 | **Turso** | Servicio de SQLite gestionado en la nube, sin pausas por inactividad |
+| **Umbral europeo** | Importe a partir del cual un contrato debe publicarse en TED (~221.000€ servicios, ~5,5M€ obras) |

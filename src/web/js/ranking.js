@@ -19,6 +19,10 @@ const CONFIG = Object.freeze({
     './data/processed/contratos-normalizados.json',
     '/data/processed/contratos-normalizados.json',
   ],
+  META_URLS: [
+    './data/processed/meta.json',
+    '/data/processed/meta.json',
+  ],
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
   TOP_CHART: 10,
@@ -137,6 +141,31 @@ async function cargarDatos() {
   }
   console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
   return generarDatosEjemplo();
+}
+
+async function cargarMeta() {
+  for (const url of CONFIG.META_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      return await res.json();
+    } catch (_) {
+      // Intentar la siguiente URL
+    }
+  }
+  return null;
+}
+
+function mostrarFechaActualizacion(meta) {
+  const el = document.getElementById('data-update-date');
+  if (!el) return;
+  if (!meta || !meta.generado_en) {
+    el.textContent = 'Fecha de actualización desconocida';
+    return;
+  }
+  const fecha = new Date(meta.generado_en);
+  const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
 }
 
 function generarDatosEjemplo() {
@@ -650,10 +679,11 @@ function inicializarFiltros() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos y construir ranking agregado
-  const contratos    = await cargarDatos();
-  estado.ranking     = construirRanking(contratos);
+  // 1. Cargar datos, ranking y metadatos en paralelo
+  const [contratos, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  estado.ranking         = construirRanking(contratos);
   estado.rankingFiltrado = [...estado.ranking];
+  mostrarFechaActualizacion(meta);
 
   // 2. Inicializar filtros con valores únicos del ranking
   inicializarFiltros();
@@ -704,16 +734,33 @@ async function init() {
     }
   });
 
-  // 8. Modal
+  // 8. Modal de empresa
   document.getElementById('modal-close').addEventListener('click', cerrarModal);
   document.getElementById('modal-overlay').addEventListener('click', e => {
     if (e.target === e.currentTarget) cerrarModal();
   });
+
+  // 9. Modal "Sobre los datos"
+  const btnSobre = document.getElementById('btn-sobre-datos');
+  const overlayS = document.getElementById('modal-sobre-overlay');
+  const closeS   = document.getElementById('modal-sobre-close');
+  if (btnSobre && overlayS && closeS) {
+    const abrirSobre  = () => { overlayS.hidden = false; document.body.style.overflow = 'hidden'; closeS.focus(); };
+    const cerrarSobre = () => { overlayS.hidden = true;  document.body.style.overflow = ''; };
+    btnSobre.addEventListener('click', abrirSobre);
+    closeS.addEventListener('click', cerrarSobre);
+    overlayS.addEventListener('click', e => { if (e.target === e.currentTarget) cerrarSobre(); });
+  }
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') cerrarModal();
+    if (e.key === 'Escape') {
+      cerrarModal();
+      const overlayS2 = document.getElementById('modal-sobre-overlay');
+      if (overlayS2 && !overlayS2.hidden) { overlayS2.hidden = true; document.body.style.overflow = ''; }
+    }
   });
 
-  // 9. Toggle de métrica en la gráfica
+  // 10. Toggle de métrica en la gráfica
   document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));

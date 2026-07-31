@@ -24,7 +24,9 @@ Inspirado en [contratosdecantabria.es](https://contratosdecantabria.es) de Jaime
 
 ```mermaid
 graph TD
-    A["Fuentes de Datos Oficiales\nPLACSP / Portal Transparencia CAM\nDatos Abiertos CAM"] -->|Descarga automática\nCSV / XML / Atom| B["Pipeline ETL\nscripts/"]
+    A1["PLACSP\nFeed Atom CODICE\n✅ Activo"] -->|XML paginado| B["Pipeline ETL\nscripts/"]
+    A2["PLACE Registro\nXML anuales CODICE\n🔜 Fase 5b"] -->|XML por año| B
+    A3["TED-UE\nAPI REST v3 JSON\n🔜 Fase 5c"] -->|JSON paginado| B
 
     B -->|Datos crudos| C["data/raw/\nArchivos originales con fecha"]
     C -->|Parseo y limpieza| D["data/processed/\nJSON normalizado"]
@@ -38,12 +40,14 @@ graph TD
     G --> H1["Buscador de contratos"]
     G --> H2["Filtros por organismo\nimporte y fecha"]
     G --> H3["Fichas de contrato\ncon enlace a fuente oficial"]
-    G --> H4["Estadísticas y gráficas (4 Chart.js)"]
+    G --> H4["Estadísticas y gráficas - 4 Chart.js"]
     G --> H5["Exportar resultados CSV"]
     G --> H6["Ranking de adjudicatarios\ncon filtros, gráfica y modal"]
 
     I["GitHub Actions\nCron Job semanal"] -->|Actualización periódica| B
     I -->|Deploy automático| E
+
+    B -->|Deduplicación cruzada\nexpediente + organismo| D
 ```
 
 ---
@@ -216,22 +220,25 @@ sequenceDiagram
 
 ```sql
 CREATE TABLE contratos (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    expediente          TEXT,
-    objeto              TEXT NOT NULL,
-    tipo                TEXT,           -- obras | servicios | suministros | administrativo_especial
-    procedimiento       TEXT,           -- abierto | abierto_simplificado | negociado | menor
-    organismo           TEXT NOT NULL,
-    importe             REAL,           -- Sin IVA, en euros
-    importe_iva         REAL,           -- Con IVA, en euros
-    adjudicatario       TEXT,
-    nif_adjudicatario   TEXT,
-    fecha_publicacion   TEXT,           -- ISO 8601: YYYY-MM-DD
-    fecha_adjudicacion  TEXT,
-    fecha_formalizacion TEXT,
-    url_origen          TEXT,           -- Enlace al anuncio oficial
-    fuente              TEXT,           -- placsp | cam_transparencia | cam_datos_abiertos
-    created_at          TEXT DEFAULT CURRENT_TIMESTAMP
+    id                      INTEGER PRIMARY KEY AUTOINCREMENT,
+    expediente              TEXT,
+    objeto                  TEXT NOT NULL,
+    tipo                    TEXT,           -- obras | servicios | suministros | administrativo_especial | privado | otros
+    procedimiento           TEXT,           -- abierto | abierto_simplificado | negociado | negociado_sin_publicidad | restringido | menor
+    organismo               TEXT NOT NULL,
+    importe                 REAL,           -- Sin IVA, en euros
+    importe_iva             REAL,           -- Con IVA, en euros
+    adjudicatario           TEXT,
+    nif_adjudicatario       TEXT,
+    fecha_publicacion       TEXT,           -- ISO 8601: YYYY-MM-DD
+    fecha_adjudicacion      TEXT,
+    fecha_formalizacion     TEXT,
+    url_origen              TEXT,           -- Enlace al anuncio oficial
+    fuente                  TEXT,           -- placsp | place_historico | ted_ue
+    -- Campos enriquecidos (TED-UE, Fase 5c)
+    num_ofertas             INTEGER,        -- Número de ofertas recibidas
+    criterios_adjudicacion  TEXT,           -- Criterios y ponderaciones (texto libre)
+    created_at              TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Índices para búsqueda rápida
@@ -240,6 +247,7 @@ CREATE INDEX idx_tipo ON contratos(tipo);
 CREATE INDEX idx_fecha ON contratos(fecha_publicacion);
 CREATE INDEX idx_importe ON contratos(importe);
 CREATE INDEX idx_adjudicatario ON contratos(adjudicatario);
+CREATE INDEX idx_fuente ON contratos(fuente);
 
 -- Búsqueda full-text (SQLite FTS5)
 CREATE VIRTUAL TABLE contratos_fts USING fts5(
@@ -276,6 +284,25 @@ Los datos de fuentes públicas tienen problemas conocidos que el pipeline debe r
 | NIF con guiones o espacios | Eliminar caracteres no alfanuméricos |
 | Campos vacíos como string vacío | Convertir a `null` |
 | Duplicados entre fuentes | Deduplicar por `expediente` + `organismo` |
+| Mismo contrato en PLACSP, PLACE y TED | Merge inteligente: PLACE > PLACSP para datos base; TED enriquece con campos exclusivos |
+
+### Estrategia de deduplicación multi-fuente
+
+```mermaid
+flowchart TD
+    A[Contratos PLACSP] --> D[Merge por expediente + organismo]
+    B[Contratos PLACE] --> D
+    C[Contratos TED] --> D
+
+    D --> E{Existe duplicado?}
+    E -->|No| F[Insertar como nuevo]
+    E -->|Sí| G{Qué fuentes coinciden?}
+
+    G -->|PLACE + PLACSP| H[Priorizar PLACE - dato formalizado definitivo]
+    G -->|TED + PLACSP| I[Mantener PLACSP + enriquecer con campos TED]
+    G -->|PLACE + TED| J[Mantener PLACE + enriquecer con campos TED]
+    G -->|Las tres| K[PLACE base + campos TED exclusivos]
+```
 
 ### Seguridad del frontend
 

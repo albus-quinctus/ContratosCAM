@@ -8,9 +8,13 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Ranking de Adjudicatarios — ContratosCAM" />
-  <meta property="og:description" content="¿Qué empresas se llevan más dinero público de la Comunidad de Madrid?" />
+  <meta property="og:description" content="¿Qué empresas se llevan más dinero público de la Comunidad de Madrid? Ranking ordenado por importe total, número de contratos e importe medio." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://albus-quinctus.github.io/ContratosCAM/ranking.html" />
+  <meta property="og:site_name" content="ContratosCAM" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ranking de Adjudicatarios — ContratosCAM" />
+  <meta name="twitter:description" content="¿Qué empresas se llevan más dinero público de la Comunidad de Madrid? Ranking con filtros, gráfica y exportación CSV." />
 
   <!-- Seguridad -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
@@ -44,6 +48,7 @@
       <nav class="header-nav" aria-label="Navegación principal">
         <a href="index.html" class="nav-link nav-link--page">Contratos</a>
         <a href="ranking.html" class="nav-link active">🏆 Ranking</a>
+        <button id="btn-sobre-datos" class="nav-link nav-link--btn" type="button">ℹ️ Sobre los datos</button>
         <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">
           GitHub ↗
         </a>
@@ -52,6 +57,12 @@
   </header>
 
   <main class="container">
+
+    <!-- ══════════════════════════════════════════════════════ BANNER ACTUALIZACIÓN -->
+    <div class="update-banner" id="update-banner" aria-live="polite">
+      <span class="update-banner-icon" aria-hidden="true">🔄</span>
+      <span id="data-update-date">Cargando fecha de actualización…</span>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════ CABECERA DE SECCIÓN -->
     <section class="ranking-hero" aria-label="Introducción al ranking">
@@ -233,6 +244,56 @@
       <!-- El texto de este h2 se actualiza dinámicamente en abrirModal() con el nombre de la empresa -->
       <h2 id="modal-heading" class="sr-only"></h2>
       <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Modal "Sobre los datos" -->
+  <div class="modal-overlay" id="modal-sobre-overlay" hidden>
+    <div class="modal modal--sobre" role="dialog" aria-modal="true" aria-labelledby="modal-sobre-heading">
+      <button class="modal-close" id="modal-sobre-close" type="button" aria-label="Cerrar">✕</button>
+      <h2 id="modal-sobre-heading" class="modal-sobre-title">ℹ️ Sobre los datos</h2>
+      <div class="modal-sobre-content">
+        <h3>¿De dónde vienen los datos?</h3>
+        <p>
+          Los contratos provienen de la
+          <a href="https://contrataciondelestado.es" target="_blank" rel="noopener noreferrer">Plataforma de Contratación del Sector Público (PLACSP)</a>,
+          el portal oficial del Ministerio de Hacienda donde todos los organismos públicos están obligados a publicar sus licitaciones
+          desde la entrada en vigor de la <strong>Ley 9/2017 de Contratos del Sector Público</strong>.
+        </p>
+        <h3>¿Cómo se procesan?</h3>
+        <p>
+          Un pipeline automatizado descarga semanalmente el feed Atom de PLACSP, filtra los contratos de la
+          <strong>Comunidad de Madrid</strong>, normaliza los campos (fechas, importes, nombres de organismos),
+          elimina duplicados y genera el archivo JSON que carga esta web. Todo el código es público y auditable en
+          <a href="https://github.com/albus-quinctus/ContratosCAM" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        </p>
+        <h3>¿Qué contratos incluye?</h3>
+        <ul>
+          <li>Contratos publicados en PLACSP por organismos de la Comunidad de Madrid.</li>
+          <li>Todos los procedimientos: abierto, negociado, restringido, menor, etc.</li>
+          <li>Incluye licitaciones en curso (sin adjudicatario aún) y contratos adjudicados.</li>
+          <li><strong>No incluye</strong> contratos menores no publicados en PLACSP (por debajo de los umbrales de publicación).</li>
+        </ul>
+        <h3>¿Con qué frecuencia se actualiza?</h3>
+        <p>
+          Los datos se actualizan automáticamente cada <strong>lunes</strong> mediante GitHub Actions.
+          La fecha de la última actualización aparece en la cabecera de la página.
+        </p>
+        <h3>Marco legal</h3>
+        <p>
+          Los datos son de dominio público. Su reutilización está amparada por la
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener noreferrer">Ley 37/2007</a>
+          sobre reutilización de la información del sector público y la
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887" target="_blank" rel="noopener noreferrer">Ley 19/2013</a>
+          de transparencia, acceso a la información pública y buen gobierno.
+        </p>
+        <h3>¿Encontraste un error?</h3>
+        <p>
+          Abre un <a href="https://github.com/albus-quinctus/ContratosCAM/issues" target="_blank" rel="noopener noreferrer">issue en GitHub</a>
+          o contacta con el autor. Los datos se muestran tal como los publica la fuente oficial; los errores en los datos originales
+          no pueden corregirse desde este proyecto.
+        </p>
+      </div>
     </div>
   </div>
 

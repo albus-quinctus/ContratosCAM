@@ -3,6 +3,7 @@
  *
  * Valida la integridad y schema del JSON normalizado generado por el pipeline.
  * Verifica campos requeridos, tipos de datos, formatos y completitud.
+ * Soporta múltiples fuentes: PLACSP, TED-UE, PLACE histórico.
  *
  * Entrada: data/processed/contratos-normalizados.json
  * Salida:  Reporte en consola (exit code 0 = OK, 1 = errores)
@@ -23,12 +24,13 @@ const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizado
 
 const TIPOS_VALIDOS = ['obras', 'servicios', 'suministros', 'administrativo_especial', 'privado', 'concesion_obras', 'concesion_servicios', 'patrimonial', 'otros'];
 const PROCEDIMIENTOS_VALIDOS = ['abierto', 'restringido', 'negociado', 'dialogo_competitivo', 'asociacion_innovacion', 'abierto_simplificado', 'basado_acuerdo_marco', 'menor', 'negociado_sin_publicidad', 'abierto_simplificado_sumario'];
-const FUENTES_VALIDAS = ['placsp', 'cam_transparencia', 'cam_datos_abiertos'];
+const FUENTES_VALIDAS = ['placsp', 'ted_ue', 'place_historico', 'cam_transparencia', 'cam_datos_abiertos'];
 const ESTADOS_VALIDOS = ['publicado', 'en_evaluacion', 'adjudicado', 'resuelto', 'anulado', 'pre_adjudicacion'];
 
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const URL_REGEX = /^https?:\/\/.+/;
 const NIF_REGEX = /^[A-Z0-9]{8,10}$/;
+const TED_PUB_REGEX = /^\d+-\d{4}$/; // Formato: 239313-2016
 
 /** Umbral de tamaño para advertir sobre migración a Turso (bytes) */
 const UMBRAL_TAMANO_MB = 20;
@@ -51,7 +53,8 @@ function validarContrato(contrato, index) {
   if (!contrato.objeto) {
     errores.push(`${prefix} Campo 'objeto' es requerido`);
   }
-  if (!contrato.organismo) {
+  // Organismo es requerido para PLACSP, advertencia para fuentes complementarias
+  if (!contrato.organismo && contrato.fuente !== 'ted_ue') {
     errores.push(`${prefix} Campo 'organismo' es requerido`);
   }
 
@@ -114,6 +117,30 @@ function validarContrato(contrato, index) {
     if (contrato.importe_iva < contrato.importe * 0.9) { // Margen del 10% por redondeos
       errores.push(`${prefix} 'importe_iva' (${contrato.importe_iva}) es menor que 'importe' (${contrato.importe})`);
     }
+  }
+
+  // ─── Campos enriquecidos (TED) ──────────────────────────────────────────
+  // num_ofertas: debe ser entero positivo si existe
+  if (contrato.num_ofertas != null) {
+    if (typeof contrato.num_ofertas !== 'number' || !Number.isInteger(contrato.num_ofertas)) {
+      errores.push(`${prefix} 'num_ofertas' debe ser entero, es ${typeof contrato.num_ofertas}: ${contrato.num_ofertas}`);
+    } else if (contrato.num_ofertas < 1) {
+      errores.push(`${prefix} 'num_ofertas' debe ser >= 1, es ${contrato.num_ofertas}`);
+    }
+  }
+
+  // ted_publication_number: formato NNNNNN-YYYY
+  if (contrato.ted_publication_number != null && !TED_PUB_REGEX.test(contrato.ted_publication_number)) {
+    errores.push(`${prefix} 'ted_publication_number' formato inválido: "${contrato.ted_publication_number}" (esperado: NNNNNN-YYYY)`);
+  }
+
+  // Coherencia fuente ↔ campos TED
+  if (contrato.fuente === 'ted_ue' && !contrato.ted_publication_number) {
+    errores.push(`${prefix} Fuente 'ted_ue' pero falta 'ted_publication_number'`);
+  }
+  if (contrato.fuente !== 'ted_ue' && contrato.ted_publication_number) {
+    // Solo advertencia: puede ser un contrato PLACSP enriquecido con TED
+    // No es un error bloqueante
   }
 
   return errores;
@@ -182,7 +209,12 @@ async function main() {
 
   // Calcular completitud
   console.log('\n📊 Completitud de campos:');
-  const campos = ['expediente', 'objeto', 'tipo', 'procedimiento', 'organismo', 'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario', 'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente'];
+  const campos = [
+    'expediente', 'objeto', 'tipo', 'procedimiento', 'organismo',
+    'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
+    'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente',
+    'num_ofertas', 'ted_publication_number',
+  ];
 
   const completitud = {};
   for (const campo of campos) {
@@ -191,7 +223,19 @@ async function main() {
     completitud[campo] = { count, pct: parseFloat(pct) };
     const bar = '█'.repeat(Math.round(pct / 5)) + '░'.repeat(20 - Math.round(pct / 5));
     const icon = pct >= 90 ? '✅' : pct >= 50 ? '⚠️' : '❌';
-    console.log(`  ${icon} ${campo.padEnd(22)} ${bar} ${pct}% (${count}/${datos.length})`);
+    console.log(`  ${icon} ${campo.padEnd(24)} ${bar} ${pct}% (${count}/${datos.length})`);
+  }
+
+  // Estadísticas por fuente
+  console.log('\n🗂️  Distribución por fuente:');
+  const porFuente = {};
+  datos.forEach(c => {
+    const f = c.fuente || '(sin fuente)';
+    porFuente[f] = (porFuente[f] || 0) + 1;
+  });
+  for (const [fuente, count] of Object.entries(porFuente).sort((a, b) => b[1] - a[1])) {
+    const pct = ((count / datos.length) * 100).toFixed(1);
+    console.log(`  • ${fuente.padEnd(20)} ${count} contratos (${pct}%)`);
   }
 
   // Verificar IDs únicos

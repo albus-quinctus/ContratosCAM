@@ -129,6 +129,14 @@ a:hover { text-decoration: underline; }
 
 .nav-link--github { border: 1px solid rgba(255,255,255,.3); }
 
+/* Botón de nav con apariencia de enlace (para <button> en la nav) */
+.nav-link--btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
 /* ── Estadísticas rápidas ────────────────────────────────────────────────── */
 .stats-bar {
   display: grid;
@@ -1110,4 +1118,72 @@ a:hover { text-decoration: underline; }
      y dejar solo posición, empresa y botón */
   .ranking-table .col-importe-total { display: none; }
   .ranking-hero-title               { font-size: 1rem; }
+}
+
+/* ── Banner de fecha de actualización ───────────────────────────────────── */
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .45rem 1rem;
+  background: rgba(192, 57, 43, .07);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: .82rem;
+  color: var(--color-text-muted);
+  margin: 1rem 0 .5rem;
+}
+
+.update-banner-icon { font-size: .9rem; }
+
+/* ── Modal "Sobre los datos" ─────────────────────────────────────────────── */
+.modal--sobre {
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+}
+
+.modal-sobre-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin-bottom: 1.5rem;
+  padding-bottom: .75rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.modal-sobre-content h3 {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin: 1.25rem 0 .4rem;
+}
+
+.modal-sobre-content h3:first-child { margin-top: 0; }
+
+.modal-sobre-content p,
+.modal-sobre-content li {
+  font-size: .9rem;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.modal-sobre-content ul {
+  padding-left: 1.4rem;
+  margin: .4rem 0;
+}
+
+.modal-sobre-content li { margin-bottom: .3rem; }
+
+.modal-sobre-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.modal-sobre-content a:hover { color: var(--color-primary-dark); }
+
+@media (max-width: 600px) {
+  .modal--sobre { padding: 1.5rem 1.25rem; }
+  .update-banner { font-size: .78rem; }
 }

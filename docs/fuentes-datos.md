@@ -125,6 +125,118 @@ https://datos.comunidad.madrid/dataset/{UUID_DATASET}/resource/{UUID_RECURSO}/do
 
 ---
 
+## Fuente Secundaria: Registro de Contratos del Sector Público (PLACE)
+
+**URL:** https://www.hacienda.gob.es/es-ES/Areas%20Tematicas/Patrimonio%20del%20Estado/Contratacion/Paginas/Registro-de-Contratos.aspx
+**Mantenida por:** Ministerio de Hacienda — Intervención General de la Administración del Estado (IGAE)
+
+El Registro de Contratos del Sector Público publica ficheros XML anuales con todos los contratos formalizados por las administraciones públicas españolas. A diferencia del feed Atom de PLACSP (que muestra licitaciones en curso), estos ficheros contienen **contratos ya formalizados** — es decir, el dato definitivo de lo que se adjudicó y pagó.
+
+### ¿Qué aporta respecto a PLACSP?
+
+| Aspecto | PLACSP (feed Atom) | PLACE (Registro) |
+|---------|-------------------|-----------------|
+| Tipo de dato | Licitaciones en curso y recientes | Contratos formalizados |
+| Cobertura temporal | Últimas semanas (feed rolling) | 2008–presente |
+| Formato | Atom/XML CODICE | XML CODICE |
+| Actualización | Diaria | Anual (ficheros por año) |
+| Filtrado | Requiere filtrar por CAM | Requiere filtrar por CAM |
+
+### Formato de los datos
+
+Los ficheros XML usan el mismo estándar **CODICE** que el feed Atom de PLACSP. Esto significa que el parser existente (`scripts/parse.js`) puede reutilizarse con mínimas adaptaciones.
+
+**Campos adicionales disponibles en PLACE:**
+- Fecha de formalización del contrato
+- Importe de adjudicación definitivo (vs. presupuesto de licitación)
+- Duración del contrato
+- Modificaciones contractuales
+
+### Cómo descargar datos
+
+```bash
+# Los ficheros se publican como XML anuales en la web de Hacienda
+# URL patrón (verificar anualmente):
+https://www.hacienda.gob.es/.../contratos_2024.xml
+https://www.hacienda.gob.es/.../contratos_2023.xml
+# etc.
+```
+
+> ⚠️ **Nota:** Las URLs exactas deben verificarse en la web de Hacienda. Los ficheros son estáticos y no cambian una vez publicados.
+
+### Estado actual (pendiente de verificación)
+
+🔜 **Fase 5b** — Pendiente de investigar las URLs exactas de descarga y confirmar la estructura XML.
+
+---
+
+## Fuente Terciaria: TED — Tenders Electronic Daily (UE)
+
+**URL:** https://ted.europa.eu
+**API:** https://ted.europa.eu/api/v3.0/notices/search
+**Documentación:** https://docs.ted.europa.eu
+**Mantenida por:** Oficina de Publicaciones de la Unión Europea
+
+Los contratos que superan los **umbrales europeos** se publican obligatoriamente en el Diario Oficial de la UE a través de TED. Para la Comunidad de Madrid, esto incluye:
+- Contratos de servicios > ~221.000€
+- Contratos de obras > ~5.538.000€
+- Contratos de suministros > ~221.000€
+
+### ¿Qué aporta respecto a PLACSP?
+
+TED no sustituye a PLACSP sino que lo **enriquece** con datos adicionales:
+
+| Campo TED | Descripción | Disponible en PLACSP |
+|-----------|-------------|---------------------|
+| `num_ofertas` | Número de ofertas recibidas | ❌ No |
+| `criterios_adjudicacion` | Criterios y ponderaciones | ❌ No (solo código de procedimiento) |
+| `subcontratacion` | Porcentaje subcontratado | ❌ No |
+| `ofertas_rechazadas` | Número de ofertas excluidas | ❌ No |
+| `pais_adjudicatario` | País de la empresa ganadora | ❌ No |
+
+### API REST v3
+
+La API de TED es pública, gratuita y no requiere autenticación para búsquedas básicas.
+
+```bash
+# Buscar contratos de la Comunidad de Madrid (NUTS ES3)
+curl -s "https://ted.europa.eu/api/v3.0/notices/search?q=buyer-country%3DESP%20AND%20buyer-nuts-code%3DES3&fields=BT-01-notice,BT-21-Procedure,BT-142-LotResult,BT-27-Procedure&limit=100&page=1"
+```
+
+**Parámetros clave:**
+- `buyer-country=ESP` — País del comprador: España
+- `buyer-nuts-code=ES3` — Código NUTS: Comunidad de Madrid
+- `fields` — Campos a devolver (Business Terms del eForms standard)
+- `limit` / `page` — Paginación
+
+**Formato de respuesta:** JSON nativo (no XML). Cada notice contiene los Business Terms (BT) del estándar eForms.
+
+### Campos relevantes del estándar eForms
+
+| Business Term | Campo | Descripción |
+|--------------|-------|-------------|
+| BT-01 | Procedure Legal Basis | Base legal del procedimiento |
+| BT-21 | Procedure Title | Título/objeto del contrato |
+| BT-27 | Estimated Value | Valor estimado |
+| BT-142 | Winner | Adjudicatario |
+| BT-144 | Not Awarded Reason | Motivo de no adjudicación |
+| BT-156 | Group Leader | Empresa líder en UTE |
+| BT-171 | Tender Rank | Posición de la oferta |
+| BT-709 | Subcontracting Value | Valor subcontratado |
+| BT-712 | Buyer Review Complaints | Recursos presentados |
+
+### Límites de la API
+
+- **Rate limit:** No documentado explícitamente, pero se recomienda max 1 req/segundo
+- **Paginación:** Máximo 100 resultados por página
+- **Sin autenticación** para búsquedas (se requiere API key solo para notificaciones push)
+
+### Estado actual (pendiente de verificación)
+
+🔜 **Fase 5c** — Pendiente de verificar la respuesta real de la API con filtros de CAM y mapear los campos al esquema normalizado.
+
+---
+
 ## Fuente de Verificación: BOCAM
 
 **URL:** https://www.bocm.es
@@ -142,23 +254,30 @@ No se usa como fuente primaria del pipeline por la dificultad de parsear PDFs, p
 ## Estrategia de Descarga del Pipeline
 
 ```
-Prioridad 1: PLACSP (feed Atom)
-└── Licitaciones y adjudicaciones de todos los organismos CAM
+Prioridad 1: PLACSP (feed Atom) ✅ ACTIVO
+└── Licitaciones recientes de todos los organismos CAM
 └── Actualización: diaria (el feed se actualiza continuamente)
 └── Automatizado en scripts/download.js
 
-Prioridad 2: Portal Transparencia CAM (CSV)
-└── Contratos menores y datos específicos de la CAM
-└── Actualización: mensual o trimestral
-└── Automatizado en scripts/download.js (verificar URL periódicamente)
+Prioridad 2: PLACE — Registro de Contratos (XML anuales) 🔜 FASE 5b
+└── Contratos formalizados históricos (2008–presente)
+└── Actualización: anual (ficheros estáticos)
+└── Mismo formato CODICE que PLACSP
 
-Prioridad 3: Datos Abiertos CAM (CSV)
-└── Datasets históricos o temáticos específicos
-└── Incorporar manualmente cuando se identifiquen datasets relevantes
+Prioridad 3: TED-UE (API REST v3) 🔜 FASE 5c
+└── Contratos sobre umbrales europeos con datos enriquecidos
+└── Actualización: diaria (API en tiempo real)
+└── Formato JSON nativo
+
+DESCARTADAS:
+❌ Portal Transparencia CAM — No tiene datos descargables
+❌ Datos Abiertos CAM — Solo datos estadísticos agregados
+❌ BOCAM — Requiere scraping de PDFs (futura consideración)
 
 Deduplicación:
 └── Usar NumExpediente + OrganoContratacion como clave de unión entre fuentes
-└── En caso de conflicto, PLACSP tiene prioridad sobre las demás fuentes
+└── Prioridad de datos: PLACE > PLACSP > TED (para campos comunes)
+└── TED enriquece con campos exclusivos (num_ofertas, criterios) sin sobreescribir
 ```
 
 ---

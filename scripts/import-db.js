@@ -21,6 +21,7 @@ const PROCESSED_DIR = path.join(__dirname, '../data/processed');
 const DB_DIR = path.join(__dirname, '../data/db');
 const DB_PATH = path.join(DB_DIR, 'contratos.db');
 const JSON_PATH = path.join(PROCESSED_DIR, 'contratos-normalizados.json');
+const META_PATH = path.join(PROCESSED_DIR, 'meta.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Esquema de la base de datos
@@ -28,22 +29,25 @@ const JSON_PATH = path.join(PROCESSED_DIR, 'contratos-normalizados.json');
 
 const SQL_CREAR_TABLAS = `
   CREATE TABLE IF NOT EXISTS contratos (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    expediente          TEXT UNIQUE,
-    objeto              TEXT NOT NULL,
-    tipo                TEXT,
-    procedimiento       TEXT,
-    organismo           TEXT,
-    importe             REAL,
-    importe_iva         REAL,
-    adjudicatario       TEXT,
-    nif_adjudicatario   TEXT,
-    fecha_publicacion   TEXT,
-    fecha_adjudicacion  TEXT,
-    fecha_formalizacion TEXT,
-    url_origen          TEXT,
-    created_at          TEXT DEFAULT (datetime('now')),
-    updated_at          TEXT DEFAULT (datetime('now'))
+    id                      INTEGER PRIMARY KEY AUTOINCREMENT,
+    expediente              TEXT UNIQUE,
+    objeto                  TEXT NOT NULL,
+    tipo                    TEXT,
+    procedimiento           TEXT,
+    organismo               TEXT,
+    importe                 REAL,
+    importe_iva             REAL,
+    adjudicatario           TEXT,
+    nif_adjudicatario       TEXT,
+    fecha_publicacion       TEXT,
+    fecha_adjudicacion      TEXT,
+    fecha_formalizacion     TEXT,
+    url_origen              TEXT,
+    fuente                  TEXT DEFAULT 'placsp',
+    num_ofertas             INTEGER,
+    ted_publication_number  TEXT,
+    created_at              TEXT DEFAULT (datetime('now')),
+    updated_at              TEXT DEFAULT (datetime('now'))
   );
 
   CREATE INDEX IF NOT EXISTS idx_contratos_organismo
@@ -61,6 +65,9 @@ const SQL_CREAR_TABLAS = `
   CREATE INDEX IF NOT EXISTS idx_contratos_adjudicatario
     ON contratos(adjudicatario);
 
+  CREATE INDEX IF NOT EXISTS idx_contratos_fuente
+    ON contratos(fuente);
+
   CREATE TABLE IF NOT EXISTS importaciones (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     fecha        TEXT DEFAULT (datetime('now')),
@@ -68,6 +75,32 @@ const SQL_CREAR_TABLAS = `
     insertados   INTEGER,
     errores      INTEGER DEFAULT 0
   );
+`;
+
+// SQL para crear tabla de búsqueda de texto (alternativa a FTS5)
+// Nota: sql.js (WebAssembly) no incluye el módulo FTS5.
+// Cuando se migre a Turso/better-sqlite3 (Fase 6), se activará FTS5 real.
+// Por ahora, usamos una tabla auxiliar con texto concatenado para búsqueda LIKE.
+const SQL_CREAR_BUSQUEDA = `
+  DROP TABLE IF EXISTS contratos_busqueda;
+
+  CREATE TABLE contratos_busqueda (
+    contrato_id  INTEGER PRIMARY KEY,
+    texto        TEXT NOT NULL
+  );
+
+  INSERT INTO contratos_busqueda (contrato_id, texto)
+    SELECT id,
+      LOWER(
+        COALESCE(objeto, '') || ' ' ||
+        COALESCE(organismo, '') || ' ' ||
+        COALESCE(adjudicatario, '') || ' ' ||
+        COALESCE(expediente, '')
+      )
+    FROM contratos;
+
+  CREATE INDEX IF NOT EXISTS idx_busqueda_texto
+    ON contratos_busqueda(texto);
 `;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -127,7 +160,7 @@ async function main() {
     'expediente', 'objeto', 'tipo', 'procedimiento', 'organismo',
     'importe', 'importe_iva', 'adjudicatario', 'nif_adjudicatario',
     'fecha_publicacion', 'fecha_adjudicacion', 'fecha_formalizacion',
-    'url_origen',
+    'url_origen', 'fuente', 'num_ofertas', 'ted_publication_number',
   ];
 
   for (const contrato of contratos) {
@@ -146,22 +179,25 @@ async function main() {
             expediente, objeto, tipo, procedimiento, organismo,
             importe, importe_iva, adjudicatario, nif_adjudicatario,
             fecha_publicacion, fecha_adjudicacion, fecha_formalizacion,
-            url_origen, updated_at
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+            url_origen, fuente, num_ofertas, ted_publication_number, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
           ON CONFLICT(expediente) DO UPDATE SET
-            objeto              = excluded.objeto,
-            tipo                = excluded.tipo,
-            procedimiento       = excluded.procedimiento,
-            organismo           = excluded.organismo,
-            importe             = excluded.importe,
-            importe_iva         = excluded.importe_iva,
-            adjudicatario       = excluded.adjudicatario,
-            nif_adjudicatario   = excluded.nif_adjudicatario,
-            fecha_publicacion   = excluded.fecha_publicacion,
-            fecha_adjudicacion  = excluded.fecha_adjudicacion,
-            fecha_formalizacion = excluded.fecha_formalizacion,
-            url_origen          = excluded.url_origen,
-            updated_at          = datetime('now')
+            objeto                = excluded.objeto,
+            tipo                  = excluded.tipo,
+            procedimiento         = excluded.procedimiento,
+            organismo             = excluded.organismo,
+            importe               = excluded.importe,
+            importe_iva           = excluded.importe_iva,
+            adjudicatario         = excluded.adjudicatario,
+            nif_adjudicatario     = excluded.nif_adjudicatario,
+            fecha_publicacion     = excluded.fecha_publicacion,
+            fecha_adjudicacion    = excluded.fecha_adjudicacion,
+            fecha_formalizacion   = excluded.fecha_formalizacion,
+            url_origen            = excluded.url_origen,
+            fuente                = excluded.fuente,
+            num_ofertas           = excluded.num_ofertas,
+            ted_publication_number = excluded.ted_publication_number,
+            updated_at            = datetime('now')
         `, params);
       } else {
         // Sin expediente: insertar sin clave única (no se puede deduplicar)
@@ -170,8 +206,8 @@ async function main() {
             expediente, objeto, tipo, procedimiento, organismo,
             importe, importe_iva, adjudicatario, nif_adjudicatario,
             fecha_publicacion, fecha_adjudicacion, fecha_formalizacion,
-            url_origen
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            url_origen, fuente, num_ofertas, ted_publication_number
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, params);
       }
 
@@ -192,6 +228,12 @@ async function main() {
     [contratos.length, procesados, errores]
   );
 
+  // Crear tabla auxiliar de búsqueda de texto
+  console.log('\n🔍 Creando índice de búsqueda de texto...');
+  db.run(SQL_CREAR_BUSQUEDA);
+  const searchCount = db.exec('SELECT COUNT(*) FROM contratos_busqueda')[0]?.values[0][0] ?? 0;
+  console.log(`   Registros indexados para búsqueda: ${searchCount}`);
+
   // Estadísticas finales
   const totalEnBD = db.exec('SELECT COUNT(*) FROM contratos')[0]?.values[0][0] ?? 0;
   const organismos = db.exec('SELECT COUNT(DISTINCT organismo) FROM contratos')[0]?.values[0][0] ?? 0;
@@ -202,6 +244,15 @@ async function main() {
   const data = db.export();
   fs.writeFileSync(DB_PATH, Buffer.from(data));
   db.close();
+
+  // Escribir meta.json con metadatos de la última actualización
+  const meta = {
+    generado_en: new Date().toISOString(),
+    total_contratos: procesados,
+    fuente: 'placsp',
+  };
+  fs.writeFileSync(META_PATH, JSON.stringify(meta, null, 2), 'utf-8');
+  console.log(`\n📋 Metadatos escritos en: ${path.basename(META_PATH)}`);
 
   console.log('\n' + '═'.repeat(50));
   console.log('✅ Importación completada.');

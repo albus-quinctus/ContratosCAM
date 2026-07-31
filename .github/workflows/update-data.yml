@@ -34,8 +34,15 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Ejecutar pipeline ETL completo
-        run: npm run etl
+      - name: Ejecutar pipeline ETL PLACSP
+        run: npm run download && npm run parse
+
+      - name: Descargar y parsear datos TED-UE
+        run: npm run download:ted && npm run parse:ted
+        continue-on-error: true  # TED es fuente complementaria, no bloquear si falla
+
+      - name: Transformar e importar datos combinados
+        run: npm run transform && npm run import-db
 
       - name: Validar datos generados
         run: npm run validate
@@ -64,6 +71,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+
+      - name: Actualizar rama local tras el commit de datos
+        run: git pull origin main --rebase
 
       - name: Preparar artefacto para Pages
         run: |

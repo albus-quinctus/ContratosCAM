@@ -22,7 +22,11 @@ const CONFIG = Object.freeze({
     './data/processed/contratos-normalizados.json',
     '/data/processed/contratos-normalizados.json',
   ],
-  PAGE_SIZE: 50,
+  META_URLS: [
+    './data/processed/meta.json',
+    '/data/processed/meta.json',
+  ],
+  PAGE_SIZE: 25,
   DEBOUNCE_MS: 300,
 });
 
@@ -129,6 +133,31 @@ async function cargarDatos() {
   }
   console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
   return generarDatosEjemplo();
+}
+
+async function cargarMeta() {
+  for (const url of CONFIG.META_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      return await res.json();
+    } catch {
+      // Intentar la siguiente URL
+    }
+  }
+  return null;
+}
+
+function mostrarFechaActualizacion(meta) {
+  const el = document.getElementById('data-update-date');
+  if (!el) return;
+  if (!meta || !meta.generado_en) {
+    el.textContent = 'Fecha de actualización desconocida';
+    return;
+  }
+  const fecha = new Date(meta.generado_en);
+  const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
 }
 
 function generarDatosEjemplo() {
@@ -544,9 +573,11 @@ function inicializarOrdenacion() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos
-  estado.datos = await cargarDatos();
+  // 1. Cargar datos y metadatos
+  const [datosRaw, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  estado.datos = datosRaw;
   estado.filtrados = [...estado.datos];
+  mostrarFechaActualizacion(meta);
 
   // 2. Inicializar UI
   inicializarFiltros();
@@ -595,13 +626,30 @@ async function init() {
   // 6. Exportar CSV
   document.getElementById('btn-exportar').addEventListener('click', exportarCsv);
 
-  // 7. Modal
+  // 7. Modal de contrato
   document.getElementById('modal-close').addEventListener('click', cerrarModal);
   document.getElementById('modal-overlay').addEventListener('click', e => {
     if (e.target === e.currentTarget) cerrarModal();
   });
+
+  // 8. Modal "Sobre los datos"
+  const btnSobre = document.getElementById('btn-sobre-datos');
+  const overlayS = document.getElementById('modal-sobre-overlay');
+  const closeS   = document.getElementById('modal-sobre-close');
+  if (btnSobre && overlayS && closeS) {
+    const abrirSobre  = () => { overlayS.hidden = false; document.body.style.overflow = 'hidden'; closeS.focus(); };
+    const cerrarSobre = () => { overlayS.hidden = true;  document.body.style.overflow = ''; };
+    btnSobre.addEventListener('click', abrirSobre);
+    closeS.addEventListener('click', cerrarSobre);
+    overlayS.addEventListener('click', e => { if (e.target === e.currentTarget) cerrarSobre(); });
+  }
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') cerrarModal();
+    if (e.key === 'Escape') {
+      cerrarModal();
+      const overlayS2 = document.getElementById('modal-sobre-overlay');
+      if (overlayS2 && !overlayS2.hidden) { overlayS2.hidden = true; document.body.style.overflow = ''; }
+    }
   });
 }
 
