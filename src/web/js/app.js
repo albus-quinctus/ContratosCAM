@@ -103,7 +103,13 @@ function resaltar(str) {
   // Construir regex con todos los términos (escapando caracteres especiales de regex)
   const escaped = terminos.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   const regex = new RegExp('(' + escaped.join('|') + ')', 'gi');
-  return html.replace(regex, '<mark class="search-highlight">$1</mark>');
+
+  // Reemplazar solo fuera de entidades HTML (&...;) para no romper el escapado
+  // Estrategia: dividir por entidades, resaltar solo las partes de texto
+  return html.replace(/(&[a-zA-Z0-9#]+;)|([^&]+)/g, (match, entity, text) => {
+    if (entity) return entity; // No tocar entidades HTML
+    return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+  });
 }
 
 /**
