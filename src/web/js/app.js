@@ -341,7 +341,7 @@ function renderizarTabla() {
     '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
     '<td class="col-objeto"><div class="cell-objeto">' + (resaltar(c.objeto) || '—') + '</div></td>' +
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
-    '<td class="col-tipo"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></td>' +
+    '<td class="col-tipo"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' + (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="Datos europeos (TED-UE)">🇪🇺</span>' : '') + '</td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
     '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + '</div></td>' +
@@ -418,6 +418,26 @@ function abrirModal(c) {
     '<div class="modal-field"><div class="modal-field-label">Fecha formalización</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_formalizacion) + '</div></div>' +
     '</div>' +
+    // Sección de datos enriquecidos TED-UE (solo si hay datos)
+    ((c.num_ofertas || c.criterios_adjudicacion || c.ted_publication_number)
+      ? '<hr class="modal-divider" />' +
+        '<div class="modal-field"><div class="modal-field-label">' +
+        '<span class="badge badge--ted">🇪🇺 Datos europeos (TED)</span></div></div>' +
+        '<div class="modal-grid">' +
+        (c.num_ofertas
+          ? '<div class="modal-field"><div class="modal-field-label">Ofertas recibidas</div>' +
+            '<div class="modal-field-value modal-field-value--importe">' + c.num_ofertas + '</div></div>'
+          : '') +
+        (c.ted_publication_number
+          ? '<div class="modal-field"><div class="modal-field-label">Nº publicación TED</div>' +
+            '<div class="modal-field-value"><a href="https://ted.europa.eu/es/notice/' + esc(c.ted_publication_number) + '/html" target="_blank" rel="noopener noreferrer">' + esc(c.ted_publication_number) + ' ↗</a></div></div>'
+          : '') +
+        '</div>' +
+        (c.criterios_adjudicacion
+          ? '<div class="modal-field"><div class="modal-field-label">Criterios de adjudicación</div>' +
+            '<div class="modal-field-value">' + esc(c.criterios_adjudicacion) + '</div></div>'
+          : '')
+      : '') +
     (sanitizarUrl(c.url_origen)
       ? '<hr class="modal-divider" />' +
         '<div class="modal-field"><div class="modal-field-label">Fuente oficial</div>' +

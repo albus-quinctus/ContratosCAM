@@ -168,6 +168,11 @@ function validarContrato(contrato, index) {
     errores.push(`${prefix} 'ted_publication_number' formato inválido: "${contrato.ted_publication_number}" (esperado: NNNNNN-YYYY)`);
   }
 
+  // criterios_adjudicacion: debe ser string si existe
+  if (contrato.criterios_adjudicacion != null && typeof contrato.criterios_adjudicacion !== 'string') {
+    errores.push(`${prefix} 'criterios_adjudicacion' debe ser string, es ${typeof contrato.criterios_adjudicacion}`);
+  }
+
   // Coherencia fuente ↔ campos TED
   if (contrato.fuente === 'ted_ue' && !contrato.ted_publication_number) {
     errores.push(`${prefix} Fuente 'ted_ue' pero falta 'ted_publication_number'`);
@@ -248,7 +253,7 @@ async function main() {
     'importe', 'importe_iva', 'valor_estimado', 'cpv', 'cpv_descripcion',
     'duracion_meses', 'num_lotes', 'adjudicatario', 'nif_adjudicatario',
     'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente',
-    'num_ofertas', 'ted_publication_number',
+    'num_ofertas', 'ted_publication_number', 'criterios_adjudicacion',
   ];
 
   const completitud = {};

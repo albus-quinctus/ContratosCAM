@@ -1,4 +1,4 @@
-/**
+﻿/**
  * scripts/transform.js
  *
  * Transforma los datos parseados de PLACSP y TED:
@@ -376,6 +376,7 @@ function transformarContratoTED(crudo, id) {
     // Campos enriquecidos exclusivos de TED
     num_ofertas: crudo.num_ofertas || null,
     ted_publication_number: crudo.ted_publication_number || null,
+    criterios_adjudicacion: limpiarVacio(crudo.criterios_adjudicacion) || null,
   };
 }
 
@@ -394,21 +395,52 @@ function deduplicar(contratos) {
 
     if (mapa.has(clave)) {
       const existente = mapa.get(clave);
-      // Determinar cuál es más reciente
-      const existenteEsMasReciente =
-        (existente.fecha_publicacion || '') >= (contrato.fecha_publicacion || '');
 
-      const masReciente = existenteEsMasReciente ? existente : contrato;
-      const masAntiguo = existenteEsMasReciente ? contrato : existente;
+      // Estrategia de merge multi-fuente:
+      // - Si uno es TED y otro PLACSP, mantener PLACSP como base y enriquecer con TED
+      // - Si ambos son de la misma fuente, mantener el más reciente
+      const esTED = contrato.fuente === 'ted_ue';
+      const existenteEsTED = existente.fuente === 'ted_ue';
 
-      // Enriquecer: usar el más reciente como base, rellenar nulls con el antiguo
-      const fusionado = { ...masReciente };
-      if (!fusionado.adjudicatario && masAntiguo.adjudicatario) {
-        fusionado.adjudicatario = masAntiguo.adjudicatario;
-        fusionado.nif_adjudicatario = fusionado.nif_adjudicatario || masAntiguo.nif_adjudicatario;
-        fusionado.fecha_adjudicacion = fusionado.fecha_adjudicacion || masAntiguo.fecha_adjudicacion;
-        fusionado.importe = fusionado.importe || masAntiguo.importe;
-        fusionado.importe_iva = fusionado.importe_iva || masAntiguo.importe_iva;
+      let base, enriquecedor;
+
+      if (esTED && !existenteEsTED) {
+        // El existente es PLACSP, el nuevo es TED: mantener PLACSP, enriquecer con TED
+        base = existente;
+        enriquecedor = contrato;
+      } else if (!esTED && existenteEsTED) {
+        // El existente es TED, el nuevo es PLACSP: mantener PLACSP, enriquecer con TED
+        base = contrato;
+        enriquecedor = existente;
+      } else {
+        // Misma fuente: mantener el más reciente
+        const existenteEsMasReciente =
+          (existente.fecha_publicacion || '') >= (contrato.fecha_publicacion || '');
+        base = existenteEsMasReciente ? existente : contrato;
+        enriquecedor = existenteEsMasReciente ? contrato : existente;
+      }
+
+      // Fusionar: base + campos faltantes del enriquecedor
+      const fusionado = { ...base };
+
+      // Rellenar campos básicos faltantes
+      if (!fusionado.adjudicatario && enriquecedor.adjudicatario) {
+        fusionado.adjudicatario = enriquecedor.adjudicatario;
+        fusionado.nif_adjudicatario = fusionado.nif_adjudicatario || enriquecedor.nif_adjudicatario;
+        fusionado.fecha_adjudicacion = fusionado.fecha_adjudicacion || enriquecedor.fecha_adjudicacion;
+        fusionado.importe = fusionado.importe || enriquecedor.importe;
+        fusionado.importe_iva = fusionado.importe_iva || enriquecedor.importe_iva;
+      }
+
+      // Enriquecer con campos exclusivos de TED (siempre, si el enriquecedor los tiene)
+      if (!fusionado.num_ofertas && enriquecedor.num_ofertas) {
+        fusionado.num_ofertas = enriquecedor.num_ofertas;
+      }
+      if (!fusionado.ted_publication_number && enriquecedor.ted_publication_number) {
+        fusionado.ted_publication_number = enriquecedor.ted_publication_number;
+      }
+      if (!fusionado.criterios_adjudicacion && enriquecedor.criterios_adjudicacion) {
+        fusionado.criterios_adjudicacion = enriquecedor.criterios_adjudicacion;
       }
 
       mapa.set(clave, fusionado);

@@ -481,6 +481,7 @@ a:hover { text-decoration: underline; }
 .badge--servicios   { background: #d5e8d4; color: #27ae60; }
 .badge--suministros { background: #dae8fc; color: #2980b9; }
 .badge--default     { background: #f0f0f0; color: #666; }
+.badge--ted         { background: #e8f0fe; color: #1a4fa0; font-size: 0.75rem; padding: 0.15em 0.4em; }
 
 /* ── Loading / Empty ─────────────────────────────────────────────────────── */
 .loading-cell {
