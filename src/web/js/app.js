@@ -78,6 +78,28 @@ function badgeClass(tipo) {
   return 'badge--default';
 }
 
+/**
+ * Devuelve la clase CSS y el texto legible para el badge de estado.
+ * @param {string|null} estado
+ * @returns {{cls: string, label: string}}
+ */
+function badgeEstado(estadoVal) {
+  const ESTADOS_CONFIG = {
+    'en_licitacion':         { cls: 'badge--estado-licitacion',   label: 'En licitación' },
+    'en_evaluacion':         { cls: 'badge--estado-evaluacion',   label: 'En evaluación' },
+    'pre_adjudicado':        { cls: 'badge--estado-evaluacion',   label: 'Pre-adjudicado' },
+    'pre_adjudicacion':      { cls: 'badge--estado-evaluacion',   label: 'Pre-adjudicación' },
+    'adjudicado':            { cls: 'badge--estado-adjudicado',   label: 'Adjudicado' },
+    'formalizado':           { cls: 'badge--estado-formalizado',  label: 'Formalizado' },
+    'resuelto':              { cls: 'badge--estado-resuelto',     label: 'Resuelto' },
+    'anulado':               { cls: 'badge--estado-anulado',      label: 'Anulado' },
+    'posiblemente_resuelto': { cls: 'badge--estado-posible',      label: 'Posib. resuelto' },
+    'publicado':             { cls: 'badge--estado-licitacion',   label: 'Publicado' },
+  };
+  if (!estadoVal) return { cls: 'badge--default', label: '—' };
+  return ESTADOS_CONFIG[estadoVal] || { cls: 'badge--default', label: estadoVal };
+}
+
 function esc(str) {
   if (!str) return '';
   return String(str)
@@ -237,6 +259,7 @@ function obtenerFiltros() {
     tipo: document.getElementById('filtro-tipo').value,
     organismo: document.getElementById('filtro-organismo').value,
     procedimiento: document.getElementById('filtro-procedimiento').value,
+    estadoFiltro: document.getElementById('filtro-estado').value,
     importeMin: parseFloat(document.getElementById('filtro-importe-min').value) || null,
     importeMax: parseFloat(document.getElementById('filtro-importe-max').value) || null,
     fechaDesde: document.getElementById('filtro-fecha-desde').value || null,
@@ -266,6 +289,7 @@ function aplicarFiltros() {
     if (f.tipo && c.tipo !== f.tipo) return false;
     if (f.organismo && c.organismo !== f.organismo) return false;
     if (f.procedimiento && c.procedimiento !== f.procedimiento) return false;
+    if (f.estadoFiltro && c.estado !== f.estadoFiltro) return false;
     if (f.importeMin !== null && (c.importe === null || c.importe < f.importeMin)) return false;
     if (f.importeMax !== null && (c.importe === null || c.importe > f.importeMax)) return false;
     if (f.fechaDesde && c.fecha_publicacion && c.fecha_publicacion < f.fechaDesde) return false;
@@ -330,23 +354,28 @@ function renderizarTabla() {
 
   if (pagina.length === 0) {
     tbody.innerHTML =
-      '<tr><td colspan="6"><div class="empty-state">' +
+      '<tr><td colspan="7"><div class="empty-state">' +
       '<div class="empty-state-icon">🔍</div>' +
       '<p>No se encontraron contratos con los filtros aplicados.</p>' +
       '</div></td></tr>';
     return;
   }
 
-  tbody.innerHTML = pagina.map((c, i) =>
-    '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
+  tbody.innerHTML = pagina.map((c, i) => {
+    const est = badgeEstado(c.estado);
+    return '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
     '<td class="col-objeto"><div class="cell-objeto">' + (resaltar(c.objeto) || '—') + '</div></td>' +
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
-    '<td class="col-tipo"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' + (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="Datos europeos (TED-UE)">🇪🇺</span>' : '') + '</td>' +
+    '<td class="col-tipo">' +
+      '<span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' +
+      (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="Datos europeos (TED-UE)">🇪🇺</span>' : '') +
+    '</td>' +
+    '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
     '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + '</div></td>' +
-    '</tr>'
-  ).join('');
+    '</tr>';
+  }).join('');
 
   tbody.querySelectorAll('tr[data-idx]').forEach(fila => {
     const abrir = () => abrirModal(estado.filtrados[parseInt(fila.dataset.idx)]);
@@ -398,6 +427,8 @@ function abrirModal(c) {
     '<div class="modal-field-value">' + (esc(c.organismo) || '—') + '</div></div>' +
     '<div class="modal-field"><div class="modal-field-label">Tipo</div>' +
     '<div class="modal-field-value"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Estado</div>' +
+    (function() { const est = badgeEstado(c.estado); return '<div class="modal-field-value"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span>' + (c.estado_xml && c.estado_xml !== c.estado ? ' <span class="modal-estado-xml">(XML: ' + esc(c.estado_xml) + ')</span>' : '') + '</div></div>'; })() +
     '<div class="modal-field"><div class="modal-field-label">Procedimiento</div>' +
     '<div class="modal-field-value">' + (esc(c.procedimiento) || '—') + '</div></div>' +
     '<div class="modal-field"><div class="modal-field-label">Expediente</div>' +
@@ -627,6 +658,27 @@ function inicializarFiltros() {
   poblarSelect('filtro-tipo', valoresUnicos(estado.datos, 'tipo'));
   poblarSelect('filtro-organismo', valoresUnicos(estado.datos, 'organismo'));
   poblarSelect('filtro-procedimiento', valoresUnicos(estado.datos, 'procedimiento'));
+
+  // Poblar selector de estado con etiquetas legibles (en orden lógico del ciclo de vida)
+  const ORDEN_ESTADOS = [
+    'en_licitacion', 'en_evaluacion', 'pre_adjudicado', 'pre_adjudicacion',
+    'adjudicado', 'formalizado', 'resuelto', 'anulado', 'posiblemente_resuelto', 'publicado',
+  ];
+  const estadosPresentes = new Set(estado.datos.map(d => d.estado).filter(Boolean));
+  const estadosOrdenados = ORDEN_ESTADOS.filter(e => estadosPresentes.has(e));
+  // Añadir cualquier estado no previsto al final
+  estadosPresentes.forEach(e => { if (!ORDEN_ESTADOS.includes(e)) estadosOrdenados.push(e); });
+
+  const selectEstado = document.getElementById('filtro-estado');
+  const primeraOpcion = selectEstado.querySelector('option');
+  selectEstado.innerHTML = '';
+  selectEstado.appendChild(primeraOpcion);
+  estadosOrdenados.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = badgeEstado(v).label;
+    selectEstado.appendChild(opt);
+  });
 }
 
 function inicializarOrdenacion() {
@@ -670,6 +722,7 @@ async function init() {
   document.getElementById('filtro-tipo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-procedimiento').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-importe-min').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-importe-max').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-fecha-desde').addEventListener('change', aplicarFiltros);
@@ -678,7 +731,8 @@ async function init() {
   // 4. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
     ['input-busqueda', 'filtro-tipo', 'filtro-organismo', 'filtro-procedimiento',
-      'filtro-importe-min', 'filtro-importe-max', 'filtro-fecha-desde', 'filtro-fecha-hasta']
+      'filtro-estado', 'filtro-importe-min', 'filtro-importe-max',
+      'filtro-fecha-desde', 'filtro-fecha-hasta']
       .forEach(id => { document.getElementById(id).value = ''; });
     aplicarFiltros();
   });

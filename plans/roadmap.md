@@ -221,6 +221,57 @@ Los contratos que superan los umbrales europeos (~221.000€ servicios, ~5,5M€
 
 ---
 
+### FASE 5d — Estado del Contrato y Actualización Incremental ✅
+> Mostrar el ciclo de vida real de cada contrato
+
+Los contratos tienen un estado que evoluciona: desde publicado → en evaluación → adjudicado → formalizado → resuelto. El feed Atom solo captura el estado en el momento de la descarga, no el estado actual.
+
+**Implementado (agosto 2026):**
+
+- [x] Añadir función `derivarEstado()` en `scripts/transform.js`:
+  - Infiere el estado más probable combinando el código XML con los datos disponibles (adjudicatario, fechas, antigüedad)
+  - Esquema de 8 estados: `en_licitacion`, `en_evaluacion`, `pre_adjudicado`, `adjudicado`, `formalizado`, `resuelto`, `anulado`, `posiblemente_resuelto`
+- [x] Añadir campos `estado_xml` (código original del feed) y `estado_verificado_en` (fecha de última verificación)
+- [x] Actualizar `scripts/validate.js` para validar los nuevos valores de estado
+- [x] Añadir filtro de estado en `src/web/index.html` (selector con opciones ordenadas por ciclo de vida)
+- [x] Añadir columna Estado en la tabla de contratos con badges de color por estado
+- [x] Mostrar estado en el modal de detalle con badge + estado XML original
+- [x] Implementar `scripts/update-estados.js`:
+  - Consulta la ficha web de PLACSP para contratos en estados activos con >30 días de antigüedad
+  - Actualiza el estado y la fecha de verificación
+  - Soporta `--max=N`, `--dias=N` y `--dry-run`
+- [x] Añadir `"update:estados"` y `"update:estados:dry"` al `package.json`
+
+**Distribución de estados (agosto 2026):**
+- `resuelto`: 1.008 contratos
+- `en_evaluacion`: 609 contratos
+- `adjudicado`: 569 contratos
+- `posiblemente_resuelto`: 334 contratos
+- `en_licitacion`: 130 contratos
+- `anulado`: 2 contratos
+
+**Entregable:** Campo `estado` fiable con ciclo de vida completo, filtro en el frontend y script de actualización incremental. ✅
+
+---
+
+### FASE 5e — Ampliación de Cobertura (pendiente)
+> Investigar fuentes adicionales para aumentar el dataset
+
+- [ ] **Bloque A:** Ejecutar `npm run download:full` (500 páginas, ~225.000 licitaciones, 30-60 min)
+- [ ] **Bloque B:** Investigar PLACSP búsqueda avanzada CSV — puede tener `fecha_formalizacion` y campos extra
+  - URL: `https://contrataciondelestado.es` → Búsqueda avanzada → Filtrar CAM → Exportar CSV
+  - ⚠️ La IP quedó bloqueada temporalmente (rate limiting por descarga masiva de 314 páginas). Reintentar en ~24h verificando: `node -e "fetch('https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom').then(r => console.log(r.status))"`
+  - El portal web/CSV siempre requiere navegador (WAF permanente); solo el feed Atom es automatizable
+- [x] **Bloque C:** Re-verificar PLACE histórico en datos.gob.es, transparencia.gob.es e IGAE — ❌ **Ninguna fuente tiene datos descargables** (agosto 2026)
+  - `datos.gob.es` → ficha del catálogo devuelve 404 (dataset eliminado)
+  - `transparencia.gob.es` → portal informativo sin datos descargables (AEM)
+  - `igae.pap.hacienda.gob.es` → todas las URLs devuelven 404 (sitio reorganizado)
+- [ ] **Bloque G:** Ejecutar `npm run enrich:nif -- --max=200` (prueba) y luego `npm run enrich:nif` (completo)
+
+Ver plan detallado en [`plans/mejora-cobertura-y-estados.md`](mejora-cobertura-y-estados.md).
+
+---
+
 ### FASE 6 — Migración a Turso (cuando el volumen lo justifique)
 > Escalar la base de datos para datos históricos completos
 

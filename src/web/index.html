@@ -124,6 +124,13 @@
           </select>
         </div>
 
+        <div class="filter-group">
+          <label class="filter-label" for="filtro-estado">Estado</label>
+          <select id="filtro-estado" class="filter-select">
+            <option value="">Todos los estados</option>
+          </select>
+        </div>
+
         <div class="filter-group filter-group--range">
           <label class="filter-label" for="filtro-importe-min">Importe (€)</label>
           <div class="range-inputs">
@@ -163,6 +170,7 @@
               <th class="col-objeto sortable" data-col="objeto">Objeto del contrato <span class="sort-icon">↕</span></th>
               <th class="col-organismo sortable" data-col="organismo">Organismo <span class="sort-icon">↕</span></th>
               <th class="col-tipo">Tipo</th>
+              <th class="col-estado">Estado</th>
               <th class="col-importe sortable" data-col="importe">Importe <span class="sort-icon">↕</span></th>
               <th class="col-fecha sortable" data-col="fecha_publicacion">Fecha <span class="sort-icon">↕</span></th>
               <th class="col-adjudicatario">Adjudicatario</th>
@@ -170,7 +178,7 @@
           </thead>
           <tbody id="tabla-body">
             <tr>
-              <td colspan="6" class="loading-cell">
+              <td colspan="7" class="loading-cell">
                 <div class="loading-spinner"></div>
                 <p>Cargando contratos...</p>
               </td>

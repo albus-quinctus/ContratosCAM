@@ -25,7 +25,13 @@ const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizado
 const TIPOS_VALIDOS = ['obras', 'servicios', 'suministros', 'administrativo_especial', 'privado', 'concesion_obras', 'concesion_servicios', 'patrimonial', 'otros'];
 const PROCEDIMIENTOS_VALIDOS = ['abierto', 'restringido', 'negociado', 'dialogo_competitivo', 'asociacion_innovacion', 'abierto_simplificado', 'basado_acuerdo_marco', 'menor', 'negociado_sin_publicidad', 'abierto_simplificado_sumario'];
 const FUENTES_VALIDAS = ['placsp', 'ted_ue', 'place_historico', 'cam_transparencia', 'cam_datos_abiertos'];
-const ESTADOS_VALIDOS = ['publicado', 'en_evaluacion', 'adjudicado', 'resuelto', 'anulado', 'pre_adjudicacion'];
+const ESTADOS_VALIDOS = [
+  // Estados derivados (nuevos, preferidos)
+  'en_licitacion', 'en_evaluacion', 'pre_adjudicado', 'adjudicado',
+  'formalizado', 'resuelto', 'anulado', 'posiblemente_resuelto',
+  // Estados legacy (del histórico, antes de derivarEstado)
+  'publicado', 'pre_adjudicacion',
+];
 
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const URL_REGEX = /^https?:\/\/.+/;
@@ -249,7 +255,8 @@ async function main() {
   // Calcular completitud
   console.log('\n📊 Completitud de campos:');
   const campos = [
-    'expediente', 'objeto', 'tipo', 'subtipo', 'procedimiento', 'organismo',
+    'expediente', 'objeto', 'tipo', 'subtipo', 'procedimiento', 'estado',
+    'estado_xml', 'organismo',
     'importe', 'importe_iva', 'valor_estimado', 'cpv', 'cpv_descripcion',
     'duracion_meses', 'num_lotes', 'adjudicatario', 'nif_adjudicatario',
     'fecha_publicacion', 'fecha_adjudicacion', 'url_origen', 'fuente',

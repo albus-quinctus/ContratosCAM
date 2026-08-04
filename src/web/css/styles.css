@@ -396,6 +396,7 @@ a:hover { text-decoration: underline; }
 .col-objeto      { min-width: 280px; max-width: 400px; }
 .col-organismo   { min-width: 180px; max-width: 240px; }
 .col-tipo        { min-width: 100px; }
+.col-estado      { min-width: 120px; white-space: nowrap; }
 .col-importe     { min-width: 110px; text-align: right; white-space: nowrap; }
 .col-fecha       { min-width: 100px; white-space: nowrap; }
 .col-adjudicatario { min-width: 160px; max-width: 220px; }
@@ -482,6 +483,18 @@ a:hover { text-decoration: underline; }
 .badge--suministros { background: #dae8fc; color: #2980b9; }
 .badge--default     { background: #f0f0f0; color: #666; }
 .badge--ted         { background: #e8f0fe; color: #1a4fa0; font-size: 0.75rem; padding: 0.15em 0.4em; }
+
+/* Badges de estado del contrato */
+.badge--estado-licitacion  { background: #fff3cd; color: #856404; }   /* Amarillo — en licitación/publicado */
+.badge--estado-evaluacion  { background: #cff4fc; color: #055160; }   /* Cian — en evaluación / pre-adjudicado */
+.badge--estado-adjudicado  { background: #cfe2ff; color: #084298; }   /* Azul — adjudicado */
+.badge--estado-formalizado { background: #d1e7dd; color: #0a3622; }   /* Verde oscuro — formalizado */
+.badge--estado-resuelto    { background: #d1e7dd; color: #0a3622; }   /* Verde — resuelto */
+.badge--estado-anulado     { background: #f8d7da; color: #842029; }   /* Rojo — anulado */
+.badge--estado-posible     { background: #e2e3e5; color: #41464b; }   /* Gris — posiblemente resuelto */
+
+/* Texto secundario del estado XML en el modal */
+.modal-estado-xml { font-size: 0.75rem; color: #888; margin-left: 0.4em; }
 
 /* ── Loading / Empty ─────────────────────────────────────────────────────── */
 .loading-cell {
@@ -716,6 +729,7 @@ a:hover { text-decoration: underline; }
 
   /* Tabla principal: ocultar columnas secundarias en móvil */
   .col-tipo           { display: none; }
+  .col-estado         { display: none; }
   .col-adjudicatario  { display: none; }
 
   /* Gráficas más bajas */

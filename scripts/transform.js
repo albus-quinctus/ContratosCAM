@@ -66,9 +66,9 @@ const PROCEDIMIENTOS = {
 };
 
 /**
- * Estados del contrato
+ * Estados del contrato — mapeo del código XML a valor legible
  */
-const ESTADOS = {
+const ESTADOS_XML = {
   'PUB': 'publicado',
   'EV': 'en_evaluacion',
   'ADJ': 'adjudicado',
@@ -76,6 +76,21 @@ const ESTADOS = {
   'ANUL': 'anulado',
   'PRE': 'pre_adjudicacion',
 };
+
+/**
+ * Estados derivados del contrato — valores finales normalizados.
+ * Se infieren a partir del estado XML + datos disponibles (adjudicatario, fechas, antigüedad).
+ */
+const ESTADOS_DERIVADOS = [
+  'en_licitacion',
+  'en_evaluacion',
+  'pre_adjudicado',
+  'adjudicado',
+  'formalizado',
+  'resuelto',
+  'anulado',
+  'posiblemente_resuelto',
+];
 
 /**
  * Palabras clave que identifican organismos de la Comunidad de Madrid
@@ -150,6 +165,53 @@ const CPV_DIVISIONES = {
   '92': 'Servicios recreativos y culturales',
   '98': 'Otros servicios comunitarios',
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Derivación inteligente de estado
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Deriva el estado más probable de un contrato a partir de los datos disponibles.
+ * El estado del feed Atom refleja el momento de la descarga, no el estado actual.
+ * Esta función infiere un estado más fiable combinando el código XML con otros campos.
+ *
+ * @param {object} params
+ * @param {string|null} params.estadoXml - Código de estado del XML (PUB, EV, ADJ, RES, ANUL, PRE)
+ * @param {string|null} params.adjudicatario - Nombre del adjudicatario (si existe)
+ * @param {string|null} params.fechaAdjudicacion - Fecha de adjudicación ISO
+ * @param {string|null} params.fechaFormalizacion - Fecha de formalización ISO (si disponible)
+ * @param {string|null} params.fechaPublicacion - Fecha de publicación ISO
+ * @returns {string} Estado derivado normalizado
+ */
+function derivarEstado({ estadoXml, adjudicatario, fechaAdjudicacion, fechaFormalizacion, fechaPublicacion }) {
+  // Prioridad 1: Estados terminales del XML
+  if (estadoXml === 'ANUL') return 'anulado';
+  if (estadoXml === 'RES') return 'resuelto';
+
+  // Prioridad 2: Si tiene fecha de formalización → formalizado
+  if (fechaFormalizacion) return 'formalizado';
+
+  // Prioridad 3: Si tiene adjudicatario y fecha de adjudicación → adjudicado
+  if (adjudicatario && fechaAdjudicacion) return 'adjudicado';
+
+  // Prioridad 4: Estados intermedios del XML
+  if (estadoXml === 'ADJ') return 'adjudicado';
+  if (estadoXml === 'PRE') return 'pre_adjudicado';
+  if (estadoXml === 'EV') return 'en_evaluacion';
+
+  // Prioridad 5: Si es PUB (publicado) pero tiene mucha antigüedad → posiblemente resuelto
+  if (estadoXml === 'PUB' || !estadoXml) {
+    if (fechaPublicacion) {
+      const fechaPub = new Date(fechaPublicacion);
+      const ahora = new Date();
+      const mesesTranscurridos = (ahora - fechaPub) / (1000 * 60 * 60 * 24 * 30);
+      if (mesesTranscurridos > 6) return 'posiblemente_resuelto';
+    }
+    return 'en_licitacion';
+  }
+
+  return 'en_licitacion';
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de transformación
@@ -309,6 +371,19 @@ function transformarContrato(crudo, id) {
   const importeFinal = crudo.importe_adjudicacion || crudo.importe_sin_iva || null;
   const importeIvaFinal = crudo.importe_adjudicacion_iva || crudo.importe_total || null;
 
+  const fechaPub = normalizarFecha(crudo.fecha_actualizacion);
+  const fechaAdj = normalizarFecha(crudo.fecha_adjudicacion);
+  const adjudicatarioLimpio = limpiarVacio(crudo.adjudicatario);
+
+  // Derivar estado inteligente
+  const estadoDerivado = derivarEstado({
+    estadoXml: crudo.estado,
+    adjudicatario: adjudicatarioLimpio,
+    fechaAdjudicacion: fechaAdj,
+    fechaFormalizacion: null, // No disponible en el feed Atom
+    fechaPublicacion: fechaPub,
+  });
+
   return {
     id,
     expediente: limpiarVacio(crudo.expediente),
@@ -316,7 +391,9 @@ function transformarContrato(crudo, id) {
     tipo: normalizarTipo(crudo.tipo_code),
     subtipo: limpiarVacio(crudo.subtipo_code),
     procedimiento: normalizarProcedimiento(crudo.procedimiento_code),
-    estado: ESTADOS[crudo.estado] || crudo.estado || null,
+    estado: estadoDerivado,
+    estado_xml: ESTADOS_XML[crudo.estado] || crudo.estado || null,
+    estado_verificado_en: null, // Se actualiza con scripts/update-estados.js
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(importeFinal),
     importe_iva: normalizarImporte(importeIvaFinal),
@@ -325,10 +402,10 @@ function transformarContrato(crudo, id) {
     cpv_descripcion: limpiarVacio(crudo.cpv_descripcion) || (crudo.cpv ? (CPV_DIVISIONES[crudo.cpv.substring(0, 2)] || null) : null),
     duracion_meses: crudo.duracion_meses != null ? (Number.isFinite(crudo.duracion_meses) ? crudo.duracion_meses : null) : null,
     num_lotes: crudo.num_lotes || null,
-    adjudicatario: limpiarVacio(crudo.adjudicatario),
+    adjudicatario: adjudicatarioLimpio,
     nif_adjudicatario: normalizarNIF(crudo.nif_adjudicatario),
-    fecha_publicacion: normalizarFecha(crudo.fecha_actualizacion),
-    fecha_adjudicacion: normalizarFecha(crudo.fecha_adjudicacion),
+    fecha_publicacion: fechaPub,
+    fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null, // No disponible en el feed Atom
     url_origen: limpiarVacio(crudo.url_origen),
     fuente: 'placsp',
@@ -350,6 +427,19 @@ function transformarContratoTED(crudo, id) {
   const tiposTED = { '1': 'obras', '2': 'suministros', '4': 'servicios', '3': 'servicios' };
   const procsTED = { '1': 'abierto', '2': 'restringido', '3': 'negociado', '4': 'negociado', '6': 'negociado_sin_publicidad' };
 
+  const fechaPub = normalizarFecha(crudo.fecha_publicacion);
+  const fechaAdj = normalizarFecha(crudo.fecha_adjudicacion);
+  const adjudicatarioLimpio = limpiarVacio(crudo.adjudicatario);
+
+  // Derivar estado inteligente
+  const estadoDerivado = derivarEstado({
+    estadoXml: crudo.estado,
+    adjudicatario: adjudicatarioLimpio,
+    fechaAdjudicacion: fechaAdj,
+    fechaFormalizacion: null,
+    fechaPublicacion: fechaPub,
+  });
+
   return {
     id,
     expediente: limpiarVacio(crudo.expediente),
@@ -357,7 +447,9 @@ function transformarContratoTED(crudo, id) {
     tipo: tiposTED[crudo.tipo_code] || normalizarTipo(crudo.tipo_code) || 'otros',
     subtipo: null,
     procedimiento: procsTED[crudo.procedimiento_code] || normalizarProcedimiento(crudo.procedimiento_code) || 'abierto',
-    estado: ESTADOS[crudo.estado] || crudo.estado || null,
+    estado: estadoDerivado,
+    estado_xml: ESTADOS_XML[crudo.estado] || crudo.estado || null,
+    estado_verificado_en: null,
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(crudo.importe_sin_iva || crudo.importe_total),
     importe_iva: normalizarImporte(crudo.importe_total),
@@ -366,10 +458,10 @@ function transformarContratoTED(crudo, id) {
     cpv_descripcion: null,
     duracion_meses: null,
     num_lotes: null,
-    adjudicatario: limpiarVacio(crudo.adjudicatario),
+    adjudicatario: adjudicatarioLimpio,
     nif_adjudicatario: null, // TED no proporciona NIF español
-    fecha_publicacion: normalizarFecha(crudo.fecha_publicacion),
-    fecha_adjudicacion: normalizarFecha(crudo.fecha_adjudicacion),
+    fecha_publicacion: fechaPub,
+    fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null,
     url_origen: limpiarVacio(crudo.url_origen),
     fuente: 'ted_ue',
@@ -509,6 +601,7 @@ async function main() {
     con_objeto: todosLosContratos.filter(c => c.objeto).length,
     con_tipo: todosLosContratos.filter(c => c.tipo).length,
     con_procedimiento: todosLosContratos.filter(c => c.procedimiento).length,
+    con_estado: todosLosContratos.filter(c => c.estado).length,
     con_importe: todosLosContratos.filter(c => c.importe).length,
     con_adjudicatario: todosLosContratos.filter(c => c.adjudicatario).length,
     con_nif: todosLosContratos.filter(c => c.nif_adjudicatario).length,
@@ -608,6 +701,16 @@ async function main() {
     console.log('\n  📊 Distribución por procedimiento:');
     Object.entries(procedimientos).sort((a, b) => b[1] - a[1]).forEach(([proc, count]) => {
       console.log(`     • ${proc}: ${count}`);
+    });
+
+    const estados = {};
+    contratosUnicos.forEach(c => {
+      if (c.estado) estados[c.estado] = (estados[c.estado] || 0) + 1;
+    });
+
+    console.log('\n  📊 Distribución por estado:');
+    Object.entries(estados).sort((a, b) => b[1] - a[1]).forEach(([estado, count]) => {
+      console.log(`     • ${estado}: ${count}`);
     });
 
     // Rango de importes

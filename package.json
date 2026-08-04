@@ -28,6 +28,8 @@
     "etl:all": "npm run download && npm run download:ted && npm run parse && npm run parse:ted && npm run transform && npm run import-db",
     "etl:validate": "npm run etl:all && npm run validate",
     "etl:full": "npm run etl:all && npm run validate && npm run enrich:nif",
+    "update:estados": "node scripts/update-estados.js",
+    "update:estados:dry": "node scripts/update-estados.js --dry-run",
     "serve": "npx serve . --listen 3000",
     "dev": "npm run serve"
   },
