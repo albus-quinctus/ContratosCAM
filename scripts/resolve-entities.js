@@ -108,6 +108,12 @@ const ORGANISMOS_CONOCIDOS = {
       'AGENCIA MADRILEÑA DE ATENCIÓN SOCIAL',
     ],
   },
+  adif_alta_velocidad: {
+    nombre_canonico: 'Adif, Alta Velocidad',
+    aliases: [
+      'ADI, Alta Velocidad',
+    ],
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
