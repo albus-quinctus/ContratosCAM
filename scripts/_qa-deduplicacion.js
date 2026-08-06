@@ -113,9 +113,9 @@ assert('Variantes convergen',
   claveOrganismo('CONSEJERÍA DE EDUCACIÓN'),
   claveOrganismo('Consejeria de Educacion'));
 
-assert('Barras y dos puntos se eliminan',
+assert('Puntuación se reemplaza por espacio (D.G. → d g)',
   claveOrganismo('D.G. de Patrimonio / Cultura'),
-  'dg de patrimonio cultura');
+  'd g de patrimonio cultura');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests: nombreCanónico
@@ -274,6 +274,41 @@ assert('Registro tiene empresa B11111111',
 
 assert('Nombre canónico Recio (empate → más largo)',
   registro.empresas['B11111111'].nombre_canonico, 'RECIO, S.L.');
+
+// Tests: detección automática de organismos
+const contratosOrg = [
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Adif, Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Adif, Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Adif, Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'ADIF-Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Adif — Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Adif Alta Velocidad' },
+  { adjudicatario: 'X', nif_adjudicatario: null, organismo: 'Organismo Único' },
+];
+
+const registroOrg = construirRegistro(contratosOrg);
+const claveAdif = claveOrganismo('Adif, Alta Velocidad');
+
+assert('Detecta organismo ADIF con variantes',
+  registroOrg.organismos[claveAdif] !== undefined, true);
+
+assert('Nombre canónico ADIF = más frecuente',
+  registroOrg.organismos[claveAdif].nombre_canonico, 'Adif, Alta Velocidad');
+
+assert('Aliases ADIF incluye variantes',
+  registroOrg.organismos[claveAdif].aliases.length >= 2, true);
+
+assert('Organismo sin variantes NO se registra',
+  registroOrg.organismos[claveOrganismo('Organismo Único')], undefined);
+
+// Verificar que el resolver unifica ADIF
+const resolverOrg = new EntityResolver(registroOrg);
+assert('Resolver ADIF-Alta Velocidad → canónico',
+  resolverOrg.resolverOrganismo('ADIF-Alta Velocidad'), 'Adif, Alta Velocidad');
+assert('Resolver Adif — Alta Velocidad → canónico',
+  resolverOrg.resolverOrganismo('Adif — Alta Velocidad'), 'Adif, Alta Velocidad');
+assert('Resolver Adif Alta Velocidad → canónico',
+  resolverOrg.resolverOrganismo('Adif Alta Velocidad'), 'Adif, Alta Velocidad');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests: aplicarResolucion

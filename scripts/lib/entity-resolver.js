@@ -55,7 +55,7 @@ export function claveOrganismo(nombre) {
   return nombre
     .toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -280,6 +280,42 @@ export function construirRegistro(contratos, registroExistente = null) {
 
     if (nifEncontrado) {
       registro.aliases_sin_nif[clave] = nifEncontrado;
+    }
+  }
+
+  // ── Paso 3: Detectar variantes de organismos automáticamente ────────────────
+  const porClaveOrg = new Map(); // claveOrganismo → Map(nombre → frecuencia)
+
+  for (const c of contratos) {
+    if (!c.organismo) continue;
+    const limpio = c.organismo.replace(/\s+/g, ' ').trim();
+    const clave = claveOrganismo(limpio);
+    if (!porClaveOrg.has(clave)) porClaveOrg.set(clave, new Map());
+    const freq = porClaveOrg.get(clave);
+    freq.set(limpio, (freq.get(limpio) || 0) + 1);
+  }
+
+  for (const [clave, freq] of porClaveOrg) {
+    // Solo registrar si hay más de una variante o si no existe ya
+    if (freq.size <= 1 && registro.organismos[clave]) continue;
+
+    const nombre = nombreCanónico(freq);
+    const aliases = [...freq.keys()].filter(n => n !== nombre);
+
+    if (!registro.organismos[clave]) {
+      // Solo registrar si hay variantes que unificar
+      if (aliases.length > 0) {
+        registro.organismos[clave] = {
+          nombre_canonico: nombre,
+          aliases,
+          fuente: 'auto',
+        };
+      }
+    } else if (registro.organismos[clave].fuente !== 'manual') {
+      // Actualizar aliases (preservar manuales)
+      const existentes = new Set(registro.organismos[clave].aliases || []);
+      for (const alias of aliases) existentes.add(alias);
+      registro.organismos[clave].aliases = [...existentes];
     }
   }
 
