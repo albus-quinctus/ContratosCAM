@@ -400,23 +400,59 @@ function normalizarOrganismo(nombre) {
 }
 
 /**
- * Genera una clave de comparación normalizada para un nombre de organismo:
- * minúsculas, sin puntuación, espacios colapsados.
+ * Genera una clave de comparación normalizada para un nombre de organismo público:
+ * minúsculas, sin tildes, sin puntuación, espacios colapsados.
  * @param {string} nombre
  * @returns {string}
  */
 function _claveOrganismo(nombre) {
   return nombre
     .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quitar tildes
-    .replace(/[^a-z0-9\s]/g, '')                      // quitar puntuación
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
 /**
- * Índice lazy: clave normalizada → nombre canónico.
- * Se construye la primera vez que se necesita a partir de NORMALIZACION_ORGANISMOS.
+ * Genera una clave de comparación normalizada para un nombre de empresa privada.
+ * Elimina puntuación societaria (comas, puntos, punto y coma) y normaliza
+ * mayúsculas/tildes, pero conserva las letras de la forma jurídica (SL, SA, SLU…)
+ * para evitar fusionar empresas con distinta personalidad jurídica.
+ *
+ * Ejemplos:
+ *   "RECIO, S.L."  → "recio sl"
+ *   "Recio, S.L."  → "recio sl"
+ *   "RECIO S.L."   → "recio sl"
+ *   "RECIO SL"     → "recio sl"
+ *   "RECIO, S.A."  → "recio sa"   ← distinta de "recio sl" ✓
+ *
+ * @param {string} nombre
+ * @returns {string}
+ */
+function _claveEmpresa(nombre) {
+  return nombre
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[.,;]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Dado un Map(nombre → frecuencia), devuelve el nombre canónico:
+ * el más frecuente; en caso de empate, el más largo.
+ * @param {Map<string, number>} frecuencias
+ * @returns {string}
+ */
+function _nombreCanónico(frecuencias) {
+  return [...frecuencias.entries()]
+    .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)[0][0];
+}
+
+/**
+ * Índice precalculado: clave normalizada de organismo → nombre canónico.
+ * Construido a partir de NORMALIZACION_ORGANISMOS.
  * @type {Map<string, string>}
  */
 const _indiceOrganismos = new Map(
@@ -621,57 +657,69 @@ function deduplicar(contratos) {
 }
 
 /**
- * Canoniza los nombres de adjudicatarios usando el NIF como clave de identidad.
+ * Canoniza los nombres de adjudicatarios eliminando duplicados causados por
+ * variaciones menores de escritura (puntuación, mayúsculas, tildes).
  *
- * Problema que resuelve: una misma empresa puede aparecer con nombres ligeramente
- * distintos en distintos contratos (ej: "ACSA OBRAS E INFRAESTRUCTURAS SA" vs
- * "ACSA, OBRAS E INFRAESTRUCTURAS, S.A.U.") pero con el mismo NIF.
+ * Estrategia en dos pasadas:
  *
- * Algoritmo:
- *   1. Agrupa todos los nombres encontrados por NIF.
- *   2. Elige el nombre canónico: el más frecuente; en caso de empate, el más largo.
- *   3. Sustituye el nombre en todos los contratos que tengan ese NIF.
+ *   Pasada A — contratos CON NIF (identificador oficial):
+ *     Agrupa por NIF y elige el nombre más frecuente (empate → más largo).
+ *     Es la vía más fiable: el NIF garantiza identidad jurídica.
  *
- * Los contratos sin NIF no se modifican (no hay base fiable para canonizar).
+ *   Pasada B — contratos SIN NIF:
+ *     Agrupa por clave normalizada (_claveEmpresa): minúsculas, sin tildes,
+ *     sin puntuación societaria (comas, puntos). Así "RECIO, S.L.", "Recio S.L."
+ *     y "RECIO SL" se tratan como la misma empresa.
+ *     La forma jurídica (SL vs SA) se conserva como letras → no hay fusiones falsas.
  *
  * @param {object[]} contratos
- * @returns {{ contratos: object[], stats: { nifs: number, renombrados: number } }}
+ * @returns {{ contratos: object[], stats: { nifs: number, claves: number, renombrados: number } }}
  */
 function canonizarAdjudicatarios(contratos) {
-  // Paso 1: construir índice NIF → Map(nombre → frecuencia)
-  const nifANombres = new Map();
+  // ── Pasada A: agrupar por NIF ─────────────────────────────────────────────
+  const porNIF = new Map(); // nif → Map(nombre → frecuencia)
 
   for (const c of contratos) {
     if (!c.nif_adjudicatario || !c.adjudicatario) continue;
-    if (!nifANombres.has(c.nif_adjudicatario)) {
-      nifANombres.set(c.nif_adjudicatario, new Map());
-    }
-    const nombres = nifANombres.get(c.nif_adjudicatario);
-    nombres.set(c.adjudicatario, (nombres.get(c.adjudicatario) || 0) + 1);
+    if (!porNIF.has(c.nif_adjudicatario)) porNIF.set(c.nif_adjudicatario, new Map());
+    const freq = porNIF.get(c.nif_adjudicatario);
+    freq.set(c.adjudicatario, (freq.get(c.adjudicatario) || 0) + 1);
   }
 
-  // Paso 2: elegir nombre canónico por NIF
-  // Criterio: más frecuente primero; empate → más largo (más descriptivo)
-  const canonico = new Map();
-  for (const [nif, nombres] of nifANombres) {
-    const [nombreCanónico] = [...nombres.entries()]
-      .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length);
-    canonico.set(nif, nombreCanónico[0]);
+  const canonicoNIF = new Map(); // nif → nombre canónico
+  for (const [nif, freq] of porNIF) canonicoNIF.set(nif, _nombreCanónico(freq));
+
+  // ── Pasada B: agrupar por clave suave (sin NIF) ───────────────────────────
+  const porClave = new Map(); // clave → Map(nombre → frecuencia)
+
+  for (const c of contratos) {
+    if (c.nif_adjudicatario || !c.adjudicatario) continue; // ya cubierto por pasada A
+    const clave = _claveEmpresa(c.adjudicatario);
+    if (!porClave.has(clave)) porClave.set(clave, new Map());
+    const freq = porClave.get(clave);
+    freq.set(c.adjudicatario, (freq.get(c.adjudicatario) || 0) + 1);
   }
 
-  // Paso 3: aplicar nombre canónico y contar cambios
+  const canonicoClave = new Map(); // clave → nombre canónico
+  for (const [clave, freq] of porClave) canonicoClave.set(clave, _nombreCanónico(freq));
+
+  // ── Aplicar y contar cambios ──────────────────────────────────────────────
   let renombrados = 0;
   const resultado = contratos.map(c => {
-    if (!c.nif_adjudicatario || !canonico.has(c.nif_adjudicatario)) return c;
-    const nombreCanónico = canonico.get(c.nif_adjudicatario);
-    if (c.adjudicatario === nombreCanónico) return c;
+    if (!c.adjudicatario) return c;
+
+    const nombreCanónico = c.nif_adjudicatario
+      ? canonicoNIF.get(c.nif_adjudicatario)
+      : canonicoClave.get(_claveEmpresa(c.adjudicatario));
+
+    if (!nombreCanónico || c.adjudicatario === nombreCanónico) return c;
     renombrados++;
     return { ...c, adjudicatario: nombreCanónico };
   });
 
   return {
     contratos: resultado,
-    stats: { nifs: canonico.size, renombrados },
+    stats: { nifs: canonicoNIF.size, claves: canonicoClave.size, renombrados },
   };
 }
 
@@ -790,6 +838,7 @@ async function main() {
   console.log('\n🏷️  Paso 5: Canonizar nombres de adjudicatarios por NIF...');
   const { contratos: contratosCanonizados, stats: statsCanon } = canonizarAdjudicatarios(contratosUnicos);
   console.log(`   ${statsCanon.nifs} NIFs únicos procesados`);
+  console.log(`   ${statsCanon.claves} claves suaves procesadas (empresas sin NIF)`);
   console.log(`   ${statsCanon.renombrados} contratos con nombre de adjudicatario unificado`);
 
   // Paso 6: Ordenar por fecha (más recientes primero)
@@ -818,7 +867,7 @@ async function main() {
     console.log(`  🇪🇺 Entrada TED: ${contratosTED.length} contratos (ya filtrados por Madrid)`);
   }
   console.log(`  🔍 Tras deduplicar: ${contratosUnicos.length}`);
-  console.log(`  🏷️  Adjudicatarios canonizados: ${statsCanon.renombrados} contratos unificados (${statsCanon.nifs} NIFs)`);
+  console.log(`  🏷️  Adjudicatarios canonizados: ${statsCanon.renombrados} contratos unificados (${statsCanon.nifs} NIFs + ${statsCanon.claves} claves suaves)`);
   console.log(`  💾 Archivo: ${path.basename(OUTPUT_FILE)} (${tamano} KB)`);
   console.log('─'.repeat(60));
 

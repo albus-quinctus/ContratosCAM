@@ -215,6 +215,26 @@ function generarDatosEjemplo() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Normalización de nombres de empresa (espejo de transform.js)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Clave de comparación normalizada para un nombre de empresa:
+ * minúsculas, sin tildes, sin puntuación societaria (comas, puntos, punto y coma).
+ * Conserva las letras de la forma jurídica (SL, SA, SLU…) para evitar fusiones falsas.
+ * @param {string} nombre
+ * @returns {string}
+ */
+function _claveEmpresa(nombre) {
+  return nombre
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[.,;]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Agregación: construir ranking desde contratos
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -223,30 +243,28 @@ function generarDatosEjemplo() {
  *
  * Estrategia de agrupación (en orden de preferencia):
  *   1. Si el contrato tiene `nif_adjudicatario` → agrupa por NIF.
- *      Esto garantiza que variantes del mismo nombre (ej: "ACSA SA" vs "ACSA S.A.U.")
+ *      Garantiza que variantes del mismo nombre ("ACSA SA" vs "ACSA S.A.U.")
  *      se cuenten como una sola entidad cuando comparten NIF.
- *   2. Si no hay NIF → agrupa por nombre normalizado (mayúsculas, sin espacios extra).
+ *   2. Sin NIF → agrupa por clave normalizada (_claveEmpresa): minúsculas,
+ *      sin tildes, sin puntuación societaria. Así "RECIO, S.L.", "Recio S.L."
+ *      y "RECIO SL" se tratan como la misma empresa.
  *
- * El nombre mostrado es el más frecuente entre todos los contratos del grupo
- * (desempate: el más largo). Esto complementa la canonización del ETL para los
- * contratos que lleguen sin NIF.
- *
- * Solo incluye contratos que tienen adjudicatario definido.
+ * El nombre mostrado es el más frecuente dentro del grupo (empate → más largo).
+ * Solo incluye contratos con adjudicatario definido.
  *
  * @param {Array} contratos
  * @returns {Array} ranking ordenado por importe total desc
  */
 function construirRanking(contratos) {
-  // mapa: clave → { nombre, nif, frecuenciaNombres, contratos, importeTotal, tipos, organismos, anios }
   const mapa = new Map();
 
   for (const c of contratos) {
     if (!c.adjudicatario) continue;
 
-    // Clave de agrupación: NIF si existe, nombre normalizado si no
+    // Clave de agrupación: NIF si existe, clave suave si no
     const clave = c.nif_adjudicatario
       ? 'NIF:' + c.nif_adjudicatario
-      : 'NOMBRE:' + c.adjudicatario.trim().toUpperCase();
+      : 'NOMBRE:' + _claveEmpresa(c.adjudicatario);
 
     if (!mapa.has(clave)) {
       mapa.set(clave, {
