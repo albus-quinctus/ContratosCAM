@@ -341,6 +341,17 @@ function aplicarFiltros() {
   estado.rankingFiltrado = resultado;
   estado.paginaActual = 1;
 
+  // Sincronizar la métrica de la gráfica con el criterio de ordenación
+  if (f.ordenarPor === 'contratos') {
+    estado.metricaGrafica = 'contratos';
+  } else {
+    estado.metricaGrafica = 'importe';
+  }
+  // Actualizar visualmente los botones toggle de la gráfica
+  document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.metric === estado.metricaGrafica);
+  });
+
   renderizarTabla();
   renderizarPaginacion();
   actualizarEstadisticas();
@@ -791,12 +802,25 @@ async function init() {
     }
   });
 
-  // 10. Toggle de métrica en la gráfica
+  // 10. Toggle de métrica en la gráfica (sincroniza con la ordenación)
   document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       estado.metricaGrafica = btn.dataset.metric;
+
+      // Sincronizar el selector de ordenación con la métrica elegida
+      const nuevoOrden = btn.dataset.metric === 'contratos' ? 'contratos' : 'importe';
+      const selectOrden = document.getElementById('ordenar-por');
+      if (selectOrden.value !== nuevoOrden) {
+        selectOrden.value = nuevoOrden;
+        // Reordenar la lista y la gráfica
+        estado.rankingFiltrado.sort(ORDENADORES[nuevoOrden]);
+        estado.paginaActual = 1;
+        renderizarTabla();
+        renderizarPaginacion();
+        actualizarEstadisticas();
+      }
       renderizarGrafica();
     });
   });
