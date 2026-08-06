@@ -108,11 +108,50 @@ const FILTROS_CAM = [
  * a un nombre canónico. Se amplía conforme se detectan variantes en los datos.
  */
 const NORMALIZACION_ORGANISMOS = {
-  // Variantes con/sin tilde o abreviaturas detectadas en los datos
+  // ── Consejería de Sanidad ──────────────────────────────────────────────────
   'Consejeria de Sanidad': 'Consejería de Sanidad',
-  'Consejeria de Educación, Ciencia y Universidades': 'Consejería de Educación, Ciencia y Universidades',
   'CONSEJERÍA DE SANIDAD': 'Consejería de Sanidad',
+  'Consejería de Sanidad de la Comunidad de Madrid': 'Consejería de Sanidad',
+
+  // ── Consejería de Educación ────────────────────────────────────────────────
+  'Consejeria de Educación, Ciencia y Universidades': 'Consejería de Educación, Ciencia y Universidades',
   'CONSEJERÍA DE EDUCACIÓN, CIENCIA Y UNIVERSIDADES': 'Consejería de Educación, Ciencia y Universidades',
+  'Consejería de Educación y Juventud': 'Consejería de Educación, Ciencia y Universidades',
+  'Consejeria de Educacion': 'Consejería de Educación, Ciencia y Universidades',
+
+  // ── Consejería de Transportes ──────────────────────────────────────────────
+  'Consejería de Transportes, Movilidad e Infraestructuras': 'Consejería de Transportes, Movilidad e Infraestructuras',
+  'Consejeria de Transportes, Movilidad e Infraestructuras': 'Consejería de Transportes, Movilidad e Infraestructuras',
+  'CONSEJERÍA DE TRANSPORTES, MOVILIDAD E INFRAESTRUCTURAS': 'Consejería de Transportes, Movilidad e Infraestructuras',
+  'Consejería de Transportes e Infraestructuras': 'Consejería de Transportes, Movilidad e Infraestructuras',
+
+  // ── Consejería de Hacienda ─────────────────────────────────────────────────
+  'Consejeria de Hacienda y Función Pública': 'Consejería de Hacienda y Función Pública',
+  'CONSEJERÍA DE HACIENDA Y FUNCIÓN PÚBLICA': 'Consejería de Hacienda y Función Pública',
+  'Consejería de Hacienda': 'Consejería de Hacienda y Función Pública',
+
+  // ── Consejería de Medio Ambiente ───────────────────────────────────────────
+  'Consejeria de Medio Ambiente, Agricultura e Interior': 'Consejería de Medio Ambiente, Agricultura e Interior',
+  'CONSEJERÍA DE MEDIO AMBIENTE, AGRICULTURA E INTERIOR': 'Consejería de Medio Ambiente, Agricultura e Interior',
+  'Consejería de Medio Ambiente y Ordenación del Territorio': 'Consejería de Medio Ambiente, Agricultura e Interior',
+
+  // ── Consejería de Presidencia ──────────────────────────────────────────────
+  'Consejeria de Presidencia, Justicia y Administración Local': 'Consejería de Presidencia, Justicia y Administración Local',
+  'CONSEJERÍA DE PRESIDENCIA, JUSTICIA Y ADMINISTRACIÓN LOCAL': 'Consejería de Presidencia, Justicia y Administración Local',
+
+  // ── Consejería de Economía ─────────────────────────────────────────────────
+  'Consejeria de Economía, Hacienda y Empleo': 'Consejería de Economía, Hacienda y Empleo',
+  'CONSEJERÍA DE ECONOMÍA, HACIENDA Y EMPLEO': 'Consejería de Economía, Hacienda y Empleo',
+
+  // ── Canal de Isabel II ─────────────────────────────────────────────────────
+  'Canal de Isabel II, S.A.': 'Canal de Isabel II',
+  'Canal de Isabel II SA': 'Canal de Isabel II',
+  'CANAL DE ISABEL II': 'Canal de Isabel II',
+  'Canal Isabel II': 'Canal de Isabel II',
+
+  // ── Agencia Madrileña de Atención Social ──────────────────────────────────
+  'Agencia Madrileña de Atención Social (AMAS)': 'Agencia Madrileña de Atención Social',
+  'AGENCIA MADRILEÑA DE ATENCIÓN SOCIAL': 'Agencia Madrileña de Atención Social',
 };
 
 /**
@@ -332,7 +371,11 @@ function normalizarProcedimiento(code) {
 
 /**
  * Normaliza el nombre de un organismo.
- * Busca primero en la tabla de variantes conocidas, luego limpia espacios.
+ * 1. Busca en la tabla de variantes conocidas (case-sensitive).
+ * 2. Si no hay coincidencia exacta, intenta equivalencia normalizada:
+ *    convierte a minúsculas, elimina puntuación y colapsa espacios.
+ *    Si el resultado coincide con algún canónico ya conocido, lo usa.
+ * 3. En último caso devuelve el nombre limpio tal cual.
  * @param {string|null} nombre
  * @returns {string|null}
  */
@@ -342,13 +385,46 @@ function normalizarOrganismo(nombre) {
   // Limpiar espacios múltiples primero
   const limpio = nombre.replace(/\s+/g, ' ').trim();
 
-  // Buscar en tabla de normalización (case-sensitive)
+  // Paso 1: coincidencia exacta en la tabla de normalización
   if (NORMALIZACION_ORGANISMOS[limpio]) {
     return NORMALIZACION_ORGANISMOS[limpio];
   }
 
+  // Paso 2: equivalencia normalizada (minúsculas + sin puntuación)
+  const clave = _claveOrganismo(limpio);
+  if (_indiceOrganismos.has(clave)) {
+    return _indiceOrganismos.get(clave);
+  }
+
   return limpio;
 }
+
+/**
+ * Genera una clave de comparación normalizada para un nombre de organismo:
+ * minúsculas, sin puntuación, espacios colapsados.
+ * @param {string} nombre
+ * @returns {string}
+ */
+function _claveOrganismo(nombre) {
+  return nombre
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quitar tildes
+    .replace(/[^a-z0-9\s]/g, '')                      // quitar puntuación
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Índice lazy: clave normalizada → nombre canónico.
+ * Se construye la primera vez que se necesita a partir de NORMALIZACION_ORGANISMOS.
+ * @type {Map<string, string>}
+ */
+const _indiceOrganismos = new Map(
+  Object.entries(NORMALIZACION_ORGANISMOS).map(([variante, canonico]) => [
+    _claveOrganismo(variante),
+    canonico,
+  ])
+);
 
 /**
  * Convierte un campo vacío o string vacío a null.
@@ -544,6 +620,61 @@ function deduplicar(contratos) {
   return Array.from(mapa.values());
 }
 
+/**
+ * Canoniza los nombres de adjudicatarios usando el NIF como clave de identidad.
+ *
+ * Problema que resuelve: una misma empresa puede aparecer con nombres ligeramente
+ * distintos en distintos contratos (ej: "ACSA OBRAS E INFRAESTRUCTURAS SA" vs
+ * "ACSA, OBRAS E INFRAESTRUCTURAS, S.A.U.") pero con el mismo NIF.
+ *
+ * Algoritmo:
+ *   1. Agrupa todos los nombres encontrados por NIF.
+ *   2. Elige el nombre canónico: el más frecuente; en caso de empate, el más largo.
+ *   3. Sustituye el nombre en todos los contratos que tengan ese NIF.
+ *
+ * Los contratos sin NIF no se modifican (no hay base fiable para canonizar).
+ *
+ * @param {object[]} contratos
+ * @returns {{ contratos: object[], stats: { nifs: number, renombrados: number } }}
+ */
+function canonizarAdjudicatarios(contratos) {
+  // Paso 1: construir índice NIF → Map(nombre → frecuencia)
+  const nifANombres = new Map();
+
+  for (const c of contratos) {
+    if (!c.nif_adjudicatario || !c.adjudicatario) continue;
+    if (!nifANombres.has(c.nif_adjudicatario)) {
+      nifANombres.set(c.nif_adjudicatario, new Map());
+    }
+    const nombres = nifANombres.get(c.nif_adjudicatario);
+    nombres.set(c.adjudicatario, (nombres.get(c.adjudicatario) || 0) + 1);
+  }
+
+  // Paso 2: elegir nombre canónico por NIF
+  // Criterio: más frecuente primero; empate → más largo (más descriptivo)
+  const canonico = new Map();
+  for (const [nif, nombres] of nifANombres) {
+    const [nombreCanónico] = [...nombres.entries()]
+      .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length);
+    canonico.set(nif, nombreCanónico[0]);
+  }
+
+  // Paso 3: aplicar nombre canónico y contar cambios
+  let renombrados = 0;
+  const resultado = contratos.map(c => {
+    if (!c.nif_adjudicatario || !canonico.has(c.nif_adjudicatario)) return c;
+    const nombreCanónico = canonico.get(c.nif_adjudicatario);
+    if (c.adjudicatario === nombreCanónico) return c;
+    renombrados++;
+    return { ...c, adjudicatario: nombreCanónico };
+  });
+
+  return {
+    contratos: resultado,
+    stats: { nifs: canonico.size, renombrados },
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
 // ─────────────────────────────────────────────────────────────────────────────
@@ -655,9 +786,15 @@ async function main() {
     console.log(`     • ${fuente}: ${count}`);
   }
 
-  // Paso 5: Ordenar por fecha (más recientes primero)
-  console.log('\n📅 Paso 5: Ordenar por fecha...');
-  contratosUnicos.sort((a, b) => {
+  // Paso 5: Canonizar nombres de adjudicatarios por NIF
+  console.log('\n🏷️  Paso 5: Canonizar nombres de adjudicatarios por NIF...');
+  const { contratos: contratosCanonizados, stats: statsCanon } = canonizarAdjudicatarios(contratosUnicos);
+  console.log(`   ${statsCanon.nifs} NIFs únicos procesados`);
+  console.log(`   ${statsCanon.renombrados} contratos con nombre de adjudicatario unificado`);
+
+  // Paso 6: Ordenar por fecha (más recientes primero)
+  console.log('\n📅 Paso 6: Ordenar por fecha...');
+  contratosCanonizados.sort((a, b) => {
     if (!a.fecha_publicacion && !b.fecha_publicacion) return 0;
     if (!a.fecha_publicacion) return 1;
     if (!b.fecha_publicacion) return -1;
@@ -665,10 +802,10 @@ async function main() {
   });
 
   // Reasignar IDs secuenciales (después de ordenar)
-  contratosUnicos.forEach((c, i) => { c.id = i + 1; });
+  contratosCanonizados.forEach((c, i) => { c.id = i + 1; });
 
   // Guardar resultado
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(contratosUnicos, null, 2), 'utf-8');
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(contratosCanonizados, null, 2), 'utf-8');
   const tamano = (fs.statSync(OUTPUT_FILE).size / 1024).toFixed(1);
 
   // Resumen final
@@ -681,14 +818,15 @@ async function main() {
     console.log(`  🇪🇺 Entrada TED: ${contratosTED.length} contratos (ya filtrados por Madrid)`);
   }
   console.log(`  🔍 Tras deduplicar: ${contratosUnicos.length}`);
+  console.log(`  🏷️  Adjudicatarios canonizados: ${statsCanon.renombrados} contratos unificados (${statsCanon.nifs} NIFs)`);
   console.log(`  💾 Archivo: ${path.basename(OUTPUT_FILE)} (${tamano} KB)`);
   console.log('─'.repeat(60));
 
   // Estadísticas adicionales
-  if (contratosUnicos.length > 0) {
+  if (contratosCanonizados.length > 0) {
     const tipos = {};
     const procedimientos = {};
-    contratosUnicos.forEach(c => {
+    contratosCanonizados.forEach(c => {
       if (c.tipo) tipos[c.tipo] = (tipos[c.tipo] || 0) + 1;
       if (c.procedimiento) procedimientos[c.procedimiento] = (procedimientos[c.procedimiento] || 0) + 1;
     });
@@ -704,7 +842,7 @@ async function main() {
     });
 
     const estados = {};
-    contratosUnicos.forEach(c => {
+    contratosCanonizados.forEach(c => {
       if (c.estado) estados[c.estado] = (estados[c.estado] || 0) + 1;
     });
 
@@ -714,7 +852,7 @@ async function main() {
     });
 
     // Rango de importes
-    const importes = contratosUnicos.filter(c => c.importe).map(c => c.importe);
+    const importes = contratosCanonizados.filter(c => c.importe).map(c => c.importe);
     if (importes.length > 0) {
       console.log(`\n  💰 Importes:`);
       console.log(`     • Mínimo: ${Math.min(...importes).toLocaleString('es-ES')} €`);
@@ -723,7 +861,7 @@ async function main() {
     }
 
     // Campos enriquecidos de TED
-    const conOfertas = contratosUnicos.filter(c => c.num_ofertas).length;
+    const conOfertas = contratosCanonizados.filter(c => c.num_ofertas).length;
     if (conOfertas > 0) {
       console.log(`\n  🇪🇺 Datos enriquecidos TED:`);
       console.log(`     • Con num_ofertas: ${conOfertas}`);

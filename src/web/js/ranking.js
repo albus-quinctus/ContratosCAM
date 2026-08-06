@@ -219,23 +219,39 @@ function generarDatosEjemplo() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Agrupa los contratos por adjudicatario (normalizado a mayúsculas) y
- * calcula métricas por empresa en un único recorrido del array.
+ * Agrupa los contratos por adjudicatario y calcula métricas por empresa.
+ *
+ * Estrategia de agrupación (en orden de preferencia):
+ *   1. Si el contrato tiene `nif_adjudicatario` → agrupa por NIF.
+ *      Esto garantiza que variantes del mismo nombre (ej: "ACSA SA" vs "ACSA S.A.U.")
+ *      se cuenten como una sola entidad cuando comparten NIF.
+ *   2. Si no hay NIF → agrupa por nombre normalizado (mayúsculas, sin espacios extra).
+ *
+ * El nombre mostrado es el más frecuente entre todos los contratos del grupo
+ * (desempate: el más largo). Esto complementa la canonización del ETL para los
+ * contratos que lleguen sin NIF.
+ *
  * Solo incluye contratos que tienen adjudicatario definido.
+ *
  * @param {Array} contratos
  * @returns {Array} ranking ordenado por importe total desc
  */
 function construirRanking(contratos) {
+  // mapa: clave → { nombre, nif, frecuenciaNombres, contratos, importeTotal, tipos, organismos, anios }
   const mapa = new Map();
 
   for (const c of contratos) {
     if (!c.adjudicatario) continue;
 
-    const clave = c.adjudicatario.trim().toUpperCase();
+    // Clave de agrupación: NIF si existe, nombre normalizado si no
+    const clave = c.nif_adjudicatario
+      ? 'NIF:' + c.nif_adjudicatario
+      : 'NOMBRE:' + c.adjudicatario.trim().toUpperCase();
+
     if (!mapa.has(clave)) {
       mapa.set(clave, {
-        nombre: c.adjudicatario.trim(),
         nif: c.nif_adjudicatario || null,
+        frecuenciaNombres: new Map(), // nombre → número de apariciones
         contratos: [],
         importeTotal: 0,
         tipos: new Set(),
@@ -245,8 +261,17 @@ function construirRanking(contratos) {
     }
 
     const entrada = mapa.get(clave);
-    // Conservar el primer NIF no nulo encontrado para esta empresa
+
+    // Actualizar NIF si aún no lo teníamos (puede llegar en contratos posteriores)
     if (!entrada.nif && c.nif_adjudicatario) entrada.nif = c.nif_adjudicatario;
+
+    // Contabilizar frecuencia de cada variante de nombre
+    const nombreLimpio = c.adjudicatario.trim();
+    entrada.frecuenciaNombres.set(
+      nombreLimpio,
+      (entrada.frecuenciaNombres.get(nombreLimpio) || 0) + 1
+    );
+
     entrada.contratos.push(c);
     entrada.importeTotal += c.importe || 0;
     if (c.tipo) entrada.tipos.add(c.tipo);
@@ -260,8 +285,13 @@ function construirRanking(contratos) {
   // Convertir el mapa en array y calcular métricas derivadas
   const ranking = [...mapa.values()].map(entrada => {
     const n = entrada.contratos.length;
+
+    // Nombre canónico: el más frecuente; empate → el más largo
+    const [nombreCanónico] = [...entrada.frecuenciaNombres.entries()]
+      .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length);
+
     return {
-      nombre: entrada.nombre,
+      nombre: nombreCanónico[0],
       nif: entrada.nif,
       numContratos: n,
       importeTotal: entrada.importeTotal,
