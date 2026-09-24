@@ -292,8 +292,8 @@ function aplicarFiltros() {
     if (f.estadoFiltro && c.estado !== f.estadoFiltro) return false;
     if (f.importeMin !== null && (c.importe === null || c.importe < f.importeMin)) return false;
     if (f.importeMax !== null && (c.importe === null || c.importe > f.importeMax)) return false;
-    if (f.fechaDesde && c.fecha_publicacion && c.fecha_publicacion < f.fechaDesde) return false;
-    if (f.fechaHasta && c.fecha_publicacion && c.fecha_publicacion > f.fechaHasta) return false;
+    if (f.fechaDesde && (!c.fecha_publicacion || c.fecha_publicacion < f.fechaDesde)) return false;
+    if (f.fechaHasta && (!c.fecha_publicacion || c.fecha_publicacion > f.fechaHasta)) return false;
     return true;
   });
 

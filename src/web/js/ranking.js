@@ -324,6 +324,7 @@ function obtenerFiltros() {
 
 function aplicarFiltros() {
   const f = obtenerFiltros();
+  const hayFiltroContrato = !!(f.tipo || f.organismo || f.anio);
 
   const resultado = estado.ranking.filter(entrada => {
     if (f.busqueda) {
@@ -336,9 +337,34 @@ function aplicarFiltros() {
     return true;
   });
 
-  resultado.sort(ORDENADORES[f.ordenarPor] || ORDENADORES.importe);
+  // Cuando hay filtros de tipo/organismo/año, recalcular métricas
+  // usando solo los contratos que coinciden con los filtros aplicados.
+  // Esto evita mostrar importes globales cuando el usuario filtra por un subconjunto.
+  let rankingRecalculado;
+  if (hayFiltroContrato) {
+    rankingRecalculado = resultado.map(entrada => {
+      const contratosFiltrados = entrada.contratos.filter(c => {
+        if (f.tipo && c.tipo !== f.tipo) return false;
+        if (f.organismo && c.organismo !== f.organismo) return false;
+        if (f.anio && (!c.fecha_publicacion || c.fecha_publicacion.substring(0, 4) !== f.anio)) return false;
+        return true;
+      });
+      const n = contratosFiltrados.length;
+      const importeTotal = contratosFiltrados.reduce((s, c) => s + (c.importe || 0), 0);
+      return Object.assign({}, entrada, {
+        numContratos: n,
+        importeTotal: importeTotal,
+        importeMedio: n > 0 ? importeTotal / n : 0,
+        contratosFiltrados: contratosFiltrados,
+      });
+    });
+  } else {
+    rankingRecalculado = resultado;
+  }
 
-  estado.rankingFiltrado = resultado;
+  rankingRecalculado.sort(ORDENADORES[f.ordenarPor] || ORDENADORES.importe);
+
+  estado.rankingFiltrado = rankingRecalculado;
   estado.paginaActual = 1;
 
   // Sincronizar la métrica de la gráfica con el criterio de ordenación
@@ -547,11 +573,13 @@ function abrirModal(entrada) {
   // Actualizar el título accesible del modal con el nombre real de la empresa
   document.getElementById('modal-heading').textContent = entrada.nombre;
 
-  const contratosOrdenados = [...entrada.contratos].sort((a, b) => (b.importe || 0) - (a.importe || 0));
+  // Si hay filtros activos, usar los contratos filtrados; si no, todos
+  const contratosRelevantes = entrada.contratosFiltrados || entrada.contratos;
+  const contratosOrdenados = [...contratosRelevantes].sort((a, b) => (b.importe || 0) - (a.importe || 0));
 
   // Importe acumulado por tipo (un solo bucle)
   const importePorTipo = {};
-  for (const c of entrada.contratos) {
+  for (const c of contratosRelevantes) {
     const t = c.tipo || 'Sin clasificar';
     importePorTipo[t] = (importePorTipo[t] || 0) + (c.importe || 0);
   }
