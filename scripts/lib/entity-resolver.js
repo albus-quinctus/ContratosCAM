@@ -295,27 +295,46 @@ export function construirRegistro(contratos, registroExistente = null) {
     freq.set(limpio, (freq.get(limpio) || 0) + 1);
   }
 
+  // Construir índice inverso: clave_normalizada → clave_propiedad del registro
+  // Necesario porque ORGANISMOS_CONOCIDOS usa claves semánticas (ej: "tesoreria_ss")
+  // pero porClaveOrg usa claves normalizadas (ej: "tesoreria general de la seguridad social")
+  const indiceClaveOrg = new Map(); // clave_normalizada → clave_propiedad
+  for (const [propClave, org] of Object.entries(registro.organismos)) {
+    const claveNorm = claveOrganismo(org.nombre_canonico);
+    indiceClaveOrg.set(claveNorm, propClave);
+    for (const alias of (org.aliases || [])) {
+      indiceClaveOrg.set(claveOrganismo(alias), propClave);
+    }
+  }
+
   for (const [clave, freq] of porClaveOrg) {
+    // Buscar si ya existe una entrada en el registro (por clave normalizada)
+    const propExistente = indiceClaveOrg.get(clave);
+
     // Solo registrar si hay más de una variante o si no existe ya
-    if (freq.size <= 1 && registro.organismos[clave]) continue;
+    if (freq.size <= 1 && propExistente) continue;
 
     const nombre = nombreCanónico(freq);
     const aliases = [...freq.keys()].filter(n => n !== nombre);
 
-    if (!registro.organismos[clave]) {
-      // Solo registrar si hay variantes que unificar
+    if (!propExistente) {
+      // No existe: crear nueva entrada solo si hay variantes que unificar
       if (aliases.length > 0) {
         registro.organismos[clave] = {
           nombre_canonico: nombre,
           aliases,
           fuente: 'auto',
         };
+        indiceClaveOrg.set(clave, clave);
       }
-    } else if (registro.organismos[clave].fuente !== 'manual') {
-      // Actualizar aliases (preservar manuales)
-      const existentes = new Set(registro.organismos[clave].aliases || []);
-      for (const alias of aliases) existentes.add(alias);
-      registro.organismos[clave].aliases = [...existentes];
+    } else {
+      const entradaExistente = registro.organismos[propExistente];
+      if (entradaExistente.fuente !== 'manual') {
+        // Actualizar aliases (preservar nombre canónico si fue establecido manualmente)
+        const existentes = new Set(entradaExistente.aliases || []);
+        for (const alias of aliases) existentes.add(alias);
+        entradaExistente.aliases = [...existentes];
+      }
     }
   }
 
