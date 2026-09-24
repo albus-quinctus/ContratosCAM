@@ -281,8 +281,9 @@ function aplicarFiltros() {
 
   estado.filtrados = estado.datos.filter(c => {
     if (terminos.length > 0) {
-      // Incluir NIF en el texto de búsqueda
-      const texto = [c.objeto, c.organismo, c.adjudicatario, c.nif_adjudicatario, c.expediente]
+      // Incluir NIF y miembros de UTE en el texto de búsqueda
+      const texto = [c.objeto, c.organismo, c.adjudicatario, c.nif_adjudicatario, c.expediente,
+        ...(c.miembros_ute || [])]
         .join(' ').toLowerCase();
       // Todos los términos deben aparecer (AND)
       if (!terminos.every(t => texto.includes(t))) return false;
@@ -375,7 +376,7 @@ function renderizarTabla() {
     '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
-    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + '</div></td>' +
+    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute" title="Unión Temporal de Empresas">UTE</span>' : '') + '</div></td>' +
     '</tr>';
   }).join('');
 
@@ -439,10 +440,16 @@ function abrirModal(c) {
     '<hr class="modal-divider" />' +
     '<div class="modal-grid">' +
     '<div class="modal-field"><div class="modal-field-label">Adjudicatario</div>' +
-    '<div class="modal-field-value">' + (esc(c.adjudicatario) || '—') + '</div></div>' +
+    '<div class="modal-field-value">' + (esc(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute">UTE</span>' : '') + '</div></div>' +
     '<div class="modal-field"><div class="modal-field-label">NIF</div>' +
     '<div class="modal-field-value">' + (esc(c.nif_adjudicatario) || '—') + '</div></div>' +
     '</div>' +
+    (c.es_ute && c.miembros_ute && c.miembros_ute.length > 0
+      ? '<div class="modal-field"><div class="modal-field-label">Empresas miembro de la UTE</div>' +
+        '<div class="modal-field-value"><ul class="ute-miembros-list">' +
+        c.miembros_ute.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
+        '</ul></div></div>'
+      : '') +
     '<div class="modal-grid">' +
     '<div class="modal-field"><div class="modal-field-label">Fecha publicación</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_publicacion) + '</div></div>' +

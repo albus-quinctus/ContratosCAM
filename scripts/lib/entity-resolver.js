@@ -467,6 +467,7 @@ export function categorizarOrganismo(nombre) {
     if (regla.regex.test(nombre)) {
       return { categoria: regla.categoria, label: regla.label };
     }
+    
   }
   return { categoria: 'otros', label: 'Otros' };
 }
@@ -483,4 +484,103 @@ export function obtenerMapaCategorias() {
   }
   mapa['otros'] = 'Otros';
   return mapa;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Detección y descomposición de UTEs
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Detecta si un adjudicatario es una UTE y extrae sus miembros cuando es posible.
+ *
+ * @param {string|null} nombre - Nombre del adjudicatario
+ * @param {string|null} nif - NIF del adjudicatario
+ * @returns {{ esUte: boolean, miembros: string[] }}
+ */
+export function detectarUTE(nombre, nif) {
+  if (!nombre) return { esUte: false, miembros: [] };
+
+  const upper = nombre.toUpperCase().trim();
+
+  // Detección por NIF (los NIFs de UTEs empiezan por U)
+  const nifEsUte = nif && /^U\d/i.test(nif.trim());
+
+  // Detección por nombre
+  const nombreEsUte =
+    upper.startsWith('UTE ') ||
+    upper.startsWith('U.T.E.') ||
+    upper.startsWith('UTE.') ||
+    upper.startsWith('UTE:') ||
+    /\bUTE\b/.test(upper) ||
+    /\bU\.T\.E\.?\b/.test(upper) ||
+    /UNI[OÓ]N TEMPORAL DE EMPRESAS/.test(upper);
+
+  const esUte = !!(nifEsUte || nombreEsUte);
+  if (!esUte) return { esUte: false, miembros: [] };
+
+  const miembros = extraerMiembrosUTE(nombre);
+  return { esUte, miembros };
+}
+
+/**
+ * Intenta extraer los nombres de las empresas miembro de una UTE a partir
+ * de su nombre. Devuelve array vacío si no se pueden identificar.
+ *
+ * @param {string} nombre - Nombre completo de la UTE
+ * @returns {string[]} Array de nombres de empresas miembro (puede estar vacío)
+ */
+export function extraerMiembrosUTE(nombre) {
+  if (!nombre) return [];
+
+  let texto = nombre.trim();
+
+  // 1. Quitar prefijos UTE
+  texto = texto
+    .replace(/^U\.?T\.?E\.?\s*[:.]?\s*/i, '')
+    .replace(/^UNI[OÓ]N TEMPORAL DE EMPRESAS\s*/i, '');
+
+  // 2. Quitar sufijos "abreviadamente ..." y todo lo que siga
+  texto = texto.replace(/,?\s*abreviadamente\s+.*/i, '');
+
+  // 3. Quitar sufijos UTE / UNION TEMPORAL al final
+  texto = texto
+    .replace(/,?\s*UNI[OÓ]N TEMPORAL DE EMPRESAS.*$/i, '')
+    .replace(/,?\s*U\.?T\.?E\.?\s*$/i, '')
+    .replace(/,?\s*\bUTE\b\s*$/i, '');
+
+  // 4. Quitar referencias legales "LEY 18/1982..."
+  texto = texto.replace(/,?\s*LEY\s+\d+\/\d+.*/i, '');
+
+  texto = texto.trim();
+  if (!texto) return [];
+
+  // 5. Intentar split por separadores
+  let partes = null;
+
+  // 5a. Separador " - " (guión con espacios)
+  if (texto.includes(' - ')) {
+    partes = texto.split(/\s+-\s+/);
+  }
+  // 5b. Separador ".- " o "-" pegado tras forma societaria
+  else if (/[.,]\s*-\s*/.test(texto)) {
+    partes = texto.split(/[.,]\s*-\s*/);
+  }
+  // 5c. Separador " y " / " e " (conjunciones) — solo si precede forma societaria
+  //     Esto evita falsos positivos como "OBRAS Y SERVICIOS"
+  else if (/,\s+S\.[AL]\.[UL]?\.?\s+[ye]\s+/i.test(texto)) {
+    partes = texto.split(/(?<=,\s+S\.[AL]\.[UL]?\.?)\s+[ye]\s+/i);
+  }
+  // 5d. Separador " Y " entre dos formas societarias completas (S.A. Y S.L.)
+  else if (/S\.[AL]\.[UL]?\.?\s+Y\s+/i.test(texto) && /S\.[AL]\.[UL]?\.?\s*$/i.test(texto)) {
+    partes = texto.split(/(?<=S\.[AL]\.[UL]?\.?)\s+Y\s+/i);
+  }
+
+  if (!partes || partes.length < 2) return [];
+
+  // 6. Limpiar cada parte
+  return partes
+    .map(p => p.trim())
+    .filter(p => p.length > 2)
+    .map(p => p.replace(/^[,\s]+|[,\s]+$/g, '').trim())
+    .filter(p => p.length > 2);
 }

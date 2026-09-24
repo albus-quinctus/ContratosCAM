@@ -27,6 +27,7 @@ import {
   construirRegistro,
   aplicarResolucion,
   categorizarOrganismo,
+  detectarUTE,
 } from './lib/entity-resolver.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -319,6 +320,24 @@ async function main() {
   for (const [cat, n] of Object.entries(conteoCategorias).sort((a, b) => b[1] - a[1])) {
     console.log(`     ${cat}: ${n} contratos`);
   }
+
+  // 4c. Detectar UTEs y extraer miembros
+  console.log('\n🤝 Paso 2c: Detectar UTEs...');
+  let conteoUtes = 0;
+  let conteoConMiembros = 0;
+  for (const c of resueltos) {
+    const { esUte, miembros } = detectarUTE(c.adjudicatario, c.nif_adjudicatario);
+    if (esUte) {
+      c.es_ute = true;
+      conteoUtes++;
+      if (miembros.length > 0) {
+        c.miembros_ute = miembros;
+        conteoConMiembros++;
+      }
+    }
+  }
+  console.log(`   ${conteoUtes} contratos de UTEs detectados`);
+  console.log(`   ${conteoConMiembros} con miembros extraídos`);
 
   // 5. Guardar resultados
   console.log('\n💾 Paso 3: Guardar resultados...');

@@ -60,6 +60,7 @@ const estado = {
   paginaActual: 1,
   metricaGrafica: 'importe',  // 'importe' | 'contratos'
   chartTop10: null,
+  incluirEstimacionUte: false, // Toggle para incluir importes estimados de UTEs
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -264,12 +265,20 @@ function construirRanking(contratos) {
         organismos: new Set(),
         categorias: new Set(),
         anios: new Set(),
+        esUte: false,
+        miembrosUte: [],
       });
     }
 
     const entrada = mapa.get(clave);
 
     if (!entrada.nif && c.nif_adjudicatario) entrada.nif = c.nif_adjudicatario;
+    if (c.es_ute) {
+      entrada.esUte = true;
+      if (c.miembros_ute && c.miembros_ute.length > 0 && entrada.miembrosUte.length === 0) {
+        entrada.miembrosUte = c.miembros_ute;
+      }
+    }
 
     const nombreLimpio = c.adjudicatario.trim();
     entrada.frecuenciaNombres.set(
@@ -304,8 +313,44 @@ function construirRanking(contratos) {
       categorias: [...entrada.categorias].sort(),
       anios: [...entrada.anios].sort(),
       contratos: entrada.contratos,
+      esUte: entrada.esUte,
+      miembrosUte: entrada.miembrosUte,
+      // Participaciones en UTEs (se calcula después)
+      participacionesUte: [],
+      numContratosUte: 0,
+      importeUteEstimado: 0,
     };
   });
+
+  // ── Calcular participaciones en UTEs para cada empresa ──────────────────
+  // Para cada UTE con miembros conocidos, buscar las empresas miembro en el ranking
+  // y añadir la participación (contrato + importe dividido entre miembros)
+  const rankingPorNombre = new Map();
+  for (const r of ranking) {
+    rankingPorNombre.set(r.nombre.toLowerCase().trim(), r);
+  }
+
+  for (const r of ranking) {
+    if (!r.esUte || r.miembrosUte.length === 0) continue;
+    const numMiembros = r.miembrosUte.length;
+    const importePorMiembro = r.importeTotal / numMiembros;
+
+    for (const miembro of r.miembrosUte) {
+      const claveMiembro = miembro.toLowerCase().trim();
+      const entradaMiembro = rankingPorNombre.get(claveMiembro);
+      if (entradaMiembro) {
+        entradaMiembro.participacionesUte.push({
+          nombreUte: r.nombre,
+          numContratos: r.numContratos,
+          importeTotal: r.importeTotal,
+          importeEstimado: importePorMiembro,
+          numMiembros: numMiembros,
+        });
+        entradaMiembro.numContratosUte += r.numContratos;
+        entradaMiembro.importeUteEstimado += importePorMiembro;
+      }
+    }
+  }
 
   ranking.sort(ORDENADORES.importe);
   return ranking;
@@ -332,7 +377,11 @@ function aplicarFiltros() {
 
   const resultado = estado.ranking.filter(entrada => {
     if (f.busqueda) {
-      const texto = (entrada.nombre + ' ' + (entrada.nif || '')).toLowerCase();
+      let texto = (entrada.nombre + ' ' + (entrada.nif || '')).toLowerCase();
+      // Incluir miembros de UTE en la búsqueda
+      if (entrada.miembrosUte && entrada.miembrosUte.length > 0) {
+        texto += ' ' + entrada.miembrosUte.join(' ').toLowerCase();
+      }
       if (!texto.includes(f.busqueda)) return false;
     }
     if (f.tipo      && !entrada.tipos.includes(f.tipo))           return false;
@@ -438,17 +487,28 @@ function renderizarTabla() {
         '</div>' +
       '</td>' +
       '<td class="col-empresa">' +
-        '<div class="empresa-nombre">' + esc(entrada.nombre) + '</div>' +
+        '<div class="empresa-nombre">' + esc(entrada.nombre) +
+          (entrada.esUte ? ' <span class="badge badge--ute" title="Unión Temporal de Empresas">UTE</span>' : '') +
+        '</div>' +
         (entrada.nif ? '<div class="empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
+        (entrada.participacionesUte.length > 0
+          ? '<div class="empresa-ute-info" title="Participa en ' + entrada.participacionesUte.length + ' UTE(s)">🤝 ' + entrada.participacionesUte.length + ' UTE' + (entrada.participacionesUte.length > 1 ? 's' : '') + '</div>'
+          : '') +
         '<div class="ranking-bar-wrapper" aria-hidden="true">' +
           '<div class="ranking-bar" style="width:' + porcentaje.toFixed(1) + '%"></div>' +
         '</div>' +
       '</td>' +
       '<td class="col-ncontratos">' +
         '<span class="num-contratos">' + entrada.numContratos.toLocaleString('es-ES') + '</span>' +
+        (estado.incluirEstimacionUte && entrada.numContratosUte > 0
+          ? '<div class="ute-estimacion">+' + entrada.numContratosUte + ' vía UTE</div>'
+          : '') +
       '</td>' +
       '<td class="col-importe-total">' +
         '<span class="cell-importe">' + formatearImporte(entrada.importeTotal) + '</span>' +
+        (estado.incluirEstimacionUte && entrada.importeUteEstimado > 0
+          ? '<div class="ute-estimacion">+' + formatearImporte(entrada.importeUteEstimado) + ' ⚠️</div>'
+          : '') +
       '</td>' +
       '<td class="col-importe-medio">' +
         '<span class="cell-importe-medio">' + formatearImporte(entrada.importeMedio) + '</span>' +
@@ -622,11 +682,41 @@ function abrirModal(entrada) {
       contratosOrdenados.length.toLocaleString('es-ES') + '.</p>'
     : '';
 
+  // Sección de miembros UTE (si es UTE con miembros conocidos)
+  var uteHtml = '';
+  if (entrada.esUte && entrada.miembrosUte.length > 0) {
+    uteHtml =
+      '<div class="modal-field"><div class="modal-field-label">Empresas miembro de la UTE</div>' +
+      '<div class="modal-field-value"><ul class="ute-miembros-list">' +
+      entrada.miembrosUte.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
+      '</ul></div></div>';
+  }
+
+  // Sección de participaciones en UTEs (si la empresa participa en UTEs)
+  var participacionesHtml = '';
+  if (entrada.participacionesUte.length > 0) {
+    participacionesHtml =
+      '<div class="modal-field"><div class="modal-field-label">🤝 Participación en UTEs (' + entrada.participacionesUte.length + ')</div>' +
+      '<div class="modal-ute-participaciones">' +
+      entrada.participacionesUte.map(function(p) {
+        return '<div class="modal-ute-row">' +
+          '<span class="modal-ute-nombre">' + esc(p.nombreUte) + '</span>' +
+          '<span class="modal-ute-detalle">' + p.numContratos + ' contrato' + (p.numContratos > 1 ? 's' : '') +
+          ' · ' + formatearImporte(p.importeTotal) + ' total' +
+          ' · ~' + formatearImporte(p.importeEstimado) + ' estimado (÷' + p.numMiembros + ')</span>' +
+          '</div>';
+      }).join('') +
+      '</div></div>';
+  }
+
   contenido.innerHTML =
     '<div class="modal-empresa-header">' +
-      '<div class="modal-empresa-nombre">' + esc(entrada.nombre) + '</div>' +
+      '<div class="modal-empresa-nombre">' + esc(entrada.nombre) +
+        (entrada.esUte ? ' <span class="badge badge--ute">UTE</span>' : '') +
+      '</div>' +
       (entrada.nif ? '<div class="modal-empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
     '</div>' +
+    uteHtml +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-metricas">' +
@@ -656,6 +746,7 @@ function abrirModal(entrada) {
         entrada.organismos.map(o => '<span class="modal-organismo-tag">' + esc(o) + '</span>').join('') +
       '</div>' +
     '</div>' +
+    participacionesHtml +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-field">' +
@@ -921,12 +1012,27 @@ async function init() {
   document.getElementById('filtro-anio').addEventListener('change', aplicarFiltros);
   document.getElementById('ordenar-por').addEventListener('change', aplicarFiltros);
 
+  // 4b. Toggle de estimación UTEs
+  const toggleUte = document.getElementById('toggle-ute');
+  if (toggleUte) {
+    toggleUte.addEventListener('change', function () {
+      estado.incluirEstimacionUte = this.checked;
+      renderizarTabla();
+    });
+  }
+
   // 5. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
     ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-anio'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('ordenar-por').value = 'importe';
+    // Reset toggle UTE
+    const toggleUteLimpiar = document.getElementById('toggle-ute');
+    if (toggleUteLimpiar) {
+      toggleUteLimpiar.checked = false;
+      estado.incluirEstimacionUte = false;
+    }
     filtrarOrganismosPorCategoria('');
     aplicarFiltros();
   });
