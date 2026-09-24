@@ -257,6 +257,7 @@ function obtenerFiltros() {
   return {
     busqueda: document.getElementById('input-busqueda').value.trim().toLowerCase(),
     tipo: document.getElementById('filtro-tipo').value,
+    categoria: document.getElementById('filtro-categoria').value,
     organismo: document.getElementById('filtro-organismo').value,
     procedimiento: document.getElementById('filtro-procedimiento').value,
     estadoFiltro: document.getElementById('filtro-estado').value,
@@ -287,6 +288,7 @@ function aplicarFiltros() {
       if (!terminos.every(t => texto.includes(t))) return false;
     }
     if (f.tipo && c.tipo !== f.tipo) return false;
+    if (f.categoria && c.categoria_organismo !== f.categoria) return false;
     if (f.organismo && c.organismo !== f.organismo) return false;
     if (f.procedimiento && c.procedimiento !== f.procedimiento) return false;
     if (f.estadoFiltro && c.estado !== f.estadoFiltro) return false;
@@ -654,9 +656,153 @@ function poblarSelect(id, valores) {
   });
 }
 
+/**
+ * Mapa de categoría → etiqueta legible para el selector de categorías.
+ * Se construye dinámicamente a partir de los datos cargados.
+ */
+const CATEGORIAS_LABEL = {
+  universidades: 'Universidades',
+  distritos_madrid: 'Distritos de Madrid',
+  ayto_madrid: 'Ayuntamiento de Madrid',
+  consejerias: 'Consejerías de la CAM',
+  salud: 'Salud (SERMAS y hospitales)',
+  entes_cam: 'Entes y agencias de la CAM',
+  aytos_pleno: 'Ayuntamientos (Pleno)',
+  aytos_junta: 'Ayuntamientos (Junta de Gobierno)',
+  aytos_alcaldia: 'Ayuntamientos (Alcaldía)',
+  aytos_otros: 'Ayuntamientos (otros)',
+  mancomunidades: 'Mancomunidades',
+  empresas_municipales: 'Empresas y entes municipales',
+  ferroviario: 'Sector ferroviario',
+  estado_central: 'Administración General del Estado',
+  investigacion: 'Investigación y fundaciones',
+  desarrollo_rural: 'Desarrollo rural y local',
+  otros: 'Otros',
+};
+
+/**
+ * Puebla el selector de organismos con optgroups agrupados por categoría.
+ * Cada categoría se convierte en un <optgroup> con sus organismos ordenados.
+ */
+function poblarSelectOrganismoConOptgroup() {
+  const select = document.getElementById('filtro-organismo');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Construir mapa categoría → [organismos]
+  const mapaCat = {};
+  for (const c of estado.datos) {
+    if (!c.organismo) continue;
+    const cat = c.categoria_organismo || 'otros';
+    if (!mapaCat[cat]) mapaCat[cat] = new Set();
+    mapaCat[cat].add(c.organismo);
+  }
+
+  // Orden de categorías (las que tienen más organismos primero, pero 'otros' al final)
+  const categoriasOrdenadas = Object.keys(mapaCat)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => {
+      const la = CATEGORIAS_LABEL[a] || a;
+      const lb = CATEGORIAS_LABEL[b] || b;
+      return la.localeCompare(lb, 'es');
+    });
+  if (mapaCat['otros']) categoriasOrdenadas.push('otros');
+
+  for (const cat of categoriasOrdenadas) {
+    const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = CATEGORIAS_LABEL[cat] || cat;
+    for (const org of organismos) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      optgroup.appendChild(opt);
+    }
+    select.appendChild(optgroup);
+  }
+}
+
+/**
+ * Puebla el selector de categorías con las categorías presentes en los datos.
+ */
+function poblarSelectCategoria() {
+  const select = document.getElementById('filtro-categoria');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Recoger categorías presentes y contar contratos
+  const conteo = {};
+  for (const c of estado.datos) {
+    const cat = c.categoria_organismo || 'otros';
+    conteo[cat] = (conteo[cat] || 0) + 1;
+  }
+
+  // Ordenar: alfabéticamente por label, 'otros' al final
+  const categorias = Object.keys(conteo)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => {
+      const la = CATEGORIAS_LABEL[a] || a;
+      const lb = CATEGORIAS_LABEL[b] || b;
+      return la.localeCompare(lb, 'es');
+    });
+  if (conteo['otros']) categorias.push('otros');
+
+  for (const cat of categorias) {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = (CATEGORIAS_LABEL[cat] || cat) + ' (' + conteo[cat] + ')';
+    select.appendChild(opt);
+  }
+}
+
+/**
+ * Filtra el selector de organismos cuando se selecciona una categoría.
+ * Si no hay categoría seleccionada, muestra todos los organismos con optgroup.
+ */
+function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
+  const select = document.getElementById('filtro-organismo');
+  const valorActual = select.value;
+  const primera = select.querySelector('option') || document.createElement('option');
+  if (!primera.value) {
+    primera.value = '';
+    primera.textContent = 'Todos los organismos';
+  }
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  if (categoriaSeleccionada) {
+    // Mostrar solo organismos de esa categoría (sin optgroup, lista plana)
+    const organismos = new Set();
+    for (const c of estado.datos) {
+      if (c.organismo && (c.categoria_organismo || 'otros') === categoriaSeleccionada) {
+        organismos.add(c.organismo);
+      }
+    }
+    const lista = [...organismos].sort((a, b) => a.localeCompare(b, 'es'));
+    for (const org of lista) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      select.appendChild(opt);
+    }
+  } else {
+    // Sin categoría: mostrar todos con optgroup
+    poblarSelectOrganismoConOptgroup();
+    return; // poblarSelectOrganismoConOptgroup ya reconstruye el select completo
+  }
+
+  // Si el valor anterior ya no existe en las opciones, resetear
+  if (valorActual && !select.querySelector('option[value="' + CSS.escape(valorActual) + '"]')) {
+    select.value = '';
+  }
+}
+
 function inicializarFiltros() {
   poblarSelect('filtro-tipo', valoresUnicos(estado.datos, 'tipo'));
-  poblarSelect('filtro-organismo', valoresUnicos(estado.datos, 'organismo'));
+  poblarSelectCategoria();
+  poblarSelectOrganismoConOptgroup();
   poblarSelect('filtro-procedimiento', valoresUnicos(estado.datos, 'procedimiento'));
 
   // Poblar selector de estado con etiquetas legibles (en orden lógico del ciclo de vida)
@@ -720,6 +866,11 @@ async function init() {
   const debouncedFiltrar = debounce(aplicarFiltros, CONFIG.DEBOUNCE_MS);
   document.getElementById('input-busqueda').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-tipo').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-categoria').addEventListener('change', () => {
+    const cat = document.getElementById('filtro-categoria').value;
+    filtrarOrganismosPorCategoria(cat);
+    aplicarFiltros();
+  });
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-procedimiento').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
@@ -730,10 +881,11 @@ async function init() {
 
   // 4. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-organismo', 'filtro-procedimiento',
-      'filtro-estado', 'filtro-importe-min', 'filtro-importe-max',
+    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo',
+      'filtro-procedimiento', 'filtro-estado', 'filtro-importe-min', 'filtro-importe-max',
       'filtro-fecha-desde', 'filtro-fecha-hasta']
       .forEach(id => { document.getElementById(id).value = ''; });
+    filtrarOrganismosPorCategoria('');
     aplicarFiltros();
   });
 

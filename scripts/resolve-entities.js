@@ -26,6 +26,7 @@ import {
   EntityResolver,
   construirRegistro,
   aplicarResolucion,
+  categorizarOrganismo,
 } from './lib/entity-resolver.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -43,6 +44,9 @@ const ORGANISMOS_CONOCIDOS = {
       'Consejeria de Sanidad',
       'CONSEJERÍA DE SANIDAD',
       'Consejería de Sanidad de la Comunidad de Madrid',
+      'Consejería de Sanidad Comunidad de Madrid',
+      'Consejería de Sanidad, Secretaría General Técnica',
+      'Comunidad de Madrid, Consejería de Sanidad, Hospital General Universitario Gregorio Marañón',
     ],
   },
   consejeria_educacion: {
@@ -52,14 +56,19 @@ const ORGANISMOS_CONOCIDOS = {
       'CONSEJERÍA DE EDUCACIÓN, CIENCIA Y UNIVERSIDADES',
       'Consejería de Educación y Juventud',
       'Consejeria de Educacion',
+      'Consejería de Educación, Juventud y Deporte de la Comunidad de Madrid, Dirección General de Infraestructuras y Servicios',
+      'Consejería de Educación, Juventud y Deporte de la Comunidad de Madrid. Dirección General de Infraestructuras y Servicios',
+      'Consejería de Educación, Juventud y Deporte, Secretaría General Técnica',
     ],
   },
   consejeria_transportes: {
-    nombre_canonico: 'Consejería de Transportes, Movilidad e Infraestructuras',
+    nombre_canonico: 'Consejería de Transportes, Vivienda e Infraestructuras',
     aliases: [
       'Consejeria de Transportes, Movilidad e Infraestructuras',
       'CONSEJERÍA DE TRANSPORTES, MOVILIDAD E INFRAESTRUCTURAS',
       'Consejería de Transportes e Infraestructuras',
+      'Consejería de Transportes, Movilidad e Infraestructuras',
+      'Consejería de Transportes, Vivienda e Infraestrestructuras',
     ],
   },
   consejeria_hacienda: {
@@ -76,13 +85,18 @@ const ORGANISMOS_CONOCIDOS = {
       'Consejeria de Medio Ambiente, Agricultura e Interior',
       'CONSEJERÍA DE MEDIO AMBIENTE, AGRICULTURA E INTERIOR',
       'Consejería de Medio Ambiente y Ordenación del Territorio',
+      'Comunidad de Madrid, Consejería de Medio Ambiente, Administración Local y Ordenación del Territorio',
     ],
   },
   consejeria_presidencia: {
-    nombre_canonico: 'Consejería de Presidencia, Justicia y Administración Local',
+    nombre_canonico: 'Consejería de Presidencia, Justicia y Portavocía del Gobierno',
     aliases: [
       'Consejeria de Presidencia, Justicia y Administración Local',
       'CONSEJERÍA DE PRESIDENCIA, JUSTICIA Y ADMINISTRACIÓN LOCAL',
+      'Consejería de Presidencia, Justicia y Administración Local',
+      'Consejería de Presidencia, Justicia y Portavocía del Gobierno',
+      'Comunidad de Madrid, Consejería de Presidencia, Justicia y Portavocía del Gobierno',
+      'Comunidad de Madrid-Consejería de Presidencia, Justicia y Portavocía del Gobierno',
     ],
   },
   consejeria_economia: {
@@ -90,6 +104,13 @@ const ORGANISMOS_CONOCIDOS = {
     aliases: [
       'Consejeria de Economía, Hacienda y Empleo',
       'CONSEJERÍA DE ECONOMÍA, HACIENDA Y EMPLEO',
+      'Consejería de Economía, Empleo y Hacienda',
+    ],
+  },
+  consejeria_politicas_sociales: {
+    nombre_canonico: 'Consejería de Políticas Sociales y Familia',
+    aliases: [
+      'Consejería de Políticas Sociales y Familia',
     ],
   },
   canal_isabel_ii: {
@@ -112,6 +133,120 @@ const ORGANISMOS_CONOCIDOS = {
     nombre_canonico: 'Adif, Alta Velocidad',
     aliases: [
       'ADI, Alta Velocidad',
+      'ADIF-Alta Velocidad',
+      'Administrador de Infraestructuras Ferroviarias',
+      'Entidad Pública Empresarial Administrador de Infraestructuras Ferroviarias',
+    ],
+  },
+  agencia_vivienda_social: {
+    nombre_canonico: 'Agencia de Vivienda Social de la Comunidad de Madrid',
+    aliases: [
+      'Agencia de Vivienda Social',
+    ],
+  },
+  agencia_digital: {
+    nombre_canonico: 'Agencia para la Administración Digital de la Comunidad de Madrid',
+    aliases: [
+      'Agencia para la Administración Digital de la CM',
+    ],
+  },
+  sermas: {
+    nombre_canonico: 'Servicio Madrileño de Salud',
+    aliases: [
+      'Servicio Madrileño de Salud, Consejería de Sanidad',
+      'Servicio Madrileño de la Salud, Hospital Universitario Ramón y Cajal',
+      'Servicio Madrileño de Salud, Subdirección General de Contratación y Compras de Medicamentos y Productos Sanitarios, Servicio de Contratación Administrativa',
+    ],
+  },
+  hospital_12_octubre: {
+    nombre_canonico: 'Servicio Madrileño de Salud, Hospital Universitario 12 de Octubre',
+    aliases: [
+      'Servicio Madrileño de Salud — Hospital Universitario «12 de Octubre»',
+      'Servicio Madrileño de Salud, Hospital Universitario, 12 de Octubre',
+    ],
+  },
+  hospital_cruz_roja: {
+    nombre_canonico: 'Servicio Madrileño de Salud, Hospital Central de la Cruz Roja San José y Santa Adela',
+    aliases: [
+      'Servicio Madrileño de Salud, Hospital Central de la Cruz Roja «San José y Santa Adela»',
+    ],
+  },
+  hospital_puerta_hierro: {
+    nombre_canonico: 'Hospital Universitario Puerta de Hierro de Majadahonda',
+    aliases: [
+      'Hospital Universitario Puerta de Hierro de Majadahonda, Madrid',
+    ],
+  },
+  renfe_viajeros: {
+    nombre_canonico: 'Renfe Viajeros',
+    aliases: [
+      'Renfe viajeros',
+      'Renfe Viajeros Sociedad Mercantil Estatal, S.A. — Gerencia de Área de Control de Gestión y Compras',
+      'Renfe Viajeros, S.A., Gerencia de Área de Control de Gestión y Compras',
+    ],
+  },
+  renfe_operadora: {
+    nombre_canonico: 'Renfe Operadora',
+    aliases: [
+      'Renfe, Operadora',
+      'Renfe Operadora, DG Económico-Financiera, Gerencia de Área de Compras y Patrimonio',
+      'Renfe Operadora, Dirección General Económico-Financiera, Gerencia de Área de Compras y Patrimonio',
+      'RENFE Operadora, D.G. Económico- Financiera, Gerencia de Área de Compras y Patrimonio',
+    ],
+  },
+  renfe_fabricacion: {
+    nombre_canonico: 'Renfe Fabricación y Mantenimiento',
+    aliases: [
+      'Renfe, Fabricación y Mantenimiento, S.A.',
+      'Renfe Fabricación y Mantenimiento, S.A. — G. Área de Control de Gestión y Compras',
+    ],
+  },
+  senado: {
+    nombre_canonico: 'Senado de España',
+    aliases: [
+      'Senado',
+    ],
+  },
+  tesoreria_ss: {
+    nombre_canonico: 'Tesorería General de la Seguridad Social',
+    aliases: [
+      'Tesoreria General de la Seguridad Social',
+      'Tesorería General de la Seguridad Social, Gerencia de Informática de la Seguridad Social',
+    ],
+  },
+  ayto_madrid_regimen: {
+    nombre_canonico: 'Ayuntamiento de Madrid, Servicio de Régimen Administrativo y Económico de la Gerencia de la Ciudad',
+    aliases: [
+      'Ayuntamiento de Madrid, Servicio de Regimen Administrativo y Económico de la Gerencia de la Ciudad',
+    ],
+  },
+  ayto_madrid_economia: {
+    nombre_canonico: 'Ayuntamiento de Madrid, Área de Gobierno de Economía y Hacienda',
+    aliases: [
+      'Ayuntamiento de Madrid, Área de Gobierno se Economía y Hacienda',
+      'Ayuntamiento de Madrid, Área de Gobierno de Economía y Hacienda, Secretaria General Técnica, Servicio de Contratación',
+      'Ayuntamiento de Madrid, Área de Gobierno de Economía y Hacienda, Secretaria General Técnica; Servicio de Contratación',
+    ],
+  },
+  ayto_madrid_cultura: {
+    nombre_canonico: 'Ayuntamiento de Madrid, Área de Gobierno de Cultura y Deportes',
+    aliases: [
+      'Ayuntamiento de Madrid, Área se Gobierno de Cultura y Deportes',
+      'Ayuntamiento de Madrid — Área de Gobierno de Cultura y Deportes',
+    ],
+  },
+  ayto_madrid_salud_seguridad: {
+    nombre_canonico: 'Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias',
+    aliases: [
+      'Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias, Servicio de Contratación',
+    ],
+  },
+  mercamadrid: {
+    nombre_canonico: 'Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID)',
+    aliases: [
+      'Comisión Ejecutiva de Consejeros de Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID S.A.)',
+      'Consejo de Administración de Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID S.A.)',
+      'Dirección General de Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID S.A.)',
     ],
   },
 };
@@ -170,6 +305,20 @@ async function main() {
   console.log(`   ${stats.resueltos} contratos con entity_id resuelto`);
   console.log(`   ${stats.sinResolver} contratos sin match en registro (entity_id provisional)`);
   console.log(`   ${stats.organismosNormalizados} organismos normalizados`);
+
+  // 4b. Categorizar organismos
+  console.log('\n📂 Paso 2b: Categorizar organismos...');
+  const conteoCategorias = {};
+  for (const c of resueltos) {
+    const { categoria } = categorizarOrganismo(c.organismo);
+    c.categoria_organismo = categoria;
+    conteoCategorias[categoria] = (conteoCategorias[categoria] || 0) + 1;
+  }
+  const numCategorias = Object.keys(conteoCategorias).length;
+  console.log(`   ${numCategorias} categorías asignadas:`);
+  for (const [cat, n] of Object.entries(conteoCategorias).sort((a, b) => b[1] - a[1])) {
+    console.log(`     ${cat}: ${n} contratos`);
+  }
 
   // 5. Guardar resultados
   console.log('\n💾 Paso 3: Guardar resultados...');

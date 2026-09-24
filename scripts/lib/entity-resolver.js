@@ -377,3 +377,91 @@ export function aplicarResolucion(contratos, resolver) {
     stats: { resueltos, sinResolver, organismosNormalizados },
   };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Categorización de organismos
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Etiquetas de categoría para organismos públicos.
+ * Orden de evaluación: las reglas más específicas van primero.
+ */
+const REGLAS_CATEGORIA = [
+  // Universidades (rectorados, gerencias, fundaciones universitarias)
+  { regex: /rectorado de la universidad|rector de la universidad|gerencia de la universidad|universidad.*de madrid|universidad.*alcal[aá]|universidad.*carlos iii|universidad.*menéndez pelayo|universidad.*educaci[oó]n a distancia|consorcio madro[ñn]o/i, categoria: 'universidades', label: 'Universidades' },
+
+  // Distritos de Madrid
+  { regex: /distrito de |distrito centro|junta municipal.*distrito/i, categoria: 'distritos_madrid', label: 'Distritos de Madrid' },
+
+  // Ayuntamiento de Madrid (áreas de gobierno, organismos autónomos, empresas municipales de Madrid)
+  { regex: /ayuntamiento de madrid|informática del ayuntamiento de madrid|madrid calle 30|madrid destino|empresa municipal de transportes de madrid|empresa municipal de servicios funerarios|empresa municipal de la vivienda y suelo de madrid|organismo aut[oó]nomo.*madrid|coordinaci[oó]n general de la alcald[ií]a|tribunal econ[oó]mico.*madrid|[aá]rea de gobierno de/i, categoria: 'ayto_madrid', label: 'Ayuntamiento de Madrid' },
+
+  // Consejerías de la Comunidad de Madrid
+  { regex: /consejer[ií]a de(?! administraci[oó]n)|comunidad de madrid.*consejer[ií]a/i, categoria: 'consejerias', label: 'Consejerías de la CAM' },
+
+  // Servicio Madrileño de Salud y hospitales
+  { regex: /servicio madrile[ñn]o de salud|hospital.*universitario|hospital.*general|hospital.*infanta|gerencia asistencial/i, categoria: 'salud', label: 'Salud (SERMAS y hospitales)' },
+
+  // Agencias y entes de la Comunidad de Madrid
+  { regex: /agencia.*vivienda social|agencia.*administraci[oó]n digital|agencia madrile[ñn]a|c[aá]mara de cuentas|asamblea de madrid|mesa de la asamblea|presidencia de la asamblea|consorcio regional de transportes/i, categoria: 'entes_cam', label: 'Entes y agencias de la CAM' },
+
+  // Plenos de ayuntamiento
+  { regex: /pleno del ayuntamiento/i, categoria: 'aytos_pleno', label: 'Ayuntamientos (Pleno)' },
+
+  // Juntas de gobierno de ayuntamiento
+  { regex: /junta de gobierno.*ayuntamiento|junta de gobierno local/i, categoria: 'aytos_junta', label: 'Ayuntamientos (Junta de Gobierno)' },
+
+  // Alcaldías
+  { regex: /alcald[ií]a.*ayuntamiento|alcaldia.*ayuntamiento/i, categoria: 'aytos_alcaldia', label: 'Ayuntamientos (Alcaldía)' },
+
+  // Otros ayuntamientos (concejales, asambleas vecinales, etc.)
+  { regex: /ayuntamiento de |concejal.*ayuntamiento|asamblea vecinal/i, categoria: 'aytos_otros', label: 'Ayuntamientos (otros)' },
+
+  // Mancomunidades
+  { regex: /mancomunidad/i, categoria: 'mancomunidades', label: 'Mancomunidades' },
+
+  // Empresas municipales y consejos de administración
+  { regex: /consejo de administraci[oó]n|consejer[iao] delegad[ao]|empresa municipal|gerencia.*municipal|gerencia.*empresa|ente p[uú]blico|patrimonio municipal|instituto municipal|club de campo/i, categoria: 'empresas_municipales', label: 'Empresas y entes municipales' },
+
+  // Infraestructuras ferroviarias
+  { regex: /adif|renfe|infraestructuras ferroviarias|seguridad ferroviaria/i, categoria: 'ferroviario', label: 'Sector ferroviario' },
+
+  // Estado central (ministerios, tribunales, Senado, Congreso, etc.)
+  { regex: /ministerio|senado|congreso de los diputados|tribunal constitucional|banco de espa[ñn]a|tesorer[ií]a general|fondo de garant[ií]a|oficina espa[ñn]ola|f[aá]brica nacional|instituto social de las fuerzas|consejo superior de deportes|instituto de mayores/i, categoria: 'estado_central', label: 'Administración General del Estado' },
+
+  // Fundaciones e investigación
+  { regex: /fundaci[oó]n|imdea|ciemat|investigaci[oó]n|cient[ií]fico|csic|inta|british council|red\.es/i, categoria: 'investigacion', label: 'Investigación y fundaciones' },
+
+  // Asociaciones de desarrollo
+  { regex: /asociaci[oó]n.*desarrollo|presidencia del centro iniciativas/i, categoria: 'desarrollo_rural', label: 'Desarrollo rural y local' },
+];
+
+/**
+ * Determina la categoría de un organismo público a partir de su nombre.
+ *
+ * @param {string} nombre - Nombre del organismo
+ * @returns {{ categoria: string, label: string }} Categoría y etiqueta legible
+ */
+export function categorizarOrganismo(nombre) {
+  if (!nombre) return { categoria: 'otros', label: 'Otros' };
+  for (const regla of REGLAS_CATEGORIA) {
+    if (regla.regex.test(nombre)) {
+      return { categoria: regla.categoria, label: regla.label };
+    }
+  }
+  return { categoria: 'otros', label: 'Otros' };
+}
+
+/**
+ * Devuelve el mapa completo de categorías con sus etiquetas legibles.
+ * Útil para el frontend al construir los selectores.
+ * @returns {Object<string, string>} Map categoria → label
+ */
+export function obtenerMapaCategorias() {
+  const mapa = {};
+  for (const regla of REGLAS_CATEGORIA) {
+    mapa[regla.categoria] = regla.label;
+  }
+  mapa['otros'] = 'Otros';
+  return mapa;
+}

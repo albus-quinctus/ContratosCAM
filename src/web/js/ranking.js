@@ -262,6 +262,7 @@ function construirRanking(contratos) {
         importeTotal: 0,
         tipos: new Set(),
         organismos: new Set(),
+        categorias: new Set(),
         anios: new Set(),
       });
     }
@@ -280,6 +281,7 @@ function construirRanking(contratos) {
     entrada.importeTotal += c.importe || 0;
     if (c.tipo) entrada.tipos.add(c.tipo);
     if (c.organismo) entrada.organismos.add(c.organismo);
+    if (c.categoria_organismo) entrada.categorias.add(c.categoria_organismo);
     if (c.fecha_publicacion) {
       const anio = c.fecha_publicacion.substring(0, 4);
       if (anio) entrada.anios.add(anio);
@@ -299,6 +301,7 @@ function construirRanking(contratos) {
       importeMedio: n > 0 ? entrada.importeTotal / n : 0,
       tipos: [...entrada.tipos].sort(),
       organismos: [...entrada.organismos].sort(),
+      categorias: [...entrada.categorias].sort(),
       anios: [...entrada.anios].sort(),
       contratos: entrada.contratos,
     };
@@ -314,17 +317,18 @@ function construirRanking(contratos) {
 
 function obtenerFiltros() {
   return {
-    busqueda:  document.getElementById('input-busqueda').value.trim().toLowerCase(),
-    tipo:      document.getElementById('filtro-tipo').value,
-    organismo: document.getElementById('filtro-organismo').value,
-    anio:      document.getElementById('filtro-anio').value,
+    busqueda:   document.getElementById('input-busqueda').value.trim().toLowerCase(),
+    tipo:       document.getElementById('filtro-tipo').value,
+    categoria:  document.getElementById('filtro-categoria').value,
+    organismo:  document.getElementById('filtro-organismo').value,
+    anio:       document.getElementById('filtro-anio').value,
     ordenarPor: document.getElementById('ordenar-por').value,
   };
 }
 
 function aplicarFiltros() {
   const f = obtenerFiltros();
-  const hayFiltroContrato = !!(f.tipo || f.organismo || f.anio);
+  const hayFiltroContrato = !!(f.tipo || f.categoria || f.organismo || f.anio);
 
   const resultado = estado.ranking.filter(entrada => {
     if (f.busqueda) {
@@ -332,6 +336,7 @@ function aplicarFiltros() {
       if (!texto.includes(f.busqueda)) return false;
     }
     if (f.tipo      && !entrada.tipos.includes(f.tipo))           return false;
+    if (f.categoria && !entrada.categorias.includes(f.categoria)) return false;
     if (f.organismo && !entrada.organismos.includes(f.organismo)) return false;
     if (f.anio      && !entrada.anios.includes(f.anio))           return false;
     return true;
@@ -345,6 +350,7 @@ function aplicarFiltros() {
     rankingRecalculado = resultado.map(entrada => {
       const contratosFiltrados = entrada.contratos.filter(c => {
         if (f.tipo && c.tipo !== f.tipo) return false;
+        if (f.categoria && (c.categoria_organismo || 'otros') !== f.categoria) return false;
         if (f.organismo && c.organismo !== f.organismo) return false;
         if (f.anio && (!c.fecha_publicacion || c.fecha_publicacion.substring(0, 4) !== f.anio)) return false;
         return true;
@@ -732,16 +738,154 @@ function poblarSelect(id, valores) {
   }
 }
 
-function inicializarFiltros() {
-  // Reutiliza estado.ranking (ya construido) para extraer valores únicos
-  // sin necesidad de volver a filtrar el array de contratos original.
-  const tipos      = [...new Set(estado.ranking.flatMap(e => e.tipos))].sort();
-  const organismos = [...new Set(estado.ranking.flatMap(e => e.organismos))].sort();
-  const anios      = [...new Set(estado.ranking.flatMap(e => e.anios))].sort().reverse();
+/**
+ * Mapa de categoría → etiqueta legible para el selector de categorías.
+ */
+const CATEGORIAS_LABEL = {
+  universidades: 'Universidades',
+  distritos_madrid: 'Distritos de Madrid',
+  ayto_madrid: 'Ayuntamiento de Madrid',
+  consejerias: 'Consejerías de la CAM',
+  salud: 'Salud (SERMAS y hospitales)',
+  entes_cam: 'Entes y agencias de la CAM',
+  aytos_pleno: 'Ayuntamientos (Pleno)',
+  aytos_junta: 'Ayuntamientos (Junta de Gobierno)',
+  aytos_alcaldia: 'Ayuntamientos (Alcaldía)',
+  aytos_otros: 'Ayuntamientos (otros)',
+  mancomunidades: 'Mancomunidades',
+  empresas_municipales: 'Empresas y entes municipales',
+  ferroviario: 'Sector ferroviario',
+  estado_central: 'Administración General del Estado',
+  investigacion: 'Investigación y fundaciones',
+  desarrollo_rural: 'Desarrollo rural y local',
+  otros: 'Otros',
+};
 
-  poblarSelect('filtro-tipo',      tipos);
-  poblarSelect('filtro-organismo', organismos);
-  poblarSelect('filtro-anio',      anios);
+/**
+ * Puebla el selector de organismos con optgroups agrupados por categoría.
+ * Usa los contratos de todas las entradas del ranking para construir el mapa.
+ */
+function poblarSelectOrganismoConOptgroup() {
+  const select = document.getElementById('filtro-organismo');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Construir mapa categoría → Set<organismo> desde los contratos del ranking
+  const mapaCat = {};
+  for (const entrada of estado.ranking) {
+    for (const c of entrada.contratos) {
+      if (!c.organismo) continue;
+      const cat = c.categoria_organismo || 'otros';
+      if (!mapaCat[cat]) mapaCat[cat] = new Set();
+      mapaCat[cat].add(c.organismo);
+    }
+  }
+
+  const categoriasOrdenadas = Object.keys(mapaCat)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => {
+      const la = CATEGORIAS_LABEL[a] || a;
+      const lb = CATEGORIAS_LABEL[b] || b;
+      return la.localeCompare(lb, 'es');
+    });
+  if (mapaCat['otros']) categoriasOrdenadas.push('otros');
+
+  for (const cat of categoriasOrdenadas) {
+    const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = CATEGORIAS_LABEL[cat] || cat;
+    for (const org of organismos) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      optgroup.appendChild(opt);
+    }
+    select.appendChild(optgroup);
+  }
+}
+
+/**
+ * Puebla el selector de categorías con las categorías presentes en el ranking.
+ */
+function poblarSelectCategoria() {
+  const select = document.getElementById('filtro-categoria');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  const conteo = {};
+  for (const entrada of estado.ranking) {
+    for (const cat of entrada.categorias) {
+      conteo[cat] = (conteo[cat] || 0) + entrada.numContratos;
+    }
+  }
+
+  const categorias = Object.keys(conteo)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => {
+      const la = CATEGORIAS_LABEL[a] || a;
+      const lb = CATEGORIAS_LABEL[b] || b;
+      return la.localeCompare(lb, 'es');
+    });
+  if (conteo['otros']) categorias.push('otros');
+
+  for (const cat of categorias) {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = (CATEGORIAS_LABEL[cat] || cat) + ' (' + conteo[cat] + ')';
+    select.appendChild(opt);
+  }
+}
+
+/**
+ * Filtra el selector de organismos cuando se selecciona una categoría.
+ */
+function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
+  const select = document.getElementById('filtro-organismo');
+  const valorActual = select.value;
+  const primera = select.querySelector('option') || document.createElement('option');
+  if (!primera.value) {
+    primera.value = '';
+    primera.textContent = 'Todos los organismos';
+  }
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  if (categoriaSeleccionada) {
+    const organismos = new Set();
+    for (const entrada of estado.ranking) {
+      for (const c of entrada.contratos) {
+        if (c.organismo && (c.categoria_organismo || 'otros') === categoriaSeleccionada) {
+          organismos.add(c.organismo);
+        }
+      }
+    }
+    const lista = [...organismos].sort((a, b) => a.localeCompare(b, 'es'));
+    for (const org of lista) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      select.appendChild(opt);
+    }
+  } else {
+    poblarSelectOrganismoConOptgroup();
+    return;
+  }
+
+  if (valorActual && !select.querySelector('option[value="' + CSS.escape(valorActual) + '"]')) {
+    select.value = '';
+  }
+}
+
+function inicializarFiltros() {
+  const tipos = [...new Set(estado.ranking.flatMap(e => e.tipos))].sort();
+  const anios = [...new Set(estado.ranking.flatMap(e => e.anios))].sort().reverse();
+
+  poblarSelect('filtro-tipo', tipos);
+  poblarSelectCategoria();
+  poblarSelectOrganismoConOptgroup();
+  poblarSelect('filtro-anio', anios);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -768,16 +912,22 @@ async function init() {
   const debouncedFiltrar = debounce(aplicarFiltros, CONFIG.DEBOUNCE_MS);
   document.getElementById('input-busqueda').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-tipo').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-categoria').addEventListener('change', () => {
+    const cat = document.getElementById('filtro-categoria').value;
+    filtrarOrganismosPorCategoria(cat);
+    aplicarFiltros();
+  });
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-anio').addEventListener('change', aplicarFiltros);
   document.getElementById('ordenar-por').addEventListener('change', aplicarFiltros);
 
   // 5. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-organismo', 'filtro-anio'].forEach(id => {
+    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-anio'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('ordenar-por').value = 'importe';
+    filtrarOrganismosPorCategoria('');
     aplicarFiltros();
   });
 
