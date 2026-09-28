@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/web/**'
       - 'data/processed/**'
+      - 'scripts/build-web.js'
 
 permissions:
   pages: write
@@ -23,12 +24,14 @@ jobs:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # Copia la web y los datos a _site/ y genera las páginas en inglés (/en/)
       - name: Preparar artefacto para Pages
-        run: |
-          mkdir -p _site
-          cp -r src/web/* _site/
-          mkdir -p _site/data/processed
-          cp data/processed/*.json _site/data/processed/
+        run: npm run build:web
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4

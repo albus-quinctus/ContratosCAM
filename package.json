@@ -33,7 +33,9 @@
     "update:estados": "node scripts/update-estados.js",
     "update:estados:dry": "node scripts/update-estados.js --dry-run",
     "serve": "npx serve . --listen 3000",
-    "dev": "npm run serve"
+    "dev": "npm run serve",
+    "build:web": "node scripts/build-web.js",
+    "preview:web": "npm run build:web && npx serve _site --listen 3000"
   },
   "dependencies": {
     "fast-xml-parser": "^5.9.3",
