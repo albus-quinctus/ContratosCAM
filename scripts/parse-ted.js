@@ -47,6 +47,8 @@ const parser = new XMLParser({
       'OBJECT_DESCR',
       'SHORT_DESCR',
       'P',
+      'AC_QUALITY',
+      'AC_COST',
     ];
     return arrayElements.includes(name);
   },
@@ -54,6 +56,16 @@ const parser = new XMLParser({
   parseTagValue: true,
   trimValues: true,
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Mapeo de códigos de criterio de adjudicación (AC_AWARD_CRIT en CODIF_DATA)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CRITERIOS_ADJUDICACION_CODES = {
+  '1': 'Precio más bajo',
+  '2': 'Mejor relación calidad-precio',
+  '8': 'No especificado',
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de extracción
@@ -122,6 +134,87 @@ function mapearProcedimiento(code) {
     'V': 'negociado_sin_publicidad', // Award without prior publication
   };
   return mapa[code] || 'abierto';
+}
+
+/**
+ * Extrae los criterios de adjudicación del formulario TED.
+ *
+ * Los criterios pueden estar en:
+ * - OBJECT_DESCR > DIRECTIVE_2014_24_EU > AC_QUALITY / AC_COST / AC_PRICE
+ * - CODIF_DATA > AC_AWARD_CRIT (código resumen: 1=precio, 2=calidad-precio)
+ *
+ * Devuelve un string legible con los criterios y ponderaciones.
+ * Ejemplo: "Calidad técnica (25%), Precio (43%), Mejoras (12%)"
+ *
+ * @param {object} form - Formulario parseado (F02, F03, etc.)
+ * @param {object} codifData - Sección CODIF_DATA del XML
+ * @returns {string|null} Criterios formateados o null
+ */
+function extraerCriteriosAdjudicacion(form, codifData) {
+  const criterios = [];
+
+  // Intentar extraer criterios detallados del formulario
+  if (form) {
+    const objectContract = get(form, 'OBJECT_CONTRACT');
+    const oc = objectContract
+      ? (Array.isArray(objectContract) ? objectContract[0] : objectContract)
+      : null;
+
+    // Buscar en OBJECT_DESCR (puede haber varios lotes)
+    const objectDescrs = get(oc, 'OBJECT_DESCR') || [];
+    const descrs = Array.isArray(objectDescrs) ? objectDescrs : [objectDescrs];
+
+    for (const descr of descrs) {
+      if (!descr || typeof descr !== 'object') continue;
+
+      // Buscar dentro de DIRECTIVE_2014_24_EU o directamente en OBJECT_DESCR
+      const directive = get(descr, 'DIRECTIVE_2014_24_EU') || descr;
+
+      // Criterios de calidad (AC_QUALITY)
+      const acQuality = get(directive, 'AC_QUALITY');
+      if (acQuality) {
+        const qualityArr = Array.isArray(acQuality) ? acQuality : [acQuality];
+        for (const q of qualityArr) {
+          const criterio = texto(get(q, 'AC_CRITERION'));
+          const peso = texto(get(q, 'AC_WEIGHTING'));
+          if (criterio) {
+            criterios.push(peso ? `${criterio} (${peso}%)` : criterio);
+          }
+        }
+      }
+
+      // Criterios de coste (AC_COST)
+      const acCost = get(directive, 'AC_COST');
+      if (acCost) {
+        const costArr = Array.isArray(acCost) ? acCost : [acCost];
+        for (const c of costArr) {
+          const criterio = texto(get(c, 'AC_CRITERION'));
+          const peso = texto(get(c, 'AC_WEIGHTING'));
+          if (criterio) {
+            criterios.push(peso ? `${criterio} (${peso}%)` : criterio);
+          }
+        }
+      }
+
+      // Solo precio (AC_PRICE) — indica que el único criterio es el precio
+      if (get(directive, 'AC_PRICE') != null && criterios.length === 0) {
+        criterios.push('Precio (100%)');
+      }
+
+      // Si encontramos criterios en el primer OBJECT_DESCR, no seguir buscando
+      if (criterios.length > 0) break;
+    }
+  }
+
+  // Si no se encontraron criterios detallados, usar el código resumen de CODIF_DATA
+  if (criterios.length === 0 && codifData) {
+    const acCode = get(codifData, 'AC_AWARD_CRIT', '@_CODE');
+    if (acCode && CRITERIOS_ADJUDICACION_CODES[acCode]) {
+      return CRITERIOS_ADJUDICACION_CODES[acCode];
+    }
+  }
+
+  return criterios.length > 0 ? criterios.join('; ') : null;
 }
 
 /**
@@ -210,6 +303,7 @@ function extraerContratoTED(parsed, publicationNumber) {
   let objeto = null;
   let adjudicatario = null;
   let numOfertas = null;
+  let criteriosAdjudicacion = null;
 
   if (formSection) {
     // Buscar el formulario principal (puede ser F02, F03, F06, CONTRACT_AWARD, etc.)
@@ -245,6 +339,9 @@ function extraerContratoTED(parsed, publicationNumber) {
           }
         }
       }
+
+      // Criterios de adjudicación (nuevo — Fase 5c)
+      criteriosAdjudicacion = extraerCriteriosAdjudicacion(form, codifData);
 
       // Adjudicación (si es un contract award notice)
       const awardContracts = get(form, 'AWARD_CONTRACT');
@@ -313,6 +410,7 @@ function extraerContratoTED(parsed, publicationNumber) {
     // Campos enriquecidos exclusivos de TED
     ted_publication_number: publicationNumber,
     num_ofertas: numOfertas,
+    criterios_adjudicacion: criteriosAdjudicacion,
     tipo_documento_ted: tdCode,
   };
 }
@@ -500,10 +598,12 @@ async function main() {
     const conAdjudicatario = contratos.filter(c => c.adjudicatario).length;
     const conOfertas = contratos.filter(c => c.num_ofertas).length;
     const conImporte = contratos.filter(c => c.importe_total).length;
+    const conCriterios = contratos.filter(c => c.criterios_adjudicacion).length;
     console.log(`\n📈 Estadísticas:`);
     console.log(`   Con adjudicatario: ${conAdjudicatario} (${(conAdjudicatario / contratos.length * 100).toFixed(0)}%)`);
     console.log(`   Con num_ofertas: ${conOfertas} (${(conOfertas / contratos.length * 100).toFixed(0)}%)`);
     console.log(`   Con importe: ${conImporte} (${(conImporte / contratos.length * 100).toFixed(0)}%)`);
+    console.log(`   Con criterios_adjudicacion: ${conCriterios} (${(conCriterios / contratos.length * 100).toFixed(0)}%)`);
   }
 
   console.log('\n✅ Parseo TED completado.');

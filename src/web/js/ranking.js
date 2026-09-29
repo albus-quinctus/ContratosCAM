@@ -14,13 +14,16 @@
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Traducción y locale del idioma de la página (ver js/i18n.js)
+const { t, locale } = window.I18n;
+
 const CONFIG = Object.freeze({
   DATA_URLS: [
-    './data/processed/contratos-normalizados.json',
+    window.I18n.urlRaiz + 'data/processed/contratos-normalizados.json',
     '/data/processed/contratos-normalizados.json',
   ],
   META_URLS: [
-    './data/processed/meta.json',
+    window.I18n.urlRaiz + 'data/processed/meta.json',
     '/data/processed/meta.json',
   ],
   PAGE_SIZE: 50,
@@ -60,6 +63,7 @@ const estado = {
   paginaActual: 1,
   metricaGrafica: 'importe',  // 'importe' | 'contratos'
   chartTop10: null,
+  incluirEstimacionUte: false, // Toggle para incluir importes estimados de UTEs
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,7 +72,7 @@ const estado = {
 
 function formatearImporte(valor) {
   if (valor === null || valor === undefined || isNaN(valor)) return '—';
-  return valor.toLocaleString('es-ES', {
+  return valor.toLocaleString(locale, {
     style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 0,
@@ -160,12 +164,12 @@ function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
   if (!el) return;
   if (!meta || !meta.generado_en) {
-    el.textContent = 'Fecha de actualización desconocida';
+    el.textContent = t('actualizacion.desconocida');
     return;
   }
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
+  el.textContent = t('actualizacion.fecha', { fecha: fecha.toLocaleDateString(locale, opciones) });
 }
 
 function generarDatosEjemplo() {
@@ -219,9 +223,18 @@ function generarDatosEjemplo() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Agrupa los contratos por adjudicatario (normalizado a mayúsculas) y
- * calcula métricas por empresa en un único recorrido del array.
- * Solo incluye contratos que tienen adjudicatario definido.
+ * Agrupa los contratos por adjudicatario y calcula métricas por empresa.
+ *
+ * Estrategia de agrupación (en orden de preferencia):
+ *   1. Si el contrato tiene `entity_id` (asignado por resolve-entities.js)
+ *      → agrupa por entity_id. Máxima precisión.
+ *   2. Fallback: `nif_adjudicatario` → agrupa por NIF.
+ *   3. Sin NIF ni entity_id → agrupa por nombre normalizado (lowercase, sin
+ *      tildes, sin puntuación societaria).
+ *
+ * El nombre mostrado es el más frecuente dentro del grupo (empate → más largo).
+ * Solo incluye contratos con adjudicatario definido.
+ *
  * @param {Array} contratos
  * @returns {Array} ranking ordenado por importe total desc
  */
@@ -231,47 +244,116 @@ function construirRanking(contratos) {
   for (const c of contratos) {
     if (!c.adjudicatario) continue;
 
-    const clave = c.adjudicatario.trim().toUpperCase();
+    // Clave de agrupación: entity_id > NIF > nombre normalizado
+    let clave;
+    if (c.entity_id) {
+      clave = 'EID:' + c.entity_id;
+    } else if (c.nif_adjudicatario) {
+      clave = 'NIF:' + c.nif_adjudicatario;
+    } else {
+      clave = 'NOMBRE:' + c.adjudicatario.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[.,;]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
     if (!mapa.has(clave)) {
       mapa.set(clave, {
-        nombre: c.adjudicatario.trim(),
         nif: c.nif_adjudicatario || null,
+        frecuenciaNombres: new Map(),
         contratos: [],
         importeTotal: 0,
         tipos: new Set(),
         organismos: new Set(),
+        categorias: new Set(),
         anios: new Set(),
+        esUte: false,
+        miembrosUte: [],
       });
     }
 
     const entrada = mapa.get(clave);
-    // Conservar el primer NIF no nulo encontrado para esta empresa
+
     if (!entrada.nif && c.nif_adjudicatario) entrada.nif = c.nif_adjudicatario;
+    if (c.es_ute) {
+      entrada.esUte = true;
+      if (c.miembros_ute && c.miembros_ute.length > 0 && entrada.miembrosUte.length === 0) {
+        entrada.miembrosUte = c.miembros_ute;
+      }
+    }
+
+    const nombreLimpio = c.adjudicatario.trim();
+    entrada.frecuenciaNombres.set(
+      nombreLimpio,
+      (entrada.frecuenciaNombres.get(nombreLimpio) || 0) + 1
+    );
+
     entrada.contratos.push(c);
     entrada.importeTotal += c.importe || 0;
     if (c.tipo) entrada.tipos.add(c.tipo);
     if (c.organismo) entrada.organismos.add(c.organismo);
+    if (c.categoria_organismo) entrada.categorias.add(c.categoria_organismo);
     if (c.fecha_publicacion) {
       const anio = c.fecha_publicacion.substring(0, 4);
       if (anio) entrada.anios.add(anio);
     }
   }
 
-  // Convertir el mapa en array y calcular métricas derivadas
   const ranking = [...mapa.values()].map(entrada => {
     const n = entrada.contratos.length;
+    const [nombreCanónico] = [...entrada.frecuenciaNombres.entries()]
+      .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length);
+
     return {
-      nombre: entrada.nombre,
+      nombre: nombreCanónico[0],
       nif: entrada.nif,
       numContratos: n,
       importeTotal: entrada.importeTotal,
       importeMedio: n > 0 ? entrada.importeTotal / n : 0,
       tipos: [...entrada.tipos].sort(),
       organismos: [...entrada.organismos].sort(),
+      categorias: [...entrada.categorias].sort(),
       anios: [...entrada.anios].sort(),
       contratos: entrada.contratos,
+      esUte: entrada.esUte,
+      miembrosUte: entrada.miembrosUte,
+      // Participaciones en UTEs (se calcula después)
+      participacionesUte: [],
+      numContratosUte: 0,
+      importeUteEstimado: 0,
     };
   });
+
+  // ── Calcular participaciones en UTEs para cada empresa ──────────────────
+  // Para cada UTE con miembros conocidos, buscar las empresas miembro en el ranking
+  // y añadir la participación (contrato + importe dividido entre miembros)
+  const rankingPorNombre = new Map();
+  for (const r of ranking) {
+    rankingPorNombre.set(r.nombre.toLowerCase().trim(), r);
+  }
+
+  for (const r of ranking) {
+    if (!r.esUte || r.miembrosUte.length === 0) continue;
+    const numMiembros = r.miembrosUte.length;
+    const importePorMiembro = r.importeTotal / numMiembros;
+
+    for (const miembro of r.miembrosUte) {
+      const claveMiembro = miembro.toLowerCase().trim();
+      const entradaMiembro = rankingPorNombre.get(claveMiembro);
+      if (entradaMiembro) {
+        entradaMiembro.participacionesUte.push({
+          nombreUte: r.nombre,
+          numContratos: r.numContratos,
+          importeTotal: r.importeTotal,
+          importeEstimado: importePorMiembro,
+          numMiembros: numMiembros,
+        });
+        entradaMiembro.numContratosUte += r.numContratos;
+        entradaMiembro.importeUteEstimado += importePorMiembro;
+      }
+    }
+  }
 
   ranking.sort(ORDENADORES.importe);
   return ranking;
@@ -283,32 +365,76 @@ function construirRanking(contratos) {
 
 function obtenerFiltros() {
   return {
-    busqueda:  document.getElementById('input-busqueda').value.trim().toLowerCase(),
-    tipo:      document.getElementById('filtro-tipo').value,
-    organismo: document.getElementById('filtro-organismo').value,
-    anio:      document.getElementById('filtro-anio').value,
+    busqueda:   document.getElementById('input-busqueda').value.trim().toLowerCase(),
+    tipo:       document.getElementById('filtro-tipo').value,
+    categoria:  document.getElementById('filtro-categoria').value,
+    organismo:  document.getElementById('filtro-organismo').value,
+    anio:       document.getElementById('filtro-anio').value,
     ordenarPor: document.getElementById('ordenar-por').value,
   };
 }
 
 function aplicarFiltros() {
   const f = obtenerFiltros();
+  const hayFiltroContrato = !!(f.tipo || f.categoria || f.organismo || f.anio);
 
   const resultado = estado.ranking.filter(entrada => {
     if (f.busqueda) {
-      const texto = (entrada.nombre + ' ' + (entrada.nif || '')).toLowerCase();
+      let texto = (entrada.nombre + ' ' + (entrada.nif || '')).toLowerCase();
+      // Incluir miembros de UTE en la búsqueda
+      if (entrada.miembrosUte && entrada.miembrosUte.length > 0) {
+        texto += ' ' + entrada.miembrosUte.join(' ').toLowerCase();
+      }
       if (!texto.includes(f.busqueda)) return false;
     }
     if (f.tipo      && !entrada.tipos.includes(f.tipo))           return false;
+    if (f.categoria && !entrada.categorias.includes(f.categoria)) return false;
     if (f.organismo && !entrada.organismos.includes(f.organismo)) return false;
     if (f.anio      && !entrada.anios.includes(f.anio))           return false;
     return true;
   });
 
-  resultado.sort(ORDENADORES[f.ordenarPor] || ORDENADORES.importe);
+  // Cuando hay filtros de tipo/organismo/año, recalcular métricas
+  // usando solo los contratos que coinciden con los filtros aplicados.
+  // Esto evita mostrar importes globales cuando el usuario filtra por un subconjunto.
+  let rankingRecalculado;
+  if (hayFiltroContrato) {
+    rankingRecalculado = resultado.map(entrada => {
+      const contratosFiltrados = entrada.contratos.filter(c => {
+        if (f.tipo && c.tipo !== f.tipo) return false;
+        if (f.categoria && (c.categoria_organismo || 'otros') !== f.categoria) return false;
+        if (f.organismo && c.organismo !== f.organismo) return false;
+        if (f.anio && (!c.fecha_publicacion || c.fecha_publicacion.substring(0, 4) !== f.anio)) return false;
+        return true;
+      });
+      const n = contratosFiltrados.length;
+      const importeTotal = contratosFiltrados.reduce((s, c) => s + (c.importe || 0), 0);
+      return Object.assign({}, entrada, {
+        numContratos: n,
+        importeTotal: importeTotal,
+        importeMedio: n > 0 ? importeTotal / n : 0,
+        contratosFiltrados: contratosFiltrados,
+      });
+    });
+  } else {
+    rankingRecalculado = resultado;
+  }
 
-  estado.rankingFiltrado = resultado;
+  rankingRecalculado.sort(ORDENADORES[f.ordenarPor] || ORDENADORES.importe);
+
+  estado.rankingFiltrado = rankingRecalculado;
   estado.paginaActual = 1;
+
+  // Sincronizar la métrica de la gráfica con el criterio de ordenación
+  if (f.ordenarPor === 'contratos') {
+    estado.metricaGrafica = 'contratos';
+  } else {
+    estado.metricaGrafica = 'importe';
+  }
+  // Actualizar visualmente los botones toggle de la gráfica
+  document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.metric === estado.metricaGrafica);
+  });
 
   renderizarTabla();
   renderizarPaginacion();
@@ -328,14 +454,14 @@ function renderizarTabla() {
 
   document.getElementById('results-count').textContent =
     total === 0
-      ? 'Sin resultados'
-      : total.toLocaleString('es-ES') + ' adjudicatario' + (total !== 1 ? 's' : '') + ' encontrado' + (total !== 1 ? 's' : '');
+      ? t('comun.sinResultados')
+      : t('ranking.adjudicatariosEncontrados', { count: total });
 
   if (pagina.length === 0) {
     tbody.innerHTML =
       '<tr><td colspan="7"><div class="empty-state">' +
       '<div class="empty-state-icon">🔍</div>' +
-      '<p>No se encontraron adjudicatarios con los filtros aplicados.</p>' +
+      '<p>' + esc(t('ranking.sinAdjudicatarios')) + '</p>' +
       '</div></td></tr>';
     return;
   }
@@ -352,11 +478,12 @@ function renderizarTabla() {
     const porcentaje = valorMax > 0 ? (entrada[campoMetrica] / valorMax) * 100 : 0;
     const tiposBadges = entrada.tipos
       .slice(0, 3)
-      .map(t => '<span class="badge ' + badgeClass(t) + '">' + esc(t) + '</span>')
+      .map(tipo => '<span class="badge ' + badgeClass(tipo) + '">' + esc(tipo) + '</span>')
       .join(' ');
+    const numUtes = entrada.participacionesUte.length;
 
     return (
-      '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle de ' + esc(entrada.nombre) + '">' +
+      '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="' + esc(t('ranking.verDetalleDe', { nombre: entrada.nombre })) + '">' +
       '<td class="col-pos">' +
         '<div class="pos-wrapper">' +
           '<span class="pos-number">' + posicion + '</span>' +
@@ -364,17 +491,28 @@ function renderizarTabla() {
         '</div>' +
       '</td>' +
       '<td class="col-empresa">' +
-        '<div class="empresa-nombre">' + esc(entrada.nombre) + '</div>' +
-        (entrada.nif ? '<div class="empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
+        '<div class="empresa-nombre">' + esc(entrada.nombre) +
+          (entrada.esUte ? ' <span class="badge badge--ute" title="' + esc(t('comun.ute')) + '">UTE</span>' : '') +
+        '</div>' +
+        (entrada.nif ? '<div class="empresa-nif">' + esc(t('comun.nif')) + ': ' + esc(entrada.nif) + '</div>' : '') +
+        (numUtes > 0
+          ? '<div class="empresa-ute-info" title="' + esc(t('ranking.participaUtes', { count: numUtes })) + '">' + esc(t('ranking.numUtes', { count: numUtes })) + '</div>'
+          : '') +
         '<div class="ranking-bar-wrapper" aria-hidden="true">' +
           '<div class="ranking-bar" style="width:' + porcentaje.toFixed(1) + '%"></div>' +
         '</div>' +
       '</td>' +
       '<td class="col-ncontratos">' +
-        '<span class="num-contratos">' + entrada.numContratos.toLocaleString('es-ES') + '</span>' +
+        '<span class="num-contratos">' + entrada.numContratos.toLocaleString(locale) + '</span>' +
+        (estado.incluirEstimacionUte && entrada.numContratosUte > 0
+          ? '<div class="ute-estimacion">' + esc(t('ranking.viaUte', { count: entrada.numContratosUte })) + '</div>'
+          : '') +
       '</td>' +
       '<td class="col-importe-total">' +
         '<span class="cell-importe">' + formatearImporte(entrada.importeTotal) + '</span>' +
+        (estado.incluirEstimacionUte && entrada.importeUteEstimado > 0
+          ? '<div class="ute-estimacion">+' + formatearImporte(entrada.importeUteEstimado) + ' ⚠️</div>'
+          : '') +
       '</td>' +
       '<td class="col-importe-medio">' +
         '<span class="cell-importe-medio">' + formatearImporte(entrada.importeMedio) + '</span>' +
@@ -382,7 +520,7 @@ function renderizarTabla() {
       '<td class="col-tipos">' + (tiposBadges || '—') + '</td>' +
       '<td class="col-acciones">' +
         // El botón dispara el mismo evento que el click en la fila (delegación)
-        '<button class="btn btn--sm btn--secondary btn-detalle" type="button" aria-label="Ver contratos de ' + esc(entrada.nombre) + '">Ver →</button>' +
+        '<button class="btn btn--sm btn--secondary btn-detalle" type="button" aria-label="' + esc(t('ranking.verContratosDe', { nombre: entrada.nombre })) + '">' + esc(t('ranking.ver')) + '</button>' +
       '</td>' +
       '</tr>'
     );
@@ -409,8 +547,8 @@ function renderizarPaginacion() {
   document.getElementById('btn-siguiente').disabled = estado.paginaActual >= totalPaginas;
   document.getElementById('pagination-info').textContent =
     totalPaginas > 0
-      ? 'Página ' + estado.paginaActual + ' de ' + totalPaginas
-      : 'Sin resultados';
+      ? t('paginacion.pagina', { actual: estado.paginaActual, total: totalPaginas })
+      : t('comun.sinResultados');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -421,10 +559,10 @@ function actualizarEstadisticas() {
   const datos = estado.rankingFiltrado;
 
   document.getElementById('stat-total-adj').textContent =
-    datos.length.toLocaleString('es-ES');
+    datos.length.toLocaleString(locale);
 
   document.getElementById('stat-total-contratos').textContent =
-    datos.reduce((s, e) => s + e.numContratos, 0).toLocaleString('es-ES');
+    datos.reduce((s, e) => s + e.numContratos, 0).toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, e) => s + e.importeTotal, 0);
   document.getElementById('stat-importe-total').textContent =
@@ -448,8 +586,8 @@ function renderizarGrafica() {
   const top10       = estado.rankingFiltrado.slice(0, CONFIG.TOP_CHART);
   const labels      = top10.map(e => e.nombre.length > 30 ? e.nombre.substring(0, 30) + '…' : e.nombre);
   const valores     = top10.map(e => esContratos ? e.numContratos : e.importeTotal);
-  const labelEje    = esContratos ? 'Número de contratos' : 'Importe total (€)';
-  const formatTick  = val => esContratos ? val.toLocaleString('es-ES') : formatearImporte(val);
+  const labelEje    = esContratos ? t('ranking.ejeContratos') : t('ranking.ejeImporte');
+  const formatTick  = val => esContratos ? val.toLocaleString(locale) : formatearImporte(val);
 
   if (estado.chartTop10) {
     estado.chartTop10.destroy();
@@ -478,7 +616,7 @@ function renderizarGrafica() {
         tooltip: {
           callbacks: {
             label: ctx => esContratos
-              ? ctx.parsed.x.toLocaleString('es-ES') + ' contratos'
+              ? t('ranking.tooltipContratos', { count: ctx.parsed.x })
               : formatearImporte(ctx.parsed.x),
           },
         },
@@ -505,13 +643,15 @@ function abrirModal(entrada) {
   // Actualizar el título accesible del modal con el nombre real de la empresa
   document.getElementById('modal-heading').textContent = entrada.nombre;
 
-  const contratosOrdenados = [...entrada.contratos].sort((a, b) => (b.importe || 0) - (a.importe || 0));
+  // Si hay filtros activos, usar los contratos filtrados; si no, todos
+  const contratosRelevantes = entrada.contratosFiltrados || entrada.contratos;
+  const contratosOrdenados = [...contratosRelevantes].sort((a, b) => (b.importe || 0) - (a.importe || 0));
 
   // Importe acumulado por tipo (un solo bucle)
   const importePorTipo = {};
-  for (const c of entrada.contratos) {
-    const t = c.tipo || 'Sin clasificar';
-    importePorTipo[t] = (importePorTipo[t] || 0) + (c.importe || 0);
+  for (const c of contratosRelevantes) {
+    const tipo = c.tipo || t('comun.sinClasificar');
+    importePorTipo[tipo] = (importePorTipo[tipo] || 0) + (c.importe || 0);
   }
 
   const tiposHtml = Object.entries(importePorTipo)
@@ -534,7 +674,7 @@ function abrirModal(entrada) {
       '<td class="modal-contrato-fecha">'    + formatearFecha(c.fecha_publicacion) + '</td>' +
       '<td class="modal-contrato-link">' +
         (urlSegura
-          ? '<a href="' + esc(urlSegura) + '" target="_blank" rel="noopener noreferrer" title="Ver anuncio oficial">↗</a>'
+          ? '<a href="' + esc(urlSegura) + '" target="_blank" rel="noopener noreferrer" title="' + esc(t('ranking.detalle.verAnuncioOficial')) + '">↗</a>'
           : '—') +
       '</td>' +
       '</tr>'
@@ -542,52 +682,84 @@ function abrirModal(entrada) {
   }).join('');
 
   const masContratos = contratosOrdenados.length > 20
-    ? '<p class="modal-more-note">Mostrando los 20 contratos de mayor importe de un total de ' +
-      contratosOrdenados.length.toLocaleString('es-ES') + '.</p>'
+    ? '<p class="modal-more-note">' +
+      esc(t('ranking.detalle.masContratos', { total: contratosOrdenados.length })) + '</p>'
     : '';
+
+  // Sección de miembros UTE (si es UTE con miembros conocidos)
+  var uteHtml = '';
+  if (entrada.esUte && entrada.miembrosUte.length > 0) {
+    uteHtml =
+      '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.miembrosUte')) + '</div>' +
+      '<div class="modal-field-value"><ul class="ute-miembros-list">' +
+      entrada.miembrosUte.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
+      '</ul></div></div>';
+  }
+
+  // Sección de participaciones en UTEs (si la empresa participa en UTEs)
+  var participacionesHtml = '';
+  if (entrada.participacionesUte.length > 0) {
+    participacionesHtml =
+      '<div class="modal-field"><div class="modal-field-label">' + esc(t('ranking.detalle.participacionUtes', { count: entrada.participacionesUte.length })) + '</div>' +
+      '<div class="modal-ute-participaciones">' +
+      entrada.participacionesUte.map(function(p) {
+        return '<div class="modal-ute-row">' +
+          '<span class="modal-ute-nombre">' + esc(p.nombreUte) + '</span>' +
+          '<span class="modal-ute-detalle">' + esc(t('ranking.detalle.uteContratos', { count: p.numContratos })) +
+          ' · ' + esc(t('ranking.detalle.uteTotal', { importe: formatearImporte(p.importeTotal) })) +
+          ' · ' + esc(t('ranking.detalle.uteEstimado', { importe: formatearImporte(p.importeEstimado), miembros: p.numMiembros })) + '</span>' +
+          '</div>';
+      }).join('') +
+      '</div></div>';
+  }
 
   contenido.innerHTML =
     '<div class="modal-empresa-header">' +
-      '<div class="modal-empresa-nombre">' + esc(entrada.nombre) + '</div>' +
-      (entrada.nif ? '<div class="modal-empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
+      '<div class="modal-empresa-nombre">' + esc(entrada.nombre) +
+        (entrada.esUte ? ' <span class="badge badge--ute">UTE</span>' : '') +
+      '</div>' +
+      (entrada.nif ? '<div class="modal-empresa-nif">' + esc(t('comun.nif')) + ': ' + esc(entrada.nif) + '</div>' : '') +
     '</div>' +
+    uteHtml +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-metricas">' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Contratos adjudicados</div>' +
-        '<div class="modal-metrica-valor">' + entrada.numContratos.toLocaleString('es-ES') + '</div>' +
+        '<div class="modal-field-label">' + esc(t('ranking.contratosAdjudicados')) + '</div>' +
+        '<div class="modal-metrica-valor">' + entrada.numContratos.toLocaleString(locale) + '</div>' +
       '</div>' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Importe total</div>' +
+        '<div class="modal-field-label">' + esc(t('comun.importeTotal')) + '</div>' +
         '<div class="modal-metrica-valor modal-metrica-valor--importe">' + formatearImporte(entrada.importeTotal) + '</div>' +
       '</div>' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Importe medio por contrato</div>' +
+        '<div class="modal-field-label">' + esc(t('ranking.detalle.importeMedioContrato')) + '</div>' +
         '<div class="modal-metrica-valor">' + formatearImporte(entrada.importeMedio) + '</div>' +
       '</div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Desglose por tipo de contrato</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.desgloseTipo')) + '</div>' +
       '<div class="modal-tipos-lista">' + tiposHtml + '</div>' +
     '</div>' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Organismos contratantes (' + entrada.organismos.length + ')</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.organismosContratantes', { count: entrada.organismos.length })) + '</div>' +
       '<div class="modal-organismos-lista">' +
         entrada.organismos.map(o => '<span class="modal-organismo-tag">' + esc(o) + '</span>').join('') +
       '</div>' +
     '</div>' +
+    participacionesHtml +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Contratos individuales</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.contratosIndividuales')) + '</div>' +
       '<div class="modal-tabla-wrapper">' +
         '<table class="modal-contratos-table">' +
           '<thead><tr>' +
-            '<th>Objeto</th><th>Organismo</th><th>Importe</th><th>Fecha</th><th>Enlace</th>' +
+            ['ranking.detalle.colObjeto', 'comun.organismo', 'comun.importe', 'comun.fecha', 'ranking.detalle.colEnlace']
+              .map(clave => '<th>' + esc(t(clave)) + '</th>').join('') +
           '</tr></thead>' +
           '<tbody>' + contratosHtml + '</tbody>' +
         '</table>' +
@@ -662,16 +834,131 @@ function poblarSelect(id, valores) {
   }
 }
 
-function inicializarFiltros() {
-  // Reutiliza estado.ranking (ya construido) para extraer valores únicos
-  // sin necesidad de volver a filtrar el array de contratos original.
-  const tipos      = [...new Set(estado.ranking.flatMap(e => e.tipos))].sort();
-  const organismos = [...new Set(estado.ranking.flatMap(e => e.organismos))].sort();
-  const anios      = [...new Set(estado.ranking.flatMap(e => e.anios))].sort().reverse();
+/**
+ * Etiqueta legible de una categoría de organismo (locales/*.json → categorias.<cat>).
+ * Si la categoría no tiene traducción se muestra la clave tal cual.
+ */
+function etiquetaCategoria(cat) {
+  return t('categorias.' + cat, { defaultValue: cat });
+}
 
-  poblarSelect('filtro-tipo',      tipos);
-  poblarSelect('filtro-organismo', organismos);
-  poblarSelect('filtro-anio',      anios);
+/**
+ * Puebla el selector de organismos con optgroups agrupados por categoría.
+ * Usa los contratos de todas las entradas del ranking para construir el mapa.
+ */
+function poblarSelectOrganismoConOptgroup() {
+  const select = document.getElementById('filtro-organismo');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Construir mapa categoría → Set<organismo> desde los contratos del ranking
+  const mapaCat = {};
+  for (const entrada of estado.ranking) {
+    for (const c of entrada.contratos) {
+      if (!c.organismo) continue;
+      const cat = c.categoria_organismo || 'otros';
+      if (!mapaCat[cat]) mapaCat[cat] = new Set();
+      mapaCat[cat].add(c.organismo);
+    }
+  }
+
+  const categoriasOrdenadas = Object.keys(mapaCat)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
+  if (mapaCat['otros']) categoriasOrdenadas.push('otros');
+
+  for (const cat of categoriasOrdenadas) {
+    const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = etiquetaCategoria(cat);
+    for (const org of organismos) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      optgroup.appendChild(opt);
+    }
+    select.appendChild(optgroup);
+  }
+}
+
+/**
+ * Puebla el selector de categorías con las categorías presentes en el ranking.
+ */
+function poblarSelectCategoria() {
+  const select = document.getElementById('filtro-categoria');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  const conteo = {};
+  for (const entrada of estado.ranking) {
+    for (const cat of entrada.categorias) {
+      conteo[cat] = (conteo[cat] || 0) + entrada.numContratos;
+    }
+  }
+
+  const categorias = Object.keys(conteo)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
+  if (conteo['otros']) categorias.push('otros');
+
+  for (const cat of categorias) {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = etiquetaCategoria(cat) + ' (' + conteo[cat] + ')';
+    select.appendChild(opt);
+  }
+}
+
+/**
+ * Filtra el selector de organismos cuando se selecciona una categoría.
+ */
+function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
+  const select = document.getElementById('filtro-organismo');
+  const valorActual = select.value;
+  const primera = select.querySelector('option') || document.createElement('option');
+  if (!primera.value) {
+    primera.value = '';
+    primera.textContent = t('filtros.todosOrganismos');
+  }
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  if (categoriaSeleccionada) {
+    const organismos = new Set();
+    for (const entrada of estado.ranking) {
+      for (const c of entrada.contratos) {
+        if (c.organismo && (c.categoria_organismo || 'otros') === categoriaSeleccionada) {
+          organismos.add(c.organismo);
+        }
+      }
+    }
+    const lista = [...organismos].sort((a, b) => a.localeCompare(b, 'es'));
+    for (const org of lista) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      select.appendChild(opt);
+    }
+  } else {
+    poblarSelectOrganismoConOptgroup();
+    return;
+  }
+
+  if (valorActual && !select.querySelector('option[value="' + CSS.escape(valorActual) + '"]')) {
+    select.value = '';
+  }
+}
+
+function inicializarFiltros() {
+  const tipos = [...new Set(estado.ranking.flatMap(e => e.tipos))].sort();
+  const anios = [...new Set(estado.ranking.flatMap(e => e.anios))].sort().reverse();
+
+  poblarSelect('filtro-tipo', tipos);
+  poblarSelectCategoria();
+  poblarSelectOrganismoConOptgroup();
+  poblarSelect('filtro-anio', anios);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -679,8 +966,8 @@ function inicializarFiltros() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos, ranking y metadatos en paralelo
-  const [contratos, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  // 1. Cargar datos, metadatos y traducciones en paralelo
+  const [contratos, meta] = await Promise.all([cargarDatos(), cargarMeta(), window.I18n.listo]);
   estado.ranking         = construirRanking(contratos);
   estado.rankingFiltrado = [...estado.ranking];
   mostrarFechaActualizacion(meta);
@@ -698,16 +985,37 @@ async function init() {
   const debouncedFiltrar = debounce(aplicarFiltros, CONFIG.DEBOUNCE_MS);
   document.getElementById('input-busqueda').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-tipo').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-categoria').addEventListener('change', () => {
+    const cat = document.getElementById('filtro-categoria').value;
+    filtrarOrganismosPorCategoria(cat);
+    aplicarFiltros();
+  });
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-anio').addEventListener('change', aplicarFiltros);
   document.getElementById('ordenar-por').addEventListener('change', aplicarFiltros);
 
+  // 4b. Toggle de estimación UTEs
+  const toggleUte = document.getElementById('toggle-ute');
+  if (toggleUte) {
+    toggleUte.addEventListener('change', function () {
+      estado.incluirEstimacionUte = this.checked;
+      renderizarTabla();
+    });
+  }
+
   // 5. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-organismo', 'filtro-anio'].forEach(id => {
+    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-anio'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('ordenar-por').value = 'importe';
+    // Reset toggle UTE
+    const toggleUteLimpiar = document.getElementById('toggle-ute');
+    if (toggleUteLimpiar) {
+      toggleUteLimpiar.checked = false;
+      estado.incluirEstimacionUte = false;
+    }
+    filtrarOrganismosPorCategoria('');
     aplicarFiltros();
   });
 
@@ -760,12 +1068,25 @@ async function init() {
     }
   });
 
-  // 10. Toggle de métrica en la gráfica
+  // 10. Toggle de métrica en la gráfica (sincroniza con la ordenación)
   document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       estado.metricaGrafica = btn.dataset.metric;
+
+      // Sincronizar el selector de ordenación con la métrica elegida
+      const nuevoOrden = btn.dataset.metric === 'contratos' ? 'contratos' : 'importe';
+      const selectOrden = document.getElementById('ordenar-por');
+      if (selectOrden.value !== nuevoOrden) {
+        selectOrden.value = nuevoOrden;
+        // Reordenar la lista y la gráfica
+        estado.rankingFiltrado.sort(ORDENADORES[nuevoOrden]);
+        estado.paginaActual = 1;
+        renderizarTabla();
+        renderizarPaginacion();
+        actualizarEstadisticas();
+      }
       renderizarGrafica();
     });
   });

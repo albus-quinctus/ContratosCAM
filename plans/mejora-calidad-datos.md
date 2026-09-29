@@ -1,8 +1,8 @@
 # Plan de Mejora de Calidad de Datos — ContratosCAM
 
-**Fecha:** Julio 2026  
-**Estado:** Pendiente de implementación  
-**Contexto:** 1.640 contratos en `contratos-normalizados.json`, todos de fuente PLACSP
+**Fecha:** Julio 2026 (actualizado agosto 2026)
+**Estado:** Parcialmente implementado
+**Contexto:** 2.970 contratos en `contratos-normalizados.json`, fuentes PLACSP + TED
 
 ---
 

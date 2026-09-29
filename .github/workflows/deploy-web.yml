@@ -1,0 +1,54 @@
+name: Desplegar web en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/web/**'
+      - 'data/processed/**'
+      - 'scripts/build-web.js'
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    name: Desplegar en GitHub Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # Copia la web y los datos a _site/ y genera las páginas en inglés (/en/)
+      - name: Preparar artefacto para Pages
+        run: npm run build:web
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Subir artefacto para Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Publicar resumen del deploy
+        run: |
+          echo "## 🚀 Deploy completado" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Disparado por:** push a \`src/web/\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Fecha:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_STEP_SUMMARY"

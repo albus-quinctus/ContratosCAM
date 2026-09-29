@@ -14,16 +14,19 @@
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Traducción y locale del idioma de la página (ver js/i18n.js)
+const { t, locale } = window.I18n;
+
 const CONFIG = Object.freeze({
   // Rutas posibles al JSON de datos (se prueban en orden)
-  // - Producción (GitHub Pages): data/ está al mismo nivel que index.html
+  // - Producción (GitHub Pages): data/ está en la raíz del sitio (también desde /en/)
   // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
   DATA_URLS: [
-    './data/processed/contratos-normalizados.json',
+    window.I18n.urlRaiz + 'data/processed/contratos-normalizados.json',
     '/data/processed/contratos-normalizados.json',
   ],
   META_URLS: [
-    './data/processed/meta.json',
+    window.I18n.urlRaiz + 'data/processed/meta.json',
     '/data/processed/meta.json',
   ],
   PAGE_SIZE: 25,
@@ -55,7 +58,7 @@ const estado = {
 
 function formatearImporte(valor) {
   if (valor === null || valor === undefined) return '—';
-  return valor.toLocaleString('es-ES', {
+  return valor.toLocaleString(locale, {
     style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 0,
@@ -76,6 +79,32 @@ function badgeClass(tipo) {
   if (t.includes('servicio')) return 'badge--servicios';
   if (t.includes('suministro')) return 'badge--suministros';
   return 'badge--default';
+}
+
+/**
+ * Devuelve la clase CSS y el texto legible para el badge de estado.
+ * @param {string|null} estado
+ * @returns {{cls: string, label: string}}
+ */
+function badgeEstado(estadoVal) {
+  // Clase CSS de cada estado; la etiqueta sale de locales/*.json (estados.<estado>)
+  const ESTADOS_CLASE = {
+    'en_licitacion':         'badge--estado-licitacion',
+    'en_evaluacion':         'badge--estado-evaluacion',
+    'pre_adjudicado':        'badge--estado-evaluacion',
+    'pre_adjudicacion':      'badge--estado-evaluacion',
+    'adjudicado':            'badge--estado-adjudicado',
+    'formalizado':           'badge--estado-formalizado',
+    'resuelto':              'badge--estado-resuelto',
+    'anulado':               'badge--estado-anulado',
+    'posiblemente_resuelto': 'badge--estado-posible',
+    'publicado':             'badge--estado-licitacion',
+  };
+  if (!estadoVal) return { cls: 'badge--default', label: '—' };
+  return {
+    cls: ESTADOS_CLASE[estadoVal] || 'badge--default',
+    label: t('estados.' + estadoVal, { defaultValue: estadoVal }),
+  };
 }
 
 function esc(str) {
@@ -177,12 +206,12 @@ function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
   if (!el) return;
   if (!meta || !meta.generado_en) {
-    el.textContent = 'Fecha de actualización desconocida';
+    el.textContent = t('actualizacion.desconocida');
     return;
   }
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
+  el.textContent = t('actualizacion.fecha', { fecha: fecha.toLocaleDateString(locale, opciones) });
 }
 
 function generarDatosEjemplo() {
@@ -235,8 +264,10 @@ function obtenerFiltros() {
   return {
     busqueda: document.getElementById('input-busqueda').value.trim().toLowerCase(),
     tipo: document.getElementById('filtro-tipo').value,
+    categoria: document.getElementById('filtro-categoria').value,
     organismo: document.getElementById('filtro-organismo').value,
     procedimiento: document.getElementById('filtro-procedimiento').value,
+    estadoFiltro: document.getElementById('filtro-estado').value,
     importeMin: parseFloat(document.getElementById('filtro-importe-min').value) || null,
     importeMax: parseFloat(document.getElementById('filtro-importe-max').value) || null,
     fechaDesde: document.getElementById('filtro-fecha-desde').value || null,
@@ -257,19 +288,22 @@ function aplicarFiltros() {
 
   estado.filtrados = estado.datos.filter(c => {
     if (terminos.length > 0) {
-      // Incluir NIF en el texto de búsqueda
-      const texto = [c.objeto, c.organismo, c.adjudicatario, c.nif_adjudicatario, c.expediente]
+      // Incluir NIF y miembros de UTE en el texto de búsqueda
+      const texto = [c.objeto, c.organismo, c.adjudicatario, c.nif_adjudicatario, c.expediente,
+        ...(c.miembros_ute || [])]
         .join(' ').toLowerCase();
       // Todos los términos deben aparecer (AND)
       if (!terminos.every(t => texto.includes(t))) return false;
     }
     if (f.tipo && c.tipo !== f.tipo) return false;
+    if (f.categoria && c.categoria_organismo !== f.categoria) return false;
     if (f.organismo && c.organismo !== f.organismo) return false;
     if (f.procedimiento && c.procedimiento !== f.procedimiento) return false;
+    if (f.estadoFiltro && c.estado !== f.estadoFiltro) return false;
     if (f.importeMin !== null && (c.importe === null || c.importe < f.importeMin)) return false;
     if (f.importeMax !== null && (c.importe === null || c.importe > f.importeMax)) return false;
-    if (f.fechaDesde && c.fecha_publicacion && c.fecha_publicacion < f.fechaDesde) return false;
-    if (f.fechaHasta && c.fecha_publicacion && c.fecha_publicacion > f.fechaHasta) return false;
+    if (f.fechaDesde && (!c.fecha_publicacion || c.fecha_publicacion < f.fechaDesde)) return false;
+    if (f.fechaHasta && (!c.fecha_publicacion || c.fecha_publicacion > f.fechaHasta)) return false;
     return true;
   });
 
@@ -306,11 +340,11 @@ function renderizarTerminosBusqueda() {
 
   container.hidden = false;
   container.innerHTML =
-    '<span class="search-terms-label">Buscando:</span> ' +
-    terminos.map(t =>
-      '<span class="search-term-chip">' + esc(t) + '</span>'
+    '<span class="search-terms-label">' + esc(t('indice.buscando')) + '</span> ' +
+    terminos.map(termino =>
+      '<span class="search-term-chip">' + esc(termino) + '</span>'
     ).join(' ') +
-    '<span class="search-terms-mode">( todos deben coincidir )</span>';
+    '<span class="search-terms-mode">' + esc(t('indice.modoBusqueda')) + '</span>';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -325,28 +359,33 @@ function renderizarTabla() {
 
   document.getElementById('results-count').textContent =
     total === 0
-      ? 'Sin resultados'
-      : total.toLocaleString('es-ES') + ' contrato' + (total !== 1 ? 's' : '') + ' encontrado' + (total !== 1 ? 's' : '');
+      ? t('comun.sinResultados')
+      : t('indice.contratosEncontrados', { count: total });
 
   if (pagina.length === 0) {
     tbody.innerHTML =
-      '<tr><td colspan="6"><div class="empty-state">' +
+      '<tr><td colspan="7"><div class="empty-state">' +
       '<div class="empty-state-icon">🔍</div>' +
-      '<p>No se encontraron contratos con los filtros aplicados.</p>' +
+      '<p>' + esc(t('indice.sinContratos')) + '</p>' +
       '</div></td></tr>';
     return;
   }
 
-  tbody.innerHTML = pagina.map((c, i) =>
-    '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
+  tbody.innerHTML = pagina.map((c, i) => {
+    const est = badgeEstado(c.estado);
+    return '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="' + esc(t('indice.verDetalle')) + '">' +
     '<td class="col-objeto"><div class="cell-objeto">' + (resaltar(c.objeto) || '—') + '</div></td>' +
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
-    '<td class="col-tipo"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></td>' +
+    '<td class="col-tipo">' +
+      '<span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' +
+      (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">🇪🇺</span>' : '') +
+    '</td>' +
+    '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
-    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + '</div></td>' +
-    '</tr>'
-  ).join('');
+    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute" title="' + esc(t('comun.ute')) + '">UTE</span>' : '') + '</div></td>' +
+    '</tr>';
+  }).join('');
 
   tbody.querySelectorAll('tr[data-idx]').forEach(fila => {
     const abrir = () => abrirModal(estado.filtrados[parseInt(fila.dataset.idx)]);
@@ -367,8 +406,8 @@ function renderizarPaginacion() {
   document.getElementById('btn-siguiente').disabled = estado.paginaActual >= totalPaginas;
   document.getElementById('pagination-info').textContent =
     totalPaginas > 0
-      ? 'Página ' + estado.paginaActual + ' de ' + totalPaginas
-      : 'Sin resultados';
+      ? t('paginacion.pagina', { actual: estado.paginaActual, total: totalPaginas })
+      : t('comun.sinResultados');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -381,47 +420,75 @@ function abrirModal(c) {
 
   contenido.innerHTML =
     '<div class="modal-field">' +
-    '<div class="modal-field-label">Objeto del contrato</div>' +
+    '<div class="modal-field-label">' + esc(t('indice.colObjeto')) + '</div>' +
     '<div class="modal-field-value modal-field-value--large">' + (esc(c.objeto) || '—') + '</div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Importe (sin IVA)</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.importeSinIva')) + '</div>' +
     '<div class="modal-field-value modal-field-value--importe">' + formatearImporte(c.importe) + '</div></div>' +
     (c.importe_iva
-      ? '<div class="modal-field"><div class="modal-field-label">Importe (con IVA)</div>' +
+      ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.importeConIva')) + '</div>' +
         '<div class="modal-field-value modal-field-value--importe">' + formatearImporte(c.importe_iva) + '</div></div>'
       : '') +
     '</div>' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Organismo</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.organismo')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.organismo) || '—') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Tipo</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.tipo')) + '</div>' +
     '<div class="modal-field-value"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Procedimiento</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.estado')) + '</div>' +
+    (function() { const est = badgeEstado(c.estado); return '<div class="modal-field-value"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span>' + (c.estado_xml && c.estado_xml !== c.estado ? ' <span class="modal-estado-xml">(XML: ' + esc(c.estado_xml) + ')</span>' : '') + '</div></div>'; })() +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.procedimiento')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.procedimiento) || '—') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Expediente</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.expediente')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.expediente) || '—') + '</div></div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Adjudicatario</div>' +
-    '<div class="modal-field-value">' + (esc(c.adjudicatario) || '—') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">NIF</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.adjudicatario')) + '</div>' +
+    '<div class="modal-field-value">' + (esc(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute">UTE</span>' : '') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.nif')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.nif_adjudicatario) || '—') + '</div></div>' +
     '</div>' +
+    (c.es_ute && c.miembros_ute && c.miembros_ute.length > 0
+      ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.miembrosUte')) + '</div>' +
+        '<div class="modal-field-value"><ul class="ute-miembros-list">' +
+        c.miembros_ute.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
+        '</ul></div></div>'
+      : '') +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha publicación</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaPublicacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_publicacion) + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha adjudicación</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaAdjudicacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_adjudicacion) + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha formalización</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaFormalizacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_formalizacion) + '</div></div>' +
     '</div>' +
+    // Sección de datos enriquecidos TED-UE (solo si hay datos)
+    ((c.num_ofertas || c.criterios_adjudicacion || c.ted_publication_number)
+      ? '<hr class="modal-divider" />' +
+        '<div class="modal-field"><div class="modal-field-label">' +
+        '<span class="badge badge--ted">' + esc(t('indice.detalle.tedBadge')) + '</span></div></div>' +
+        '<div class="modal-grid">' +
+        (c.num_ofertas
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.ofertas')) + '</div>' +
+            '<div class="modal-field-value modal-field-value--importe">' + c.num_ofertas + '</div></div>'
+          : '') +
+        (c.ted_publication_number
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.numTed')) + '</div>' +
+            '<div class="modal-field-value"><a href="https://ted.europa.eu/es/notice/' + esc(c.ted_publication_number) + '/html" target="_blank" rel="noopener noreferrer">' + esc(c.ted_publication_number) + ' ↗</a></div></div>'
+          : '') +
+        '</div>' +
+        (c.criterios_adjudicacion
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.criterios')) + '</div>' +
+            '<div class="modal-field-value">' + esc(c.criterios_adjudicacion) + '</div></div>'
+          : '')
+      : '') +
     (sanitizarUrl(c.url_origen)
       ? '<hr class="modal-divider" />' +
-        '<div class="modal-field"><div class="modal-field-label">Fuente oficial</div>' +
-        '<div class="modal-field-value"><a href="' + esc(sanitizarUrl(c.url_origen)) + '" target="_blank" rel="noopener noreferrer">Ver anuncio original ↗</a></div></div>'
+        '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fuente')) + '</div>' +
+        '<div class="modal-field-value"><a href="' + esc(sanitizarUrl(c.url_origen)) + '" target="_blank" rel="noopener noreferrer">' + esc(t('indice.detalle.verAnuncio')) + '</a></div></div>'
       : '');
 
   overlay.hidden = false;
@@ -488,17 +555,17 @@ function actualizarEstadisticas() {
   const datos = estado.filtrados;
 
   document.getElementById('stat-total').textContent =
-    datos.length.toLocaleString('es-ES');
+    datos.length.toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, c) => s + (c.importe || 0), 0);
   document.getElementById('stat-importe').textContent =
     importeTotal > 0 ? formatearImporte(importeTotal) : '—';
 
   document.getElementById('stat-organismos').textContent =
-    new Set(datos.map(c => c.organismo).filter(Boolean)).size.toLocaleString('es-ES');
+    new Set(datos.map(c => c.organismo).filter(Boolean)).size.toLocaleString(locale);
 
   document.getElementById('stat-adjudicatarios').textContent =
-    new Set(datos.map(c => c.adjudicatario).filter(Boolean)).size.toLocaleString('es-ES');
+    new Set(datos.map(c => c.adjudicatario).filter(Boolean)).size.toLocaleString(locale);
 }
 
 function crearOActualizarChart(canvasId, tipo, data, opciones) {
@@ -528,8 +595,8 @@ function renderizarGraficas() {
   // Gráfica 1: Contratos por tipo (donut)
   const conteoTipos = {};
   datos.forEach(c => {
-    const t = c.tipo || 'Sin clasificar';
-    conteoTipos[t] = (conteoTipos[t] || 0) + 1;
+    const tipo = c.tipo || t('comun.sinClasificar');
+    conteoTipos[tipo] = (conteoTipos[tipo] || 0) + 1;
   });
   crearOActualizarChart('chart-tipos', 'doughnut', {
     labels: Object.keys(conteoTipos),
@@ -542,7 +609,7 @@ function renderizarGraficas() {
   const topOrg = Object.entries(conteoOrg).sort((a, b) => b[1] - a[1]).slice(0, 10);
   crearOActualizarChart('chart-organismos', 'bar', {
     labels: topOrg.map(([k]) => k.length > 35 ? k.substring(0, 35) + '…' : k),
-    datasets: [{ label: 'Contratos', data: topOrg.map(([, v]) => v), backgroundColor: COLORES[0], borderRadius: 4 }],
+    datasets: [{ label: t('comun.contratos'), data: topOrg.map(([, v]) => v), backgroundColor: COLORES[0], borderRadius: 4 }],
   }, {
     indexAxis: 'y',
     plugins: { legend: { display: false } },
@@ -561,7 +628,7 @@ function renderizarGraficas() {
   crearOActualizarChart('chart-evolucion', 'line', {
     labels: meses.map(m => { const [a, mo] = m.split('-'); return mo + '/' + a; }),
     datasets: [{
-      label: 'Contratos publicados',
+      label: t('indice.graficas.contratosPublicados'),
       data: meses.map(m => conteoMes[m]),
       borderColor: COLORES[0],
       backgroundColor: 'rgba(192,57,43,.1)',
@@ -577,7 +644,7 @@ function renderizarGraficas() {
   // Gráfica 4: Distribución por procedimiento (donut)
   const conteoProcedimiento = {};
   datos.forEach(c => {
-    const p = c.procedimiento || 'Sin especificar';
+    const p = c.procedimiento || t('comun.sinEspecificar');
     conteoProcedimiento[p] = (conteoProcedimiento[p] || 0) + 1;
   });
   crearOActualizarChart('chart-procedimientos', 'doughnut', {
@@ -603,10 +670,151 @@ function poblarSelect(id, valores) {
   });
 }
 
+/**
+ * Etiqueta legible de una categoría de organismo (locales/*.json → categorias.<cat>).
+ * Si la categoría no tiene traducción se muestra la clave tal cual.
+ */
+function etiquetaCategoria(cat) {
+  return t('categorias.' + cat, { defaultValue: cat });
+}
+
+/**
+ * Puebla el selector de organismos con optgroups agrupados por categoría.
+ * Cada categoría se convierte en un <optgroup> con sus organismos ordenados.
+ */
+function poblarSelectOrganismoConOptgroup() {
+  const select = document.getElementById('filtro-organismo');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Construir mapa categoría → [organismos]
+  const mapaCat = {};
+  for (const c of estado.datos) {
+    if (!c.organismo) continue;
+    const cat = c.categoria_organismo || 'otros';
+    if (!mapaCat[cat]) mapaCat[cat] = new Set();
+    mapaCat[cat].add(c.organismo);
+  }
+
+  // Orden de categorías (las que tienen más organismos primero, pero 'otros' al final)
+  const categoriasOrdenadas = Object.keys(mapaCat)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
+  if (mapaCat['otros']) categoriasOrdenadas.push('otros');
+
+  for (const cat of categoriasOrdenadas) {
+    const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = etiquetaCategoria(cat);
+    for (const org of organismos) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      optgroup.appendChild(opt);
+    }
+    select.appendChild(optgroup);
+  }
+}
+
+/**
+ * Puebla el selector de categorías con las categorías presentes en los datos.
+ */
+function poblarSelectCategoria() {
+  const select = document.getElementById('filtro-categoria');
+  const primera = select.querySelector('option');
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  // Recoger categorías presentes y contar contratos
+  const conteo = {};
+  for (const c of estado.datos) {
+    const cat = c.categoria_organismo || 'otros';
+    conteo[cat] = (conteo[cat] || 0) + 1;
+  }
+
+  // Ordenar: alfabéticamente por label, 'otros' al final
+  const categorias = Object.keys(conteo)
+    .filter(k => k !== 'otros')
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
+  if (conteo['otros']) categorias.push('otros');
+
+  for (const cat of categorias) {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = etiquetaCategoria(cat) + ' (' + conteo[cat] + ')';
+    select.appendChild(opt);
+  }
+}
+
+/**
+ * Filtra el selector de organismos cuando se selecciona una categoría.
+ * Si no hay categoría seleccionada, muestra todos los organismos con optgroup.
+ */
+function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
+  const select = document.getElementById('filtro-organismo');
+  const valorActual = select.value;
+  const primera = select.querySelector('option') || document.createElement('option');
+  if (!primera.value) {
+    primera.value = '';
+    primera.textContent = t('filtros.todosOrganismos');
+  }
+  select.innerHTML = '';
+  select.appendChild(primera);
+
+  if (categoriaSeleccionada) {
+    // Mostrar solo organismos de esa categoría (sin optgroup, lista plana)
+    const organismos = new Set();
+    for (const c of estado.datos) {
+      if (c.organismo && (c.categoria_organismo || 'otros') === categoriaSeleccionada) {
+        organismos.add(c.organismo);
+      }
+    }
+    const lista = [...organismos].sort((a, b) => a.localeCompare(b, 'es'));
+    for (const org of lista) {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      select.appendChild(opt);
+    }
+  } else {
+    // Sin categoría: mostrar todos con optgroup
+    poblarSelectOrganismoConOptgroup();
+    return; // poblarSelectOrganismoConOptgroup ya reconstruye el select completo
+  }
+
+  // Si el valor anterior ya no existe en las opciones, resetear
+  if (valorActual && !select.querySelector('option[value="' + CSS.escape(valorActual) + '"]')) {
+    select.value = '';
+  }
+}
+
 function inicializarFiltros() {
   poblarSelect('filtro-tipo', valoresUnicos(estado.datos, 'tipo'));
-  poblarSelect('filtro-organismo', valoresUnicos(estado.datos, 'organismo'));
+  poblarSelectCategoria();
+  poblarSelectOrganismoConOptgroup();
   poblarSelect('filtro-procedimiento', valoresUnicos(estado.datos, 'procedimiento'));
+
+  // Poblar selector de estado con etiquetas legibles (en orden lógico del ciclo de vida)
+  const ORDEN_ESTADOS = [
+    'en_licitacion', 'en_evaluacion', 'pre_adjudicado', 'pre_adjudicacion',
+    'adjudicado', 'formalizado', 'resuelto', 'anulado', 'posiblemente_resuelto', 'publicado',
+  ];
+  const estadosPresentes = new Set(estado.datos.map(d => d.estado).filter(Boolean));
+  const estadosOrdenados = ORDEN_ESTADOS.filter(e => estadosPresentes.has(e));
+  // Añadir cualquier estado no previsto al final
+  estadosPresentes.forEach(e => { if (!ORDEN_ESTADOS.includes(e)) estadosOrdenados.push(e); });
+
+  const selectEstado = document.getElementById('filtro-estado');
+  const primeraOpcion = selectEstado.querySelector('option');
+  selectEstado.innerHTML = '';
+  selectEstado.appendChild(primeraOpcion);
+  estadosOrdenados.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = badgeEstado(v).label;
+    selectEstado.appendChild(opt);
+  });
 }
 
 function inicializarOrdenacion() {
@@ -633,8 +841,8 @@ function inicializarOrdenacion() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos y metadatos
-  const [datosRaw, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  // 1. Cargar datos, metadatos y traducciones
+  const [datosRaw, meta] = await Promise.all([cargarDatos(), cargarMeta(), window.I18n.listo]);
   estado.datos = datosRaw;
   estado.filtrados = [...estado.datos];
   mostrarFechaActualizacion(meta);
@@ -648,8 +856,14 @@ async function init() {
   const debouncedFiltrar = debounce(aplicarFiltros, CONFIG.DEBOUNCE_MS);
   document.getElementById('input-busqueda').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-tipo').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-categoria').addEventListener('change', () => {
+    const cat = document.getElementById('filtro-categoria').value;
+    filtrarOrganismosPorCategoria(cat);
+    aplicarFiltros();
+  });
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-procedimiento').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-importe-min').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-importe-max').addEventListener('input', debouncedFiltrar);
   document.getElementById('filtro-fecha-desde').addEventListener('change', aplicarFiltros);
@@ -657,9 +871,11 @@ async function init() {
 
   // 4. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-organismo', 'filtro-procedimiento',
-      'filtro-importe-min', 'filtro-importe-max', 'filtro-fecha-desde', 'filtro-fecha-hasta']
+    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo',
+      'filtro-procedimiento', 'filtro-estado', 'filtro-importe-min', 'filtro-importe-max',
+      'filtro-fecha-desde', 'filtro-fecha-hasta']
       .forEach(id => { document.getElementById(id).value = ''; });
+    filtrarOrganismosPorCategoria('');
     aplicarFiltros();
   });
 

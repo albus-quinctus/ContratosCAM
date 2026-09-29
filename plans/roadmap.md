@@ -174,31 +174,101 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 
 ---
 
-### FASE 5c — Integración de TED (Tenders Electronic Daily, UE)
+### FASE 5c — Integración de TED (Tenders Electronic Daily, UE) ✅
 > Enriquecer los contratos grandes con datos europeos
 
-Los contratos que superan los umbrales europeos (~221.000€ servicios, ~5,5M€ obras) se publican obligatoriamente en el Diario Oficial de la UE. TED tiene una API REST pública, gratuita y con datos JSON estructurados.
+Los contratos que superan los umbrales europeos (~221.000€ servicios, ~5,5M€ obras) se publican obligatoriamente en el Diario Oficial de la UE. TED tiene una API REST pública y gratuita con datos XML estructurados.
 
-**API:** https://ted.europa.eu/api/v3.0/notices/search
+**API:** https://api.ted.europa.eu/v3/notices/search (POST, paginación por página, sin autenticación)
 
 **¿Qué aporta?**
-- Número de ofertas recibidas y rechazadas por licitación
+- Número de ofertas recibidas por licitación
 - Criterios de adjudicación detallados (precio vs. calidad, ponderaciones)
-- Datos de subcontratación
+- Referencia cruzada con publicación TED (ted_publication_number)
 - Verificación cruzada con PLACSP para detectar inconsistencias
-- ~200 contratos/año adicionales con información enriquecida
+- ~586 contratos de Madrid con información enriquecida
 
-- [ ] Investigar la API v3 de TED: endpoints, autenticación, límites de rate, formato de respuesta
-- [ ] Definir los filtros de búsqueda: `buyer.country=ESP`, `buyer.nuts=ES3` (Comunidad de Madrid)
-- [ ] Implementar descarga paginada en `scripts/download.js` (nuevo bloque `downloadTED()`)
-- [ ] Implementar parser para JSON de TED en `scripts/parse.js` (formato nativo JSON, sin XML)
-- [ ] Mapear campos TED al esquema normalizado en `scripts/transform.js` (nuevo campo `fuente: "ted_ue"`)
-- [ ] Añadir campos enriquecidos al modelo de datos: `num_ofertas`, `criterios_adjudicacion`
-- [ ] Implementar deduplicación cruzada TED ↔ PLACSP por número de expediente
-- [ ] Actualizar `scripts/validate.js` para los nuevos campos opcionales
-- [ ] Actualizar el frontend para mostrar los campos enriquecidos cuando estén disponibles
+**Investigación realizada (agosto 2026):**
+- La API v3 de TED usa POST con body JSON, paginación por `page` (50 notices/página)
+- Respuesta: `{notices, totalNoticeCount, iterationNextToken, timedOut}`
+- Los notices incluyen URL a XML completo (formato TED_EXPORT con CODICE/DIRECTIVE_2014_24_EU)
+- Filtro usado: `buyer-country=ESP AND buyer-city=Madrid`
+- Total disponible: ~139.735 notices para Madrid
+- Los criterios de adjudicación están en OBJECT_DESCR > DIRECTIVE_2014_24_EU > AC_QUALITY/AC_COST/AC_PRICE
 
-**Entregable:** Contratos grandes enriquecidos con datos europeos (criterios, ofertas, subcontratación).
+- [x] Investigar la API v3 de TED: endpoints, autenticación, límites de rate, formato de respuesta
+- [x] Definir los filtros de búsqueda: `buyer-country=ESP AND buyer-city=Madrid`
+- [x] Implementar descarga paginada en `scripts/download-ted.js` (script dedicado, API POST con paginación)
+- [x] Implementar parser para XML de TED en `scripts/parse-ted.js` (fast-xml-parser, extracción de criterios)
+- [x] Mapear campos TED al esquema normalizado en `scripts/transform.js` (`transformarContratoTED()`, `fuente: "ted_ue"`)
+- [x] Añadir campos enriquecidos al modelo de datos: `num_ofertas`, `ted_publication_number`, `criterios_adjudicacion`
+- [x] Implementar deduplicación cruzada TED ↔ PLACSP por expediente+organismo (merge multi-fuente: PLACSP base + TED enriquece)
+- [x] Actualizar `scripts/validate.js` para los nuevos campos opcionales (completitud + validación de tipo)
+- [x] Actualizar el frontend para mostrar los campos enriquecidos:
+  - [x] Modal de detalle con sección "Datos UE" (num_ofertas, ted_publication_number con enlace, criterios_adjudicacion)
+  - [x] Badge 🇪🇺 en la tabla principal para contratos con datos TED
+  - [x] CSS `.badge--ted` para el indicador visual
+- [x] Integrar en CI/CD (`update-data.yml` con `continue-on-error: true` para TED)
+- [x] Verificar pipeline end-to-end: 559 contratos TED parseados, 2957 totales tras deduplicar, 0 errores de validación
+
+**Resultados:**
+- 81% de contratos TED tienen criterios_adjudicacion extraídos
+- 586 contratos con ted_publication_number (19.8% del total)
+- 61 contratos con num_ofertas enriquecido
+- Deduplicación multi-fuente funcional (PLACSP como base, TED enriquece campos exclusivos)
+
+**Entregable:** Contratos grandes enriquecidos con datos europeos (criterios de adjudicación, número de ofertas, referencia TED). ✅
+
+---
+
+### FASE 5d — Estado del Contrato y Actualización Incremental ✅
+> Mostrar el ciclo de vida real de cada contrato
+
+Los contratos tienen un estado que evoluciona: desde publicado → en evaluación → adjudicado → formalizado → resuelto. El feed Atom solo captura el estado en el momento de la descarga, no el estado actual.
+
+**Implementado (agosto 2026):**
+
+- [x] Añadir función `derivarEstado()` en `scripts/transform.js`:
+  - Infiere el estado más probable combinando el código XML con los datos disponibles (adjudicatario, fechas, antigüedad)
+  - Esquema de 8 estados: `en_licitacion`, `en_evaluacion`, `pre_adjudicado`, `adjudicado`, `formalizado`, `resuelto`, `anulado`, `posiblemente_resuelto`
+- [x] Añadir campos `estado_xml` (código original del feed) y `estado_verificado_en` (fecha de última verificación)
+- [x] Actualizar `scripts/validate.js` para validar los nuevos valores de estado
+- [x] Añadir filtro de estado en `src/web/index.html` (selector con opciones ordenadas por ciclo de vida)
+- [x] Añadir columna Estado en la tabla de contratos con badges de color por estado
+- [x] Mostrar estado en el modal de detalle con badge + estado XML original
+- [x] Implementar `scripts/update-estados.js`:
+  - Consulta la ficha web de PLACSP para contratos en estados activos con >30 días de antigüedad
+  - Actualiza el estado y la fecha de verificación
+  - Soporta `--max=N`, `--dias=N` y `--dry-run`
+- [x] Añadir `"update:estados"` y `"update:estados:dry"` al `package.json`
+
+**Distribución de estados (agosto 2026):**
+- `resuelto`: 1.008 contratos
+- `en_evaluacion`: 609 contratos
+- `adjudicado`: 569 contratos
+- `posiblemente_resuelto`: 334 contratos
+- `en_licitacion`: 130 contratos
+- `anulado`: 2 contratos
+
+**Entregable:** Campo `estado` fiable con ciclo de vida completo, filtro en el frontend y script de actualización incremental. ✅
+
+---
+
+### FASE 5e — Ampliación de Cobertura (pendiente)
+> Investigar fuentes adicionales para aumentar el dataset
+
+- [ ] **Bloque A:** Ejecutar `npm run download:full` (500 páginas, ~225.000 licitaciones, 30-60 min)
+- [ ] **Bloque B:** Investigar PLACSP búsqueda avanzada CSV — puede tener `fecha_formalizacion` y campos extra
+  - URL: `https://contrataciondelestado.es` → Búsqueda avanzada → Filtrar CAM → Exportar CSV
+  - ⚠️ La IP quedó bloqueada temporalmente (rate limiting por descarga masiva de 314 páginas). Reintentar en ~24h verificando: `node -e "fetch('https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom').then(r => console.log(r.status))"`
+  - El portal web/CSV siempre requiere navegador (WAF permanente); solo el feed Atom es automatizable
+- [x] **Bloque C:** Re-verificar PLACE histórico en datos.gob.es, transparencia.gob.es e IGAE — ❌ **Ninguna fuente tiene datos descargables** (agosto 2026)
+  - `datos.gob.es` → ficha del catálogo devuelve 404 (dataset eliminado)
+  - `transparencia.gob.es` → portal informativo sin datos descargables (AEM)
+  - `igae.pap.hacienda.gob.es` → todas las URLs devuelven 404 (sitio reorganizado)
+- [ ] **Bloque G:** Ejecutar `npm run enrich:nif -- --max=200` (prueba) y luego `npm run enrich:nif` (completo)
+
+Ver plan detallado en [`plans/mejora-cobertura-y-estados.md`](mejora-cobertura-y-estados.md).
 
 ---
 

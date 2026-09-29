@@ -1,13 +1,15 @@
-/**
+﻿/**
  * scripts/transform.js
  *
  * Transforma los datos parseados de PLACSP y TED:
  * 1. Filtra solo los contratos de la Comunidad de Madrid
  * 2. Normaliza campos (tipos, procedimientos, fechas, importes)
- * 3. Limpia NIFs y nombres de organismos
- * 4. Integra datos de TED-UE (campos enriquecidos: num_ofertas, etc.)
- * 5. Deduplica por expediente + organismo (cruce entre fuentes)
- * 6. Genera el JSON normalizado final
+ * 3. Integra datos de TED-UE (campos enriquecidos: num_ofertas, etc.)
+ * 4. Deduplica por expediente + organismo (cruce entre fuentes)
+ * 5. Genera el JSON normalizado final
+ *
+ * La resolución de entidades (canonización de nombres) se ejecuta
+ * como paso independiente: node scripts/resolve-entities.js
  *
  * Entradas:
  *   - data/raw/parsed-licitaciones.json (PLACSP)
@@ -66,9 +68,9 @@ const PROCEDIMIENTOS = {
 };
 
 /**
- * Estados del contrato
+ * Estados del contrato — mapeo del código XML a valor legible
  */
-const ESTADOS = {
+const ESTADOS_XML = {
   'PUB': 'publicado',
   'EV': 'en_evaluacion',
   'ADJ': 'adjudicado',
@@ -76,6 +78,21 @@ const ESTADOS = {
   'ANUL': 'anulado',
   'PRE': 'pre_adjudicacion',
 };
+
+/**
+ * Estados derivados del contrato — valores finales normalizados.
+ * Se infieren a partir del estado XML + datos disponibles (adjudicatario, fechas, antigüedad).
+ */
+const ESTADOS_DERIVADOS = [
+  'en_licitacion',
+  'en_evaluacion',
+  'pre_adjudicado',
+  'adjudicado',
+  'formalizado',
+  'resuelto',
+  'anulado',
+  'posiblemente_resuelto',
+];
 
 /**
  * Palabras clave que identifican organismos de la Comunidad de Madrid
@@ -87,18 +104,9 @@ const FILTROS_CAM = [
   'Comunidad Autónoma de Madrid',
 ];
 
-/**
- * Tabla de normalización de nombres de organismos.
- * Mapea variantes conocidas (abreviaturas, erratas, nombres antiguos)
- * a un nombre canónico. Se amplía conforme se detectan variantes en los datos.
- */
-const NORMALIZACION_ORGANISMOS = {
-  // Variantes con/sin tilde o abreviaturas detectadas en los datos
-  'Consejeria de Sanidad': 'Consejería de Sanidad',
-  'Consejeria de Educación, Ciencia y Universidades': 'Consejería de Educación, Ciencia y Universidades',
-  'CONSEJERÍA DE SANIDAD': 'Consejería de Sanidad',
-  'CONSEJERÍA DE EDUCACIÓN, CIENCIA Y UNIVERSIDADES': 'Consejería de Educación, Ciencia y Universidades',
-};
+// Nota: La normalización de organismos y la canonización de adjudicatarios
+// se realizan en scripts/resolve-entities.js (paso separado del pipeline).
+// transform.js solo se encarga de normalizar campos individuales.
 
 /**
  * Tabla de divisiones CPV (2 primeros dígitos → descripción).
@@ -150,6 +158,53 @@ const CPV_DIVISIONES = {
   '92': 'Servicios recreativos y culturales',
   '98': 'Otros servicios comunitarios',
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Derivación inteligente de estado
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Deriva el estado más probable de un contrato a partir de los datos disponibles.
+ * El estado del feed Atom refleja el momento de la descarga, no el estado actual.
+ * Esta función infiere un estado más fiable combinando el código XML con otros campos.
+ *
+ * @param {object} params
+ * @param {string|null} params.estadoXml - Código de estado del XML (PUB, EV, ADJ, RES, ANUL, PRE)
+ * @param {string|null} params.adjudicatario - Nombre del adjudicatario (si existe)
+ * @param {string|null} params.fechaAdjudicacion - Fecha de adjudicación ISO
+ * @param {string|null} params.fechaFormalizacion - Fecha de formalización ISO (si disponible)
+ * @param {string|null} params.fechaPublicacion - Fecha de publicación ISO
+ * @returns {string} Estado derivado normalizado
+ */
+function derivarEstado({ estadoXml, adjudicatario, fechaAdjudicacion, fechaFormalizacion, fechaPublicacion }) {
+  // Prioridad 1: Estados terminales del XML
+  if (estadoXml === 'ANUL') return 'anulado';
+  if (estadoXml === 'RES') return 'resuelto';
+
+  // Prioridad 2: Si tiene fecha de formalización → formalizado
+  if (fechaFormalizacion) return 'formalizado';
+
+  // Prioridad 3: Si tiene adjudicatario y fecha de adjudicación → adjudicado
+  if (adjudicatario && fechaAdjudicacion) return 'adjudicado';
+
+  // Prioridad 4: Estados intermedios del XML
+  if (estadoXml === 'ADJ') return 'adjudicado';
+  if (estadoXml === 'PRE') return 'pre_adjudicado';
+  if (estadoXml === 'EV') return 'en_evaluacion';
+
+  // Prioridad 5: Si es PUB (publicado) pero tiene mucha antigüedad → posiblemente resuelto
+  if (estadoXml === 'PUB' || !estadoXml) {
+    if (fechaPublicacion) {
+      const fechaPub = new Date(fechaPublicacion);
+      const ahora = new Date();
+      const mesesTranscurridos = (ahora - fechaPub) / (1000 * 60 * 60 * 24 * 30);
+      if (mesesTranscurridos > 6) return 'posiblemente_resuelto';
+    }
+    return 'en_licitacion';
+  }
+
+  return 'en_licitacion';
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de transformación
@@ -269,23 +324,14 @@ function normalizarProcedimiento(code) {
 }
 
 /**
- * Normaliza el nombre de un organismo.
- * Busca primero en la tabla de variantes conocidas, luego limpia espacios.
+ * Limpia el nombre de un organismo (solo espacios).
+ * La normalización semántica (variantes, tildes) se hace en resolve-entities.js.
  * @param {string|null} nombre
  * @returns {string|null}
  */
 function normalizarOrganismo(nombre) {
   if (!nombre) return null;
-
-  // Limpiar espacios múltiples primero
-  const limpio = nombre.replace(/\s+/g, ' ').trim();
-
-  // Buscar en tabla de normalización (case-sensitive)
-  if (NORMALIZACION_ORGANISMOS[limpio]) {
-    return NORMALIZACION_ORGANISMOS[limpio];
-  }
-
-  return limpio;
+  return nombre.replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -309,6 +355,19 @@ function transformarContrato(crudo, id) {
   const importeFinal = crudo.importe_adjudicacion || crudo.importe_sin_iva || null;
   const importeIvaFinal = crudo.importe_adjudicacion_iva || crudo.importe_total || null;
 
+  const fechaPub = normalizarFecha(crudo.fecha_actualizacion);
+  const fechaAdj = normalizarFecha(crudo.fecha_adjudicacion);
+  const adjudicatarioLimpio = limpiarVacio(crudo.adjudicatario);
+
+  // Derivar estado inteligente
+  const estadoDerivado = derivarEstado({
+    estadoXml: crudo.estado,
+    adjudicatario: adjudicatarioLimpio,
+    fechaAdjudicacion: fechaAdj,
+    fechaFormalizacion: null, // No disponible en el feed Atom
+    fechaPublicacion: fechaPub,
+  });
+
   return {
     id,
     expediente: limpiarVacio(crudo.expediente),
@@ -316,7 +375,9 @@ function transformarContrato(crudo, id) {
     tipo: normalizarTipo(crudo.tipo_code),
     subtipo: limpiarVacio(crudo.subtipo_code),
     procedimiento: normalizarProcedimiento(crudo.procedimiento_code),
-    estado: ESTADOS[crudo.estado] || crudo.estado || null,
+    estado: estadoDerivado,
+    estado_xml: ESTADOS_XML[crudo.estado] || crudo.estado || null,
+    estado_verificado_en: null, // Se actualiza con scripts/update-estados.js
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(importeFinal),
     importe_iva: normalizarImporte(importeIvaFinal),
@@ -325,10 +386,10 @@ function transformarContrato(crudo, id) {
     cpv_descripcion: limpiarVacio(crudo.cpv_descripcion) || (crudo.cpv ? (CPV_DIVISIONES[crudo.cpv.substring(0, 2)] || null) : null),
     duracion_meses: crudo.duracion_meses != null ? (Number.isFinite(crudo.duracion_meses) ? crudo.duracion_meses : null) : null,
     num_lotes: crudo.num_lotes || null,
-    adjudicatario: limpiarVacio(crudo.adjudicatario),
+    adjudicatario: adjudicatarioLimpio,
     nif_adjudicatario: normalizarNIF(crudo.nif_adjudicatario),
-    fecha_publicacion: normalizarFecha(crudo.fecha_actualizacion),
-    fecha_adjudicacion: normalizarFecha(crudo.fecha_adjudicacion),
+    fecha_publicacion: fechaPub,
+    fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null, // No disponible en el feed Atom
     url_origen: limpiarVacio(crudo.url_origen),
     fuente: 'placsp',
@@ -350,6 +411,19 @@ function transformarContratoTED(crudo, id) {
   const tiposTED = { '1': 'obras', '2': 'suministros', '4': 'servicios', '3': 'servicios' };
   const procsTED = { '1': 'abierto', '2': 'restringido', '3': 'negociado', '4': 'negociado', '6': 'negociado_sin_publicidad' };
 
+  const fechaPub = normalizarFecha(crudo.fecha_publicacion);
+  const fechaAdj = normalizarFecha(crudo.fecha_adjudicacion);
+  const adjudicatarioLimpio = limpiarVacio(crudo.adjudicatario);
+
+  // Derivar estado inteligente
+  const estadoDerivado = derivarEstado({
+    estadoXml: crudo.estado,
+    adjudicatario: adjudicatarioLimpio,
+    fechaAdjudicacion: fechaAdj,
+    fechaFormalizacion: null,
+    fechaPublicacion: fechaPub,
+  });
+
   return {
     id,
     expediente: limpiarVacio(crudo.expediente),
@@ -357,7 +431,9 @@ function transformarContratoTED(crudo, id) {
     tipo: tiposTED[crudo.tipo_code] || normalizarTipo(crudo.tipo_code) || 'otros',
     subtipo: null,
     procedimiento: procsTED[crudo.procedimiento_code] || normalizarProcedimiento(crudo.procedimiento_code) || 'abierto',
-    estado: ESTADOS[crudo.estado] || crudo.estado || null,
+    estado: estadoDerivado,
+    estado_xml: ESTADOS_XML[crudo.estado] || crudo.estado || null,
+    estado_verificado_en: null,
     organismo: normalizarOrganismo(crudo.organismo),
     importe: normalizarImporte(crudo.importe_sin_iva || crudo.importe_total),
     importe_iva: normalizarImporte(crudo.importe_total),
@@ -366,16 +442,17 @@ function transformarContratoTED(crudo, id) {
     cpv_descripcion: null,
     duracion_meses: null,
     num_lotes: null,
-    adjudicatario: limpiarVacio(crudo.adjudicatario),
+    adjudicatario: adjudicatarioLimpio,
     nif_adjudicatario: null, // TED no proporciona NIF español
-    fecha_publicacion: normalizarFecha(crudo.fecha_publicacion),
-    fecha_adjudicacion: normalizarFecha(crudo.fecha_adjudicacion),
+    fecha_publicacion: fechaPub,
+    fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null,
     url_origen: limpiarVacio(crudo.url_origen),
     fuente: 'ted_ue',
     // Campos enriquecidos exclusivos de TED
     num_ofertas: crudo.num_ofertas || null,
     ted_publication_number: crudo.ted_publication_number || null,
+    criterios_adjudicacion: limpiarVacio(crudo.criterios_adjudicacion) || null,
   };
 }
 
@@ -394,21 +471,52 @@ function deduplicar(contratos) {
 
     if (mapa.has(clave)) {
       const existente = mapa.get(clave);
-      // Determinar cuál es más reciente
-      const existenteEsMasReciente =
-        (existente.fecha_publicacion || '') >= (contrato.fecha_publicacion || '');
 
-      const masReciente = existenteEsMasReciente ? existente : contrato;
-      const masAntiguo = existenteEsMasReciente ? contrato : existente;
+      // Estrategia de merge multi-fuente:
+      // - Si uno es TED y otro PLACSP, mantener PLACSP como base y enriquecer con TED
+      // - Si ambos son de la misma fuente, mantener el más reciente
+      const esTED = contrato.fuente === 'ted_ue';
+      const existenteEsTED = existente.fuente === 'ted_ue';
 
-      // Enriquecer: usar el más reciente como base, rellenar nulls con el antiguo
-      const fusionado = { ...masReciente };
-      if (!fusionado.adjudicatario && masAntiguo.adjudicatario) {
-        fusionado.adjudicatario = masAntiguo.adjudicatario;
-        fusionado.nif_adjudicatario = fusionado.nif_adjudicatario || masAntiguo.nif_adjudicatario;
-        fusionado.fecha_adjudicacion = fusionado.fecha_adjudicacion || masAntiguo.fecha_adjudicacion;
-        fusionado.importe = fusionado.importe || masAntiguo.importe;
-        fusionado.importe_iva = fusionado.importe_iva || masAntiguo.importe_iva;
+      let base, enriquecedor;
+
+      if (esTED && !existenteEsTED) {
+        // El existente es PLACSP, el nuevo es TED: mantener PLACSP, enriquecer con TED
+        base = existente;
+        enriquecedor = contrato;
+      } else if (!esTED && existenteEsTED) {
+        // El existente es TED, el nuevo es PLACSP: mantener PLACSP, enriquecer con TED
+        base = contrato;
+        enriquecedor = existente;
+      } else {
+        // Misma fuente: mantener el más reciente
+        const existenteEsMasReciente =
+          (existente.fecha_publicacion || '') >= (contrato.fecha_publicacion || '');
+        base = existenteEsMasReciente ? existente : contrato;
+        enriquecedor = existenteEsMasReciente ? contrato : existente;
+      }
+
+      // Fusionar: base + campos faltantes del enriquecedor
+      const fusionado = { ...base };
+
+      // Rellenar campos básicos faltantes
+      if (!fusionado.adjudicatario && enriquecedor.adjudicatario) {
+        fusionado.adjudicatario = enriquecedor.adjudicatario;
+        fusionado.nif_adjudicatario = fusionado.nif_adjudicatario || enriquecedor.nif_adjudicatario;
+        fusionado.fecha_adjudicacion = fusionado.fecha_adjudicacion || enriquecedor.fecha_adjudicacion;
+        fusionado.importe = fusionado.importe || enriquecedor.importe;
+        fusionado.importe_iva = fusionado.importe_iva || enriquecedor.importe_iva;
+      }
+
+      // Enriquecer con campos exclusivos de TED (siempre, si el enriquecedor los tiene)
+      if (!fusionado.num_ofertas && enriquecedor.num_ofertas) {
+        fusionado.num_ofertas = enriquecedor.num_ofertas;
+      }
+      if (!fusionado.ted_publication_number && enriquecedor.ted_publication_number) {
+        fusionado.ted_publication_number = enriquecedor.ted_publication_number;
+      }
+      if (!fusionado.criterios_adjudicacion && enriquecedor.criterios_adjudicacion) {
+        fusionado.criterios_adjudicacion = enriquecedor.criterios_adjudicacion;
       }
 
       mapa.set(clave, fusionado);
@@ -419,6 +527,7 @@ function deduplicar(contratos) {
 
   return Array.from(mapa.values());
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
@@ -477,6 +586,7 @@ async function main() {
     con_objeto: todosLosContratos.filter(c => c.objeto).length,
     con_tipo: todosLosContratos.filter(c => c.tipo).length,
     con_procedimiento: todosLosContratos.filter(c => c.procedimiento).length,
+    con_estado: todosLosContratos.filter(c => c.estado).length,
     con_importe: todosLosContratos.filter(c => c.importe).length,
     con_adjudicatario: todosLosContratos.filter(c => c.adjudicatario).length,
     con_nif: todosLosContratos.filter(c => c.nif_adjudicatario).length,
@@ -578,6 +688,16 @@ async function main() {
       console.log(`     • ${proc}: ${count}`);
     });
 
+    const estados = {};
+    contratosUnicos.forEach(c => {
+      if (c.estado) estados[c.estado] = (estados[c.estado] || 0) + 1;
+    });
+
+    console.log('\n  📊 Distribución por estado:');
+    Object.entries(estados).sort((a, b) => b[1] - a[1]).forEach(([estado, count]) => {
+      console.log(`     • ${estado}: ${count}`);
+    });
+
     // Rango de importes
     const importes = contratosUnicos.filter(c => c.importe).map(c => c.importe);
     if (importes.length > 0) {
@@ -597,7 +717,7 @@ async function main() {
 
   console.log('\n═'.repeat(60));
   console.log('\n✅ Transformación completada.');
-  console.log('💡 Siguiente paso: npm run validate');
+  console.log('💡 Siguiente paso: npm run validate && npm run resolve');
 }
 
 main().catch(err => {

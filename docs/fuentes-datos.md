@@ -62,7 +62,28 @@ El feed Atom usa el estándar CODICE (Common Data Interface for Contracting Enti
 | `cac:PartyName/cbc:Name` | `organismo` | Nombre del órgano de contratación |
 | `cbc:TaxExclusiveAmount` | `importe` | Importe sin IVA |
 | `cbc:TaxInclusiveAmount` | `importe_iva` | Importe con IVA |
-| `cbc:StatusCode` | — | Estado de la licitación |
+| `cbc:StatusCode` | `estado_xml` | Código de estado original del feed |
+| `cbc:CPVCode` | `cpv` | Código CPV de la categoría de compra |
+| `cbc:DurationMeasure` | `duracion_meses` | Duración del contrato en meses |
+| `cbc:EstimatedOverallContractAmount` | `valor_estimado` | Valor estimado total |
+
+### Estado del contrato (`estado`)
+
+El campo `estado` es un valor **derivado** calculado por `scripts/transform.js` a partir del código XML y los datos disponibles. No se toma directamente del feed; se infiere con la función `derivarEstado()`:
+
+| Código XML (`estado_xml`) | Datos adicionales | Estado derivado |
+|--------------------------|-------------------|-----------------|
+| `ANUL` | — | `anulado` |
+| `RES` | — | `resuelto` |
+| cualquiera | `fecha_formalizacion` presente | `formalizado` |
+| cualquiera | `adjudicatario` + `fecha_adjudicacion` | `adjudicado` |
+| `ADJ` | — | `adjudicado` |
+| `PRE` | — | `pre_adjudicado` |
+| `EV` | — | `en_evaluacion` |
+| `PUB` o vacío | publicado hace >6 meses | `posiblemente_resuelto` |
+| `PUB` o vacío | publicado hace ≤6 meses | `en_licitacion` |
+
+El campo `estado_xml` conserva el código original del feed para auditoría. El campo `estado_verificado_en` registra la fecha en que se verificó el estado actual contra la web de PLACSP (mediante `scripts/update-estados.js`).
 
 ---
 
@@ -164,9 +185,16 @@ https://www.hacienda.gob.es/.../contratos_2023.xml
 
 > ⚠️ **Nota:** Las URLs exactas deben verificarse en la web de Hacienda. Los ficheros son estáticos y no cambian una vez publicados.
 
-### Estado actual (pendiente de verificación)
+### Estado actual (verificado agosto 2026)
 
-🔜 **Fase 5b** — Pendiente de investigar las URLs exactas de descarga y confirmar la estructura XML.
+❌ **No accesible.** Todas las URLs conocidas de los ficheros XML anuales del Registro de Contratos devuelven **404**. Se investigaron las siguientes fuentes sin éxito:
+
+- `https://www.hacienda.gob.es/...` — URLs de descarga directa: 404
+- `https://datos.gob.es/es/catalogo/e00125901-registro-de-contratos-del-sector-publico` — Dataset registrado pero sin distribuciones (items vacío)
+- `https://transparencia.gob.es/transparencia/transparencia_Home/index/MasSobreTransparencia/Contratacion.html` — Solo datos estadísticos agregados, no contratos individuales
+- `https://www.igae.pap.hacienda.gob.es/sitios/igae/es-ES/Contabilidad/ContabilidadPublica/CPE/Paginas/rcsp.aspx` — Página informativa sin descarga de datos
+
+> 🔜 **Fase 5e (Bloque C)** — Pendiente de re-verificar periódicamente. Si en el futuro se publican los ficheros XML, el parser existente (`scripts/parse.js`) puede reutilizarse con mínimas adaptaciones al ser el mismo formato CODICE.
 
 ---
 
@@ -231,9 +259,21 @@ curl -s "https://ted.europa.eu/api/v3.0/notices/search?q=buyer-country%3DESP%20A
 - **Paginación:** Máximo 100 resultados por página
 - **Sin autenticación** para búsquedas (se requiere API key solo para notificaciones push)
 
-### Estado actual (pendiente de verificación)
+### Estado actual (verificado agosto 2026)
 
-🔜 **Fase 5c** — Pendiente de verificar la respuesta real de la API con filtros de CAM y mapear los campos al esquema normalizado.
+✅ **Integrado.** La API v3 de TED está operativa y se usa en el pipeline mediante `scripts/download-ted.js` y `scripts/parse-ted.js`.
+
+**Resultados de la integración (agosto 2026):**
+- ~139.735 notices disponibles para Madrid (filtro: `buyer-country=ESP AND buyer-city=Madrid`)
+- 599 contratos TED integrados en el dataset (20,2% del total)
+- 81% de contratos TED con `criterios_adjudicacion` extraídos
+- 61 contratos con `num_ofertas` enriquecido
+- Deduplicación multi-fuente funcional: PLACSP como base, TED enriquece campos exclusivos sin sobreescribir
+
+**Campos enriquecidos disponibles en el dataset:**
+- `num_ofertas` — número de ofertas recibidas
+- `ted_publication_number` — referencia al anuncio en TED (con enlace directo)
+- `criterios_adjudicacion` — array con criterios y ponderaciones (precio vs. calidad)
 
 ---
 
@@ -258,16 +298,21 @@ Prioridad 1: PLACSP (feed Atom) ✅ ACTIVO
 └── Licitaciones recientes de todos los organismos CAM
 └── Actualización: diaria (el feed se actualiza continuamente)
 └── Automatizado en scripts/download.js
+└── Modo normal: 50 páginas (~4.500 licitaciones CAM)
+└── Modo completo: 500 páginas (~225.000 licitaciones, todo el histórico disponible)
+└── Acumulación incremental: transform.js combina con histórico existente
 
-Prioridad 2: PLACE — Registro de Contratos (XML anuales) 🔜 FASE 5b
-└── Contratos formalizados históricos (2008–presente)
-└── Actualización: anual (ficheros estáticos)
-└── Mismo formato CODICE que PLACSP
-
-Prioridad 3: TED-UE (API REST v3) 🔜 FASE 5c
+Prioridad 2: TED-UE (API REST v3) ✅ ACTIVO
 └── Contratos sobre umbrales europeos con datos enriquecidos
 └── Actualización: diaria (API en tiempo real)
-└── Formato JSON nativo
+└── Automatizado en scripts/download-ted.js + parse-ted.js
+└── 599 contratos integrados (20,2% del dataset)
+
+Prioridad 3: PLACE — Registro de Contratos (XML anuales) ❌ NO ACCESIBLE
+└── Contratos formalizados históricos (2008–presente)
+└── Actualización: anual (ficheros estáticos)
+└── Estado: todas las URLs conocidas devuelven 404 (verificado agosto 2026)
+└── Pendiente de re-verificar en Fase 5e (Bloque C)
 
 DESCARTADAS:
 ❌ Portal Transparencia CAM — No tiene datos descargables
@@ -275,9 +320,10 @@ DESCARTADAS:
 ❌ BOCAM — Requiere scraping de PDFs (futura consideración)
 
 Deduplicación:
-└── Usar NumExpediente + OrganoContratacion como clave de unión entre fuentes
-└── Prioridad de datos: PLACE > PLACSP > TED (para campos comunes)
-└── TED enriquece con campos exclusivos (num_ofertas, criterios) sin sobreescribir
+└── Clave: expediente + organismo (normalizado)
+└── Prioridad de datos: PLACSP base + TED enriquece campos exclusivos
+└── TED no sobreescribe campos de PLACSP; solo añade num_ofertas, criterios, ted_publication_number
+└── Acumulación incremental: cada ejecución semanal añade contratos nuevos sin perder histórico
 ```
 
 ---
@@ -297,6 +343,9 @@ Estos son los problemas más frecuentes que el script `scripts/transform.js` deb
 | Codificación ISO-8859-1 en algunos CSV | Media | Detectar y convertir a UTF-8 al leer |
 | Campos con saltos de línea dentro de comillas | Baja | Usar `relax_column_count: true` en csv-parse |
 | Importes negativos (correcciones) | Baja | Registrar como `null` con nota en logs |
+| Estado obsoleto (feed captura estado al descargar) | Alta | `derivarEstado()` infiere estado con lógica combinada; `update-estados.js` verifica contra web PLACSP |
+| NIF del adjudicatario ausente (~61%) | Alta | `scripts/enrich-nif.js` busca NIF en ficha PLACSP y OpenCorporates |
+| `cpv` y `duracion_meses` ausentes en contratos antiguos | Media | Extraídos del XML CODICE cuando disponibles; null si no |
 
 ---
 
