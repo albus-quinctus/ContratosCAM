@@ -51,8 +51,8 @@ jobs:
         if: steps.ted.outcome == 'failure'
         run: echo "⚠️ TED-UE falló en esta ejecución. Los datos se publican solo con PLACSP." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Transformar e importar datos combinados
-        run: npm run transform && npm run import-db
+      - name: Transformar, resolver entidades e importar datos combinados
+        run: npm run transform && npm run resolve && npm run import-db
 
       - name: Validar datos generados
         run: npm run validate

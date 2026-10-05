@@ -5,7 +5,7 @@
  * 1. Filtra solo los contratos de la Comunidad de Madrid
  * 2. Normaliza campos (tipos, procedimientos, fechas, importes)
  * 3. Integra datos de TED-UE (campos enriquecidos: num_ofertas, etc.)
- * 4. Deduplica por expediente + organismo (cruce entre fuentes)
+ * 4. Deduplica por URL del anuncio (cruce entre fuentes + histórico)
  * 5. Genera el JSON normalizado final
  *
  * La resolución de entidades (canonización de nombres) se ejecuta
@@ -23,6 +23,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { claveContrato } from './lib/clave-contrato.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/raw/parsed-licitaciones.json');
@@ -457,7 +458,7 @@ function transformarContratoTED(crudo, id) {
 }
 
 /**
- * Deduplica contratos por expediente + organismo.
+ * Deduplica contratos por su clave de identidad (ver lib/clave-contrato.js).
  * En caso de duplicados, mantiene el más reciente (por fecha_publicacion)
  * y enriquece con datos del otro registro si faltan campos.
  * @param {object[]} contratos
@@ -467,7 +468,7 @@ function deduplicar(contratos) {
   const mapa = new Map();
 
   for (const contrato of contratos) {
-    const clave = `${contrato.expediente || ''}|${contrato.organismo || ''}`;
+    const clave = claveContrato(contrato);
 
     if (mapa.has(clave)) {
       const existente = mapa.get(clave);
