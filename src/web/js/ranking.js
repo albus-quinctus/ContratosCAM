@@ -15,14 +15,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CONFIG = Object.freeze({
-  DATA_URLS: [
-    './data/processed/contratos-normalizados.json',
-    '/data/processed/contratos-normalizados.json',
-  ],
-  META_URLS: [
-    './data/processed/meta.json',
-    '/data/processed/meta.json',
-  ],
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
   TOP_CHART: 10,
@@ -126,36 +118,8 @@ function medalla(posicion) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Carga de datos
+// Carga de datos (ver js/datos.js)
 // ─────────────────────────────────────────────────────────────────────────────
-
-async function cargarDatos() {
-  for (const url of CONFIG.DATA_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const datos = await res.json();
-      if (Array.isArray(datos) && datos.length > 0) return datos;
-    } catch (_) {
-      // Intentar la siguiente URL
-    }
-  }
-  console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
-  return generarDatosEjemplo();
-}
-
-async function cargarMeta() {
-  for (const url of CONFIG.META_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      return await res.json();
-    } catch (_) {
-      // Intentar la siguiente URL
-    }
-  }
-  return null;
-}
 
 function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
@@ -167,52 +131,6 @@ function mostrarFechaActualizacion(meta) {
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
   el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
-}
-
-function generarDatosEjemplo() {
-  const organismos = [
-    'Consejería de Educación', 'Consejería de Sanidad',
-    'Consejería de Transportes', 'Agencia Madrileña de Atención Social',
-    'Canal de Isabel II', 'Consejería de Medio Ambiente', 'Consejería de Hacienda',
-  ];
-  const tipos = ['servicios', 'suministros', 'obras', 'administrativo_especial'];
-  const procedimientos = ['abierto', 'abierto_simplificado', 'negociado_sin_publicidad', 'menor'];
-  const empresas = [
-    'Limpiezas Madrid S.L.', 'Tecnologías Avanzadas S.A.', 'Construcciones Norte S.L.',
-    'Servicios Integrales CAM S.A.', 'Mantenimiento Urbano S.L.', 'Consultoría Pública S.A.',
-    'Suministros Generales S.L.', 'Obras y Reformas S.A.', 'Seguridad Total S.L.',
-    'Transportes Rápidos S.A.', 'Informática Pública S.L.', 'Catering Institucional S.A.',
-    'Jardinería Madrileña S.L.', 'Electricidad y Fontanería S.A.', 'Papelería Oficial S.L.',
-  ];
-  const objetos = [
-    'Servicio de limpieza de edificios administrativos',
-    'Suministro de material informático',
-    'Obras de rehabilitación de centros educativos',
-    'Servicio de vigilancia y seguridad',
-    'Mantenimiento de instalaciones de climatización',
-    'Suministro de mobiliario de oficina',
-    'Servicio de transporte adaptado',
-    'Obras de acondicionamiento de vías públicas',
-    'Servicio de consultoría y asistencia técnica',
-    'Suministro de equipos médicos',
-  ];
-
-  return Array.from({ length: 300 }, (_, i) => ({
-    expediente: 'CM/2024/' + String(i + 1).padStart(5, '0'),
-    objeto: objetos[i % objetos.length] + ' (lote ' + (i + 1) + ')',
-    tipo: tipos[i % tipos.length],
-    procedimiento: procedimientos[i % procedimientos.length],
-    organismo: organismos[i % organismos.length],
-    importe: Math.round((Math.random() * 500000 + 5000) * 100) / 100,
-    importe_iva: null,
-    adjudicatario: empresas[i % empresas.length],
-    nif_adjudicatario: 'B' + String(10000000 + (i % empresas.length)).substring(0, 8),
-    fecha_publicacion: '2024-' + String(Math.floor(i / 25) + 1).padStart(2, '0') + '-' + String((i % 28) + 1).padStart(2, '0'),
-    fecha_adjudicacion: null,
-    fecha_formalizacion: null,
-    url_origen: 'https://contrataciondelestado.es',
-    fuente: 'placsp',
-  }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -985,7 +903,15 @@ function inicializarFiltros() {
 
 async function init() {
   // 1. Cargar datos, ranking y metadatos en paralelo
-  const [contratos, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  let contratos, meta;
+  try {
+    [contratos, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta()]);
+  } catch (err) {
+    console.error(err);
+    DatosCAM.mostrarErrorCarga();
+    mostrarFechaActualizacion(null);
+    return;
+  }
   estado.ranking         = construirRanking(contratos);
   estado.rankingFiltrado = [...estado.ranking];
   mostrarFechaActualizacion(meta);
