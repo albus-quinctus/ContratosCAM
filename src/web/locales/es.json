@@ -38,6 +38,8 @@
     "fecha": "Fecha",
     "sinResultados": "Sin resultados",
     "cargandoDatos": "Cargando datos...",
+    "datosNoDisponibles": "Datos no disponibles",
+    "errorCargaDatos": "No se han podido cargar los datos de contratos. Inténtalo de nuevo más tarde.",
     "exportarCsv": "⬇ Exportar CSV",
     "cerrar": "Cerrar",
     "cerrarDetalle": "Cerrar detalle",

@@ -38,6 +38,8 @@
     "fecha": "Date",
     "sinResultados": "No results",
     "cargandoDatos": "Loading data...",
+    "datosNoDisponibles": "Data not available",
+    "errorCargaDatos": "The contract data could not be loaded. Please try again later.",
     "exportarCsv": "⬇ Export CSV",
     "cerrar": "Close",
     "cerrarDetalle": "Close details",

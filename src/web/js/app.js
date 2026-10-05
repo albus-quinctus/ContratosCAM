@@ -18,17 +18,6 @@
 const { t, locale } = window.I18n;
 
 const CONFIG = Object.freeze({
-  // Rutas posibles al JSON de datos (se prueban en orden)
-  // - Producción (GitHub Pages): data/ está en la raíz del sitio (también desde /en/)
-  // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
-  DATA_URLS: [
-    window.I18n.urlRaiz + 'data/processed/contratos-normalizados.json',
-    '/data/processed/contratos-normalizados.json',
-  ],
-  META_URLS: [
-    window.I18n.urlRaiz + 'data/processed/meta.json',
-    '/data/processed/meta.json',
-  ],
   PAGE_SIZE: 25,
   DEBOUNCE_MS: 300,
 });
@@ -170,37 +159,8 @@ function valoresUnicos(datos, campo) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Carga de datos
+// Carga de datos (ver js/datos.js)
 // ─────────────────────────────────────────────────────────────────────────────
-
-async function cargarDatos() {
-  // Intentar cada URL en orden hasta encontrar los datos
-  for (const url of CONFIG.DATA_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const datos = await res.json();
-      if (Array.isArray(datos) && datos.length > 0) return datos;
-    } catch {
-      // Intentar la siguiente URL
-    }
-  }
-  console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
-  return generarDatosEjemplo();
-}
-
-async function cargarMeta() {
-  for (const url of CONFIG.META_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      return await res.json();
-    } catch {
-      // Intentar la siguiente URL
-    }
-  }
-  return null;
-}
 
 function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
@@ -212,48 +172,6 @@ function mostrarFechaActualizacion(meta) {
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
   el.textContent = t('actualizacion.fecha', { fecha: fecha.toLocaleDateString(locale, opciones) });
-}
-
-function generarDatosEjemplo() {
-  const organismos = [
-    'Consejería de Educación',
-    'Consejería de Sanidad',
-    'Consejería de Transportes',
-    'Agencia Madrileña de Atención Social',
-    'Canal de Isabel II',
-    'Consejería de Medio Ambiente',
-    'Consejería de Hacienda',
-  ];
-  const tipos = ['Servicios', 'Suministros', 'Obras', 'Administrativo especial'];
-  const procedimientos = ['Abierto', 'Abierto simplificado', 'Negociado sin publicidad', 'Menor'];
-  const objetos = [
-    'Servicio de limpieza de edificios administrativos',
-    'Suministro de material informático',
-    'Obras de rehabilitación de centros educativos',
-    'Servicio de vigilancia y seguridad',
-    'Mantenimiento de instalaciones de climatización',
-    'Suministro de mobiliario de oficina',
-    'Servicio de transporte adaptado',
-    'Obras de acondicionamiento de vías públicas',
-    'Servicio de consultoría y asistencia técnica',
-    'Suministro de equipos médicos',
-  ];
-
-  return Array.from({ length: 200 }, (_, i) => ({
-    expediente: 'CM/2024/' + String(i + 1).padStart(5, '0'),
-    objeto: objetos[i % objetos.length] + ' (lote ' + (i + 1) + ')',
-    tipo: tipos[i % tipos.length],
-    procedimiento: procedimientos[i % procedimientos.length],
-    organismo: organismos[i % organismos.length],
-    importe: Math.round((Math.random() * 500000 + 5000) * 100) / 100,
-    importe_iva: null,
-    adjudicatario: 'Empresa Adjudicataria ' + (i + 1) + ', S.L.',
-    nif_adjudicatario: 'B' + String(10000000 + i).substring(0, 8),
-    fecha_publicacion: '2024-' + String(Math.floor(i / 17) + 1).padStart(2, '0') + '-' + String((i % 28) + 1).padStart(2, '0'),
-    fecha_adjudicacion: null,
-    fecha_formalizacion: null,
-    url_origen: 'https://contrataciondelestado.es',
-  }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -842,7 +760,16 @@ function inicializarOrdenacion() {
 
 async function init() {
   // 1. Cargar datos, metadatos y traducciones
-  const [datosRaw, meta] = await Promise.all([cargarDatos(), cargarMeta(), window.I18n.listo]);
+  let datosRaw, meta;
+  try {
+    [datosRaw, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta(), window.I18n.listo]);
+  } catch (err) {
+    console.error(err);
+    await window.I18n.listo;
+    DatosCAM.mostrarErrorCarga();
+    mostrarFechaActualizacion(null);
+    return;
+  }
   estado.datos = datosRaw;
   estado.filtrados = [...estado.datos];
   mostrarFechaActualizacion(meta);
