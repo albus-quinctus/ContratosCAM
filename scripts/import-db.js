@@ -1,7 +1,8 @@
 /**
  * scripts/import-db.js
  *
- * Importa los datos normalizados de data/processed/contratos/
+ * Importa los contratos vigentes (data/trabajo/contratos/ si hay cambios sin
+ * publicar, si no data/processed/contratos/)
  * a la base de datos SQLite en data/db/contratos.db.
  *
  * Usa sql.js (SQLite compilado a WebAssembly) — no requiere Visual Studio
@@ -14,7 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import initSqlJs from 'sql.js';
-import { existenContratos, leerContratos } from './lib/almacen-contratos.js';
+import { dirVigente, leerContratos } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -112,7 +113,7 @@ async function main() {
   console.log('═'.repeat(50));
 
   // Verificar que existe el JSON normalizado
-  if (!existenContratos()) {
+  if (!dirVigente()) {
     console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);

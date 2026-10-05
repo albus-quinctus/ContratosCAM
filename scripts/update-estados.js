@@ -8,8 +8,8 @@
  * El script es idempotente: puede interrumpirse y reanudarse.
  * Respeta rate limits con delays entre peticiones.
  *
- * Entrada:  data/processed/contratos/
- * Salida:   data/processed/contratos/ (actualizado in-place)
+ * Entrada:  data/trabajo/contratos/ si hay cambios sin publicar, si no data/processed/contratos/
+ * Salida:   data/trabajo/contratos/ (se publica con npm run validate && npm run publicar)
  *
  * Uso: node scripts/update-estados.js [--max=N] [--dias=N]
  *
@@ -19,7 +19,7 @@
  *   --dry-run  Mostrar qué se actualizaría sin guardar cambios
  */
 
-import { existenContratos, leerContratos, guardarContratos, tamanoContratosKb } from './lib/almacen-contratos.js';
+import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb } from './lib/almacen-contratos.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Configuración
@@ -182,7 +182,7 @@ async function main() {
   console.log('');
 
   // Verificar que existe el archivo de contratos
-  if (!existenContratos()) {
+  if (!dirVigente()) {
     console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
@@ -298,7 +298,8 @@ async function main() {
   if (!dryRun && (actualizados > 0 || sinCambio > 0 || noDetectado > 0)) {
     console.log('\n💾 Guardando contratos actualizados...');
     guardarContratos(contratos);
-    console.log(`   ✅ Guardado: data/processed/contratos/ (${tamanoContratosKb()} KB)`);
+    console.log(`   ✅ Guardado: data/trabajo/contratos/ (${tamanoContratosKb()} KB)`);
+    console.log('   💡 Para publicarlo: npm run validate && npm run publicar');
   }
 
   // ─── Resumen ────────────────────────────────────────────────────────────

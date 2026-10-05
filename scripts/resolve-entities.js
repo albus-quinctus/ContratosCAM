@@ -14,8 +14,8 @@
  *   node scripts/resolve-entities.js           → resolución normal
  *   node scripts/resolve-entities.js --rebuild → regenera el registro desde cero
  *
- * Entrada:  data/processed/contratos/
- * Salida:   data/processed/contratos/ (actualizado)
+ * Entrada:  data/trabajo/contratos/ si hay cambios sin publicar, si no data/processed/contratos/
+ * Salida:   data/trabajo/contratos/ (se publica con npm run validate && npm run publicar)
  *           data/processed/entities.json (registro maestro)
  */
 
@@ -29,7 +29,7 @@ import {
   categorizarOrganismo,
   detectarUTE,
 } from './lib/entity-resolver.js';
-import { existenContratos, leerContratos, guardarContratos, tamanoContratosKb, CONTRATOS_DIR } from './lib/almacen-contratos.js';
+import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb, TRABAJO_DIR, PUBLICADO_DIR } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENTITIES_FILE = path.join(__dirname, '../data/processed/entities.json');
@@ -263,8 +263,8 @@ async function main() {
   console.log('═'.repeat(60));
 
   // 1. Cargar contratos
-  if (!existenContratos()) {
-    console.error(`❌ No se encontraron contratos en: ${path.relative(process.cwd(), CONTRATOS_DIR)}/`);
+  if (!dirVigente()) {
+    console.error(`❌ No se encontraron contratos en: ${path.relative(process.cwd(), PUBLICADO_DIR)}/`);
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
@@ -346,7 +346,7 @@ async function main() {
 
   const tamContratos = tamanoContratosKb();
   const tamEntities = (fs.statSync(ENTITIES_FILE).size / 1024).toFixed(1);
-  console.log(`   ${path.relative(process.cwd(), CONTRATOS_DIR)}/ (${tamContratos} KB)`);
+  console.log(`   ${path.relative(process.cwd(), TRABAJO_DIR)}/ (${tamContratos} KB)`);
   console.log(`   ${path.basename(ENTITIES_FILE)} (${tamEntities} KB)`);
 
   // Resumen
@@ -359,7 +359,7 @@ async function main() {
   console.log(`  Organismos normalizados:  ${stats.organismosNormalizados}`);
   console.log('═'.repeat(60));
   console.log('\n✅ Resolución completada.');
-  console.log('💡 Siguiente paso: npm run validate');
+  console.log('💡 Siguiente paso: npm run validate && npm run publicar');
 }
 
 main().catch(err => {

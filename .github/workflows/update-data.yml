@@ -57,6 +57,10 @@ jobs:
       - name: Validar datos generados
         run: npm run validate
 
+      # Solo se publica lo que ha pasado la validación (ver scripts/lib/almacen-contratos.js)
+      - name: Publicar datos validados
+        run: npm run publicar
+
       - name: Verificar salud de los datos
         id: verificar
         run: |

@@ -11,8 +11,8 @@
  * El script es idempotente: puede interrumpirse y reanudarse sin duplicar consultas.
  * Respeta rate limits y añade delays entre peticiones.
  *
- * Entrada:  data/processed/contratos/
- * Salida:   data/processed/contratos/ (actualizado in-place)
+ * Entrada:  data/trabajo/contratos/ si hay cambios sin publicar, si no data/processed/contratos/
+ * Salida:   data/trabajo/contratos/ (se publica con npm run validate && npm run publicar)
  *           data/processed/nif-cache.json (caché persistente)
  *
  * Uso: node scripts/enrich-nif.js [--max=N] [--source=placsp|opencorporates|all]
@@ -21,7 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { existenContratos, leerContratos, guardarContratos } from './lib/almacen-contratos.js';
+import { dirVigente, leerContratos, guardarContratos } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CACHE_FILE = path.join(__dirname, '../data/processed/nif-cache.json');
@@ -292,7 +292,7 @@ async function main() {
   console.log('');
 
   // Verificar que existe el archivo de contratos
-  if (!existenContratos()) {
+  if (!dirVigente()) {
     console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
