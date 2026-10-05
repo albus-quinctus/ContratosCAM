@@ -14,6 +14,9 @@
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Traducción y locale del idioma de la página (ver js/i18n.js)
+const { t, locale } = window.I18n;
+
 const CONFIG = Object.freeze({
   PAGE_SIZE: 50,
   DEBOUNCE_MS: 300,
@@ -61,7 +64,7 @@ const estado = {
 
 function formatearImporte(valor) {
   if (valor === null || valor === undefined || isNaN(valor)) return '—';
-  return valor.toLocaleString('es-ES', {
+  return valor.toLocaleString(locale, {
     style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 0,
@@ -125,12 +128,12 @@ function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
   if (!el) return;
   if (!meta || !meta.generado_en) {
-    el.textContent = 'Fecha de actualización desconocida';
+    el.textContent = t('actualizacion.desconocida');
     return;
   }
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
+  el.textContent = t('actualizacion.fecha', { fecha: fecha.toLocaleDateString(locale, opciones) });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -369,14 +372,14 @@ function renderizarTabla() {
 
   document.getElementById('results-count').textContent =
     total === 0
-      ? 'Sin resultados'
-      : total.toLocaleString('es-ES') + ' adjudicatario' + (total !== 1 ? 's' : '') + ' encontrado' + (total !== 1 ? 's' : '');
+      ? t('comun.sinResultados')
+      : t('ranking.adjudicatariosEncontrados', { count: total });
 
   if (pagina.length === 0) {
     tbody.innerHTML =
       '<tr><td colspan="7"><div class="empty-state">' +
       '<div class="empty-state-icon">🔍</div>' +
-      '<p>No se encontraron adjudicatarios con los filtros aplicados.</p>' +
+      '<p>' + esc(t('ranking.sinAdjudicatarios')) + '</p>' +
       '</div></td></tr>';
     return;
   }
@@ -393,11 +396,12 @@ function renderizarTabla() {
     const porcentaje = valorMax > 0 ? (entrada[campoMetrica] / valorMax) * 100 : 0;
     const tiposBadges = entrada.tipos
       .slice(0, 3)
-      .map(t => '<span class="badge ' + badgeClass(t) + '">' + esc(t) + '</span>')
+      .map(tipo => '<span class="badge ' + badgeClass(tipo) + '">' + esc(tipo) + '</span>')
       .join(' ');
+    const numUtes = entrada.participacionesUte.length;
 
     return (
-      '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle de ' + esc(entrada.nombre) + '">' +
+      '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="' + esc(t('ranking.verDetalleDe', { nombre: entrada.nombre })) + '">' +
       '<td class="col-pos">' +
         '<div class="pos-wrapper">' +
           '<span class="pos-number">' + posicion + '</span>' +
@@ -406,20 +410,20 @@ function renderizarTabla() {
       '</td>' +
       '<td class="col-empresa">' +
         '<div class="empresa-nombre">' + esc(entrada.nombre) +
-          (entrada.esUte ? ' <span class="badge badge--ute" title="Unión Temporal de Empresas">UTE</span>' : '') +
+          (entrada.esUte ? ' <span class="badge badge--ute" title="' + esc(t('comun.ute')) + '">UTE</span>' : '') +
         '</div>' +
-        (entrada.nif ? '<div class="empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
-        (entrada.participacionesUte.length > 0
-          ? '<div class="empresa-ute-info" title="Participa en ' + entrada.participacionesUte.length + ' UTE(s)">🤝 ' + entrada.participacionesUte.length + ' UTE' + (entrada.participacionesUte.length > 1 ? 's' : '') + '</div>'
+        (entrada.nif ? '<div class="empresa-nif">' + esc(t('comun.nif')) + ': ' + esc(entrada.nif) + '</div>' : '') +
+        (numUtes > 0
+          ? '<div class="empresa-ute-info" title="' + esc(t('ranking.participaUtes', { count: numUtes })) + '">' + esc(t('ranking.numUtes', { count: numUtes })) + '</div>'
           : '') +
         '<div class="ranking-bar-wrapper" aria-hidden="true">' +
           '<div class="ranking-bar" style="width:' + porcentaje.toFixed(1) + '%"></div>' +
         '</div>' +
       '</td>' +
       '<td class="col-ncontratos">' +
-        '<span class="num-contratos">' + entrada.numContratos.toLocaleString('es-ES') + '</span>' +
+        '<span class="num-contratos">' + entrada.numContratos.toLocaleString(locale) + '</span>' +
         (estado.incluirEstimacionUte && entrada.numContratosUte > 0
-          ? '<div class="ute-estimacion">+' + entrada.numContratosUte + ' vía UTE</div>'
+          ? '<div class="ute-estimacion">' + esc(t('ranking.viaUte', { count: entrada.numContratosUte })) + '</div>'
           : '') +
       '</td>' +
       '<td class="col-importe-total">' +
@@ -434,7 +438,7 @@ function renderizarTabla() {
       '<td class="col-tipos">' + (tiposBadges || '—') + '</td>' +
       '<td class="col-acciones">' +
         // El botón dispara el mismo evento que el click en la fila (delegación)
-        '<button class="btn btn--sm btn--secondary btn-detalle" type="button" aria-label="Ver contratos de ' + esc(entrada.nombre) + '">Ver →</button>' +
+        '<button class="btn btn--sm btn--secondary btn-detalle" type="button" aria-label="' + esc(t('ranking.verContratosDe', { nombre: entrada.nombre })) + '">' + esc(t('ranking.ver')) + '</button>' +
       '</td>' +
       '</tr>'
     );
@@ -461,8 +465,8 @@ function renderizarPaginacion() {
   document.getElementById('btn-siguiente').disabled = estado.paginaActual >= totalPaginas;
   document.getElementById('pagination-info').textContent =
     totalPaginas > 0
-      ? 'Página ' + estado.paginaActual + ' de ' + totalPaginas
-      : 'Sin resultados';
+      ? t('paginacion.pagina', { actual: estado.paginaActual, total: totalPaginas })
+      : t('comun.sinResultados');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -473,10 +477,10 @@ function actualizarEstadisticas() {
   const datos = estado.rankingFiltrado;
 
   document.getElementById('stat-total-adj').textContent =
-    datos.length.toLocaleString('es-ES');
+    datos.length.toLocaleString(locale);
 
   document.getElementById('stat-total-contratos').textContent =
-    datos.reduce((s, e) => s + e.numContratos, 0).toLocaleString('es-ES');
+    datos.reduce((s, e) => s + e.numContratos, 0).toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, e) => s + e.importeTotal, 0);
   document.getElementById('stat-importe-total').textContent =
@@ -500,8 +504,8 @@ function renderizarGrafica() {
   const top10       = estado.rankingFiltrado.slice(0, CONFIG.TOP_CHART);
   const labels      = top10.map(e => e.nombre.length > 30 ? e.nombre.substring(0, 30) + '…' : e.nombre);
   const valores     = top10.map(e => esContratos ? e.numContratos : e.importeTotal);
-  const labelEje    = esContratos ? 'Número de contratos' : 'Importe total (€)';
-  const formatTick  = val => esContratos ? val.toLocaleString('es-ES') : formatearImporte(val);
+  const labelEje    = esContratos ? t('ranking.ejeContratos') : t('ranking.ejeImporte');
+  const formatTick  = val => esContratos ? val.toLocaleString(locale) : formatearImporte(val);
 
   if (estado.chartTop10) {
     estado.chartTop10.destroy();
@@ -530,7 +534,7 @@ function renderizarGrafica() {
         tooltip: {
           callbacks: {
             label: ctx => esContratos
-              ? ctx.parsed.x.toLocaleString('es-ES') + ' contratos'
+              ? t('ranking.tooltipContratos', { count: ctx.parsed.x })
               : formatearImporte(ctx.parsed.x),
           },
         },
@@ -564,8 +568,8 @@ function abrirModal(entrada) {
   // Importe acumulado por tipo (un solo bucle)
   const importePorTipo = {};
   for (const c of contratosRelevantes) {
-    const t = c.tipo || 'Sin clasificar';
-    importePorTipo[t] = (importePorTipo[t] || 0) + (c.importe || 0);
+    const tipo = c.tipo || t('comun.sinClasificar');
+    importePorTipo[tipo] = (importePorTipo[tipo] || 0) + (c.importe || 0);
   }
 
   const tiposHtml = Object.entries(importePorTipo)
@@ -588,7 +592,7 @@ function abrirModal(entrada) {
       '<td class="modal-contrato-fecha">'    + formatearFecha(c.fecha_publicacion) + '</td>' +
       '<td class="modal-contrato-link">' +
         (urlSegura
-          ? '<a href="' + esc(urlSegura) + '" target="_blank" rel="noopener noreferrer" title="Ver anuncio oficial">↗</a>'
+          ? '<a href="' + esc(urlSegura) + '" target="_blank" rel="noopener noreferrer" title="' + esc(t('ranking.detalle.verAnuncioOficial')) + '">↗</a>'
           : '—') +
       '</td>' +
       '</tr>'
@@ -596,15 +600,15 @@ function abrirModal(entrada) {
   }).join('');
 
   const masContratos = contratosOrdenados.length > 20
-    ? '<p class="modal-more-note">Mostrando los 20 contratos de mayor importe de un total de ' +
-      contratosOrdenados.length.toLocaleString('es-ES') + '.</p>'
+    ? '<p class="modal-more-note">' +
+      esc(t('ranking.detalle.masContratos', { total: contratosOrdenados.length })) + '</p>'
     : '';
 
   // Sección de miembros UTE (si es UTE con miembros conocidos)
   var uteHtml = '';
   if (entrada.esUte && entrada.miembrosUte.length > 0) {
     uteHtml =
-      '<div class="modal-field"><div class="modal-field-label">Empresas miembro de la UTE</div>' +
+      '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.miembrosUte')) + '</div>' +
       '<div class="modal-field-value"><ul class="ute-miembros-list">' +
       entrada.miembrosUte.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
       '</ul></div></div>';
@@ -614,14 +618,14 @@ function abrirModal(entrada) {
   var participacionesHtml = '';
   if (entrada.participacionesUte.length > 0) {
     participacionesHtml =
-      '<div class="modal-field"><div class="modal-field-label">🤝 Participación en UTEs (' + entrada.participacionesUte.length + ')</div>' +
+      '<div class="modal-field"><div class="modal-field-label">' + esc(t('ranking.detalle.participacionUtes', { count: entrada.participacionesUte.length })) + '</div>' +
       '<div class="modal-ute-participaciones">' +
       entrada.participacionesUte.map(function(p) {
         return '<div class="modal-ute-row">' +
           '<span class="modal-ute-nombre">' + esc(p.nombreUte) + '</span>' +
-          '<span class="modal-ute-detalle">' + p.numContratos + ' contrato' + (p.numContratos > 1 ? 's' : '') +
-          ' · ' + formatearImporte(p.importeTotal) + ' total' +
-          ' · ~' + formatearImporte(p.importeEstimado) + ' estimado (÷' + p.numMiembros + ')</span>' +
+          '<span class="modal-ute-detalle">' + esc(t('ranking.detalle.uteContratos', { count: p.numContratos })) +
+          ' · ' + esc(t('ranking.detalle.uteTotal', { importe: formatearImporte(p.importeTotal) })) +
+          ' · ' + esc(t('ranking.detalle.uteEstimado', { importe: formatearImporte(p.importeEstimado), miembros: p.numMiembros })) + '</span>' +
           '</div>';
       }).join('') +
       '</div></div>';
@@ -632,34 +636,34 @@ function abrirModal(entrada) {
       '<div class="modal-empresa-nombre">' + esc(entrada.nombre) +
         (entrada.esUte ? ' <span class="badge badge--ute">UTE</span>' : '') +
       '</div>' +
-      (entrada.nif ? '<div class="modal-empresa-nif">NIF: ' + esc(entrada.nif) + '</div>' : '') +
+      (entrada.nif ? '<div class="modal-empresa-nif">' + esc(t('comun.nif')) + ': ' + esc(entrada.nif) + '</div>' : '') +
     '</div>' +
     uteHtml +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-metricas">' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Contratos adjudicados</div>' +
-        '<div class="modal-metrica-valor">' + entrada.numContratos.toLocaleString('es-ES') + '</div>' +
+        '<div class="modal-field-label">' + esc(t('ranking.contratosAdjudicados')) + '</div>' +
+        '<div class="modal-metrica-valor">' + entrada.numContratos.toLocaleString(locale) + '</div>' +
       '</div>' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Importe total</div>' +
+        '<div class="modal-field-label">' + esc(t('comun.importeTotal')) + '</div>' +
         '<div class="modal-metrica-valor modal-metrica-valor--importe">' + formatearImporte(entrada.importeTotal) + '</div>' +
       '</div>' +
       '<div class="modal-metrica">' +
-        '<div class="modal-field-label">Importe medio por contrato</div>' +
+        '<div class="modal-field-label">' + esc(t('ranking.detalle.importeMedioContrato')) + '</div>' +
         '<div class="modal-metrica-valor">' + formatearImporte(entrada.importeMedio) + '</div>' +
       '</div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Desglose por tipo de contrato</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.desgloseTipo')) + '</div>' +
       '<div class="modal-tipos-lista">' + tiposHtml + '</div>' +
     '</div>' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Organismos contratantes (' + entrada.organismos.length + ')</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.organismosContratantes', { count: entrada.organismos.length })) + '</div>' +
       '<div class="modal-organismos-lista">' +
         entrada.organismos.map(o => '<span class="modal-organismo-tag">' + esc(o) + '</span>').join('') +
       '</div>' +
@@ -668,11 +672,12 @@ function abrirModal(entrada) {
     '<hr class="modal-divider" />' +
 
     '<div class="modal-field">' +
-      '<div class="modal-field-label">Contratos individuales</div>' +
+      '<div class="modal-field-label">' + esc(t('ranking.detalle.contratosIndividuales')) + '</div>' +
       '<div class="modal-tabla-wrapper">' +
         '<table class="modal-contratos-table">' +
           '<thead><tr>' +
-            '<th>Objeto</th><th>Organismo</th><th>Importe</th><th>Fecha</th><th>Enlace</th>' +
+            ['ranking.detalle.colObjeto', 'comun.organismo', 'comun.importe', 'comun.fecha', 'ranking.detalle.colEnlace']
+              .map(clave => '<th>' + esc(t(clave)) + '</th>').join('') +
           '</tr></thead>' +
           '<tbody>' + contratosHtml + '</tbody>' +
         '</table>' +
@@ -748,27 +753,12 @@ function poblarSelect(id, valores) {
 }
 
 /**
- * Mapa de categoría → etiqueta legible para el selector de categorías.
+ * Etiqueta legible de una categoría de organismo (locales/*.json → categorias.<cat>).
+ * Si la categoría no tiene traducción se muestra la clave tal cual.
  */
-const CATEGORIAS_LABEL = {
-  universidades: 'Universidades',
-  distritos_madrid: 'Distritos de Madrid',
-  ayto_madrid: 'Ayuntamiento de Madrid',
-  consejerias: 'Consejerías de la CAM',
-  salud: 'Salud (SERMAS y hospitales)',
-  entes_cam: 'Entes y agencias de la CAM',
-  aytos_pleno: 'Ayuntamientos (Pleno)',
-  aytos_junta: 'Ayuntamientos (Junta de Gobierno)',
-  aytos_alcaldia: 'Ayuntamientos (Alcaldía)',
-  aytos_otros: 'Ayuntamientos (otros)',
-  mancomunidades: 'Mancomunidades',
-  empresas_municipales: 'Empresas y entes municipales',
-  ferroviario: 'Sector ferroviario',
-  estado_central: 'Administración General del Estado',
-  investigacion: 'Investigación y fundaciones',
-  desarrollo_rural: 'Desarrollo rural y local',
-  otros: 'Otros',
-};
+function etiquetaCategoria(cat) {
+  return t('categorias.' + cat, { defaultValue: cat });
+}
 
 /**
  * Puebla el selector de organismos con optgroups agrupados por categoría.
@@ -793,17 +783,13 @@ function poblarSelectOrganismoConOptgroup() {
 
   const categoriasOrdenadas = Object.keys(mapaCat)
     .filter(k => k !== 'otros')
-    .sort((a, b) => {
-      const la = CATEGORIAS_LABEL[a] || a;
-      const lb = CATEGORIAS_LABEL[b] || b;
-      return la.localeCompare(lb, 'es');
-    });
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
   if (mapaCat['otros']) categoriasOrdenadas.push('otros');
 
   for (const cat of categoriasOrdenadas) {
     const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
     const optgroup = document.createElement('optgroup');
-    optgroup.label = CATEGORIAS_LABEL[cat] || cat;
+    optgroup.label = etiquetaCategoria(cat);
     for (const org of organismos) {
       const opt = document.createElement('option');
       opt.value = org;
@@ -832,17 +818,13 @@ function poblarSelectCategoria() {
 
   const categorias = Object.keys(conteo)
     .filter(k => k !== 'otros')
-    .sort((a, b) => {
-      const la = CATEGORIAS_LABEL[a] || a;
-      const lb = CATEGORIAS_LABEL[b] || b;
-      return la.localeCompare(lb, 'es');
-    });
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
   if (conteo['otros']) categorias.push('otros');
 
   for (const cat of categorias) {
     const opt = document.createElement('option');
     opt.value = cat;
-    opt.textContent = (CATEGORIAS_LABEL[cat] || cat) + ' (' + conteo[cat] + ')';
+    opt.textContent = etiquetaCategoria(cat) + ' (' + conteo[cat] + ')';
     select.appendChild(opt);
   }
 }
@@ -856,7 +838,7 @@ function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
   const primera = select.querySelector('option') || document.createElement('option');
   if (!primera.value) {
     primera.value = '';
-    primera.textContent = 'Todos los organismos';
+    primera.textContent = t('filtros.todosOrganismos');
   }
   select.innerHTML = '';
   select.appendChild(primera);
@@ -902,12 +884,13 @@ function inicializarFiltros() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos, ranking y metadatos en paralelo
+  // 1. Cargar datos, metadatos y traducciones en paralelo
   let contratos, meta;
   try {
-    [contratos, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta()]);
+    [contratos, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta(), window.I18n.listo]);
   } catch (err) {
     console.error(err);
+    await window.I18n.listo;
     DatosCAM.mostrarErrorCarga();
     mostrarFechaActualizacion(null);
     return;

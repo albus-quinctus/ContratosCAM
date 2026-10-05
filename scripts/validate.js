@@ -14,6 +14,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { claveContrato } from './lib/clave-contrato.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
@@ -296,13 +297,13 @@ async function main() {
     console.log('  ✅ Todos los IDs son únicos');
   }
 
-  // Verificar duplicados por expediente + organismo
+  // Verificar duplicados por clave de identidad del contrato
   console.log('\n🔍 Verificando duplicados...');
-  const claves = datos.map(c => `${c.expediente}|${c.organismo}`);
+  const claves = datos.map(claveContrato);
   const clavesUnicas = new Set(claves);
   const duplicados = datos.length - clavesUnicas.size;
   if (duplicados > 0) {
-    console.log(`  ⚠️  ${duplicados} posibles duplicados (mismo expediente + organismo)`);
+    console.log(`  ⚠️  ${duplicados} posibles duplicados (misma clave de contrato)`);
   } else {
     console.log('  ✅ No se encontraron duplicados');
   }

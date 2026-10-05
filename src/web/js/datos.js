@@ -12,14 +12,14 @@
 'use strict';
 
 // Rutas posibles a cada JSON (se prueban en orden)
-// - Producción (GitHub Pages): data/ está al mismo nivel que la página
+// - Producción (GitHub Pages): data/ está en la raíz del sitio (también desde /en/)
 // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
 const DATA_URLS = Object.freeze([
-  './data/processed/contratos-normalizados.json',
+  window.I18n.urlRaiz + 'data/processed/contratos-normalizados.json',
   '/data/processed/contratos-normalizados.json',
 ]);
 const META_URLS = Object.freeze([
-  './data/processed/meta.json',
+  window.I18n.urlRaiz + 'data/processed/meta.json',
   '/data/processed/meta.json',
 ]);
 
@@ -67,14 +67,17 @@ function cargarMeta() {
 
 /**
  * Sustituye el contenido de la tabla por un mensaje de error de carga.
+ * Requiere las traducciones cargadas (window.I18n.listo).
  */
 function mostrarErrorCarga() {
-  document.getElementById('results-count').textContent = 'Datos no disponibles';
-  document.getElementById('tabla-body').innerHTML =
+  const { t } = window.I18n;
+  document.getElementById('results-count').textContent = t('comun.datosNoDisponibles');
+  const tbody = document.getElementById('tabla-body');
+  tbody.innerHTML =
     '<tr><td colspan="' + COLUMNAS_TABLA + '"><div class="empty-state">' +
-    '<div class="empty-state-icon">⚠️</div>' +
-    '<p>No se han podido cargar los datos de contratos. Inténtalo de nuevo más tarde.</p>' +
+    '<div class="empty-state-icon">⚠️</div><p></p>' +
     '</div></td></tr>';
+  tbody.querySelector('.empty-state p').textContent = t('comun.errorCargaDatos');
 }
 
 window.DatosCAM = Object.freeze({ cargarContratos, cargarMeta, mostrarErrorCarga });
