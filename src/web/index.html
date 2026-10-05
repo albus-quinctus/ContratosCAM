@@ -30,17 +30,10 @@
     crossorigin="anonymous"
   ></script>
 
-  <!-- i18next + detector de idioma con Subresource Integrity (SRI) -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/i18next@26.4.2/dist/umd/i18next.min.js"
-    integrity="sha384-DtlLtqvSyhS7aXtp7ixuiAdR3OUnaa/NP5pnHxhOT6BjvGsp4mqv5YimMVdc6D8F"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@8.2.1/dist/umd/i18nextBrowserLanguageDetector.min.js"
-    integrity="sha384-Z89+IAWmIe+m7bvvlN4ws9W4/FSQ4DYvQu4JMJPdaw8ShRlvcVcaLi9vsQrz8gRp"
-    crossorigin="anonymous"
-  ></script>
+  <!-- i18next + detector de idioma, servidos desde el propio sitio: sin ellos
+       la página no arranca, así que no deben depender de un CDN externo -->
+  <script src="js/vendor/i18next-26.4.2/i18next.min.js"></script>
+  <script src="js/vendor/i18next-browser-languagedetector-8.2.1/i18nextBrowserLanguageDetector.min.js"></script>
   <!-- Síncrono: redirige a /en/ antes de pintar si el idioma preferido es inglés -->
   <script src="js/i18n.js"></script>
 
