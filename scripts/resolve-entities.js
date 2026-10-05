@@ -5,7 +5,7 @@
  * Usa el módulo entity-resolver.js con un registro maestro (entities.json).
  *
  * Pipeline:
- *   1. Carga contratos-normalizados.json
+ *   1. Carga los contratos normalizados (lib/almacen-contratos.js)
  *   2. Carga o genera entities.json (registro maestro)
  *   3. Aplica resolución de entidades (asigna entity_id, unifica nombres)
  *   4. Guarda contratos actualizados y registro actualizado
@@ -14,8 +14,8 @@
  *   node scripts/resolve-entities.js           → resolución normal
  *   node scripts/resolve-entities.js --rebuild → regenera el registro desde cero
  *
- * Entrada:  data/processed/contratos-normalizados.json
- * Salida:   data/processed/contratos-normalizados.json (actualizado)
+ * Entrada:  data/processed/contratos/
+ * Salida:   data/processed/contratos/ (actualizado)
  *           data/processed/entities.json (registro maestro)
  */
 
@@ -29,9 +29,9 @@ import {
   categorizarOrganismo,
   detectarUTE,
 } from './lib/entity-resolver.js';
+import { existenContratos, leerContratos, guardarContratos, tamanoContratosKb, CONTRATOS_DIR } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONTRATOS_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
 const ENTITIES_FILE = path.join(__dirname, '../data/processed/entities.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -263,13 +263,13 @@ async function main() {
   console.log('═'.repeat(60));
 
   // 1. Cargar contratos
-  if (!fs.existsSync(CONTRATOS_FILE)) {
-    console.error(`❌ No se encontró: ${path.basename(CONTRATOS_FILE)}`);
+  if (!existenContratos()) {
+    console.error(`❌ No se encontraron contratos en: ${path.relative(process.cwd(), CONTRATOS_DIR)}/`);
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
 
-  const contratos = JSON.parse(fs.readFileSync(CONTRATOS_FILE, 'utf-8'));
+  const contratos = leerContratos();
   console.log(`📥 ${contratos.length} contratos cargados`);
 
   // 2. Cargar o construir registro maestro
@@ -341,12 +341,12 @@ async function main() {
 
   // 5. Guardar resultados
   console.log('\n💾 Paso 3: Guardar resultados...');
-  fs.writeFileSync(CONTRATOS_FILE, JSON.stringify(resueltos, null, 2), 'utf-8');
+  guardarContratos(resueltos);
   fs.writeFileSync(ENTITIES_FILE, JSON.stringify(registro, null, 2), 'utf-8');
 
-  const tamContratos = (fs.statSync(CONTRATOS_FILE).size / 1024).toFixed(1);
+  const tamContratos = tamanoContratosKb();
   const tamEntities = (fs.statSync(ENTITIES_FILE).size / 1024).toFixed(1);
-  console.log(`   ${path.basename(CONTRATOS_FILE)} (${tamContratos} KB)`);
+  console.log(`   ${path.relative(process.cwd(), CONTRATOS_DIR)}/ (${tamContratos} KB)`);
   console.log(`   ${path.basename(ENTITIES_FILE)} (${tamEntities} KB)`);
 
   // Resumen

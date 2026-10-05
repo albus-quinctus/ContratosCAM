@@ -14,10 +14,14 @@
 // Rutas posibles a cada JSON (se prueban en orden)
 // - Producción (GitHub Pages): data/ está en la raíz del sitio (también desde /en/)
 // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
-const DATA_URLS = Object.freeze([
-  window.I18n.urlRaiz + 'data/processed/contratos-normalizados.json',
-  '/data/processed/contratos-normalizados.json',
+//
+// Los contratos están repartidos en un fichero por año (ver
+// scripts/lib/almacen-contratos.js); indice.json dice qué ficheros hay.
+const CONTRATOS_DIRS = Object.freeze([
+  window.I18n.urlRaiz + 'data/processed/contratos/',
+  '/data/processed/contratos/',
 ]);
+const INDICE_ARCHIVO = 'indice.json';
 const META_URLS = Object.freeze([
   window.I18n.urlRaiz + 'data/processed/meta.json',
   '/data/processed/meta.json',
@@ -47,13 +51,35 @@ async function cargarPrimeraUrl(urls, esValido) {
 }
 
 /**
- * Carga el array de contratos normalizados.
+ * Busca el índice de ficheros de contratos en las rutas posibles.
+ * @returns {Promise<{dir: string, indice: object}|null>} Carpeta donde está y su contenido
+ */
+async function cargarIndice() {
+  for (const dir of CONTRATOS_DIRS) {
+    const indice = await cargarPrimeraUrl([dir + INDICE_ARCHIVO], json => Array.isArray(json && json.archivos));
+    if (indice) return { dir, indice };
+  }
+  return null;
+}
+
+/**
+ * Carga el array de contratos normalizados (todos los años).
  * @returns {Promise<Array>}
- * @throws {Error} Si no se encuentra un JSON con contratos en ninguna ruta
+ * @throws {Error} Si no se encuentra el índice, falla algún fichero o no hay contratos
  */
 async function cargarContratos() {
-  const datos = await cargarPrimeraUrl(DATA_URLS, json => Array.isArray(json) && json.length > 0);
-  if (!datos) throw new Error('No se encontró el JSON de contratos');
+  const encontrado = await cargarIndice();
+  if (!encontrado) throw new Error('No se encontró el índice de contratos');
+  const { dir, indice } = encontrado;
+
+  const porArchivo = await Promise.all(indice.archivos.map(async ({ archivo }) => {
+    const res = await fetch(dir + archivo);
+    if (!res.ok) throw new Error(`No se pudo cargar ${archivo}: HTTP ${res.status}`);
+    return res.json();
+  }));
+
+  const datos = porArchivo.flat();
+  if (datos.length === 0) throw new Error('No hay contratos');
   return datos;
 }
 

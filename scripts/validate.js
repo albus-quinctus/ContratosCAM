@@ -5,7 +5,7 @@
  * Verifica campos requeridos, tipos de datos, formatos y completitud.
  * Soporta múltiples fuentes: PLACSP, TED-UE, PLACE histórico.
  *
- * Entrada: data/processed/contratos-normalizados.json
+ * Entrada: data/processed/contratos/ (ver lib/almacen-contratos.js)
  * Salida:  Reporte en consola (exit code 0 = OK, 1 = errores)
  *
  * Uso: node scripts/validate.js
@@ -13,11 +13,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 import { claveContrato } from './lib/clave-contrato.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
+import { existenContratos, leerIndice, leerContratos, CONTRATOS_DIR, INDICE_FILE } from './lib/almacen-contratos.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema de validación
@@ -39,8 +37,15 @@ const URL_REGEX = /^https?:\/\/.+/;
 const NIF_REGEX = /^[A-Z0-9]{8,10}$/;
 const TED_PUB_REGEX = /^\d+-\d{4}$/; // Formato: 239313-2016
 
-/** Umbral de tamaño para advertir sobre migración a Turso (bytes) */
+/** Tamaño a partir del cual se advierte de que un fichero de contratos es grande (MB) */
 const UMBRAL_TAMANO_MB = 20;
+
+/**
+ * Caída máxima admitida del total de contratos respecto a lo publicado (%).
+ * La deduplicación puede quitar algunos, pero una caída mayor indica que se
+ * ha perdido histórico (lectura fallida, filtro roto, fuente vacía…).
+ */
+const MAX_CAIDA_TOTAL_PCT = 5;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de validación
@@ -192,6 +197,23 @@ function validarContrato(contrato, index) {
   return errores;
 }
 
+/**
+ * Total de contratos del índice en el último commit (lo publicado).
+ * @returns {number|null} null si no hay git o el índice no está en el commit
+ */
+function leerTotalPublicado() {
+  try {
+    const json = execFileSync('git', ['show', `HEAD:./${path.basename(INDICE_FILE)}`], {
+      cwd: CONTRATOS_DIR,
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return JSON.parse(json).total;
+  } catch {
+    return null;
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
 // ─────────────────────────────────────────────────────────────────────────────
@@ -200,30 +222,52 @@ async function main() {
   console.log('✅ ContratosCAM — Validación de datos');
   console.log('═'.repeat(60));
 
-  // Verificar que existe el archivo
-  if (!fs.existsSync(INPUT_FILE)) {
-    console.error(`❌ No se encontró: ${path.basename(INPUT_FILE)}`);
+  // Verificar que existen los ficheros de contratos
+  if (!existenContratos()) {
+    console.error(`❌ No se encontraron contratos en: ${CONTRATOS_DIR}`);
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
 
-  // Leer archivo
-  const stat = fs.statSync(INPUT_FILE);
-  const tamanoMB = stat.size / 1024 / 1024;
-  console.log(`📄 Archivo: ${path.basename(INPUT_FILE)}`);
-  console.log(`💾 Tamaño: ${tamanoMB.toFixed(2)} MB`);
-
-  if (tamanoMB > UMBRAL_TAMANO_MB) {
-    console.warn(`\n⚠️  ADVERTENCIA: El archivo supera ${UMBRAL_TAMANO_MB} MB.`);
-    console.warn('   Considerar migración a Turso para mejor rendimiento.');
+  // Leer ficheros (uno por año)
+  let indice, datos;
+  try {
+    indice = leerIndice();
+    datos = leerContratos();
+  } catch (err) {
+    console.error(`\n❌ Error leyendo los ficheros de contratos: ${err.message}`);
+    process.exit(1);
   }
 
-  let datos;
-  try {
-    datos = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
-  } catch (err) {
-    console.error(`\n❌ Error parseando JSON: ${err.message}`);
+  console.log(`📁 Carpeta: ${CONTRATOS_DIR}`);
+  let tamanoMB = 0;
+  for (const { archivo, total } of indice.archivos) {
+    const tamanoArchivoMB = fs.statSync(path.join(CONTRATOS_DIR, archivo)).size / 1024 / 1024;
+    tamanoMB += tamanoArchivoMB;
+    console.log(`   📄 ${archivo}: ${total} contratos, ${tamanoArchivoMB.toFixed(2)} MB`);
+    if (tamanoArchivoMB > UMBRAL_TAMANO_MB) {
+      console.warn(`   ⚠️  ADVERTENCIA: ${archivo} supera ${UMBRAL_TAMANO_MB} MB.`);
+    }
+  }
+
+  // El índice debe coincidir con el contenido de los ficheros
+  if (indice.total !== datos.length) {
+    console.error(`\n❌ El índice declara ${indice.total} contratos, pero los ficheros contienen ${datos.length}`);
     process.exit(1);
+  }
+
+  // No se debe perder histórico respecto a lo publicado (último commit)
+  const totalPublicado = leerTotalPublicado();
+  if (totalPublicado === null) {
+    console.log('ℹ️  No hay índice publicado en git con el que comparar el total');
+  } else {
+    const caidaPct = ((totalPublicado - datos.length) / totalPublicado) * 100;
+    console.log(`📚 Publicado en git: ${totalPublicado} contratos (ahora ${datos.length})`);
+    if (caidaPct > MAX_CAIDA_TOTAL_PCT) {
+      console.error(`\n❌ El total ha caído un ${caidaPct.toFixed(1)} % respecto a lo publicado (máximo ${MAX_CAIDA_TOTAL_PCT} %).`);
+      console.error('   Probablemente se ha perdido histórico: revisa transform antes de publicar.');
+      process.exit(1);
+    }
   }
 
   // Verificar que es un array

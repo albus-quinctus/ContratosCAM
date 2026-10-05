@@ -3,13 +3,14 @@
  *
  * Genera el sitio estático que se publica en GitHub Pages.
  *
- * - Copia el frontend (src/web/) y los JSON procesados (data/processed/).
+ * - Copia el frontend (src/web/) y los JSON procesados (data/processed/,
+ *   incluidos los contratos por año de data/processed/contratos/).
  * - Genera las páginas de cada idioma traducido (p. ej. _site/en/) a partir
  *   de las páginas en español: mismo HTML con su `lang` y las rutas a los
  *   recursos compartidos subidas un nivel. Los textos se traducen en el
  *   navegador (src/web/js/i18n.js + src/web/locales/).
  *
- * Entrada: src/web/, data/processed/*.json
+ * Entrada: src/web/, data/processed/ (JSON, también en subcarpetas)
  * Salida:  _site/ (se borra y se regenera entera)
  *
  * Uso: node scripts/build-web.js
@@ -51,12 +52,17 @@ function copiarWebYDatos() {
   fs.rmSync(SALIDA_DIR, { recursive: true, force: true });
   fs.cpSync(WEB_DIR, SALIDA_DIR, { recursive: true });
 
-  fs.mkdirSync(SALIDA_DATA_DIR, { recursive: true });
-  const jsons = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'));
-  for (const f of jsons) {
-    fs.copyFileSync(path.join(DATA_DIR, f), path.join(SALIDA_DATA_DIR, f));
-  }
-  return jsons.length;
+  let numJsons = 0;
+  fs.cpSync(DATA_DIR, SALIDA_DATA_DIR, {
+    recursive: true,
+    filter: origen => {
+      if (fs.statSync(origen).isDirectory()) return true;
+      if (!origen.endsWith('.json')) return false;
+      numJsons++;
+      return true;
+    },
+  });
+  return numJsons;
 }
 
 function generarPaginaTraducida(html, idioma, nombrePagina) {

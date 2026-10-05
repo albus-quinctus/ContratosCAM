@@ -60,15 +60,15 @@ jobs:
       - name: Verificar salud de los datos
         id: verificar
         run: |
-          # Comprobar que el JSON existe y tiene un mínimo de contratos
-          FILE="data/processed/contratos-normalizados.json"
+          # Comprobar que el índice de contratos existe y tiene un mínimo de contratos
+          FILE="data/processed/contratos/indice.json"
           if [ ! -f "$FILE" ]; then
             echo "❌ ERROR: No se generó el archivo $FILE"
             exit 1
           fi
 
-          # Contar contratos (el archivo es un array JSON)
-          TOTAL=$(node -e "const d=JSON.parse(require('fs').readFileSync('$FILE','utf-8')); console.log(d.length)")
+          # Total de contratos según el índice (validate.js comprueba que coincide con los ficheros)
+          TOTAL=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$FILE','utf-8')).total)")
           echo "total_contratos=$TOTAL" >> "$GITHUB_OUTPUT"
 
           # Umbral mínimo: si hay menos de 100 contratos, algo fue mal
@@ -85,7 +85,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "data: actualización automática de contratos [skip ci]"
-          file_pattern: "data/processed/*.json"
+          file_pattern: "data/processed/*.json data/processed/contratos/*.json"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
 
@@ -102,7 +102,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "---" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "📁 Archivo: \`data/processed/contratos-normalizados.json\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "📁 Carpeta: \`data/processed/contratos/\` (un fichero por año)" >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     name: Desplegar en GitHub Pages
@@ -123,14 +123,14 @@ jobs:
 
       - name: Verificar que tenemos los datos actualizados
         run: |
-          # Comprobar que el JSON de datos existe
-          if [ ! -f "data/processed/contratos-normalizados.json" ]; then
+          # Comprobar que el índice de contratos existe
+          if [ ! -f "data/processed/contratos/indice.json" ]; then
             echo "⚠️ No se encontró el JSON de datos. Intentando pull..."
             git pull origin main --ff-only
           fi
 
           # Verificación final
-          if [ ! -f "data/processed/contratos-normalizados.json" ]; then
+          if [ ! -f "data/processed/contratos/indice.json" ]; then
             echo "❌ ERROR: No se pudo obtener el JSON de datos actualizado"
             exit 1
           fi
