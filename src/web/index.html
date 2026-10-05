@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ContratosCAM — Contratación pública de la Comunidad de Madrid</title>
-  <meta name="description" content="Busca y explora los contratos públicos adjudicados por la Comunidad de Madrid. Datos oficiales en abierto." />
+  <title data-i18n="meta.indice.titulo">ContratosCAM — Contratación pública de la Comunidad de Madrid</title>
+  <meta name="description" data-i18n-content="meta.indice.descripcion" content="Busca y explora los contratos públicos adjudicados por la Comunidad de Madrid. Datos oficiales en abierto." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="ContratosCAM — Contratación pública de la Comunidad de Madrid" />
@@ -30,6 +30,13 @@
     crossorigin="anonymous"
   ></script>
 
+  <!-- i18next + detector de idioma, servidos desde el propio sitio: sin ellos
+       la página no arranca, así que no deben depender de un CDN externo -->
+  <script src="js/vendor/i18next-26.4.2/i18next.min.js"></script>
+  <script src="js/vendor/i18next-browser-languagedetector-8.2.1/i18nextBrowserLanguageDetector.min.js"></script>
+  <!-- Síncrono: redirige a /en/ antes de pintar si el idioma preferido es inglés -->
+  <script src="js/i18n.js"></script>
+
   <!-- Estilos propios -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -42,16 +49,20 @@
         <span class="header-icon" aria-hidden="true">🏛️</span>
         <div>
           <h1 class="header-title">ContratosCAM</h1>
-          <p class="header-subtitle">Contratación pública de la Comunidad de Madrid</p>
+          <p class="header-subtitle" data-i18n="cabecera.subtitulo">Contratación pública de la Comunidad de Madrid</p>
         </div>
       </div>
-      <nav class="header-nav" aria-label="Navegación principal">
-        <a href="#buscador" class="nav-link active">Contratos</a>
-        <a href="ranking.html" class="nav-link nav-link--page">🏆 Ranking</a>
-        <button id="btn-sobre-datos" class="nav-link nav-link--btn" type="button">ℹ️ Sobre los datos</button>
+      <nav class="header-nav" aria-label="Navegación principal" data-i18n-aria-label="nav.aria">
+        <a href="#buscador" class="nav-link active" data-i18n="nav.contratos">Contratos</a>
+        <a href="ranking.html" class="nav-link nav-link--page" data-i18n="nav.ranking">🏆 Ranking</a>
+        <button id="btn-sobre-datos" class="nav-link nav-link--btn" type="button" data-i18n="nav.sobreDatos">ℹ️ Sobre los datos</button>
         <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">
           GitHub ↗
         </a>
+        <span class="nav-idioma" role="group" aria-label="Idioma" data-i18n-aria-label="nav.idiomaAria">
+          <a class="nav-link nav-link--idioma" data-idioma="es" hreflang="es" lang="es">ES</a>
+          <a class="nav-link nav-link--idioma" data-idioma="en" hreflang="en" lang="en">EN</a>
+        </span>
       </nav>
     </div>
   </header>
@@ -61,31 +72,31 @@
     <!-- ══════════════════════════════════════════════════════ BANNER ACTUALIZACIÓN -->
     <div class="update-banner" id="update-banner" aria-live="polite">
       <span class="update-banner-icon" aria-hidden="true">🔄</span>
-      <span id="data-update-date">Cargando fecha de actualización…</span>
+      <span id="data-update-date" data-i18n="actualizacion.cargando">Cargando fecha de actualización…</span>
     </div>
 
     <!-- ═══════════════════════════════════════════════════ ESTADÍSTICAS RÁPIDAS -->
-    <section class="stats-bar" id="stats-bar" aria-label="Resumen de datos">
+    <section class="stats-bar" id="stats-bar" aria-label="Resumen de datos" data-i18n-aria-label="indice.statsAria">
       <div class="stat-card">
         <span class="stat-number" id="stat-total">—</span>
-        <span class="stat-label">Contratos</span>
+        <span class="stat-label" data-i18n="comun.contratos">Contratos</span>
       </div>
       <div class="stat-card">
         <span class="stat-number" id="stat-importe">—</span>
-        <span class="stat-label">Importe total</span>
+        <span class="stat-label" data-i18n="comun.importeTotal">Importe total</span>
       </div>
       <div class="stat-card">
         <span class="stat-number" id="stat-organismos">—</span>
-        <span class="stat-label">Organismos</span>
+        <span class="stat-label" data-i18n="indice.organismos">Organismos</span>
       </div>
       <div class="stat-card">
         <span class="stat-number" id="stat-adjudicatarios">—</span>
-        <span class="stat-label">Adjudicatarios</span>
+        <span class="stat-label" data-i18n="comun.adjudicatarios">Adjudicatarios</span>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ BUSCADOR -->
-    <section class="search-section" id="buscador" aria-label="Búsqueda y filtros">
+    <section class="search-section" id="buscador" aria-label="Búsqueda y filtros" data-i18n-aria-label="indice.busquedaAria">
       <div class="search-bar">
         <div class="search-input-wrapper">
           <span class="search-icon" aria-hidden="true">🔍</span>
@@ -94,8 +105,10 @@
             id="input-busqueda"
             class="search-input"
             placeholder="Buscar por objeto, organismo, adjudicatario, NIF o expediente..."
+            data-i18n-placeholder="indice.busquedaPlaceholder"
             autocomplete="off"
             aria-label="Buscar contratos"
+            data-i18n-aria-label="indice.busquedaInputAria"
           />
         </div>
         <div class="search-terms" id="search-terms" aria-live="polite" hidden></div>
@@ -104,68 +117,68 @@
       <!-- Filtros -->
       <div class="filters">
         <div class="filter-group">
-          <label class="filter-label" for="filtro-tipo">Tipo</label>
+          <label class="filter-label" for="filtro-tipo" data-i18n="comun.tipo">Tipo</label>
           <select id="filtro-tipo" class="filter-select">
-            <option value="">Todos los tipos</option>
+            <option value="" data-i18n="filtros.todosTipos">Todos los tipos</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label" for="filtro-categoria">Categoría de organismo</label>
+          <label class="filter-label" for="filtro-categoria" data-i18n="filtros.categoria">Categoría de organismo</label>
           <select id="filtro-categoria" class="filter-select">
-            <option value="">Todas las categorías</option>
+            <option value="" data-i18n="filtros.todasCategorias">Todas las categorías</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label" for="filtro-organismo">Organismo</label>
+          <label class="filter-label" for="filtro-organismo" data-i18n="comun.organismo">Organismo</label>
           <select id="filtro-organismo" class="filter-select">
-            <option value="">Todos los organismos</option>
+            <option value="" data-i18n="filtros.todosOrganismos">Todos los organismos</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label" for="filtro-procedimiento">Procedimiento</label>
+          <label class="filter-label" for="filtro-procedimiento" data-i18n="comun.procedimiento">Procedimiento</label>
           <select id="filtro-procedimiento" class="filter-select">
-            <option value="">Todos los procedimientos</option>
+            <option value="" data-i18n="filtros.todosProcedimientos">Todos los procedimientos</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label" for="filtro-estado">Estado</label>
+          <label class="filter-label" for="filtro-estado" data-i18n="comun.estado">Estado</label>
           <select id="filtro-estado" class="filter-select">
-            <option value="">Todos los estados</option>
+            <option value="" data-i18n="filtros.todosEstados">Todos los estados</option>
           </select>
         </div>
 
         <div class="filter-group filter-group--range">
-          <label class="filter-label" for="filtro-importe-min">Importe (€)</label>
+          <label class="filter-label" for="filtro-importe-min" data-i18n="filtros.importe">Importe (€)</label>
           <div class="range-inputs">
-            <input type="number" id="filtro-importe-min" class="filter-input" placeholder="Mín." min="0" aria-label="Importe mínimo" />
+            <input type="number" id="filtro-importe-min" class="filter-input" placeholder="Mín." data-i18n-placeholder="filtros.importeMin" min="0" aria-label="Importe mínimo" data-i18n-aria-label="filtros.importeMinAria" />
             <span class="range-separator">—</span>
-            <input type="number" id="filtro-importe-max" class="filter-input" placeholder="Máx." min="0" aria-label="Importe máximo" />
+            <input type="number" id="filtro-importe-max" class="filter-input" placeholder="Máx." data-i18n-placeholder="filtros.importeMax" min="0" aria-label="Importe máximo" data-i18n-aria-label="filtros.importeMaxAria" />
           </div>
         </div>
 
         <div class="filter-group filter-group--range">
-          <label class="filter-label" for="filtro-fecha-desde">Fecha publicación</label>
+          <label class="filter-label" for="filtro-fecha-desde" data-i18n="filtros.fechaPublicacion">Fecha publicación</label>
           <div class="range-inputs">
-            <input type="date" id="filtro-fecha-desde" class="filter-input" aria-label="Fecha desde" />
+            <input type="date" id="filtro-fecha-desde" class="filter-input" aria-label="Fecha desde" data-i18n-aria-label="filtros.fechaDesde" />
             <span class="range-separator">—</span>
-            <input type="date" id="filtro-fecha-hasta" class="filter-input" aria-label="Fecha hasta" />
+            <input type="date" id="filtro-fecha-hasta" class="filter-input" aria-label="Fecha hasta" data-i18n-aria-label="filtros.fechaHasta" />
           </div>
         </div>
 
-        <button id="btn-limpiar" class="btn btn--secondary" type="button">✕ Limpiar filtros</button>
+        <button id="btn-limpiar" class="btn btn--secondary" type="button" data-i18n="filtros.limpiarFiltros">✕ Limpiar filtros</button>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ RESULTADOS -->
-    <section class="results-section" aria-label="Resultados de búsqueda">
+    <section class="results-section" aria-label="Resultados de búsqueda" data-i18n-aria-label="indice.resultadosAria">
       <div class="results-header">
-        <p class="results-count" id="results-count" aria-live="polite">Cargando datos...</p>
+        <p class="results-count" id="results-count" aria-live="polite" data-i18n="comun.cargandoDatos">Cargando datos...</p>
         <div class="results-actions">
-          <button id="btn-exportar" class="btn btn--secondary btn--sm" type="button">⬇ Exportar CSV</button>
+          <button id="btn-exportar" class="btn btn--secondary btn--sm" type="button" data-i18n="comun.exportarCsv">⬇ Exportar CSV</button>
         </div>
       </div>
 
@@ -174,20 +187,20 @@
         <table class="contratos-table" id="tabla-contratos">
           <thead>
             <tr>
-              <th class="col-objeto sortable" data-col="objeto">Objeto del contrato <span class="sort-icon">↕</span></th>
-              <th class="col-organismo sortable" data-col="organismo">Organismo <span class="sort-icon">↕</span></th>
-              <th class="col-tipo">Tipo</th>
-              <th class="col-estado">Estado</th>
-              <th class="col-importe sortable" data-col="importe">Importe <span class="sort-icon">↕</span></th>
-              <th class="col-fecha sortable" data-col="fecha_publicacion">Fecha <span class="sort-icon">↕</span></th>
-              <th class="col-adjudicatario">Adjudicatario</th>
+              <th class="col-objeto sortable" data-col="objeto"><span data-i18n="indice.colObjeto">Objeto del contrato</span> <span class="sort-icon">↕</span></th>
+              <th class="col-organismo sortable" data-col="organismo"><span data-i18n="comun.organismo">Organismo</span> <span class="sort-icon">↕</span></th>
+              <th class="col-tipo" data-i18n="comun.tipo">Tipo</th>
+              <th class="col-estado" data-i18n="comun.estado">Estado</th>
+              <th class="col-importe sortable" data-col="importe"><span data-i18n="comun.importe">Importe</span> <span class="sort-icon">↕</span></th>
+              <th class="col-fecha sortable" data-col="fecha_publicacion"><span data-i18n="comun.fecha">Fecha</span> <span class="sort-icon">↕</span></th>
+              <th class="col-adjudicatario" data-i18n="comun.adjudicatario">Adjudicatario</th>
             </tr>
           </thead>
           <tbody id="tabla-body">
             <tr>
               <td colspan="7" class="loading-cell">
                 <div class="loading-spinner"></div>
-                <p>Cargando contratos...</p>
+                <p data-i18n="indice.cargandoContratos">Cargando contratos...</p>
               </td>
             </tr>
           </tbody>
@@ -195,43 +208,43 @@
       </div>
 
       <!-- Paginación -->
-      <nav class="pagination" id="paginacion" aria-label="Paginación de resultados">
-        <button id="btn-anterior" class="btn btn--secondary btn--sm" type="button" disabled>← Anterior</button>
-        <span class="pagination-info" id="pagination-info" aria-live="polite">Página 1</span>
-        <button id="btn-siguiente" class="btn btn--secondary btn--sm" type="button" disabled>Siguiente →</button>
+      <nav class="pagination" id="paginacion" aria-label="Paginación de resultados" data-i18n-aria-label="indice.paginacionAria">
+        <button id="btn-anterior" class="btn btn--secondary btn--sm" type="button" disabled data-i18n="paginacion.anterior">← Anterior</button>
+        <span class="pagination-info" id="pagination-info" aria-live="polite" data-i18n="paginacion.primera">Página 1</span>
+        <button id="btn-siguiente" class="btn btn--secondary btn--sm" type="button" disabled data-i18n="paginacion.siguiente">Siguiente →</button>
       </nav>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════ ESTADÍSTICAS -->
-    <section class="charts-section" id="estadisticas" aria-label="Estadísticas y gráficas">
-      <h2 class="section-title">📊 Estadísticas</h2>
+    <section class="charts-section" id="estadisticas" aria-label="Estadísticas y gráficas" data-i18n-aria-label="indice.graficas.aria">
+      <h2 class="section-title" data-i18n="indice.graficas.titulo">📊 Estadísticas</h2>
 
       <div class="charts-grid">
         <div class="chart-card">
-          <h3 class="chart-title">Contratos por tipo</h3>
+          <h3 class="chart-title" data-i18n="indice.graficas.porTipo">Contratos por tipo</h3>
           <div class="chart-container">
-            <canvas id="chart-tipos" aria-label="Gráfica de contratos por tipo"></canvas>
+            <canvas id="chart-tipos" aria-label="Gráfica de contratos por tipo" data-i18n-aria-label="indice.graficas.porTipoAria"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3 class="chart-title">Top 10 organismos por número de contratos</h3>
+          <h3 class="chart-title" data-i18n="indice.graficas.topOrganismos">Top 10 organismos por número de contratos</h3>
           <div class="chart-container">
-            <canvas id="chart-organismos" aria-label="Gráfica de top 10 organismos"></canvas>
+            <canvas id="chart-organismos" aria-label="Gráfica de top 10 organismos" data-i18n-aria-label="indice.graficas.topOrganismosAria"></canvas>
           </div>
         </div>
 
         <div class="chart-card chart-card--wide">
-          <h3 class="chart-title">Evolución mensual de contratos</h3>
+          <h3 class="chart-title" data-i18n="indice.graficas.evolucion">Evolución mensual de contratos</h3>
           <div class="chart-container chart-container--wide">
-            <canvas id="chart-evolucion" aria-label="Gráfica de evolución mensual"></canvas>
+            <canvas id="chart-evolucion" aria-label="Gráfica de evolución mensual" data-i18n-aria-label="indice.graficas.evolucionAria"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3 class="chart-title">Distribución por procedimiento</h3>
+          <h3 class="chart-title" data-i18n="indice.graficas.procedimientos">Distribución por procedimiento</h3>
           <div class="chart-container">
-            <canvas id="chart-procedimientos" aria-label="Gráfica de distribución por procedimiento"></canvas>
+            <canvas id="chart-procedimientos" aria-label="Gráfica de distribución por procedimiento" data-i18n-aria-label="indice.graficas.procedimientosAria"></canvas>
           </div>
         </div>
       </div>
@@ -243,7 +256,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
-        <p class="footer-text">
+        <p class="footer-text" data-i18n-html="footer.fuentes">
           Datos procedentes del
           <a href="https://contrataciondelestado.es" target="_blank" rel="noopener noreferrer">Portal de Contratación del Estado</a>
           y del
@@ -251,7 +264,7 @@
           Reutilización amparada por la
           <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener noreferrer">Ley 37/2007</a>.
         </p>
-        <p class="footer-text">
+        <p class="footer-text" data-i18n-html="footer.autoria">
           Proyecto de código abierto por
           <a href="https://github.com/albus-quinctus" target="_blank" rel="noopener noreferrer">Albus Quinctus</a>.
           Inspirado en <a href="https://contratosdecantabria.es" target="_blank" rel="noopener noreferrer">contratosdecantabria.es</a>
@@ -264,8 +277,8 @@
   <!-- Modal de detalle de contrato -->
   <div class="modal-overlay" id="modal-overlay" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
-      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar detalle">✕</button>
-      <h2 id="modal-heading" class="sr-only">Detalle del contrato</h2>
+      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar detalle" data-i18n-aria-label="comun.cerrarDetalle">✕</button>
+      <h2 id="modal-heading" class="sr-only" data-i18n="indice.detalle.titulo">Detalle del contrato</h2>
       <div class="modal-content" id="modal-content"></div>
     </div>
   </div>
@@ -273,45 +286,45 @@
   <!-- Modal "Sobre los datos" -->
   <div class="modal-overlay" id="modal-sobre-overlay" hidden>
     <div class="modal modal--sobre" role="dialog" aria-modal="true" aria-labelledby="modal-sobre-heading">
-      <button class="modal-close" id="modal-sobre-close" type="button" aria-label="Cerrar">✕</button>
-      <h2 id="modal-sobre-heading" class="modal-sobre-title">ℹ️ Sobre los datos</h2>
+      <button class="modal-close" id="modal-sobre-close" type="button" aria-label="Cerrar" data-i18n-aria-label="comun.cerrar">✕</button>
+      <h2 id="modal-sobre-heading" class="modal-sobre-title" data-i18n="sobre.titulo">ℹ️ Sobre los datos</h2>
       <div class="modal-sobre-content">
-        <h3>¿De dónde vienen los datos?</h3>
-        <p>
+        <h3 data-i18n="sobre.origenTitulo">¿De dónde vienen los datos?</h3>
+        <p data-i18n-html="sobre.origenTexto">
           Los contratos provienen de la
           <a href="https://contrataciondelestado.es" target="_blank" rel="noopener noreferrer">Plataforma de Contratación del Sector Público (PLACSP)</a>,
           el portal oficial del Ministerio de Hacienda donde todos los organismos públicos están obligados a publicar sus licitaciones
           desde la entrada en vigor de la <strong>Ley 9/2017 de Contratos del Sector Público</strong>.
         </p>
-        <h3>¿Cómo se procesan?</h3>
-        <p>
+        <h3 data-i18n="sobre.procesoTitulo">¿Cómo se procesan?</h3>
+        <p data-i18n-html="sobre.procesoTexto">
           Un pipeline automatizado descarga semanalmente el feed Atom de PLACSP, filtra los contratos de la
           <strong>Comunidad de Madrid</strong>, normaliza los campos (fechas, importes, nombres de organismos),
           elimina duplicados y genera el archivo JSON que carga esta web. Todo el código es público y auditable en
           <a href="https://github.com/albus-quinctus/ContratosCAM" target="_blank" rel="noopener noreferrer">GitHub</a>.
         </p>
-        <h3>¿Qué contratos incluye?</h3>
-        <ul>
+        <h3 data-i18n="sobre.alcanceTitulo">¿Qué contratos incluye?</h3>
+        <ul data-i18n-html="sobre.alcanceLista">
           <li>Contratos publicados en PLACSP por organismos de la Comunidad de Madrid.</li>
           <li>Todos los procedimientos: abierto, negociado, restringido, menor, etc.</li>
           <li>Incluye licitaciones en curso (sin adjudicatario aún) y contratos adjudicados.</li>
           <li><strong>No incluye</strong> contratos menores no publicados en PLACSP (por debajo de los umbrales de publicación).</li>
         </ul>
-        <h3>¿Con qué frecuencia se actualiza?</h3>
-        <p>
+        <h3 data-i18n="sobre.frecuenciaTitulo">¿Con qué frecuencia se actualiza?</h3>
+        <p data-i18n-html="sobre.frecuenciaTexto">
           Los datos se actualizan automáticamente cada <strong>lunes</strong> mediante GitHub Actions.
           La fecha de la última actualización aparece en la cabecera de la página.
         </p>
-        <h3>Marco legal</h3>
-        <p>
+        <h3 data-i18n="sobre.legalTitulo">Marco legal</h3>
+        <p data-i18n-html="sobre.legalTexto">
           Los datos son de dominio público. Su reutilización está amparada por la
           <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814" target="_blank" rel="noopener noreferrer">Ley 37/2007</a>
           sobre reutilización de la información del sector público y la
           <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887" target="_blank" rel="noopener noreferrer">Ley 19/2013</a>
           de transparencia, acceso a la información pública y buen gobierno.
         </p>
-        <h3>¿Encontraste un error?</h3>
-        <p>
+        <h3 data-i18n="sobre.erroresTitulo">¿Encontraste un error?</h3>
+        <p data-i18n-html="sobre.erroresTexto">
           Abre un <a href="https://github.com/albus-quinctus/ContratosCAM/issues" target="_blank" rel="noopener noreferrer">issue en GitHub</a>
           o contacta con el autor. Los datos se muestran tal como los publica la fuente oficial; los errores en los datos originales
           no pueden corregirse desde este proyecto.
@@ -320,6 +333,7 @@
     </div>
   </div>
 
+  <script src="js/datos.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>

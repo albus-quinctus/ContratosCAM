@@ -51,8 +51,8 @@ jobs:
         if: steps.ted.outcome == 'failure'
         run: echo "⚠️ TED-UE falló en esta ejecución. Los datos se publican solo con PLACSP." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Transformar e importar datos combinados
-        run: npm run transform && npm run import-db
+      - name: Transformar, resolver entidades e importar datos combinados
+        run: npm run transform && npm run resolve && npm run import-db
 
       - name: Validar datos generados
         run: npm run validate
@@ -137,12 +137,14 @@ jobs:
 
           echo "✅ Datos disponibles para deploy"
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # Copia la web y los datos a _site/ y genera las páginas en inglés (/en/)
       - name: Preparar artefacto para Pages
-        run: |
-          mkdir -p _site
-          cp -r src/web/* _site/
-          mkdir -p _site/data/processed
-          cp data/processed/*.json _site/data/processed/
+        run: npm run build:web
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4

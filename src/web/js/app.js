@@ -14,18 +14,10 @@
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Traducción y locale del idioma de la página (ver js/i18n.js)
+const { t, locale } = window.I18n;
+
 const CONFIG = Object.freeze({
-  // Rutas posibles al JSON de datos (se prueban en orden)
-  // - Producción (GitHub Pages): data/ está al mismo nivel que index.html
-  // - Desarrollo local (serve desde raíz): data/ está en la raíz del proyecto
-  DATA_URLS: [
-    './data/processed/contratos-normalizados.json',
-    '/data/processed/contratos-normalizados.json',
-  ],
-  META_URLS: [
-    './data/processed/meta.json',
-    '/data/processed/meta.json',
-  ],
   PAGE_SIZE: 25,
   DEBOUNCE_MS: 300,
 });
@@ -55,7 +47,7 @@ const estado = {
 
 function formatearImporte(valor) {
   if (valor === null || valor === undefined) return '—';
-  return valor.toLocaleString('es-ES', {
+  return valor.toLocaleString(locale, {
     style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 0,
@@ -84,20 +76,24 @@ function badgeClass(tipo) {
  * @returns {{cls: string, label: string}}
  */
 function badgeEstado(estadoVal) {
-  const ESTADOS_CONFIG = {
-    'en_licitacion':         { cls: 'badge--estado-licitacion',   label: 'En licitación' },
-    'en_evaluacion':         { cls: 'badge--estado-evaluacion',   label: 'En evaluación' },
-    'pre_adjudicado':        { cls: 'badge--estado-evaluacion',   label: 'Pre-adjudicado' },
-    'pre_adjudicacion':      { cls: 'badge--estado-evaluacion',   label: 'Pre-adjudicación' },
-    'adjudicado':            { cls: 'badge--estado-adjudicado',   label: 'Adjudicado' },
-    'formalizado':           { cls: 'badge--estado-formalizado',  label: 'Formalizado' },
-    'resuelto':              { cls: 'badge--estado-resuelto',     label: 'Resuelto' },
-    'anulado':               { cls: 'badge--estado-anulado',      label: 'Anulado' },
-    'posiblemente_resuelto': { cls: 'badge--estado-posible',      label: 'Posib. resuelto' },
-    'publicado':             { cls: 'badge--estado-licitacion',   label: 'Publicado' },
+  // Clase CSS de cada estado; la etiqueta sale de locales/*.json (estados.<estado>)
+  const ESTADOS_CLASE = {
+    'en_licitacion':         'badge--estado-licitacion',
+    'en_evaluacion':         'badge--estado-evaluacion',
+    'pre_adjudicado':        'badge--estado-evaluacion',
+    'pre_adjudicacion':      'badge--estado-evaluacion',
+    'adjudicado':            'badge--estado-adjudicado',
+    'formalizado':           'badge--estado-formalizado',
+    'resuelto':              'badge--estado-resuelto',
+    'anulado':               'badge--estado-anulado',
+    'posiblemente_resuelto': 'badge--estado-posible',
+    'publicado':             'badge--estado-licitacion',
   };
   if (!estadoVal) return { cls: 'badge--default', label: '—' };
-  return ESTADOS_CONFIG[estadoVal] || { cls: 'badge--default', label: estadoVal };
+  return {
+    cls: ESTADOS_CLASE[estadoVal] || 'badge--default',
+    label: t('estados.' + estadoVal, { defaultValue: estadoVal }),
+  };
 }
 
 function esc(str) {
@@ -163,90 +159,19 @@ function valoresUnicos(datos, campo) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Carga de datos
+// Carga de datos (ver js/datos.js)
 // ─────────────────────────────────────────────────────────────────────────────
-
-async function cargarDatos() {
-  // Intentar cada URL en orden hasta encontrar los datos
-  for (const url of CONFIG.DATA_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const datos = await res.json();
-      if (Array.isArray(datos) && datos.length > 0) return datos;
-    } catch {
-      // Intentar la siguiente URL
-    }
-  }
-  console.warn('No se encontró el JSON de datos. Usando datos de ejemplo.');
-  return generarDatosEjemplo();
-}
-
-async function cargarMeta() {
-  for (const url of CONFIG.META_URLS) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      return await res.json();
-    } catch {
-      // Intentar la siguiente URL
-    }
-  }
-  return null;
-}
 
 function mostrarFechaActualizacion(meta) {
   const el = document.getElementById('data-update-date');
   if (!el) return;
   if (!meta || !meta.generado_en) {
-    el.textContent = 'Fecha de actualización desconocida';
+    el.textContent = t('actualizacion.desconocida');
     return;
   }
   const fecha = new Date(meta.generado_en);
   const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-  el.textContent = 'Actualizado el ' + fecha.toLocaleDateString('es-ES', opciones);
-}
-
-function generarDatosEjemplo() {
-  const organismos = [
-    'Consejería de Educación',
-    'Consejería de Sanidad',
-    'Consejería de Transportes',
-    'Agencia Madrileña de Atención Social',
-    'Canal de Isabel II',
-    'Consejería de Medio Ambiente',
-    'Consejería de Hacienda',
-  ];
-  const tipos = ['Servicios', 'Suministros', 'Obras', 'Administrativo especial'];
-  const procedimientos = ['Abierto', 'Abierto simplificado', 'Negociado sin publicidad', 'Menor'];
-  const objetos = [
-    'Servicio de limpieza de edificios administrativos',
-    'Suministro de material informático',
-    'Obras de rehabilitación de centros educativos',
-    'Servicio de vigilancia y seguridad',
-    'Mantenimiento de instalaciones de climatización',
-    'Suministro de mobiliario de oficina',
-    'Servicio de transporte adaptado',
-    'Obras de acondicionamiento de vías públicas',
-    'Servicio de consultoría y asistencia técnica',
-    'Suministro de equipos médicos',
-  ];
-
-  return Array.from({ length: 200 }, (_, i) => ({
-    expediente: 'CM/2024/' + String(i + 1).padStart(5, '0'),
-    objeto: objetos[i % objetos.length] + ' (lote ' + (i + 1) + ')',
-    tipo: tipos[i % tipos.length],
-    procedimiento: procedimientos[i % procedimientos.length],
-    organismo: organismos[i % organismos.length],
-    importe: Math.round((Math.random() * 500000 + 5000) * 100) / 100,
-    importe_iva: null,
-    adjudicatario: 'Empresa Adjudicataria ' + (i + 1) + ', S.L.',
-    nif_adjudicatario: 'B' + String(10000000 + i).substring(0, 8),
-    fecha_publicacion: '2024-' + String(Math.floor(i / 17) + 1).padStart(2, '0') + '-' + String((i % 28) + 1).padStart(2, '0'),
-    fecha_adjudicacion: null,
-    fecha_formalizacion: null,
-    url_origen: 'https://contrataciondelestado.es',
-  }));
+  el.textContent = t('actualizacion.fecha', { fecha: fecha.toLocaleDateString(locale, opciones) });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -333,11 +258,11 @@ function renderizarTerminosBusqueda() {
 
   container.hidden = false;
   container.innerHTML =
-    '<span class="search-terms-label">Buscando:</span> ' +
-    terminos.map(t =>
-      '<span class="search-term-chip">' + esc(t) + '</span>'
+    '<span class="search-terms-label">' + esc(t('indice.buscando')) + '</span> ' +
+    terminos.map(termino =>
+      '<span class="search-term-chip">' + esc(termino) + '</span>'
     ).join(' ') +
-    '<span class="search-terms-mode">( todos deben coincidir )</span>';
+    '<span class="search-terms-mode">' + esc(t('indice.modoBusqueda')) + '</span>';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -352,31 +277,31 @@ function renderizarTabla() {
 
   document.getElementById('results-count').textContent =
     total === 0
-      ? 'Sin resultados'
-      : total.toLocaleString('es-ES') + ' contrato' + (total !== 1 ? 's' : '') + ' encontrado' + (total !== 1 ? 's' : '');
+      ? t('comun.sinResultados')
+      : t('indice.contratosEncontrados', { count: total });
 
   if (pagina.length === 0) {
     tbody.innerHTML =
       '<tr><td colspan="7"><div class="empty-state">' +
       '<div class="empty-state-icon">🔍</div>' +
-      '<p>No se encontraron contratos con los filtros aplicados.</p>' +
+      '<p>' + esc(t('indice.sinContratos')) + '</p>' +
       '</div></td></tr>';
     return;
   }
 
   tbody.innerHTML = pagina.map((c, i) => {
     const est = badgeEstado(c.estado);
-    return '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="Ver detalle">' +
+    return '<tr data-idx="' + (inicio + i) + '" tabindex="0" role="button" aria-label="' + esc(t('indice.verDetalle')) + '">' +
     '<td class="col-objeto"><div class="cell-objeto">' + (resaltar(c.objeto) || '—') + '</div></td>' +
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
     '<td class="col-tipo">' +
       '<span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' +
-      (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="Datos europeos (TED-UE)">🇪🇺</span>' : '') +
+      (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">🇪🇺</span>' : '') +
     '</td>' +
     '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
     '<td class="col-fecha"><span class="cell-fecha">' + formatearFecha(c.fecha_publicacion) + '</span></td>' +
-    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute" title="Unión Temporal de Empresas">UTE</span>' : '') + '</div></td>' +
+    '<td class="col-adjudicatario"><div class="cell-adjudicatario">' + (resaltar(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute" title="' + esc(t('comun.ute')) + '">UTE</span>' : '') + '</div></td>' +
     '</tr>';
   }).join('');
 
@@ -399,8 +324,8 @@ function renderizarPaginacion() {
   document.getElementById('btn-siguiente').disabled = estado.paginaActual >= totalPaginas;
   document.getElementById('pagination-info').textContent =
     totalPaginas > 0
-      ? 'Página ' + estado.paginaActual + ' de ' + totalPaginas
-      : 'Sin resultados';
+      ? t('paginacion.pagina', { actual: estado.paginaActual, total: totalPaginas })
+      : t('comun.sinResultados');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -413,75 +338,75 @@ function abrirModal(c) {
 
   contenido.innerHTML =
     '<div class="modal-field">' +
-    '<div class="modal-field-label">Objeto del contrato</div>' +
+    '<div class="modal-field-label">' + esc(t('indice.colObjeto')) + '</div>' +
     '<div class="modal-field-value modal-field-value--large">' + (esc(c.objeto) || '—') + '</div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Importe (sin IVA)</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.importeSinIva')) + '</div>' +
     '<div class="modal-field-value modal-field-value--importe">' + formatearImporte(c.importe) + '</div></div>' +
     (c.importe_iva
-      ? '<div class="modal-field"><div class="modal-field-label">Importe (con IVA)</div>' +
+      ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.importeConIva')) + '</div>' +
         '<div class="modal-field-value modal-field-value--importe">' + formatearImporte(c.importe_iva) + '</div></div>'
       : '') +
     '</div>' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Organismo</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.organismo')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.organismo) || '—') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Tipo</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.tipo')) + '</div>' +
     '<div class="modal-field-value"><span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span></div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Estado</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.estado')) + '</div>' +
     (function() { const est = badgeEstado(c.estado); return '<div class="modal-field-value"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span>' + (c.estado_xml && c.estado_xml !== c.estado ? ' <span class="modal-estado-xml">(XML: ' + esc(c.estado_xml) + ')</span>' : '') + '</div></div>'; })() +
-    '<div class="modal-field"><div class="modal-field-label">Procedimiento</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.procedimiento')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.procedimiento) || '—') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Expediente</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.expediente')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.expediente) || '—') + '</div></div>' +
     '</div>' +
     '<hr class="modal-divider" />' +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Adjudicatario</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.adjudicatario')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.adjudicatario) || '—') + (c.es_ute ? ' <span class="badge badge--ute">UTE</span>' : '') + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">NIF</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.nif')) + '</div>' +
     '<div class="modal-field-value">' + (esc(c.nif_adjudicatario) || '—') + '</div></div>' +
     '</div>' +
     (c.es_ute && c.miembros_ute && c.miembros_ute.length > 0
-      ? '<div class="modal-field"><div class="modal-field-label">Empresas miembro de la UTE</div>' +
+      ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('comun.miembrosUte')) + '</div>' +
         '<div class="modal-field-value"><ul class="ute-miembros-list">' +
         c.miembros_ute.map(function(m) { return '<li>' + esc(m) + '</li>'; }).join('') +
         '</ul></div></div>'
       : '') +
     '<div class="modal-grid">' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha publicación</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaPublicacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_publicacion) + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha adjudicación</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaAdjudicacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_adjudicacion) + '</div></div>' +
-    '<div class="modal-field"><div class="modal-field-label">Fecha formalización</div>' +
+    '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fechaFormalizacion')) + '</div>' +
     '<div class="modal-field-value">' + formatearFecha(c.fecha_formalizacion) + '</div></div>' +
     '</div>' +
     // Sección de datos enriquecidos TED-UE (solo si hay datos)
     ((c.num_ofertas || c.criterios_adjudicacion || c.ted_publication_number)
       ? '<hr class="modal-divider" />' +
         '<div class="modal-field"><div class="modal-field-label">' +
-        '<span class="badge badge--ted">🇪🇺 Datos europeos (TED)</span></div></div>' +
+        '<span class="badge badge--ted">' + esc(t('indice.detalle.tedBadge')) + '</span></div></div>' +
         '<div class="modal-grid">' +
         (c.num_ofertas
-          ? '<div class="modal-field"><div class="modal-field-label">Ofertas recibidas</div>' +
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.ofertas')) + '</div>' +
             '<div class="modal-field-value modal-field-value--importe">' + c.num_ofertas + '</div></div>'
           : '') +
         (c.ted_publication_number
-          ? '<div class="modal-field"><div class="modal-field-label">Nº publicación TED</div>' +
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.numTed')) + '</div>' +
             '<div class="modal-field-value"><a href="https://ted.europa.eu/es/notice/' + esc(c.ted_publication_number) + '/html" target="_blank" rel="noopener noreferrer">' + esc(c.ted_publication_number) + ' ↗</a></div></div>'
           : '') +
         '</div>' +
         (c.criterios_adjudicacion
-          ? '<div class="modal-field"><div class="modal-field-label">Criterios de adjudicación</div>' +
+          ? '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.criterios')) + '</div>' +
             '<div class="modal-field-value">' + esc(c.criterios_adjudicacion) + '</div></div>'
           : '')
       : '') +
     (sanitizarUrl(c.url_origen)
       ? '<hr class="modal-divider" />' +
-        '<div class="modal-field"><div class="modal-field-label">Fuente oficial</div>' +
-        '<div class="modal-field-value"><a href="' + esc(sanitizarUrl(c.url_origen)) + '" target="_blank" rel="noopener noreferrer">Ver anuncio original ↗</a></div></div>'
+        '<div class="modal-field"><div class="modal-field-label">' + esc(t('indice.detalle.fuente')) + '</div>' +
+        '<div class="modal-field-value"><a href="' + esc(sanitizarUrl(c.url_origen)) + '" target="_blank" rel="noopener noreferrer">' + esc(t('indice.detalle.verAnuncio')) + '</a></div></div>'
       : '');
 
   overlay.hidden = false;
@@ -548,17 +473,17 @@ function actualizarEstadisticas() {
   const datos = estado.filtrados;
 
   document.getElementById('stat-total').textContent =
-    datos.length.toLocaleString('es-ES');
+    datos.length.toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, c) => s + (c.importe || 0), 0);
   document.getElementById('stat-importe').textContent =
     importeTotal > 0 ? formatearImporte(importeTotal) : '—';
 
   document.getElementById('stat-organismos').textContent =
-    new Set(datos.map(c => c.organismo).filter(Boolean)).size.toLocaleString('es-ES');
+    new Set(datos.map(c => c.organismo).filter(Boolean)).size.toLocaleString(locale);
 
   document.getElementById('stat-adjudicatarios').textContent =
-    new Set(datos.map(c => c.adjudicatario).filter(Boolean)).size.toLocaleString('es-ES');
+    new Set(datos.map(c => c.adjudicatario).filter(Boolean)).size.toLocaleString(locale);
 }
 
 function crearOActualizarChart(canvasId, tipo, data, opciones) {
@@ -588,8 +513,8 @@ function renderizarGraficas() {
   // Gráfica 1: Contratos por tipo (donut)
   const conteoTipos = {};
   datos.forEach(c => {
-    const t = c.tipo || 'Sin clasificar';
-    conteoTipos[t] = (conteoTipos[t] || 0) + 1;
+    const tipo = c.tipo || t('comun.sinClasificar');
+    conteoTipos[tipo] = (conteoTipos[tipo] || 0) + 1;
   });
   crearOActualizarChart('chart-tipos', 'doughnut', {
     labels: Object.keys(conteoTipos),
@@ -602,7 +527,7 @@ function renderizarGraficas() {
   const topOrg = Object.entries(conteoOrg).sort((a, b) => b[1] - a[1]).slice(0, 10);
   crearOActualizarChart('chart-organismos', 'bar', {
     labels: topOrg.map(([k]) => k.length > 35 ? k.substring(0, 35) + '…' : k),
-    datasets: [{ label: 'Contratos', data: topOrg.map(([, v]) => v), backgroundColor: COLORES[0], borderRadius: 4 }],
+    datasets: [{ label: t('comun.contratos'), data: topOrg.map(([, v]) => v), backgroundColor: COLORES[0], borderRadius: 4 }],
   }, {
     indexAxis: 'y',
     plugins: { legend: { display: false } },
@@ -621,7 +546,7 @@ function renderizarGraficas() {
   crearOActualizarChart('chart-evolucion', 'line', {
     labels: meses.map(m => { const [a, mo] = m.split('-'); return mo + '/' + a; }),
     datasets: [{
-      label: 'Contratos publicados',
+      label: t('indice.graficas.contratosPublicados'),
       data: meses.map(m => conteoMes[m]),
       borderColor: COLORES[0],
       backgroundColor: 'rgba(192,57,43,.1)',
@@ -637,7 +562,7 @@ function renderizarGraficas() {
   // Gráfica 4: Distribución por procedimiento (donut)
   const conteoProcedimiento = {};
   datos.forEach(c => {
-    const p = c.procedimiento || 'Sin especificar';
+    const p = c.procedimiento || t('comun.sinEspecificar');
     conteoProcedimiento[p] = (conteoProcedimiento[p] || 0) + 1;
   });
   crearOActualizarChart('chart-procedimientos', 'doughnut', {
@@ -664,28 +589,12 @@ function poblarSelect(id, valores) {
 }
 
 /**
- * Mapa de categoría → etiqueta legible para el selector de categorías.
- * Se construye dinámicamente a partir de los datos cargados.
+ * Etiqueta legible de una categoría de organismo (locales/*.json → categorias.<cat>).
+ * Si la categoría no tiene traducción se muestra la clave tal cual.
  */
-const CATEGORIAS_LABEL = {
-  universidades: 'Universidades',
-  distritos_madrid: 'Distritos de Madrid',
-  ayto_madrid: 'Ayuntamiento de Madrid',
-  consejerias: 'Consejerías de la CAM',
-  salud: 'Salud (SERMAS y hospitales)',
-  entes_cam: 'Entes y agencias de la CAM',
-  aytos_pleno: 'Ayuntamientos (Pleno)',
-  aytos_junta: 'Ayuntamientos (Junta de Gobierno)',
-  aytos_alcaldia: 'Ayuntamientos (Alcaldía)',
-  aytos_otros: 'Ayuntamientos (otros)',
-  mancomunidades: 'Mancomunidades',
-  empresas_municipales: 'Empresas y entes municipales',
-  ferroviario: 'Sector ferroviario',
-  estado_central: 'Administración General del Estado',
-  investigacion: 'Investigación y fundaciones',
-  desarrollo_rural: 'Desarrollo rural y local',
-  otros: 'Otros',
-};
+function etiquetaCategoria(cat) {
+  return t('categorias.' + cat, { defaultValue: cat });
+}
 
 /**
  * Puebla el selector de organismos con optgroups agrupados por categoría.
@@ -709,17 +618,13 @@ function poblarSelectOrganismoConOptgroup() {
   // Orden de categorías (las que tienen más organismos primero, pero 'otros' al final)
   const categoriasOrdenadas = Object.keys(mapaCat)
     .filter(k => k !== 'otros')
-    .sort((a, b) => {
-      const la = CATEGORIAS_LABEL[a] || a;
-      const lb = CATEGORIAS_LABEL[b] || b;
-      return la.localeCompare(lb, 'es');
-    });
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
   if (mapaCat['otros']) categoriasOrdenadas.push('otros');
 
   for (const cat of categoriasOrdenadas) {
     const organismos = [...mapaCat[cat]].sort((a, b) => a.localeCompare(b, 'es'));
     const optgroup = document.createElement('optgroup');
-    optgroup.label = CATEGORIAS_LABEL[cat] || cat;
+    optgroup.label = etiquetaCategoria(cat);
     for (const org of organismos) {
       const opt = document.createElement('option');
       opt.value = org;
@@ -749,17 +654,13 @@ function poblarSelectCategoria() {
   // Ordenar: alfabéticamente por label, 'otros' al final
   const categorias = Object.keys(conteo)
     .filter(k => k !== 'otros')
-    .sort((a, b) => {
-      const la = CATEGORIAS_LABEL[a] || a;
-      const lb = CATEGORIAS_LABEL[b] || b;
-      return la.localeCompare(lb, 'es');
-    });
+    .sort((a, b) => etiquetaCategoria(a).localeCompare(etiquetaCategoria(b), locale));
   if (conteo['otros']) categorias.push('otros');
 
   for (const cat of categorias) {
     const opt = document.createElement('option');
     opt.value = cat;
-    opt.textContent = (CATEGORIAS_LABEL[cat] || cat) + ' (' + conteo[cat] + ')';
+    opt.textContent = etiquetaCategoria(cat) + ' (' + conteo[cat] + ')';
     select.appendChild(opt);
   }
 }
@@ -774,7 +675,7 @@ function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
   const primera = select.querySelector('option') || document.createElement('option');
   if (!primera.value) {
     primera.value = '';
-    primera.textContent = 'Todos los organismos';
+    primera.textContent = t('filtros.todosOrganismos');
   }
   select.innerHTML = '';
   select.appendChild(primera);
@@ -858,8 +759,17 @@ function inicializarOrdenacion() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos y metadatos
-  const [datosRaw, meta] = await Promise.all([cargarDatos(), cargarMeta()]);
+  // 1. Cargar datos, metadatos y traducciones
+  let datosRaw, meta;
+  try {
+    [datosRaw, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta(), window.I18n.listo]);
+  } catch (err) {
+    console.error(err);
+    await window.I18n.listo;
+    DatosCAM.mostrarErrorCarga();
+    mostrarFechaActualizacion(null);
+    return;
+  }
   estado.datos = datosRaw;
   estado.filtrados = [...estado.datos];
   mostrarFechaActualizacion(meta);

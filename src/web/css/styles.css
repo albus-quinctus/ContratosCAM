@@ -121,13 +121,18 @@ a:hover { text-decoration: underline; }
 }
 
 .nav-link:hover,
-.nav-link.active {
+.nav-link.active,
+.nav-link[aria-current] {
   background: rgba(255,255,255,.15);
   color: white;
   text-decoration: none;
 }
 
 .nav-link--github { border: 1px solid rgba(255,255,255,.3); }
+
+/* Selector de idioma (ES / EN) */
+.nav-idioma { display: flex; gap: .125rem; }
+.nav-link--idioma { padding: .4rem .5rem; font-weight: 600; }
 
 /* Botón de nav con apariencia de enlace (para <button> en la nav) */
 .nav-link--btn {
@@ -712,7 +717,10 @@ a:hover { text-decoration: underline; }
 /* Móvil grande (≤ 600px) */
 @media (max-width: 600px) {
   /* Cabecera: ocultar links de sección, mantener enlace a otra página y GitHub */
-  .header-nav .nav-link:not(.nav-link--github):not(.nav-link--page) { display: none; }
+  .header-nav .nav-link:not(.nav-link--github):not(.nav-link--page):not(.nav-link--idioma) { display: none; }
+  /* Hueco para el selector de idioma sin desbordar la cabecera */
+  .header-nav       { gap: 0; }
+  .nav-link--idioma { padding: .4rem .3rem; }
 
   /* Stats: 2 columnas con número más pequeño para evitar desbordamiento */
   .stats-bar        { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
