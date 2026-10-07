@@ -8,7 +8,7 @@
  *
  * Comprueba que se conservan solo los contratos de la Comunidad de Madrid,
  * que se guardan todos los lotes adjudicados, que el histórico solo se lee
- * con --historico y que cada feed anota su fuente.
+ * con --historico, de dentro de sus ZIP, y que cada feed anota su fuente.
  *
  * Uso: node scripts/_qa-parse.js
  */
@@ -16,7 +16,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { spawnSync } from 'child_process';
+import { execFileSync, spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { FEEDS_HISTORICO, feedPorClave, periodosHistorico, urlZip } from './lib/feeds-placsp.js';
 import { FUENTE } from './lib/fuentes.js';
@@ -35,7 +35,8 @@ fs.symlinkSync(path.join(__dirname, '../node_modules'), path.join(RAIZ, 'node_mo
 fs.mkdirSync(path.join(RAIZ, 'data/raw'), { recursive: true });
 
 const FEED_AGREGADAS = feedPorClave('agregadas');
-const DIR_HISTORICO = path.join(RAIZ, 'data/raw/historico', FEED_AGREGADAS.clave, '2019');
+const DIR_HISTORICO = path.join(RAIZ, 'data/raw/historico', FEED_AGREGADAS.clave);
+const ZIP_HISTORICO = path.join(DIR_HISTORICO, '2019.zip');
 const SALIDA_PARSE = path.join(RAIZ, 'data/raw/parsed-licitaciones.json');
 
 /**
@@ -167,9 +168,14 @@ fs.writeFileSync(path.join(RAIZ, 'data/raw/placsp-licitaciones-2026-10-05-p01.at
   entrada({ expediente: 'OTRA-CCAA', jerarquia: JERARQUIA_OTRA }),
 ]), 'utf-8');
 
-// Histórico de plataformas agregadas: un contrato de la CAM con un único resultado
+// Histórico de plataformas agregadas, en un ZIP como los de PLACSP: un
+// contrato de la CAM con un único resultado y dos reconocidos por el código
+// de órgano. El ZIP lleva también un fichero que no es Atom, que se ignora.
+const DIR_CONTENIDO_ZIP = path.join(RAIZ, 'contenido-zip');
+fs.mkdirSync(DIR_CONTENIDO_ZIP, { recursive: true });
 fs.mkdirSync(DIR_HISTORICO, { recursive: true });
-fs.writeFileSync(path.join(DIR_HISTORICO, 'historico.atom'), feed([
+fs.writeFileSync(path.join(DIR_CONTENIDO_ZIP, 'leeme.txt'), 'no es un feed', 'utf-8');
+fs.writeFileSync(path.join(DIR_CONTENIDO_ZIP, 'historico.atom'), feed([
   entrada({
     expediente: 'CAM-HISTORICO',
     jerarquia: JERARQUIA_CAM,
@@ -186,6 +192,7 @@ fs.writeFileSync(path.join(DIR_HISTORICO, 'historico.atom'), feed([
     identificadores: [{ esquema: 'ID_OC_PLAT', id: 'A07012345' }, { esquema: 'NIF', id: 'A13000000' }],
   }),
 ]), 'utf-8');
+execFileSync('zip', ['-q', '-j', ZIP_HISTORICO, ...fs.readdirSync(DIR_CONTENIDO_ZIP).map(f => path.join(DIR_CONTENIDO_ZIP, f))]);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests: periodos y URL del histórico
@@ -236,9 +243,10 @@ console.log('\n📋 Tests: histórico y transformación');
 {
   assert('parse --historico termina sin errores', ejecutar('parse.js', ['--historico']).codigo, 0);
   const contratos = parseados();
-  assert('lee también el histórico', 'CAM-HISTORICO' in contratos, true);
+  assert('lee también el histórico, de dentro del ZIP', 'CAM-HISTORICO' in contratos, true);
   assert('…con la fuente de su feed', contratos['CAM-HISTORICO'].fuente, FEED_AGREGADAS.fuente);
   assert('reconoce la CAM por el código de órgano', 'CAM-CODIGO-ORGANO' in contratos, true);
+  assertDeep('no descomprime el ZIP a disco', fs.readdirSync(DIR_HISTORICO), [path.basename(ZIP_HISTORICO)]);
   assert('…pero no por un NIF con el mismo prefijo', 'OTRA-CCAA-CODIGO-ORGANO' in contratos, false);
 
   assert('transform termina sin errores', ejecutar('transform.js').codigo, 0);

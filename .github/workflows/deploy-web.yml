@@ -8,6 +8,15 @@ on:
       - 'data/processed/**'
       - 'scripts/build-web.js'
 
+  # Lo reutiliza carga-historica.yml después de subir los datos. Los commits
+  # hechos con GITHUB_TOKEN no disparan el push, así que hay que llamarlo.
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Rama o commit que se despliega (por defecto, el que lanza el workflow)'
+        type: string
+        default: ''
+
 permissions:
   pages: write
   id-token: write
@@ -23,6 +32,8 @@ jobs:
     steps:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -50,5 +61,5 @@ jobs:
           echo "## 🚀 Deploy completado" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- **URL:** ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Disparado por:** push a \`src/web/\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Disparado por:** ${{ github.workflow }} (${{ github.event_name }})" >> "$GITHUB_STEP_SUMMARY"
           echo "- **Fecha:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_STEP_SUMMARY"

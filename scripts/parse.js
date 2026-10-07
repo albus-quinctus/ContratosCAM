@@ -7,7 +7,8 @@
  * Solo conserva los contratos de la Comunidad de Madrid (lib/filtro-cam.js).
  *
  * Entrada: data/raw/placsp-licitaciones-*.atom
- *          data/raw/historico/<feed>/<periodo>/*.atom (con --historico)
+ *          data/raw/historico/<feed>/<periodo>.zip (con --historico; los
+ *          .atom se leen de dentro del ZIP sin descomprimirlo a disco)
  * Salida:  data/raw/parsed-licitaciones.json
  *
  * Uso: node scripts/parse.js [--historico]
@@ -19,7 +20,8 @@ import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
 import { FUENTE } from './lib/fuentes.js';
 import { esDeCAM } from './lib/filtro-cam.js';
-import { FEEDS_HISTORICO, HISTORICO_DIR } from './lib/feeds-placsp.js';
+import { EXTENSION_ZIP, FEEDS_HISTORICO, HISTORICO_DIR } from './lib/feeds-placsp.js';
+import { atomsDeZip, leerDeZip } from './lib/zip.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
@@ -333,28 +335,28 @@ function extraerJerarquia(locatedParty) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Ficheros Atom que hay que parsear, con la fuente de cada uno: el feed
- * semanal de data/raw/ y, con --historico, los descomprimidos por
- * download-historico.js en data/raw/historico/<feed>/<periodo>/.
+ * Ficheros Atom que hay que parsear, con la fuente de cada uno y cómo leerlo:
+ * el feed semanal de data/raw/ y, con --historico, los que hay dentro de los
+ * ZIP que guarda download-historico.js en data/raw/historico/<feed>/<periodo>.zip.
  * @param {boolean} conHistorico
- * @returns {{ruta: string, nombre: string, fuente: string}[]}
+ * @returns {{nombre: string, fuente: string, leer: () => string}[]}
  */
 function listarFicheros(conHistorico) {
   const ficheros = fs.readdirSync(RAW_DIR)
     .filter(f => f.startsWith('placsp-') && f.endsWith('.atom'))
     .sort()
-    .map(f => ({ ruta: path.join(RAW_DIR, f), nombre: f, fuente: FUENTE.PLACSP }));
+    .map(f => ({ nombre: f, fuente: FUENTE.PLACSP, leer: () => fs.readFileSync(path.join(RAW_DIR, f), 'utf-8') }));
 
   if (!conHistorico) return ficheros;
 
   for (const feed of FEEDS_HISTORICO) {
     const dirFeed = path.join(HISTORICO_DIR, feed.clave);
     if (!fs.existsSync(dirFeed)) continue;
-    for (const periodo of fs.readdirSync(dirFeed).sort()) {
-      const dirPeriodo = path.join(dirFeed, periodo);
-      if (!fs.statSync(dirPeriodo).isDirectory()) continue;
-      for (const f of fs.readdirSync(dirPeriodo).filter(f => f.endsWith('.atom')).sort()) {
-        ficheros.push({ ruta: path.join(dirPeriodo, f), nombre: `${feed.clave}/${periodo}/${f}`, fuente: feed.fuente });
+    for (const archivoZip of fs.readdirSync(dirFeed).filter(f => f.endsWith(EXTENSION_ZIP)).sort()) {
+      const zip = path.join(dirFeed, archivoZip);
+      const periodo = path.basename(archivoZip, EXTENSION_ZIP);
+      for (const atom of atomsDeZip(zip)) {
+        ficheros.push({ nombre: `${feed.clave}/${periodo}/${atom}`, fuente: feed.fuente, leer: () => leerDeZip(zip, atom) });
       }
     }
   }
@@ -387,7 +389,7 @@ async function main() {
   let errores = 0;
 
   for (const archivo of archivos) {
-    const contenido = fs.readFileSync(archivo.ruta, 'utf-8');
+    const contenido = archivo.leer();
 
     let parsed;
     try {
