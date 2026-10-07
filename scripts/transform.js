@@ -26,7 +26,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb, idsEliminados, TRABAJO_DIR, TIPO_CARGA } from './lib/almacen-contratos.js';
-import { integrarLote, ordenarContratos, idDeContrato } from './lib/integrar-lote.js';
+import { integrarLote, ordenarContratos, idDeContrato, normalizarFechaVersion } from './lib/integrar-lote.js';
+import { FUENTE } from './lib/fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/raw/parsed-licitaciones.json');
@@ -394,10 +395,10 @@ function transformarContrato(crudo) {
     fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null, // No disponible en el feed Atom
     url_origen: limpiarVacio(crudo.url_origen),
-    fuente: 'placsp',
-    fuentes: ['placsp'],
+    fuente: FUENTE.PLACSP,
+    fuentes: [FUENTE.PLACSP],
     // Última modificación en origen: decide qué versión gana al integrar
-    fecha_actualizacion: limpiarVacio(crudo.fecha_actualizacion),
+    fecha_actualizacion: normalizarFechaVersion(crudo.fecha_actualizacion),
     // Campos enriquecidos (se rellenan si hay datos de TED)
     num_ofertas: null,
     ted_publication_number: null,
@@ -453,8 +454,8 @@ function transformarContratoTED(crudo) {
     fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null,
     url_origen: limpiarVacio(crudo.url_origen),
-    fuente: 'ted_ue',
-    fuentes: ['ted_ue'],
+    fuente: FUENTE.TED,
+    fuentes: [FUENTE.TED],
     // TED no da fecha de modificación: se usa la de publicación del anuncio
     fecha_actualizacion: fechaPub,
     // Campos enriquecidos exclusivos de TED
@@ -564,14 +565,16 @@ async function main() {
 
   // Paso 4: Guardar en la copia de trabajo, con el registro de esta carga
   console.log('\n💾 Paso 4: Guardar en la copia de trabajo...');
+  // Una carga que no cambia nada no se registra: lo publicado queda igual
+  const hayCambios = resumen.anadidos + resumen.modificados > 0;
   const fechasOrigen = todosLosContratos.map(c => c.fecha_actualizacion).filter(Boolean).sort();
-  const carga = {
+  const carga = hayCambios ? {
     tipo: TIPO_CARGA.INTEGRACION,
     fecha: new Date().toISOString(),
-    lote: { placsp: contratosNormalizados.length, ted_ue: contratosTED.length },
+    lote: { [FUENTE.PLACSP]: contratosNormalizados.length, [FUENTE.TED]: contratosTED.length },
     periodo_origen: { desde: fechasOrigen[0] || null, hasta: fechasOrigen[fechasOrigen.length - 1] || null },
     ...resumen,
-  };
+  } : undefined;
   const indice = guardarContratos(ordenarContratos(contratos), carga);
   const tamano = tamanoContratosKb();
 

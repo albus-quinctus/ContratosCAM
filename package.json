@@ -27,7 +27,7 @@
     "publicar": "node scripts/publicar-datos.js",
     "descartar": "node scripts/publicar-datos.js --descartar",
     "eliminar": "node scripts/eliminar-contratos.js",
-    "test": "node scripts/_qa-deduplicacion.js && node scripts/_qa-almacen.js",
+    "test": "node scripts/_qa-deduplicacion.js && node scripts/_qa-almacen.js && node scripts/_qa-publicacion.js",
     "enrich:nif": "node scripts/enrich-nif.js",
     "etl": "npm run download && npm run parse && npm run transform && npm run resolve && npm run import-db && npm run validate && npm run publicar",
     "etl:ted": "npm run download:ted && npm run parse:ted",
