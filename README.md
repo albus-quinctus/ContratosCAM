@@ -51,7 +51,8 @@ contratoscam/
 ├── data/
 │   ├── raw/               # Datos descargados sin procesar (CSV, XML, Atom)
 │   ├── processed/         # Datos limpios en JSON (generados por el pipeline)
-│   │   └── contratos-normalizados.json   # 1.393 contratos reales de la CAM
+│   │   └── contratos/     # Contratos publicados de la CAM, un fichero por año + indice.json
+│   ├── trabajo/           # Copia de trabajo pendiente de validar y publicar (no se sube a git)
 │   └── db/                # Base de datos SQLite local (para desarrollo)
 ├── docs/                  # Documentación adicional
 │   └── fuentes-datos.md   # Guía de fuentes de datos oficiales
@@ -111,8 +112,12 @@ npm run serve
 | `npm run parse` | Convierte CSV/XML descargados a JSON |
 | `npm run transform` | Limpia y normaliza los datos |
 | `npm run import-db` | Importa a SQLite y genera el JSON para el frontend |
-| `npm run validate` | Valida integridad y schema del JSON generado |
-| `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db) |
+| `npm run validate` | Valida la copia de trabajo y la compara con lo publicado |
+| `npm run publicar` | Muestra los cambios de la copia de trabajo validada; con `-- --confirmar=N` la publica en `data/processed/contratos/` |
+| `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
+| `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
+| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos y del flujo de publicación |
+| `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
 | `npm run dev` | Alias de `serve` para desarrollo local |
@@ -134,10 +139,19 @@ Portal Transparencia CAM / PLACSP
     scripts/parse.js        ← Convierte a JSON intermedio
               │
               ▼
-    scripts/transform.js    ← Limpia, normaliza y deduplica
+    scripts/transform.js    ← Limpia, normaliza e integra el lote en lo ya almacenado
               │
               ▼
-    scripts/import-db.js    ← Genera contratos-normalizados.json
+    scripts/import-db.js    ← Genera la base SQLite y meta.json
+              │
+              ▼
+    data/trabajo/           ← Copia de trabajo, repartida por año
+              │
+              ▼
+    scripts/validate.js     ← Comprueba el esquema y compara con lo publicado
+              │
+              ▼
+    scripts/publicar-datos.js ← Publica solo una copia validada y sin cambios posteriores
               │
               ▼
     data/processed/         ← JSON listo para el frontend
@@ -146,6 +160,18 @@ Portal Transparencia CAM / PLACSP
          src/web/           ← Frontend que carga y muestra los datos
 ```
 
+### Cómo se integran los datos
+
+Cada ejecución de `transform` es una **carga**: integra un lote (el feed semanal, un periodo del histórico, otra fuente) en los contratos ya almacenados, sin partir de cero. Las reglas están en `scripts/lib/integrar-lote.js` y se comprueban con `npm test`:
+
+- Un contrato se identifica por su URL de origen y recibe un `id` estable que no cambia en cargas posteriores.
+- Integrar nunca elimina contratos ni sustituye un valor por uno vacío, e integrar dos veces el mismo lote no cambia nada.
+- Si llegan varias versiones de un contrato, cada campo toma el valor de la versión de mayor rango: primero la fuente (PLACSP antes que TED) y después la fecha de modificación en origen (en UTC). El resultado no depende del orden de las cargas.
+- El estado comprobado en la ficha web (`npm run update:estados`) solo lo sustituye una versión de las fuentes posterior a la comprobación.
+- Cada contrato indica en `fuentes` qué fuentes lo han aportado, y `indice.json` guarda el registro de cargas.
+
+Para eliminar contratos hay que usar `npm run eliminar`, que exige motivo y confirmación con el número exacto. `validate` falla si desaparece algún contrato sin autorizar, y los eliminados no se vuelven a incorporar en cargas posteriores.
+
 ---
 
 ## 🔄 Automatización (GitHub Actions)
@@ -153,7 +179,7 @@ Portal Transparencia CAM / PLACSP
 El pipeline de datos se ejecuta **automáticamente cada lunes a las 6:00 UTC** mediante GitHub Actions. El workflow:
 
 1. Descarga los datos más recientes de PLACSP (y opcionalmente TED-UE)
-2. Parsea, transforma y valida los datos
+2. Parsea, transforma y valida los datos, y publica la copia de trabajo solo si la validación es correcta
 3. Verifica que el JSON resultante tiene al menos 100 contratos (umbral de salud)
 4. Hace commit automático si los datos cambiaron
 5. Despliega la web actualizada en GitHub Pages

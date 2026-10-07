@@ -5,8 +5,10 @@
  * 1. Filtra solo los contratos de la Comunidad de Madrid
  * 2. Normaliza campos (tipos, procedimientos, fechas, importes)
  * 3. Integra datos de TED-UE (campos enriquecidos: num_ofertas, etc.)
- * 4. Deduplica por URL del anuncio (cruce entre fuentes + histórico)
- * 5. Genera el JSON normalizado final
+ * 4. Integra el lote resultante en el almacén (lib/integrar-lote.js): añade los
+ *    contratos nuevos y fusiona los existentes, sin borrar nunca ninguno
+ * 5. Guarda el resultado en la copia de trabajo (lib/almacen-contratos.js);
+ *    se publica con npm run validate && npm run publicar
  *
  * La resolución de entidades (canonización de nombres) se ejecuta
  * como paso independiente: node scripts/resolve-entities.js
@@ -15,7 +17,7 @@
  *   - data/raw/parsed-licitaciones.json (PLACSP)
  *   - data/raw/parsed-ted.json (TED-UE, opcional)
  *
- * Salida:  data/processed/contratos-normalizados.json
+ * Salida:  data/trabajo/contratos/ (un fichero por año, ver lib/almacen-contratos.js)
  *
  * Uso: node scripts/transform.js
  */
@@ -23,13 +25,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { claveContrato } from './lib/clave-contrato.js';
+import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb, idsEliminados, TRABAJO_DIR, TIPO_CARGA } from './lib/almacen-contratos.js';
+import { integrarLote, ordenarContratos, idDeContrato, normalizarFechaVersion } from './lib/integrar-lote.js';
+import { FUENTE } from './lib/fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/raw/parsed-licitaciones.json');
 const INPUT_TED_FILE = path.join(__dirname, '../data/raw/parsed-ted.json');
-const OUTPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
-const PROCESSED_DIR = path.join(__dirname, '../data/processed');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tablas de mapeo — Códigos PLACSP a valores legibles
@@ -347,11 +349,11 @@ function limpiarVacio(valor) {
 
 /**
  * Transforma un contrato crudo de PLACSP a formato normalizado.
+ * El id estable se asigna al integrarlo en el almacén (lib/integrar-lote.js).
  * @param {object} crudo - Contrato parseado del feed Atom
- * @param {number} id - ID secuencial
  * @returns {object} Contrato normalizado
  */
-function transformarContrato(crudo, id) {
+function transformarContrato(crudo) {
   // Determinar el importe principal (preferir adjudicación sobre presupuesto)
   const importeFinal = crudo.importe_adjudicacion || crudo.importe_sin_iva || null;
   const importeIvaFinal = crudo.importe_adjudicacion_iva || crudo.importe_total || null;
@@ -370,7 +372,7 @@ function transformarContrato(crudo, id) {
   });
 
   return {
-    id,
+    id: null,
     expediente: limpiarVacio(crudo.expediente),
     objeto: limpiarVacio(crudo.objeto),
     tipo: normalizarTipo(crudo.tipo_code),
@@ -393,7 +395,10 @@ function transformarContrato(crudo, id) {
     fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null, // No disponible en el feed Atom
     url_origen: limpiarVacio(crudo.url_origen),
-    fuente: 'placsp',
+    fuente: FUENTE.PLACSP,
+    fuentes: [FUENTE.PLACSP],
+    // Última modificación en origen: decide qué versión gana al integrar
+    fecha_actualizacion: normalizarFechaVersion(crudo.fecha_actualizacion),
     // Campos enriquecidos (se rellenan si hay datos de TED)
     num_ofertas: null,
     ted_publication_number: null,
@@ -403,11 +408,11 @@ function transformarContrato(crudo, id) {
 /**
  * Transforma un contrato crudo de TED a formato normalizado.
  * Los datos de TED ya vienen filtrados por Madrid en el parser.
+ * El id estable se asigna al integrarlo en el almacén (lib/integrar-lote.js).
  * @param {object} crudo - Contrato parseado de TED XML
- * @param {number} id - ID secuencial
  * @returns {object} Contrato normalizado
  */
-function transformarContratoTED(crudo, id) {
+function transformarContratoTED(crudo) {
   // TED usa códigos diferentes para tipo y procedimiento
   const tiposTED = { '1': 'obras', '2': 'suministros', '4': 'servicios', '3': 'servicios' };
   const procsTED = { '1': 'abierto', '2': 'restringido', '3': 'negociado', '4': 'negociado', '6': 'negociado_sin_publicidad' };
@@ -426,7 +431,7 @@ function transformarContratoTED(crudo, id) {
   });
 
   return {
-    id,
+    id: null,
     expediente: limpiarVacio(crudo.expediente),
     objeto: limpiarVacio(crudo.objeto),
     tipo: tiposTED[crudo.tipo_code] || normalizarTipo(crudo.tipo_code) || 'otros',
@@ -449,86 +454,16 @@ function transformarContratoTED(crudo, id) {
     fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null,
     url_origen: limpiarVacio(crudo.url_origen),
-    fuente: 'ted_ue',
+    fuente: FUENTE.TED,
+    fuentes: [FUENTE.TED],
+    // TED no da fecha de modificación: se usa la de publicación del anuncio
+    fecha_actualizacion: fechaPub,
     // Campos enriquecidos exclusivos de TED
     num_ofertas: crudo.num_ofertas || null,
     ted_publication_number: crudo.ted_publication_number || null,
     criterios_adjudicacion: limpiarVacio(crudo.criterios_adjudicacion) || null,
   };
 }
-
-/**
- * Deduplica contratos por su clave de identidad (ver lib/clave-contrato.js).
- * En caso de duplicados, mantiene el más reciente (por fecha_publicacion)
- * y enriquece con datos del otro registro si faltan campos.
- * @param {object[]} contratos
- * @returns {object[]}
- */
-function deduplicar(contratos) {
-  const mapa = new Map();
-
-  for (const contrato of contratos) {
-    const clave = claveContrato(contrato);
-
-    if (mapa.has(clave)) {
-      const existente = mapa.get(clave);
-
-      // Estrategia de merge multi-fuente:
-      // - Si uno es TED y otro PLACSP, mantener PLACSP como base y enriquecer con TED
-      // - Si ambos son de la misma fuente, mantener el más reciente
-      const esTED = contrato.fuente === 'ted_ue';
-      const existenteEsTED = existente.fuente === 'ted_ue';
-
-      let base, enriquecedor;
-
-      if (esTED && !existenteEsTED) {
-        // El existente es PLACSP, el nuevo es TED: mantener PLACSP, enriquecer con TED
-        base = existente;
-        enriquecedor = contrato;
-      } else if (!esTED && existenteEsTED) {
-        // El existente es TED, el nuevo es PLACSP: mantener PLACSP, enriquecer con TED
-        base = contrato;
-        enriquecedor = existente;
-      } else {
-        // Misma fuente: mantener el más reciente
-        const existenteEsMasReciente =
-          (existente.fecha_publicacion || '') >= (contrato.fecha_publicacion || '');
-        base = existenteEsMasReciente ? existente : contrato;
-        enriquecedor = existenteEsMasReciente ? contrato : existente;
-      }
-
-      // Fusionar: base + campos faltantes del enriquecedor
-      const fusionado = { ...base };
-
-      // Rellenar campos básicos faltantes
-      if (!fusionado.adjudicatario && enriquecedor.adjudicatario) {
-        fusionado.adjudicatario = enriquecedor.adjudicatario;
-        fusionado.nif_adjudicatario = fusionado.nif_adjudicatario || enriquecedor.nif_adjudicatario;
-        fusionado.fecha_adjudicacion = fusionado.fecha_adjudicacion || enriquecedor.fecha_adjudicacion;
-        fusionado.importe = fusionado.importe || enriquecedor.importe;
-        fusionado.importe_iva = fusionado.importe_iva || enriquecedor.importe_iva;
-      }
-
-      // Enriquecer con campos exclusivos de TED (siempre, si el enriquecedor los tiene)
-      if (!fusionado.num_ofertas && enriquecedor.num_ofertas) {
-        fusionado.num_ofertas = enriquecedor.num_ofertas;
-      }
-      if (!fusionado.ted_publication_number && enriquecedor.ted_publication_number) {
-        fusionado.ted_publication_number = enriquecedor.ted_publication_number;
-      }
-      if (!fusionado.criterios_adjudicacion && enriquecedor.criterios_adjudicacion) {
-        fusionado.criterios_adjudicacion = enriquecedor.criterios_adjudicacion;
-      }
-
-      mapa.set(clave, fusionado);
-    } else {
-      mapa.set(clave, contrato);
-    }
-  }
-
-  return Array.from(mapa.values());
-}
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
@@ -545,11 +480,6 @@ async function main() {
     process.exit(1);
   }
 
-  // Crear directorio de salida si no existe
-  if (!fs.existsSync(PROCESSED_DIR)) {
-    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
-  }
-
   // ─── Fuente 1: PLACSP ───────────────────────────────────────────────────
   const datos = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
   console.log(`📥 PLACSP: ${datos.length} contratos cargados`);
@@ -562,8 +492,7 @@ async function main() {
 
   // Paso 2: Transformar y normalizar PLACSP
   console.log('\n🔧 Paso 2: Normalizar campos PLACSP...');
-  let id = 1;
-  const contratosNormalizados = contratosCAM.map(c => transformarContrato(c, id++));
+  const contratosNormalizados = contratosCAM.map(transformarContrato);
 
   // ─── Fuente 2: TED-UE (opcional) ───────────────────────────────────────
   let contratosTED = [];
@@ -572,7 +501,7 @@ async function main() {
     const datosTED = JSON.parse(fs.readFileSync(INPUT_TED_FILE, 'utf-8'));
     console.log(`   📥 TED: ${datosTED.length} contratos de Madrid cargados`);
 
-    contratosTED = datosTED.map(c => transformarContratoTED(c, id++));
+    contratosTED = datosTED.map(transformarContratoTED);
     console.log(`   ✅ ${contratosTED.length} contratos TED normalizados`);
   } else {
     console.log('\n🇪🇺 TED: No se encontró parsed-ted.json (omitiendo — ejecuta node scripts/download-ted.js + node scripts/parse-ted.js)');
@@ -605,35 +534,28 @@ async function main() {
     console.log(`     ${campo.padEnd(20)} ${bar} ${pct}% (${count})`);
   }
 
-  // Paso 3: Acumular con datos históricos existentes
-  console.log('\n📚 Paso 3: Acumular con datos históricos...');
-  let contratosAcumulados = [...todosLosContratos];
+  // Paso 3: Integrar el lote en el almacén
+  console.log('\n📚 Paso 3: Integrar en el almacén...');
+  // Si lo almacenado no se puede leer, leerContratos lanza un error y se
+  // detiene: seguir sin ello podría acabar sustituyéndolo solo por lo nuevo.
+  const almacenados = dirVigente() ? leerContratos() : [];
+  console.log(`   📂 Almacenados: ${almacenados.length} contratos`);
 
-  if (fs.existsSync(OUTPUT_FILE)) {
-    try {
-      const historico = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
-      if (Array.isArray(historico) && historico.length > 0) {
-        console.log(`   📂 Histórico existente: ${historico.length} contratos`);
-        contratosAcumulados = [...todosLosContratos, ...historico];
-        console.log(`   📊 Total antes de deduplicar: ${contratosAcumulados.length}`);
-      }
-    } catch (e) {
-      console.log(`   ⚠️  Error leyendo histórico (se ignora): ${e.message}`);
-    }
-  } else {
-    console.log('   📂 Sin histórico previo (primera ejecución)');
+  // Los contratos eliminados de forma explícita no se vuelven a incorporar
+  const eliminados = idsEliminados();
+  const lote = todosLosContratos.filter(c => !eliminados.has(idDeContrato(c)));
+  if (lote.length < todosLosContratos.length) {
+    console.log(`   🚫 Omitidos ${todosLosContratos.length - lote.length} contratos eliminados anteriormente`);
   }
 
-  // Paso 4: Deduplicar (cruce entre fuentes + histórico)
-  console.log('\n🔍 Paso 4: Deduplicar (cruce PLACSP ↔ TED ↔ histórico)...');
-  const contratosUnicos = deduplicar(contratosAcumulados);
-  const duplicados = contratosAcumulados.length - contratosUnicos.length;
-  console.log(`   ${duplicados} duplicados eliminados`);
-  console.log(`   ${contratosUnicos.length} contratos únicos`);
+  const { contratos, resumen } = integrarLote(almacenados, lote);
+  console.log(`   ➕ Añadidos: ${resumen.anadidos}`);
+  console.log(`   ✏️  Modificados: ${resumen.modificados}`);
+  console.log(`   = Sin cambios: ${resumen.sin_cambios}`);
 
-  // Estadísticas por fuente tras deduplicación
+  // Estadísticas por fuente tras integrar
   const porFuente = {};
-  contratosUnicos.forEach(c => {
+  contratos.forEach(c => {
     porFuente[c.fuente] = (porFuente[c.fuente] || 0) + 1;
   });
   console.log('   Por fuente:');
@@ -641,21 +563,20 @@ async function main() {
     console.log(`     • ${fuente}: ${count}`);
   }
 
-  // Paso 5: Ordenar por fecha (más recientes primero)
-  console.log('\n📅 Paso 5: Ordenar por fecha...');
-  contratosUnicos.sort((a, b) => {
-    if (!a.fecha_publicacion && !b.fecha_publicacion) return 0;
-    if (!a.fecha_publicacion) return 1;
-    if (!b.fecha_publicacion) return -1;
-    return b.fecha_publicacion.localeCompare(a.fecha_publicacion);
-  });
-
-  // Reasignar IDs secuenciales (después de ordenar)
-  contratosUnicos.forEach((c, i) => { c.id = i + 1; });
-
-  // Guardar resultado
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(contratosUnicos, null, 2), 'utf-8');
-  const tamano = (fs.statSync(OUTPUT_FILE).size / 1024).toFixed(1);
+  // Paso 4: Guardar en la copia de trabajo, con el registro de esta carga
+  console.log('\n💾 Paso 4: Guardar en la copia de trabajo...');
+  // Una carga que no cambia nada no se registra: lo publicado queda igual
+  const hayCambios = resumen.anadidos + resumen.modificados > 0;
+  const fechasOrigen = todosLosContratos.map(c => c.fecha_actualizacion).filter(Boolean).sort();
+  const carga = hayCambios ? {
+    tipo: TIPO_CARGA.INTEGRACION,
+    fecha: new Date().toISOString(),
+    lote: { [FUENTE.PLACSP]: contratosNormalizados.length, [FUENTE.TED]: contratosTED.length },
+    periodo_origen: { desde: fechasOrigen[0] || null, hasta: fechasOrigen[fechasOrigen.length - 1] || null },
+    ...resumen,
+  } : undefined;
+  const indice = guardarContratos(ordenarContratos(contratos), carga);
+  const tamano = tamanoContratosKb();
 
   // Resumen final
   console.log('\n' + '═'.repeat(60));
@@ -666,15 +587,15 @@ async function main() {
   if (contratosTED.length > 0) {
     console.log(`  🇪🇺 Entrada TED: ${contratosTED.length} contratos (ya filtrados por Madrid)`);
   }
-  console.log(`  🔍 Tras deduplicar: ${contratosUnicos.length}`);
-  console.log(`  💾 Archivo: ${path.basename(OUTPUT_FILE)} (${tamano} KB)`);
+  console.log(`  📚 En el almacén: ${contratos.length} (${resumen.anadidos} añadidos, ${resumen.modificados} modificados)`);
+  console.log(`  💾 Carpeta: ${path.relative(process.cwd(), TRABAJO_DIR)}/ (${indice.archivos.length} ficheros, ${tamano} KB)`);
   console.log('─'.repeat(60));
 
   // Estadísticas adicionales
-  if (contratosUnicos.length > 0) {
+  if (contratos.length > 0) {
     const tipos = {};
     const procedimientos = {};
-    contratosUnicos.forEach(c => {
+    contratos.forEach(c => {
       if (c.tipo) tipos[c.tipo] = (tipos[c.tipo] || 0) + 1;
       if (c.procedimiento) procedimientos[c.procedimiento] = (procedimientos[c.procedimiento] || 0) + 1;
     });
@@ -690,7 +611,7 @@ async function main() {
     });
 
     const estados = {};
-    contratosUnicos.forEach(c => {
+    contratos.forEach(c => {
       if (c.estado) estados[c.estado] = (estados[c.estado] || 0) + 1;
     });
 
@@ -700,7 +621,7 @@ async function main() {
     });
 
     // Rango de importes
-    const importes = contratosUnicos.filter(c => c.importe).map(c => c.importe);
+    const importes = contratos.filter(c => c.importe).map(c => c.importe);
     if (importes.length > 0) {
       console.log(`\n  💰 Importes:`);
       console.log(`     • Mínimo: ${Math.min(...importes).toLocaleString('es-ES')} €`);
@@ -709,7 +630,7 @@ async function main() {
     }
 
     // Campos enriquecidos de TED
-    const conOfertas = contratosUnicos.filter(c => c.num_ofertas).length;
+    const conOfertas = contratos.filter(c => c.num_ofertas).length;
     if (conOfertas > 0) {
       console.log(`\n  🇪🇺 Datos enriquecidos TED:`);
       console.log(`     • Con num_ofertas: ${conOfertas}`);
@@ -718,7 +639,7 @@ async function main() {
 
   console.log('\n═'.repeat(60));
   console.log('\n✅ Transformación completada.');
-  console.log('💡 Siguiente paso: npm run validate && npm run resolve');
+  console.log('💡 Siguiente paso: npm run resolve && npm run import-db && npm run validate && npm run publicar');
 }
 
 main().catch(err => {

@@ -13,6 +13,9 @@ data/raw/*.xlsx
 data/raw/*.atom
 data/raw/ted/
 
+# ── Copia de trabajo de los contratos (se publica con npm run publicar) ──────
+data/trabajo/
+
 # ── Base de datos SQLite (se genera localmente) ──────────────────────────────
 data/db/*.db
 data/db/*.db-shm

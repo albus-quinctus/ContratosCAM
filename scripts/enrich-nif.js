@@ -11,8 +11,8 @@
  * El script es idempotente: puede interrumpirse y reanudarse sin duplicar consultas.
  * Respeta rate limits y añade delays entre peticiones.
  *
- * Entrada:  data/processed/contratos-normalizados.json
- * Salida:   data/processed/contratos-normalizados.json (actualizado in-place)
+ * Entrada:  data/trabajo/contratos/ si hay cambios sin publicar, si no data/processed/contratos/
+ * Salida:   data/trabajo/contratos/ (se publica con npm run validate && npm run publicar)
  *           data/processed/nif-cache.json (caché persistente)
  *
  * Uso: node scripts/enrich-nif.js [--max=N] [--source=placsp|opencorporates|all]
@@ -21,9 +21,9 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { dirVigente, leerContratos, guardarContratos } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONTRATOS_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
 const CACHE_FILE = path.join(__dirname, '../data/processed/nif-cache.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,14 +292,14 @@ async function main() {
   console.log('');
 
   // Verificar que existe el archivo de contratos
-  if (!fs.existsSync(CONTRATOS_FILE)) {
-    console.error('❌ No se encontró contratos-normalizados.json');
+  if (!dirVigente()) {
+    console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
 
   // Cargar contratos
-  const contratos = JSON.parse(fs.readFileSync(CONTRATOS_FILE, 'utf-8'));
+  const contratos = leerContratos();
   console.log(`📥 Contratos cargados: ${contratos.length}`);
 
   // Identificar contratos que necesitan NIF
@@ -441,7 +441,7 @@ async function main() {
   }
 
   // Guardar contratos actualizados
-  fs.writeFileSync(CONTRATOS_FILE, JSON.stringify(contratos, null, 2), 'utf-8');
+  guardarContratos(contratos);
 
   // Guardar caché
   guardarCache(cache);

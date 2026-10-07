@@ -1,7 +1,8 @@
 /**
  * scripts/import-db.js
  *
- * Importa los datos normalizados de data/processed/contratos-normalizados.json
+ * Importa los contratos vigentes (data/trabajo/contratos/ si hay cambios sin
+ * publicar, si no data/processed/contratos/)
  * a la base de datos SQLite en data/db/contratos.db.
  *
  * Usa sql.js (SQLite compilado a WebAssembly) — no requiere Visual Studio
@@ -14,13 +15,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import initSqlJs from 'sql.js';
+import { dirVigente, leerContratos } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PROCESSED_DIR = path.join(__dirname, '../data/processed');
 const DB_DIR = path.join(__dirname, '../data/db');
 const DB_PATH = path.join(DB_DIR, 'contratos.db');
-const JSON_PATH = path.join(PROCESSED_DIR, 'contratos-normalizados.json');
 const META_PATH = path.join(PROCESSED_DIR, 'meta.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -112,8 +113,8 @@ async function main() {
   console.log('═'.repeat(50));
 
   // Verificar que existe el JSON normalizado
-  if (!fs.existsSync(JSON_PATH)) {
-    console.error('❌ No se encontró: data/processed/contratos-normalizados.json');
+  if (!dirVigente()) {
+    console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
@@ -125,7 +126,7 @@ async function main() {
 
   // Leer datos normalizados
   console.log('\n📂 Leyendo datos normalizados...');
-  const contratos = JSON.parse(fs.readFileSync(JSON_PATH, 'utf-8'));
+  const contratos = leerContratos();
   console.log(`   Registros a importar: ${contratos.length}`);
 
   // Inicializar sql.js

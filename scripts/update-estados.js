@@ -8,8 +8,8 @@
  * El script es idempotente: puede interrumpirse y reanudarse.
  * Respeta rate limits con delays entre peticiones.
  *
- * Entrada:  data/processed/contratos-normalizados.json
- * Salida:   data/processed/contratos-normalizados.json (actualizado in-place)
+ * Entrada:  data/trabajo/contratos/ si hay cambios sin publicar, si no data/processed/contratos/
+ * Salida:   data/trabajo/contratos/ (se publica con npm run validate && npm run publicar)
  *
  * Uso: node scripts/update-estados.js [--max=N] [--dias=N]
  *
@@ -19,12 +19,7 @@
  *   --dry-run  Mostrar qué se actualizaría sin guardar cambios
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONTRATOS_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
+import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb } from './lib/almacen-contratos.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Configuración
@@ -187,14 +182,14 @@ async function main() {
   console.log('');
 
   // Verificar que existe el archivo de contratos
-  if (!fs.existsSync(CONTRATOS_FILE)) {
-    console.error('❌ No se encontró contratos-normalizados.json');
+  if (!dirVigente()) {
+    console.error('❌ No se encontraron contratos en data/processed/contratos/');
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
 
   // Cargar contratos
-  const contratos = JSON.parse(fs.readFileSync(CONTRATOS_FILE, 'utf-8'));
+  const contratos = leerContratos();
   console.log(`📥 Contratos cargados: ${contratos.length}`);
 
   // Fecha límite: contratos publicados hace más de N días
@@ -302,9 +297,9 @@ async function main() {
   // ─── Guardar resultados ─────────────────────────────────────────────────
   if (!dryRun && (actualizados > 0 || sinCambio > 0 || noDetectado > 0)) {
     console.log('\n💾 Guardando contratos actualizados...');
-    fs.writeFileSync(CONTRATOS_FILE, JSON.stringify(contratos, null, 2), 'utf-8');
-    const tamano = (fs.statSync(CONTRATOS_FILE).size / 1024).toFixed(1);
-    console.log(`   ✅ Guardado: contratos-normalizados.json (${tamano} KB)`);
+    guardarContratos(contratos);
+    console.log(`   ✅ Guardado: data/trabajo/contratos/ (${tamanoContratosKb()} KB)`);
+    console.log('   💡 Para publicarlo: npm run validate && npm run publicar');
   }
 
   // ─── Resumen ────────────────────────────────────────────────────────────

@@ -5,7 +5,12 @@
  * Verifica campos requeridos, tipos de datos, formatos y completitud.
  * Soporta múltiples fuentes: PLACSP, TED-UE, PLACE histórico.
  *
- * Entrada: data/processed/contratos-normalizados.json
+ * Valida la copia de trabajo (data/trabajo/contratos/) si hay cambios sin
+ * publicar, y la compara con lo publicado: falla si se ha eliminado algún
+ * contrato sin autorización (scripts/eliminar-contratos.js). Si la validación
+ * pasa, deja constancia para que npm run publicar pueda publicarla.
+ * Sin cambios pendientes, valida lo publicado (data/processed/contratos/).
+ *
  * Salida:  Reporte en consola (exit code 0 = OK, 1 = errores)
  *
  * Uso: node scripts/validate.js
@@ -13,11 +18,12 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { claveContrato } from './lib/clave-contrato.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
+import { FUENTE, FUENTES_VALIDAS } from './lib/fuentes.js';
+import {
+  dirVigente, leerIndice, leerContratosDe, hayContratosEn, compararConPublicado, mostrarCambios,
+  leerEliminacionesAutorizadas, marcarTrabajoValidado, PUBLICADO_DIR, TRABAJO_DIR,
+} from './lib/almacen-contratos.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema de validación
@@ -25,7 +31,6 @@ const INPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizado
 
 const TIPOS_VALIDOS = ['obras', 'servicios', 'suministros', 'administrativo_especial', 'privado', 'concesion_obras', 'concesion_servicios', 'patrimonial', 'otros'];
 const PROCEDIMIENTOS_VALIDOS = ['abierto', 'restringido', 'negociado', 'dialogo_competitivo', 'asociacion_innovacion', 'abierto_simplificado', 'basado_acuerdo_marco', 'menor', 'negociado_sin_publicidad', 'abierto_simplificado_sumario'];
-const FUENTES_VALIDAS = ['placsp', 'ted_ue', 'place_historico', 'cam_transparencia', 'cam_datos_abiertos'];
 const ESTADOS_VALIDOS = [
   // Estados derivados (nuevos, preferidos)
   'en_licitacion', 'en_evaluacion', 'pre_adjudicado', 'adjudicado',
@@ -39,12 +44,54 @@ const URL_REGEX = /^https?:\/\/.+/;
 const NIF_REGEX = /^[A-Z0-9]{8,10}$/;
 const TED_PUB_REGEX = /^\d+-\d{4}$/; // Formato: 239313-2016
 
-/** Umbral de tamaño para advertir sobre migración a Turso (bytes) */
+/** Tamaño a partir del cual se advierte de que un fichero de contratos es grande (MB) */
 const UMBRAL_TAMANO_MB = 20;
+
+/**
+ * Porcentaje de contratos modificados de un año a partir del cual se advierte
+ * en el informe de cambios (solo en años con al menos MIN_CONTRATOS_AVISO).
+ */
+const UMBRAL_MODIFICADOS_PCT = 50;
+const MIN_CONTRATOS_AVISO = 100;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de validación
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Prefijo con el que se identifica un contrato en los mensajes de error.
+ * @param {object} contrato
+ * @param {number} index
+ * @returns {string}
+ */
+function prefijo(contrato, index) {
+  return `[#${contrato.id || index}]`;
+}
+
+/**
+ * Valida los campos de los que depende integrar cargas en el almacén
+ * (ver lib/integrar-lote.js). Un error aquí impide siempre publicar.
+ * @param {object} contrato
+ * @param {number} index
+ * @returns {string[]} Array de errores encontrados
+ */
+function validarIntegridad(contrato, index) {
+  const errores = [];
+  const prefix = prefijo(contrato, index);
+
+  if (typeof contrato.id !== 'string' || contrato.id === '') {
+    errores.push(`${prefix} 'id' debe ser un texto no vacío, es ${JSON.stringify(contrato.id)}`);
+  }
+  if (!Array.isArray(contrato.fuentes) || contrato.fuentes.length === 0 ||
+      !contrato.fuentes.every(f => FUENTES_VALIDAS.includes(f))) {
+    errores.push(`${prefix} 'fuentes' debe ser una lista de fuentes válidas: ${JSON.stringify(contrato.fuentes)}`);
+  }
+  if (!contrato.fecha_actualizacion) {
+    errores.push(`${prefix} Campo 'fecha_actualizacion' es requerido (decide qué versión gana al integrar)`);
+  }
+
+  return errores;
+}
 
 /**
  * Valida un contrato individual contra el schema.
@@ -54,21 +101,18 @@ const UMBRAL_TAMANO_MB = 20;
  */
 function validarContrato(contrato, index) {
   const errores = [];
-  const prefix = `[#${contrato.id || index}]`;
+  const prefix = prefijo(contrato, index);
 
   // Campos requeridos
   if (!contrato.objeto) {
     errores.push(`${prefix} Campo 'objeto' es requerido`);
   }
   // Organismo es requerido para PLACSP, advertencia para fuentes complementarias
-  if (!contrato.organismo && contrato.fuente !== 'ted_ue') {
+  if (!contrato.organismo && contrato.fuente !== FUENTE.TED) {
     errores.push(`${prefix} Campo 'organismo' es requerido`);
   }
 
   // Tipos de datos
-  if (contrato.id != null && typeof contrato.id !== 'number') {
-    errores.push(`${prefix} 'id' debe ser number, es ${typeof contrato.id}`);
-  }
   if (contrato.importe != null && typeof contrato.importe !== 'number') {
     errores.push(`${prefix} 'importe' debe ser number, es ${typeof contrato.importe}`);
   }
@@ -181,15 +225,46 @@ function validarContrato(contrato, index) {
   }
 
   // Coherencia fuente ↔ campos TED
-  if (contrato.fuente === 'ted_ue' && !contrato.ted_publication_number) {
-    errores.push(`${prefix} Fuente 'ted_ue' pero falta 'ted_publication_number'`);
+  if (contrato.fuente === FUENTE.TED && !contrato.ted_publication_number) {
+    errores.push(`${prefix} Fuente '${FUENTE.TED}' pero falta 'ted_publication_number'`);
   }
-  if (contrato.fuente !== 'ted_ue' && contrato.ted_publication_number) {
+  if (contrato.fuente !== FUENTE.TED && contrato.ted_publication_number) {
     // Solo advertencia: puede ser un contrato PLACSP enriquecido con TED
     // No es un error bloqueante
   }
 
   return errores;
+}
+
+/**
+ * Muestra el informe de cambios y comprueba que no se ha perdido ningún
+ * contrato sin autorización.
+ * @param {object[]} publicados
+ * @param {object[]} trabajo
+ * @returns {boolean} true si no hay eliminaciones sin autorizar
+ */
+function revisarCambios(publicados, trabajo) {
+  const { porAnio, eliminados } = compararConPublicado(publicados, trabajo);
+
+  mostrarCambios(porAnio);
+  for (const [anio, f] of porAnio) {
+    if (f.total >= MIN_CONTRATOS_AVISO && (f.modificados / f.total) * 100 > UMBRAL_MODIFICADOS_PCT) {
+      console.warn(`   ⚠️  ${anio}: se ha modificado más del ${UMBRAL_MODIFICADOS_PCT} % de los contratos; revisa que sea lo esperado`);
+    }
+  }
+
+  const autorizadas = leerEliminacionesAutorizadas();
+  const sinAutorizar = eliminados.filter(c => !autorizadas.has(c.id));
+  if (sinAutorizar.length > 0) {
+    console.error(`\n❌ Se han eliminado ${sinAutorizar.length} contratos sin autorización. Ejemplos:`);
+    sinAutorizar.slice(0, 5).forEach(c => console.error(`   • ${c.id} ${c.expediente || ''} ${(c.objeto || '').substring(0, 60)}`));
+    console.error('   Si es intencionado, usa scripts/eliminar-contratos.js; si no, revisa el pipeline antes de publicar.');
+    return false;
+  }
+  if (eliminados.length > 0) {
+    console.log(`\n🗑️  ${eliminados.length} contratos eliminados con autorización`);
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -200,35 +275,44 @@ async function main() {
   console.log('✅ ContratosCAM — Validación de datos');
   console.log('═'.repeat(60));
 
-  // Verificar que existe el archivo
-  if (!fs.existsSync(INPUT_FILE)) {
-    console.error(`❌ No se encontró: ${path.basename(INPUT_FILE)}`);
+  // Validar la copia de trabajo si hay cambios sin publicar; si no, lo publicado
+  const dir = dirVigente();
+  if (!dir) {
+    console.error(`❌ No se encontraron contratos en: ${PUBLICADO_DIR}`);
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
+  const esTrabajo = dir === TRABAJO_DIR;
 
-  // Leer archivo
-  const stat = fs.statSync(INPUT_FILE);
-  const tamanoMB = stat.size / 1024 / 1024;
-  console.log(`📄 Archivo: ${path.basename(INPUT_FILE)}`);
-  console.log(`💾 Tamaño: ${tamanoMB.toFixed(2)} MB`);
-
-  if (tamanoMB > UMBRAL_TAMANO_MB) {
-    console.warn(`\n⚠️  ADVERTENCIA: El archivo supera ${UMBRAL_TAMANO_MB} MB.`);
-    console.warn('   Considerar migración a Turso para mejor rendimiento.');
-  }
-
-  let datos;
+  // Leer ficheros (uno por año)
+  let indice, datos;
   try {
-    datos = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
+    indice = leerIndice(dir);
+    datos = leerContratosDe(dir);
   } catch (err) {
-    console.error(`\n❌ Error parseando JSON: ${err.message}`);
+    console.error(`\n❌ Error leyendo los ficheros de contratos: ${err.message}`);
     process.exit(1);
   }
 
-  // Verificar que es un array
-  if (!Array.isArray(datos)) {
-    console.error('\n❌ El archivo no contiene un array JSON');
+  console.log(`📁 Carpeta: ${dir}${esTrabajo ? ' (cambios sin publicar)' : ' (publicado)'}`);
+  let tamanoMB = 0;
+  for (const { archivo, total } of indice.archivos) {
+    const tamanoArchivoMB = fs.statSync(path.join(dir, archivo)).size / 1024 / 1024;
+    tamanoMB += tamanoArchivoMB;
+    console.log(`   📄 ${archivo}: ${total} contratos, ${tamanoArchivoMB.toFixed(2)} MB`);
+    if (tamanoArchivoMB > UMBRAL_TAMANO_MB) {
+      console.warn(`   ⚠️  ADVERTENCIA: ${archivo} supera ${UMBRAL_TAMANO_MB} MB.`);
+    }
+  }
+
+  // El índice debe coincidir con el contenido de los ficheros
+  if (indice.total !== datos.length) {
+    console.error(`\n❌ El índice declara ${indice.total} contratos, pero los ficheros contienen ${datos.length}`);
+    process.exit(1);
+  }
+
+  // Ningún contrato publicado puede desaparecer sin autorización
+  if (esTrabajo && hayContratosEn(PUBLICADO_DIR) && !revisarCambios(leerContratosDe(PUBLICADO_DIR), datos)) {
     process.exit(1);
   }
 
@@ -243,10 +327,13 @@ async function main() {
   // Validar cada contrato
   console.log('\n🔍 Validando schema...');
   const todosErrores = [];
+  const erroresIntegridad = [];
   let contratosConErrores = 0;
 
   for (let i = 0; i < datos.length; i++) {
-    const errores = validarContrato(datos[i], i);
+    const integridad = validarIntegridad(datos[i], i);
+    erroresIntegridad.push(...integridad);
+    const errores = [...integridad, ...validarContrato(datos[i], i)];
     if (errores.length > 0) {
       contratosConErrores++;
       todosErrores.push(...errores);
@@ -291,7 +378,9 @@ async function main() {
   const ids = datos.map(c => c.id);
   const idsUnicos = new Set(ids);
   if (idsUnicos.size !== datos.length) {
-    todosErrores.push(`IDs no son únicos: ${datos.length} contratos pero solo ${idsUnicos.size} IDs distintos`);
+    const error = `IDs no son únicos: ${datos.length} contratos pero solo ${idsUnicos.size} IDs distintos`;
+    todosErrores.push(error);
+    erroresIntegridad.push(error);
     console.log('  ❌ IDs duplicados encontrados');
   } else {
     console.log('  ✅ Todos los IDs son únicos');
@@ -342,15 +431,22 @@ async function main() {
   console.log('\n' + '═'.repeat(60));
 
   // Resultado final
-  if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
+  if (erroresIntegridad.length > 0) {
+    console.log(`❌ VALIDACIÓN FALLIDA — ${erroresIntegridad.length} errores de integridad (id, fuentes o fecha de versión). No se puede publicar`);
+    process.exit(1);
+  } else if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
     console.log('🎉 VALIDACIÓN EXITOSA — Todos los contratos son válidos');
-    process.exit(0);
   } else if (todosErrores.length <= 10 && camposCriticosFallidos.length === 0) {
     console.log('⚠️  VALIDACIÓN CON ADVERTENCIAS — Errores menores encontrados');
-    process.exit(0); // No bloquear el pipeline por errores menores
+    // No bloquear el pipeline por errores menores
   } else {
     console.log('❌ VALIDACIÓN FALLIDA — Revisar errores antes de publicar');
     process.exit(1);
+  }
+
+  if (esTrabajo) {
+    marcarTrabajoValidado();
+    console.log('💡 Copia de trabajo validada. Para publicarla: npm run publicar');
   }
 }
 
