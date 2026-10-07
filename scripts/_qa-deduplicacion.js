@@ -17,55 +17,7 @@ import {
   construirRegistro,
   aplicarResolucion,
 } from './lib/entity-resolver.js';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Utilidades de test
-// ─────────────────────────────────────────────────────────────────────────────
-
-let totalTests = 0;
-let pasados = 0;
-let fallidos = 0;
-
-function assert(descripcion, obtenido, esperado) {
-  totalTests++;
-  if (obtenido === esperado) {
-    pasados++;
-    console.log(`  ✅ ${descripcion}`);
-  } else {
-    fallidos++;
-    console.error(`  ❌ ${descripcion}`);
-    console.error(`     Esperado: ${JSON.stringify(esperado)}`);
-    console.error(`     Obtenido: ${JSON.stringify(obtenido)}`);
-  }
-}
-
-function assertDeep(descripcion, obtenido, esperado) {
-  totalTests++;
-  const a = JSON.stringify(obtenido);
-  const b = JSON.stringify(esperado);
-  if (a === b) {
-    pasados++;
-    console.log(`  ✅ ${descripcion}`);
-  } else {
-    fallidos++;
-    console.error(`  ❌ ${descripcion}`);
-    console.error(`     Esperado: ${b}`);
-    console.error(`     Obtenido: ${a}`);
-  }
-}
-
-function assertApprox(descripcion, obtenido, esperado, tolerancia = 0.01) {
-  totalTests++;
-  if (Math.abs(obtenido - esperado) <= tolerancia) {
-    pasados++;
-    console.log(`  ✅ ${descripcion}`);
-  } else {
-    fallidos++;
-    console.error(`  ❌ ${descripcion}`);
-    console.error(`     Esperado: ~${esperado} (±${tolerancia})`);
-    console.error(`     Obtenido: ${obtenido}`);
-  }
-}
+import { assert, assertApprox, terminar } from './lib/qa.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests: claveEmpresa
@@ -388,11 +340,4 @@ assert('Ranking tiene 3 entradas únicas', ranking.length, 3);
 // Resumen
 // ─────────────────────────────────────────────────────────────────────────────
 
-console.log('\n' + '═'.repeat(60));
-console.log(`📊 Resultado: ${pasados}/${totalTests} tests pasados`);
-if (fallidos > 0) {
-  console.log(`❌ ${fallidos} tests fallidos`);
-  process.exit(1);
-} else {
-  console.log('✅ Todos los tests pasaron correctamente');
-}
+terminar();

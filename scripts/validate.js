@@ -5,7 +5,12 @@
  * Verifica campos requeridos, tipos de datos, formatos y completitud.
  * Soporta múltiples fuentes: PLACSP, TED-UE, PLACE histórico.
  *
- * Entrada: data/processed/contratos/ (ver lib/almacen-contratos.js)
+ * Valida la copia de trabajo (data/trabajo/contratos/) si hay cambios sin
+ * publicar, y la compara con lo publicado: falla si se ha eliminado algún
+ * contrato sin autorización (scripts/eliminar-contratos.js). Si la validación
+ * pasa, deja constancia para que npm run publicar pueda publicarla.
+ * Sin cambios pendientes, valida lo publicado (data/processed/contratos/).
+ *
  * Salida:  Reporte en consola (exit code 0 = OK, 1 = errores)
  *
  * Uso: node scripts/validate.js
@@ -13,9 +18,11 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execFileSync } from 'child_process';
 import { claveContrato } from './lib/clave-contrato.js';
-import { existenContratos, leerIndice, leerContratos, CONTRATOS_DIR, INDICE_FILE } from './lib/almacen-contratos.js';
+import {
+  dirVigente, leerIndice, leerContratosDe, hayContratosEn, anioDe,
+  leerEliminacionesAutorizadas, marcarTrabajoValidado, PUBLICADO_DIR, TRABAJO_DIR,
+} from './lib/almacen-contratos.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema de validación
@@ -41,11 +48,11 @@ const TED_PUB_REGEX = /^\d+-\d{4}$/; // Formato: 239313-2016
 const UMBRAL_TAMANO_MB = 20;
 
 /**
- * Caída máxima admitida del total de contratos respecto a lo publicado (%).
- * La deduplicación puede quitar algunos, pero una caída mayor indica que se
- * ha perdido histórico (lectura fallida, filtro roto, fuente vacía…).
+ * Porcentaje de contratos modificados de un año a partir del cual se advierte
+ * en el informe de cambios (solo en años con al menos MIN_CONTRATOS_AVISO).
  */
-const MAX_CAIDA_TOTAL_PCT = 5;
+const UMBRAL_MODIFICADOS_PCT = 50;
+const MIN_CONTRATOS_AVISO = 100;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de validación
@@ -70,10 +77,19 @@ function validarContrato(contrato, index) {
     errores.push(`${prefix} Campo 'organismo' es requerido`);
   }
 
-  // Tipos de datos
-  if (contrato.id != null && typeof contrato.id !== 'number') {
-    errores.push(`${prefix} 'id' debe ser number, es ${typeof contrato.id}`);
+  // Identidad y procedencia (ver lib/integrar-lote.js)
+  if (typeof contrato.id !== 'string' || contrato.id === '') {
+    errores.push(`${prefix} 'id' debe ser un texto no vacío, es ${JSON.stringify(contrato.id)}`);
   }
+  if (!Array.isArray(contrato.fuentes) || contrato.fuentes.length === 0 ||
+      !contrato.fuentes.every(f => FUENTES_VALIDAS.includes(f))) {
+    errores.push(`${prefix} 'fuentes' debe ser una lista de fuentes válidas: ${JSON.stringify(contrato.fuentes)}`);
+  }
+  if (!contrato.fecha_actualizacion) {
+    errores.push(`${prefix} Campo 'fecha_actualizacion' es requerido (decide qué versión gana al integrar)`);
+  }
+
+  // Tipos de datos
   if (contrato.importe != null && typeof contrato.importe !== 'number') {
     errores.push(`${prefix} 'importe' debe ser number, es ${typeof contrato.importe}`);
   }
@@ -198,20 +214,69 @@ function validarContrato(contrato, index) {
 }
 
 /**
- * Total de contratos del índice en el último commit (lo publicado).
- * @returns {number|null} null si no hay git o el índice no está en el commit
+ * Compara la copia de trabajo con lo publicado, contrato a contrato por id.
+ * @param {object[]} publicados
+ * @param {object[]} trabajo
+ * @returns {{ porAnio: Map<string, {anadidos: number, modificados: number, eliminados: number, total: number}>, eliminados: object[] }}
  */
-function leerTotalPublicado() {
-  try {
-    const json = execFileSync('git', ['show', `HEAD:./${path.basename(INDICE_FILE)}`], {
-      cwd: CONTRATOS_DIR,
-      encoding: 'utf-8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    });
-    return JSON.parse(json).total;
-  } catch {
-    return null;
+function compararConPublicado(publicados, trabajo) {
+  const porAnio = new Map();
+  const fila = anio => {
+    const clave = anio || 'sin fecha';
+    if (!porAnio.has(clave)) porAnio.set(clave, { anadidos: 0, modificados: 0, eliminados: 0, total: 0 });
+    return porAnio.get(clave);
+  };
+
+  const publicadosPorId = new Map(publicados.map(c => [c.id, c]));
+  const idsTrabajo = new Set();
+  for (const c of trabajo) {
+    idsTrabajo.add(c.id);
+    const f = fila(anioDe(c));
+    f.total++;
+    const anterior = publicadosPorId.get(c.id);
+    if (!anterior) f.anadidos++;
+    else if (JSON.stringify(anterior) !== JSON.stringify(c)) f.modificados++;
   }
+
+  const eliminados = publicados.filter(c => !idsTrabajo.has(c.id));
+  eliminados.forEach(c => { fila(anioDe(c)).eliminados++; });
+
+  return { porAnio, eliminados };
+}
+
+/**
+ * Muestra el informe de cambios y comprueba que no se ha perdido ningún
+ * contrato sin autorización.
+ * @param {object[]} publicados
+ * @param {object[]} trabajo
+ * @returns {boolean} true si no hay eliminaciones sin autorizar
+ */
+function revisarCambios(publicados, trabajo) {
+  const { porAnio, eliminados } = compararConPublicado(publicados, trabajo);
+
+  console.log('\n📋 Cambios respecto a lo publicado:');
+  console.log('   Año        Total  Añadidos  Modificados  Eliminados');
+  const anios = [...porAnio.keys()].sort().reverse();
+  for (const anio of anios) {
+    const f = porAnio.get(anio);
+    console.log(`   ${anio.padEnd(9)} ${String(f.total).padStart(6)} ${String(f.anadidos).padStart(9)} ${String(f.modificados).padStart(12)} ${String(f.eliminados).padStart(11)}`);
+    if (f.total >= MIN_CONTRATOS_AVISO && (f.modificados / f.total) * 100 > UMBRAL_MODIFICADOS_PCT) {
+      console.warn(`   ⚠️  ${anio}: se ha modificado más del ${UMBRAL_MODIFICADOS_PCT} % de los contratos; revisa que sea lo esperado`);
+    }
+  }
+
+  const autorizadas = leerEliminacionesAutorizadas();
+  const sinAutorizar = eliminados.filter(c => !autorizadas.has(c.id));
+  if (sinAutorizar.length > 0) {
+    console.error(`\n❌ Se han eliminado ${sinAutorizar.length} contratos sin autorización. Ejemplos:`);
+    sinAutorizar.slice(0, 5).forEach(c => console.error(`   • ${c.id} ${c.expediente || ''} ${(c.objeto || '').substring(0, 60)}`));
+    console.error('   Si es intencionado, usa scripts/eliminar-contratos.js; si no, revisa el pipeline antes de publicar.');
+    return false;
+  }
+  if (eliminados.length > 0) {
+    console.log(`\n🗑️  ${eliminados.length} contratos eliminados con autorización`);
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -222,27 +287,29 @@ async function main() {
   console.log('✅ ContratosCAM — Validación de datos');
   console.log('═'.repeat(60));
 
-  // Verificar que existen los ficheros de contratos
-  if (!existenContratos()) {
-    console.error(`❌ No se encontraron contratos en: ${CONTRATOS_DIR}`);
+  // Validar la copia de trabajo si hay cambios sin publicar; si no, lo publicado
+  const dir = dirVigente();
+  if (!dir) {
+    console.error(`❌ No se encontraron contratos en: ${PUBLICADO_DIR}`);
     console.error('   Ejecuta primero: npm run transform');
     process.exit(1);
   }
+  const esTrabajo = dir === TRABAJO_DIR;
 
   // Leer ficheros (uno por año)
   let indice, datos;
   try {
-    indice = leerIndice();
-    datos = leerContratos();
+    indice = leerIndice(dir);
+    datos = leerContratosDe(dir);
   } catch (err) {
     console.error(`\n❌ Error leyendo los ficheros de contratos: ${err.message}`);
     process.exit(1);
   }
 
-  console.log(`📁 Carpeta: ${CONTRATOS_DIR}`);
+  console.log(`📁 Carpeta: ${dir}${esTrabajo ? ' (cambios sin publicar)' : ' (publicado)'}`);
   let tamanoMB = 0;
   for (const { archivo, total } of indice.archivos) {
-    const tamanoArchivoMB = fs.statSync(path.join(CONTRATOS_DIR, archivo)).size / 1024 / 1024;
+    const tamanoArchivoMB = fs.statSync(path.join(dir, archivo)).size / 1024 / 1024;
     tamanoMB += tamanoArchivoMB;
     console.log(`   📄 ${archivo}: ${total} contratos, ${tamanoArchivoMB.toFixed(2)} MB`);
     if (tamanoArchivoMB > UMBRAL_TAMANO_MB) {
@@ -256,23 +323,8 @@ async function main() {
     process.exit(1);
   }
 
-  // No se debe perder histórico respecto a lo publicado (último commit)
-  const totalPublicado = leerTotalPublicado();
-  if (totalPublicado === null) {
-    console.log('ℹ️  No hay índice publicado en git con el que comparar el total');
-  } else {
-    const caidaPct = ((totalPublicado - datos.length) / totalPublicado) * 100;
-    console.log(`📚 Publicado en git: ${totalPublicado} contratos (ahora ${datos.length})`);
-    if (caidaPct > MAX_CAIDA_TOTAL_PCT) {
-      console.error(`\n❌ El total ha caído un ${caidaPct.toFixed(1)} % respecto a lo publicado (máximo ${MAX_CAIDA_TOTAL_PCT} %).`);
-      console.error('   Probablemente se ha perdido histórico: revisa transform antes de publicar.');
-      process.exit(1);
-    }
-  }
-
-  // Verificar que es un array
-  if (!Array.isArray(datos)) {
-    console.error('\n❌ El archivo no contiene un array JSON');
+  // Ningún contrato publicado puede desaparecer sin autorización
+  if (esTrabajo && hayContratosEn(PUBLICADO_DIR) && !revisarCambios(leerContratosDe(PUBLICADO_DIR), datos)) {
     process.exit(1);
   }
 
@@ -388,13 +440,17 @@ async function main() {
   // Resultado final
   if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
     console.log('🎉 VALIDACIÓN EXITOSA — Todos los contratos son válidos');
-    process.exit(0);
   } else if (todosErrores.length <= 10 && camposCriticosFallidos.length === 0) {
     console.log('⚠️  VALIDACIÓN CON ADVERTENCIAS — Errores menores encontrados');
-    process.exit(0); // No bloquear el pipeline por errores menores
+    // No bloquear el pipeline por errores menores
   } else {
     console.log('❌ VALIDACIÓN FALLIDA — Revisar errores antes de publicar');
     process.exit(1);
+  }
+
+  if (esTrabajo) {
+    marcarTrabajoValidado();
+    console.log('💡 Copia de trabajo validada. Para publicarla: npm run publicar');
   }
 }
 
