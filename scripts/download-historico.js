@@ -34,8 +34,13 @@ import { atomsDeZip } from './lib/zip.js';
 // Configuración
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Timeout máximo por fichero (ms): los ZIP anuales ocupan cientos de MB */
-const TIMEOUT_MS = 30 * 60_000;
+/**
+ * Timeout máximo por fichero (ms). Los ZIP anuales del feed de perfiles
+ * ocupan varios GB y en GitHub Actions tardan más de 30 minutos en bajar
+ * desde 2021. Queda por debajo del timeout del job (carga-historica.yml)
+ * para que el fallo se registre aquí.
+ */
+const TIMEOUT_MS = 5 * 60 * 60_000;
 
 /** Pausa entre descargas para no sobrecargar servidores (ms) */
 const DELAY_ENTRE_DESCARGAS_MS = 3_000;
