@@ -416,7 +416,9 @@ async function main() {
           descartadosOtrasCCAA++;
           continue;
         }
-        todosLosContratos.push(contrato);
+        // Los textos del contrato son trozos del XML del fichero: copiarlo suelta
+        // el XML completo y no se acumula en memoria (con el histórico no cabría)
+        todosLosContratos.push(structuredClone(contrato));
         deCAM++;
       } catch (err) {
         errores++;
