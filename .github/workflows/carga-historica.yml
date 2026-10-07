@@ -1,0 +1,314 @@
+name: Carga histórica de contratos
+
+# Carga el histórico de PLACSP (scripts/download-historico.js) en el almacén
+# de contratos. Solo se lanza a mano y en dos pasos:
+#
+#   1. Simulación: se lanza sin run_id ni confirmar. Descarga y procesa los
+#      años pedidos, valida el resultado y muestra en el resumen los cambios
+#      por año y el número que hay que confirmar. No escribe nada en el
+#      repositorio: deja la copia validada como artefacto.
+#   2. Confirmación: se lanza desde main con el run_id de la simulación y
+#      confirmar=N. No vuelve a descargar: publica exactamente la copia de esa
+#      simulación, hace commit de los datos y despliega la web.
+
+on:
+  workflow_dispatch:
+    inputs:
+      desde:
+        description: 'Primer año'
+        required: true
+        default: '2017'
+      hasta:
+        description: 'Último año (vacío: el año en curso)'
+        required: false
+        default: ''
+      feed:
+        description: 'Feed de PLACSP (ver scripts/lib/feeds-placsp.js)'
+        type: choice
+        options: [todos, perfiles, agregadas]
+        default: todos
+      run_id:
+        description: 'Solo para confirmar: id de la ejecución de simulación'
+        required: false
+        default: ''
+      confirmar:
+        description: 'Solo para confirmar: número de contratos que indica la simulación'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+env:
+  # Artefacto con la copia validada que deja la simulación
+  ARTEFACTO_CARGA: carga-validada
+  # Fichero del artefacto con el último commit de los datos publicados al simular
+  COMMIT_BASE: commit-base.txt
+
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # Simulación
+  # ───────────────────────────────────────────────────────────────────────────
+
+  preparar:
+    name: Preparar años y feeds
+    if: inputs.run_id == ''
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.matriz.outputs.matriz }}
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # Un elemento por año y feed: cada uno se descarga en su propio job, así
+      # que ninguno necesita más de un año en disco.
+      - name: Calcular la matriz
+        id: matriz
+        env:
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+          FEED: ${{ inputs.feed }}
+        run: |
+          node --input-type=module -e "
+            import { FEEDS_HISTORICO, feedPorClave } from './scripts/lib/feeds-placsp.js';
+            const desde = Number(process.env.DESDE);
+            const hasta = Number(process.env.HASTA || new Date().getUTCFullYear());
+            if (!Number.isInteger(desde) || !Number.isInteger(hasta) || desde > hasta) {
+              throw new Error('Rango de años no válido: ' + process.env.DESDE + '–' + process.env.HASTA);
+            }
+            const feeds = process.env.FEED === 'todos' ? FEEDS_HISTORICO : [feedPorClave(process.env.FEED)];
+            const include = feeds.flatMap(f =>
+              Array.from({ length: hasta - desde + 1 }, (_, i) => ({ feed: f.clave, anio: desde + i })));
+            console.log('matriz=' + JSON.stringify({ include }));
+          " >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
+  descargar:
+    name: Descargar ${{ matrix.feed }} ${{ matrix.anio }}
+    needs: preparar
+    runs-on: ubuntu-latest
+    # Los ZIP anuales ocupan GB y PLACSP descarga despacio
+    timeout-minutes: 350
+    strategy:
+      # Si falla un año, el resto sigue y se puede relanzar solo el que falló
+      fail-fast: false
+      # Para no sobrecargar PLACSP
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.preparar.outputs.matriz) }}
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Descargar el histórico
+        run: npm run download:historico -- --desde=${{ matrix.anio }} --hasta=${{ matrix.anio }} --feed=${{ matrix.feed }}
+
+      # Solo se conservan los contratos de la Comunidad de Madrid (pocos MB)
+      - name: Parsear el histórico
+        run: npm run parse -- --historico
+
+      - name: Guardar los contratos parseados
+        uses: actions/upload-artifact@v4
+        with:
+          name: parseado-${{ matrix.feed }}-${{ matrix.anio }}
+          path: data/raw/parsed-licitaciones.json
+          if-no-files-found: error
+          retention-days: 7
+
+  integrar:
+    name: Integrar y validar
+    needs: descargar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Recuperar los contratos parseados
+        uses: actions/download-artifact@v4
+        with:
+          pattern: parseado-*
+          path: parseados
+
+      # Cada año y feed es un lote: transform lo integra en la copia de
+      # trabajo sin borrar nada, y el resultado no depende del orden.
+      - name: Integrar los lotes
+        run: |
+          for lote in parseados/*/parsed-licitaciones.json; do
+            echo "::group::Integrar $(basename "$(dirname "$lote")")"
+            cp "$lote" data/raw/parsed-licitaciones.json
+            npm run transform
+            echo "::endgroup::"
+          done
+
+      - name: Resolver entidades e importar
+        run: npm run resolve && npm run import-db
+
+      - name: Validar datos generados
+        run: npm run validate
+
+      - name: Guardar el commit de los datos publicados
+        run: git log -1 --format=%H -- data/processed > "$COMMIT_BASE"
+
+      - name: Guardar la copia validada
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTEFACTO_CARGA }}
+          path: |
+            data/trabajo/
+            data/processed/entities.json
+            data/processed/meta.json
+            ${{ env.COMMIT_BASE }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publicar resumen de la simulación
+        env:
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta || 'actual' }}
+          FEED: ${{ inputs.feed }}
+        run: |
+          TOTAL_VALIDADO=$(node -e "console.log(JSON.parse(require('fs').readFileSync('data/trabajo/validacion.json','utf-8')).total)")
+          {
+            echo "## 🔍 Simulación de la carga histórica"
+            echo ""
+            echo "Años $DESDE–$HASTA, feed: $FEED. No se ha escrito nada en el repositorio."
+            echo ""
+            echo "### Cambios por año"
+            echo '```'
+            npm run --silent publicar
+            echo '```'
+            echo ""
+            echo "### Tamaño de los ficheros"
+            echo '```'
+            du -h data/trabajo/contratos/*.json
+            echo '```'
+            echo ""
+            echo "### Para publicar"
+            echo "Lanza este workflow desde \`main\` con \`run_id\` = \`${{ github.run_id }}\` y \`confirmar\` = \`$TOTAL_VALIDADO\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Confirmación
+  # ───────────────────────────────────────────────────────────────────────────
+
+  publicar:
+    name: Publicar la carga confirmada
+    if: inputs.run_id != ''
+    runs-on: ubuntu-latest
+    # Comparte grupo con update-data.yml para no escribir los datos a la vez
+    concurrency:
+      group: datos-contratos
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: read
+    outputs:
+      total_contratos: ${{ steps.publicar.outputs.total_contratos }}
+    steps:
+      - name: Comprobar la rama y la confirmación
+        env:
+          CONFIRMAR: ${{ inputs.confirmar }}
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "❌ La confirmación solo se puede lanzar desde main (lanzada desde $GITHUB_REF)"
+            exit 1
+          fi
+          if ! [[ "$CONFIRMAR" =~ ^[0-9]+$ ]]; then
+            echo "❌ confirmar debe ser el número de contratos que indica la simulación"
+            exit 1
+          fi
+
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Recuperar la copia validada de la simulación
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTEFACTO_CARGA }}
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+
+      # Si los datos publicados han cambiado desde la simulación (p. ej. por la
+      # actualización semanal), publicar la copia podría deshacer esos cambios.
+      - name: Comprobar que los datos publicados no han cambiado
+        run: |
+          ACTUAL=$(git log -1 --format=%H -- data/processed)
+          SIMULADO=$(cat "$COMMIT_BASE")
+          if [ "$ACTUAL" != "$SIMULADO" ]; then
+            echo "❌ Los datos publicados han cambiado desde la simulación ($SIMULADO → $ACTUAL). Lanza una simulación nueva."
+            exit 1
+          fi
+          rm "$COMMIT_BASE"
+
+      - name: Validar de nuevo contra lo publicado
+        run: npm run validate
+
+      - name: Publicar datos validados
+        id: publicar
+        env:
+          CONFIRMAR: ${{ inputs.confirmar }}
+        run: |
+          npm run publicar -- --confirmar="$CONFIRMAR"
+          TOTAL=$(node -e "console.log(JSON.parse(require('fs').readFileSync('data/processed/contratos/indice.json','utf-8')).total)")
+          echo "total_contratos=$TOTAL" >> "$GITHUB_OUTPUT"
+
+      - name: Commit y push de los datos
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: carga histórica de contratos [skip ci]"
+          file_pattern: "data/processed/*.json data/processed/contratos/*.json"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+
+      - name: Publicar resumen de la carga
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          {
+            echo "## 📊 Carga histórica publicada"
+            echo ""
+            echo "- **Simulación:** $RUN_ID"
+            echo "- **Contratos publicados:** ${{ steps.publicar.outputs.total_contratos }}"
+            echo "- **Fecha:** $(date -u '+%Y-%m-%d %H:%M UTC')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Desplegar en GitHub Pages
+    needs: publicar
+    permissions:
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy-web.yml
+    with:
+      ref: main

@@ -2,12 +2,12 @@
  * scripts/download-historico.js
  *
  * Descarga el histórico de contratos de PLACSP: los ZIP anuales y mensuales
- * de los feeds de lib/feeds-placsp.js, y los descomprime en
- * data/raw/historico/<feed>/<periodo>/ para que los procese parse.js --historico.
+ * de los feeds de lib/feeds-placsp.js, y los guarda sin descomprimir en
+ * data/raw/historico/<feed>/<periodo>.zip para que los procese
+ * parse.js --historico (ver lib/zip.js).
  *
- * Es reanudable: un periodo ya descomprimido no se vuelve a descargar, salvo
- * el mes en curso, que PLACSP sigue actualizando. Descomprime con el `unzip`
- * del sistema.
+ * Es reanudable: un periodo ya descargado no se vuelve a descargar, salvo
+ * el mes en curso, que PLACSP sigue actualizando.
  *
  * Uso:
  *   node scripts/download-historico.js --desde=2017 --hasta=2026 --dry-run
@@ -24,11 +24,11 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execFileSync } from 'child_process';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
-import { FEEDS_HISTORICO, HISTORICO_DIR, feedPorClave, periodosHistorico, urlZip } from './lib/feeds-placsp.js';
+import { FEEDS_HISTORICO, HISTORICO_DIR, feedPorClave, periodosHistorico, rutaZip, urlZip } from './lib/feeds-placsp.js';
 import { opcion } from './lib/argumentos.js';
+import { atomsDeZip } from './lib/zip.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Configuración
@@ -42,9 +42,6 @@ const DELAY_ENTRE_DESCARGAS_MS = 3_000;
 
 /** User-Agent identificativo del proyecto */
 const USER_AGENT = 'ContratosCAM/0.1 (https://github.com/albus-quinctus/ContratosCAM)';
-
-/** Fichero que marca un periodo como descargado y descomprimido por completo */
-const MARCA_COMPLETO = '.completo';
 
 /** Primer año con histórico en PLACSP que tiene sentido pedir */
 const ANIO_MINIMO = 2012;
@@ -126,12 +123,13 @@ async function comprobarDisponible(url) {
 }
 
 /**
- * Descarga un fichero en streaming, sin cargarlo en memoria. Escribe primero
- * en un fichero provisional para no dejar nunca un ZIP a medias con el
- * nombre definitivo.
+ * Descarga un ZIP en streaming, sin cargarlo en memoria. Escribe primero
+ * en un fichero provisional y solo le da el nombre definitivo cuando está
+ * completo y contiene ficheros Atom, así que un ZIP con el nombre definitivo
+ * siempre está completo.
  * @param {string} url
  * @param {string} destino
- * @returns {Promise<number>} Bytes descargados
+ * @returns {Promise<{bytes: number, atoms: number}>} Bytes descargados y ficheros Atom que contiene
  */
 async function descargarFichero(url, destino) {
   const controller = new AbortController();
@@ -146,28 +144,14 @@ async function descargarFichero(url, destino) {
     comprobarRespuesta(response);
 
     await pipeline(Readable.fromWeb(response.body), fs.createWriteStream(provisional));
+    const atoms = atomsDeZip(provisional).length;
+    if (atoms === 0) throw new Error(`El ZIP ${path.basename(destino)} no contiene ficheros .atom`);
     fs.renameSync(provisional, destino);
-    return fs.statSync(destino).size;
+    return { bytes: fs.statSync(destino).size, atoms };
   } finally {
     clearTimeout(timeout);
     fs.rmSync(provisional, { force: true });
   }
-}
-
-/**
- * Descomprime un ZIP con el `unzip` del sistema en un directorio vacío.
- * @param {string} zip
- * @param {string} directorio
- * @returns {number} Ficheros Atom extraídos
- */
-function descomprimir(zip, directorio) {
-  fs.rmSync(directorio, { recursive: true, force: true });
-  fs.mkdirSync(directorio, { recursive: true });
-  execFileSync('unzip', ['-q', '-o', zip, '-d', directorio], { stdio: 'inherit' });
-
-  const atoms = fs.readdirSync(directorio).filter(f => f.endsWith('.atom'));
-  if (atoms.length === 0) throw new Error(`El ZIP ${path.basename(zip)} no contiene ficheros .atom`);
-  return atoms.length;
 }
 
 /**
@@ -208,11 +192,10 @@ async function main() {
 
   for (const feed of feeds) {
     for (const periodo of periodos) {
-      const directorio = path.join(HISTORICO_DIR, feed.clave, periodo);
+      const zip = rutaZip(feed, periodo);
       const url = urlZip(feed, periodo);
-      const completo = fs.existsSync(path.join(directorio, MARCA_COMPLETO));
 
-      if (completo && !esMesEnCurso(periodo, hoy)) {
+      if (fs.existsSync(zip) && !esMesEnCurso(periodo, hoy)) {
         console.log(`  ⏭️  ${feed.clave}/${periodo}: ya descargado`);
         continue;
       }
@@ -226,14 +209,9 @@ async function main() {
         }
 
         console.log(`  ↓ ${feed.clave}/${periodo}: ${url}`);
-        fs.mkdirSync(path.join(HISTORICO_DIR, feed.clave), { recursive: true });
-        const zip = path.join(HISTORICO_DIR, feed.clave, `${periodo}.zip`);
-        const bytes = await descargarFichero(url, zip);
+        fs.mkdirSync(path.dirname(zip), { recursive: true });
+        const { bytes, atoms } = await descargarFichero(url, zip);
         totalBytes += bytes;
-
-        const atoms = descomprimir(zip, directorio);
-        fs.rmSync(zip);
-        fs.writeFileSync(path.join(directorio, MARCA_COMPLETO), new Date().toISOString(), 'utf-8');
         console.log(`  ✅ ${feed.clave}/${periodo}: ${mb(bytes)}, ${atoms} ficheros .atom`);
 
         await esperar(DELAY_ENTRE_DESCARGAS_MS);

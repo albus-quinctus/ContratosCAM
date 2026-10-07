@@ -8,6 +8,11 @@ on:
   # Permitir ejecución manual desde GitHub
   workflow_dispatch:
 
+# Comparte grupo con carga-historica.yml para no escribir los datos a la vez
+concurrency:
+  group: datos-contratos
+  cancel-in-progress: false
+
 # Permisos mínimos a nivel de workflow (principio de mínimo privilegio)
 permissions:
   contents: write

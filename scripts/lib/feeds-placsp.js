@@ -7,7 +7,7 @@
  *
  * PLACSP publica el histórico de cada feed en ficheros ZIP: uno por año para
  * los años cerrados y uno por mes para el año en curso. Cada ZIP contiene los
- * ficheros Atom del periodo.
+ * ficheros Atom del periodo, y se guarda sin descomprimir (ver lib/zip.js).
  *
  * Documentación de sindicación PLACSP:
  * https://contrataciondelestado.es/wps/portal/plataforma/es/Sindicacion
@@ -19,8 +19,11 @@ import { FUENTE } from './fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Directorio donde se descomprime el histórico: <dir>/<feed>/<periodo>/*.atom */
+/** Directorio donde se guarda el histórico: <dir>/<feed>/<periodo>.zip */
 export const HISTORICO_DIR = path.join(__dirname, '../../data/raw/historico');
+
+/** Extensión de los ZIP del histórico, en PLACSP y en local */
+export const EXTENSION_ZIP = '.zip';
 
 /** Base de las URL de sindicación de PLACSP */
 const URL_SINDICACION = 'https://contrataciondelsectorpublico.gob.es/sindicacion';
@@ -87,5 +90,15 @@ export function periodosHistorico(desde, hasta, hoy) {
  * @returns {string}
  */
 export function urlZip(feed, periodo) {
-  return `${feed.urlBase}_${periodo}.zip`;
+  return `${feed.urlBase}_${periodo}${EXTENSION_ZIP}`;
+}
+
+/**
+ * Ruta local del ZIP de un periodo de un feed.
+ * @param {object} feed - Elemento de FEEDS_HISTORICO
+ * @param {string} periodo - AAAA o AAAAMM
+ * @returns {string}
+ */
+export function rutaZip(feed, periodo) {
+  return path.join(HISTORICO_DIR, feed.clave, `${periodo}${EXTENSION_ZIP}`);
 }
