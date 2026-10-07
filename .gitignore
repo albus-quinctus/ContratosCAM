@@ -12,6 +12,7 @@ data/raw/*.json
 data/raw/*.xlsx
 data/raw/*.atom
 data/raw/ted/
+data/raw/historico/
 
 # ── Copia de trabajo de los contratos (se publica con npm run publicar) ──────
 data/trabajo/

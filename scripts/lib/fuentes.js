@@ -9,6 +9,7 @@
 /** Identificadores de las fuentes, tal como se guardan en `fuente` y `fuentes` */
 export const FUENTE = Object.freeze({
   PLACSP: 'placsp',                         // Plataforma de Contratación del Sector Público
+  PLACSP_AGREGADAS: 'placsp_agregadas',     // Plataformas autonómicas que agrega PLACSP (sindicación 1044)
   TED: 'ted_ue',                            // Tenders Electronic Daily (Diario Oficial de la UE)
   PLACE_HISTORICO: 'place_historico',
   CAM_TRANSPARENCIA: 'cam_transparencia',
@@ -20,11 +21,14 @@ export const FUENTES_VALIDAS = Object.freeze(Object.values(FUENTE));
 
 /**
  * Prioridad de las fuentes que se integran hoy cuando aportan el mismo
- * contrato: gana la mayor. PLACSP es la fuente oficial española; TED solo
- * complementa. Una fuente nueva necesita su prioridad antes de integrarse.
+ * contrato: gana la mayor. PLACSP es la fuente oficial española, tanto en
+ * los perfiles de contratante como en las plataformas que agrega (a igualdad
+ * de prioridad gana la versión más reciente); TED solo complementa. Una
+ * fuente nueva necesita su prioridad antes de integrarse.
  */
 const PRIORIDAD_FUENTE = Object.freeze({
   [FUENTE.PLACSP]: 2,
+  [FUENTE.PLACSP_AGREGADAS]: 2,
   [FUENTE.TED]: 1,
 });
 
