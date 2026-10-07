@@ -15,7 +15,7 @@
  *   - data/raw/parsed-licitaciones.json (PLACSP)
  *   - data/raw/parsed-ted.json (TED-UE, opcional)
  *
- * Salida:  data/processed/contratos-normalizados.json
+ * Salida:  data/processed/contratos/ (un fichero por año, ver lib/almacen-contratos.js)
  *
  * Uso: node scripts/transform.js
  */
@@ -24,12 +24,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { claveContrato } from './lib/clave-contrato.js';
+import { existenContratos, leerContratos, guardarContratos, tamanoContratosKb, CONTRATOS_DIR } from './lib/almacen-contratos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/raw/parsed-licitaciones.json');
 const INPUT_TED_FILE = path.join(__dirname, '../data/raw/parsed-ted.json');
-const OUTPUT_FILE = path.join(__dirname, '../data/processed/contratos-normalizados.json');
-const PROCESSED_DIR = path.join(__dirname, '../data/processed');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tablas de mapeo — Códigos PLACSP a valores legibles
@@ -545,11 +544,6 @@ async function main() {
     process.exit(1);
   }
 
-  // Crear directorio de salida si no existe
-  if (!fs.existsSync(PROCESSED_DIR)) {
-    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
-  }
-
   // ─── Fuente 1: PLACSP ───────────────────────────────────────────────────
   const datos = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
   console.log(`📥 PLACSP: ${datos.length} contratos cargados`);
@@ -609,16 +603,14 @@ async function main() {
   console.log('\n📚 Paso 3: Acumular con datos históricos...');
   let contratosAcumulados = [...todosLosContratos];
 
-  if (fs.existsSync(OUTPUT_FILE)) {
-    try {
-      const historico = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
-      if (Array.isArray(historico) && historico.length > 0) {
-        console.log(`   📂 Histórico existente: ${historico.length} contratos`);
-        contratosAcumulados = [...todosLosContratos, ...historico];
-        console.log(`   📊 Total antes de deduplicar: ${contratosAcumulados.length}`);
-      }
-    } catch (e) {
-      console.log(`   ⚠️  Error leyendo histórico (se ignora): ${e.message}`);
+  if (existenContratos()) {
+    // Si el histórico no se puede leer, se detiene: seguir lo sobrescribiría
+    // solo con los contratos nuevos y se perdería todo lo publicado.
+    const historico = leerContratos();
+    if (historico.length > 0) {
+      console.log(`   📂 Histórico existente: ${historico.length} contratos`);
+      contratosAcumulados = [...todosLosContratos, ...historico];
+      console.log(`   📊 Total antes de deduplicar: ${contratosAcumulados.length}`);
     }
   } else {
     console.log('   📂 Sin histórico previo (primera ejecución)');
@@ -654,8 +646,8 @@ async function main() {
   contratosUnicos.forEach((c, i) => { c.id = i + 1; });
 
   // Guardar resultado
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(contratosUnicos, null, 2), 'utf-8');
-  const tamano = (fs.statSync(OUTPUT_FILE).size / 1024).toFixed(1);
+  const indice = guardarContratos(contratosUnicos);
+  const tamano = tamanoContratosKb();
 
   // Resumen final
   console.log('\n' + '═'.repeat(60));
@@ -667,7 +659,7 @@ async function main() {
     console.log(`  🇪🇺 Entrada TED: ${contratosTED.length} contratos (ya filtrados por Madrid)`);
   }
   console.log(`  🔍 Tras deduplicar: ${contratosUnicos.length}`);
-  console.log(`  💾 Archivo: ${path.basename(OUTPUT_FILE)} (${tamano} KB)`);
+  console.log(`  💾 Carpeta: ${path.relative(process.cwd(), CONTRATOS_DIR)}/ (${indice.archivos.length} ficheros, ${tamano} KB)`);
   console.log('─'.repeat(60));
 
   // Estadísticas adicionales

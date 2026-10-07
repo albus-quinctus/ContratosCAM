@@ -51,7 +51,7 @@ contratoscam/
 ├── data/
 │   ├── raw/               # Datos descargados sin procesar (CSV, XML, Atom)
 │   ├── processed/         # Datos limpios en JSON (generados por el pipeline)
-│   │   └── contratos-normalizados.json   # 1.393 contratos reales de la CAM
+│   │   └── contratos/     # Contratos de la CAM, un fichero por año + indice.json
 │   └── db/                # Base de datos SQLite local (para desarrollo)
 ├── docs/                  # Documentación adicional
 │   └── fuentes-datos.md   # Guía de fuentes de datos oficiales
@@ -134,10 +134,10 @@ Portal Transparencia CAM / PLACSP
     scripts/parse.js        ← Convierte a JSON intermedio
               │
               ▼
-    scripts/transform.js    ← Limpia, normaliza y deduplica
+    scripts/transform.js    ← Limpia, normaliza, deduplica y guarda por año
               │
               ▼
-    scripts/import-db.js    ← Genera contratos-normalizados.json
+    scripts/import-db.js    ← Genera la base SQLite y meta.json
               │
               ▼
     data/processed/         ← JSON listo para el frontend
