@@ -6,7 +6,8 @@
  *
  * Garantías (comprobadas en scripts/_qa-almacen.js):
  * - Nunca se pierde un contrato: integrar solo añade o fusiona.
- * - Nunca se sustituye un valor por uno vacío.
+ * - Nunca se sustituye un valor por uno vacío (salvo la fecha de comprobación
+ *   de un campo verificado, que se vacía para que se vuelva a comprobar).
  * - Integrar dos veces el mismo lote no cambia nada (idempotencia).
  * - El resultado no depende del orden de carga. Cada versión de un contrato
  *   tiene un rango: primero la prioridad de su fuente y, a igualdad, su fecha
@@ -22,19 +23,19 @@
  * Si llegan dos veces la misma versión de origen (misma fuente y misma
  * fecha_actualizacion), se conserva la almacenada, que ya lleva los campos
  * calculados después (entidades, categorías…), y la nueva solo rellena huecos.
+ *
+ * Los campos que se comprueban fuera de las fuentes (el estado, que
+ * update-estados.js consulta en la ficha web) llevan su propia fecha de
+ * comprobación y se fusionan junto a ella (ver CAMPOS_VERIFICADOS).
+ *
+ * Los contratos se identifican por su id, que se calcula una sola vez, al
+ * entrar, a partir de los datos de origen (ver idDeContrato). Así siguen
+ * casando aunque pasos posteriores cambien los campos de su clave.
  */
 
 import crypto from 'crypto';
 import { claveContrato } from './clave-contrato.js';
-
-/**
- * Prioridad de cada fuente cuando aporta el mismo contrato: gana la mayor.
- * PLACSP es la fuente oficial española; TED solo complementa.
- */
-export const PRIORIDAD_FUENTE = Object.freeze({
-  placsp: 2,
-  ted_ue: 1,
-});
+import { prioridadDe } from './fuentes.js';
 
 /** Campo donde se anota la versión de origen de los campos rellenados */
 export const CAMPO_ORIGEN = 'origen_campos';
@@ -49,8 +50,20 @@ const CAMPOS_DERIVADOS = new Set([
   'categoria_organismo',
   'es_ute',
   'miembros_ute',
-  'estado_verificado_en',
 ]);
+
+/**
+ * Campos que se comprueban fuera de las fuentes, con el campo donde se anota
+ * la fecha de la comprobación. Entre el valor comprobado y el de las fuentes
+ * gana el más reciente; a igualdad de día, el comprobado. Si gana el de las
+ * fuentes, la fecha de comprobación se vacía para que se vuelva a comprobar.
+ */
+const CAMPOS_VERIFICADOS = Object.freeze({
+  estado: 'estado_verificado_en', // scripts/update-estados.js
+});
+
+/** Campos con la fecha de comprobación de un campo de CAMPOS_VERIFICADOS */
+const FECHAS_VERIFICACION = new Set(Object.values(CAMPOS_VERIFICADOS));
 
 /**
  * Campos con regla de fusión propia. Cada regla recibe
@@ -93,6 +106,41 @@ export function esVacio(valor) {
   return valor === null || valor === undefined || valor === '' || (Array.isArray(valor) && valor.length === 0);
 }
 
+/** Fecha sin hora (AAAA-MM-DD) */
+const FECHA_SOLO_DIA = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Longitud de la parte de día de una fecha ISO (AAAA-MM-DD) */
+const LONGITUD_DIA = 10;
+
+/**
+ * Normaliza una fecha de modificación en origen para poder compararla con
+ * otras: las fechas con hora pasan a UTC (sin depender de la zona horaria ni
+ * del cambio de hora) y las que solo tienen día se dejan tal cual.
+ * @param {string|null} valor - Fecha ISO 8601, con o sin hora y zona
+ * @returns {string|null} null si no es una fecha válida
+ */
+export function normalizarFechaVersion(valor) {
+  if (!valor) return null;
+  if (FECHA_SOLO_DIA.test(valor)) return valor;
+  const fecha = new Date(valor);
+  return Number.isNaN(fecha.getTime()) ? null : fecha.toISOString();
+}
+
+/**
+ * Compara dos fechas normalizadas con la precisión que tengan en común: si
+ * alguna solo tiene día, se comparan solo los días. Así una versión guardada
+ * con día no se toma por más antigua que la misma versión con hora.
+ * @param {string} a
+ * @param {string} b
+ * @returns {number} Negativo si `a` es anterior, positivo si es posterior, 0 si coinciden
+ */
+export function compararFechas(a, b) {
+  const soloDia = FECHA_SOLO_DIA.test(a) || FECHA_SOLO_DIA.test(b);
+  return soloDia
+    ? compararTexto(a.substring(0, LONGITUD_DIA), b.substring(0, LONGITUD_DIA))
+    : compararTexto(a, b);
+}
+
 /**
  * Compara textos por sus códigos (igual en cualquier idioma del sistema).
  * @param {string} a
@@ -133,9 +181,9 @@ function versionDelCampo(contrato, campo) {
  * @returns {number}
  */
 function compararVersiones(a, b) {
-  const porFuente = (PRIORIDAD_FUENTE[b.fuente] || 0) - (PRIORIDAD_FUENTE[a.fuente] || 0);
+  const porFuente = prioridadDe(b.fuente) - prioridadDe(a.fuente);
   if (porFuente !== 0) return porFuente;
-  return compararTexto(b.fecha_actualizacion || '', a.fecha_actualizacion || '');
+  return compararFechas(b.fecha_actualizacion || '', a.fecha_actualizacion || '');
 }
 
 /**
@@ -151,14 +199,14 @@ export function fusionarContrato(existente, nuevo) {
     : [nuevo, existente];
 
   // Mismo orden de campos que la versión almacenada, para no generar cambios falsos
-  const campos = new Set([...Object.keys(existente), ...Object.keys(nuevo)]);
+  const campos = [...new Set([...Object.keys(existente), ...Object.keys(nuevo)])];
+  const fusionado = Object.fromEntries(campos.map(campo => [campo, null]));
 
-  const fusionado = {};
   const origen = {};
   for (const campo of campos) {
     const regla = REGLAS_CAMPO[campo];
-    if (campo === CAMPO_ORIGEN) {
-      fusionado[campo] = null; // Se calcula al final; así conserva su posición
+    if (campo === CAMPO_ORIGEN || FECHAS_VERIFICACION.has(campo)) {
+      continue; // Se calculan aparte
     } else if (regla) {
       fusionado[campo] = regla(principal, secundaria, existente);
     } else if (CAMPOS_DERIVADOS.has(campo)) {
@@ -178,6 +226,10 @@ export function fusionarContrato(existente, nuevo) {
     }
   }
 
+  for (const [campo, campoFecha] of Object.entries(CAMPOS_VERIFICADOS)) {
+    aplicarVerificacion(fusionado, origen, campo, campoFecha, [existente, nuevo]);
+  }
+
   const camposConOrigen = Object.keys(origen).sort();
   if (camposConOrigen.length > 0) {
     fusionado[CAMPO_ORIGEN] = Object.fromEntries(camposConOrigen.map(c => [c, origen[c]]));
@@ -188,40 +240,73 @@ export function fusionarContrato(existente, nuevo) {
 }
 
 /**
- * Prepara un contrato del lote: id estable y lista de fuentes.
+ * Decide entre el valor comprobado de un campo (con su fecha de comprobación)
+ * y el que resulta de las fuentes, que ya está en `fusionado`.
+ * @param {object} fusionado - Contrato fusionado (se modifica)
+ * @param {object} origen - Versiones de origen anotadas (se modifica)
+ * @param {string} campo - Campo comprobado
+ * @param {string} campoFecha - Campo con la fecha de la comprobación
+ * @param {object[]} versiones - Versiones del contrato (almacenada primero)
+ */
+function aplicarVerificacion(fusionado, origen, campo, campoFecha, versiones) {
+  if (!(campo in fusionado)) return;
+
+  // La comprobación más reciente (a igualdad, la almacenada)
+  const comprobada = versiones
+    .filter(c => !esVacio(c[campoFecha]) && !esVacio(c[campo]))
+    .reduce((mejor, c) => (mejor && compararFechas(mejor[campoFecha], c[campoFecha]) >= 0 ? mejor : c), null);
+  if (!comprobada) {
+    if (campoFecha in fusionado) fusionado[campoFecha] = null;
+    return;
+  }
+
+  // Fecha de la versión de las fuentes de la que sale el valor fusionado
+  const fechaFuentes = (origen[campo] || versionDe(fusionado)).fecha_actualizacion || '';
+  if (compararFechas(comprobada[campoFecha], fechaFuentes) >= 0) {
+    fusionado[campo] = comprobada[campo];
+    fusionado[campoFecha] = comprobada[campoFecha];
+    delete origen[campo];
+  } else {
+    fusionado[campoFecha] = null;
+  }
+}
+
+/**
+ * Prepara un contrato del lote: id estable, lista de fuentes y campos sin
+ * valor como null (JSON no guarda undefined: el campo desaparecería al guardar
+ * y volvería en la siguiente carga como un cambio falso).
  * @param {object} contrato
  * @returns {object}
  */
 function prepararNuevo(contrato) {
-  return { ...contrato, id: contrato.id || idDeContrato(contrato), fuentes: fuentesDe(contrato) };
+  const conNulos = Object.fromEntries(Object.entries(contrato).map(([campo, valor]) => [campo, valor ?? null]));
+  return { ...conNulos, id: contrato.id || idDeContrato(contrato), fuentes: fuentesDe(contrato) };
 }
 
 /**
  * Integra un lote en los contratos almacenados.
  *
- * @param {object[]} existentes - Contratos almacenados
+ * @param {object[]} existentes - Contratos almacenados (todos con id)
  * @param {object[]} lote - Contratos que llegan en esta carga
  * @returns {{ contratos: object[], resumen: { recibidos: number, anadidos: number, modificados: number, sin_cambios: number } }}
  */
 export function integrarLote(existentes, lote) {
-  // Indexar lo almacenado por clave (fusionando si ya hubiera duplicados)
+  // Indexar lo almacenado por id (fusionando si ya hubiera duplicados)
   const mapa = new Map();
   for (const contrato of existentes) {
-    const clave = claveContrato(contrato);
-    mapa.set(clave, mapa.has(clave) ? fusionarContrato(mapa.get(clave), contrato) : contrato);
+    mapa.set(contrato.id, mapa.has(contrato.id) ? fusionarContrato(mapa.get(contrato.id), contrato) : contrato);
   }
-  const antes = new Map([...mapa].map(([clave, c]) => [clave, JSON.stringify(c)]));
+  const antes = new Map([...mapa].map(([id, c]) => [id, JSON.stringify(c)]));
 
   for (const contrato of lote) {
     const nuevo = prepararNuevo(contrato);
-    const clave = claveContrato(nuevo);
-    mapa.set(clave, mapa.has(clave) ? fusionarContrato(mapa.get(clave), nuevo) : nuevo);
+    mapa.set(nuevo.id, mapa.has(nuevo.id) ? fusionarContrato(mapa.get(nuevo.id), nuevo) : nuevo);
   }
 
   const resumen = { recibidos: lote.length, anadidos: 0, modificados: 0, sin_cambios: 0 };
-  for (const [clave, contrato] of mapa) {
-    if (!antes.has(clave)) resumen.anadidos++;
-    else if (antes.get(clave) !== JSON.stringify(contrato)) resumen.modificados++;
+  for (const [id, contrato] of mapa) {
+    if (!antes.has(id)) resumen.anadidos++;
+    else if (antes.get(id) !== JSON.stringify(contrato)) resumen.modificados++;
     else resumen.sin_cambios++;
   }
 

@@ -113,11 +113,11 @@ npm run serve
 | `npm run transform` | Limpia y normaliza los datos |
 | `npm run import-db` | Importa a SQLite y genera el JSON para el frontend |
 | `npm run validate` | Valida la copia de trabajo y la compara con lo publicado |
-| `npm run publicar` | Publica la copia de trabajo validada en `data/processed/contratos/` |
-| `npm run descartar` | Descarta la copia de trabajo sin publicarla |
+| `npm run publicar` | Muestra los cambios de la copia de trabajo validada; con `-- --confirmar=N` la publica en `data/processed/contratos/` |
+| `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
 | `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
-| `npm test` | Ejecuta las pruebas de deduplicación y del almacén de contratos |
-| `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate → publicar) |
+| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos y del flujo de publicación |
+| `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
 | `npm run dev` | Alias de `serve` para desarrollo local |
@@ -166,7 +166,8 @@ Cada ejecución de `transform` es una **carga**: integra un lote (el feed semana
 
 - Un contrato se identifica por su URL de origen y recibe un `id` estable que no cambia en cargas posteriores.
 - Integrar nunca elimina contratos ni sustituye un valor por uno vacío, e integrar dos veces el mismo lote no cambia nada.
-- Si llegan varias versiones de un contrato, cada campo toma el valor de la versión de mayor rango: primero la fuente (PLACSP antes que TED) y después la fecha de modificación en origen. El resultado no depende del orden de las cargas.
+- Si llegan varias versiones de un contrato, cada campo toma el valor de la versión de mayor rango: primero la fuente (PLACSP antes que TED) y después la fecha de modificación en origen (en UTC). El resultado no depende del orden de las cargas.
+- El estado comprobado en la ficha web (`npm run update:estados`) solo lo sustituye una versión de las fuentes posterior a la comprobación.
 - Cada contrato indica en `fuentes` qué fuentes lo han aportado, y `indice.json` guarda el registro de cargas.
 
 Para eliminar contratos hay que usar `npm run eliminar`, que exige motivo y confirmación con el número exacto. `validate` falla si desaparece algún contrato sin autorizar, y los eliminados no se vuelven a incorporar en cargas posteriores.

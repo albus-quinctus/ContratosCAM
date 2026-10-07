@@ -34,7 +34,7 @@ const COLUMNAS_TABLA = 7;
  * Devuelve el primer JSON que cumpla `esValido` de entre las URLs dadas.
  * @param {string[]} urls
  * @param {(json: *) => boolean} esValido
- * @returns {Promise<*|null>} JSON encontrado o null si ninguna URL responde
+ * @returns {Promise<{url: string, json: *}|null>} URL que ha respondido y su JSON, o null si ninguna responde
  */
 async function cargarPrimeraUrl(urls, esValido) {
   for (const url of urls) {
@@ -42,7 +42,7 @@ async function cargarPrimeraUrl(urls, esValido) {
       const res = await fetch(url);
       if (!res.ok) continue;
       const json = await res.json();
-      if (esValido(json)) return json;
+      if (esValido(json)) return { url, json };
     } catch {
       // Intentar la siguiente URL
     }
@@ -55,11 +55,11 @@ async function cargarPrimeraUrl(urls, esValido) {
  * @returns {Promise<{dir: string, indice: object}|null>} Carpeta donde está y su contenido
  */
 async function cargarIndice() {
-  for (const dir of CONTRATOS_DIRS) {
-    const indice = await cargarPrimeraUrl([dir + INDICE_ARCHIVO], json => Array.isArray(json && json.archivos));
-    if (indice) return { dir, indice };
-  }
-  return null;
+  const encontrado = await cargarPrimeraUrl(
+    CONTRATOS_DIRS.map(dir => dir + INDICE_ARCHIVO),
+    json => Array.isArray(json && json.archivos));
+  if (!encontrado) return null;
+  return { dir: encontrado.url.slice(0, -INDICE_ARCHIVO.length), indice: encontrado.json };
 }
 
 /**
@@ -87,8 +87,9 @@ async function cargarContratos() {
  * Carga los metadatos de la última actualización.
  * @returns {Promise<object|null>} Metadatos o null si no están disponibles
  */
-function cargarMeta() {
-  return cargarPrimeraUrl(META_URLS, () => true);
+async function cargarMeta() {
+  const encontrado = await cargarPrimeraUrl(META_URLS, () => true);
+  return encontrado && encontrado.json;
 }
 
 /**

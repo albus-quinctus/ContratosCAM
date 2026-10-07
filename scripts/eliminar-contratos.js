@@ -25,17 +25,7 @@
 
 import fs from 'fs';
 import { leerContratos, guardarContratos, autorizarEliminaciones, dirVigente, TIPO_CARGA } from './lib/almacen-contratos.js';
-
-/**
- * Valor de una opción --nombre=valor, o null si no se ha pasado.
- * @param {string[]} args
- * @param {string} nombre
- * @returns {string|null}
- */
-function opcion(args, nombre) {
-  const arg = args.find(a => a.startsWith(`--${nombre}=`));
-  return arg ? arg.substring(nombre.length + 3) : null;
-}
+import { opcion, leerConfirmacion, CONFIRMACION } from './lib/argumentos.js';
 
 /**
  * IDs pedidos por --ids y --archivo, sin repetir.
@@ -53,8 +43,6 @@ function main() {
   const args = process.argv.slice(2);
   const ids = idsPedidos(args);
   const motivo = opcion(args, 'motivo');
-  const confirmar = opcion(args, 'confirmar');
-  const dryRun = args.includes('--dry-run') || confirmar === null;
 
   console.log('🗑️  ContratosCAM — Eliminar contratos');
   console.log('═'.repeat(60));
@@ -78,13 +66,18 @@ function main() {
   if (noEncontrados.length > 0) {
     console.log(`⚠️  No encontrados: ${noEncontrados.join(', ')}`);
   }
+  if (aEliminar.length === 0) {
+    console.error('\n❌ Ninguno de los contratos pedidos está almacenado. No se ha eliminado nada.');
+    process.exit(1);
+  }
 
-  if (dryRun) {
+  const confirmacion = leerConfirmacion(args, aEliminar.length);
+  if (confirmacion === CONFIRMACION.SIMULAR) {
     console.log(`\n🔍 Sin cambios (simulación). Para eliminar ${aEliminar.length} contratos, repite con --confirmar=${aEliminar.length}`);
     return;
   }
-  if (Number(confirmar) !== aEliminar.length) {
-    console.error(`\n❌ --confirmar=${confirmar} no coincide con los ${aEliminar.length} contratos encontrados. No se ha eliminado nada.`);
+  if (confirmacion === CONFIRMACION.NO_COINCIDE) {
+    console.error(`\n❌ --confirmar=${opcion(args, 'confirmar')} no coincide con los ${aEliminar.length} contratos encontrados. No se ha eliminado nada.`);
     process.exit(1);
   }
 

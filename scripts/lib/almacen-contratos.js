@@ -50,6 +50,9 @@ export const INDICE_ARCHIVO = 'indice.json';
 /** Nombre del fichero para los contratos sin fecha de publicación */
 const ARCHIVO_SIN_FECHA = 'sin-fecha.json';
 
+/** Etiqueta de los contratos sin fecha de publicación en los informes por año */
+export const ETIQUETA_SIN_FECHA = 'sin fecha';
+
 /** Tipos de entrada del registro de cargas del índice */
 export const TIPO_CARGA = Object.freeze({
   INTEGRACION: 'integracion',   // transform.js integra un lote de una o varias fuentes
@@ -266,7 +269,11 @@ function huellaTrabajo() {
  * Deja constancia de que la copia de trabajo actual ha pasado la validación.
  */
 export function marcarTrabajoValidado() {
-  const constancia = { huella: huellaTrabajo(), validado_en: new Date().toISOString() };
+  const constancia = {
+    huella: huellaTrabajo(),
+    total: leerIndice(TRABAJO_DIR).total,
+    validado_en: new Date().toISOString(),
+  };
   fs.writeFileSync(VALIDACION_FILE, JSON.stringify(constancia, null, 2), 'utf-8');
 }
 
@@ -281,6 +288,50 @@ export function trabajoValidado() {
 }
 
 /**
+ * Compara la copia de trabajo con lo publicado, por año de publicación.
+ * @param {object[]} publicados
+ * @param {object[]} trabajo
+ * @returns {{ porAnio: Map<string, {anadidos: number, modificados: number, eliminados: number, total: number}>, eliminados: object[] }}
+ */
+export function compararConPublicado(publicados, trabajo) {
+  const porAnio = new Map();
+  const fila = anio => {
+    const clave = anio || ETIQUETA_SIN_FECHA;
+    if (!porAnio.has(clave)) porAnio.set(clave, { anadidos: 0, modificados: 0, eliminados: 0, total: 0 });
+    return porAnio.get(clave);
+  };
+
+  const publicadosPorId = new Map(publicados.map(c => [c.id, c]));
+  const idsTrabajo = new Set();
+  for (const c of trabajo) {
+    idsTrabajo.add(c.id);
+    const f = fila(anioDe(c));
+    f.total++;
+    const anterior = publicadosPorId.get(c.id);
+    if (!anterior) f.anadidos++;
+    else if (JSON.stringify(anterior) !== JSON.stringify(c)) f.modificados++;
+  }
+
+  const eliminados = publicados.filter(c => !idsTrabajo.has(c.id));
+  eliminados.forEach(c => { fila(anioDe(c)).eliminados++; });
+
+  return { porAnio, eliminados };
+}
+
+/**
+ * Muestra por consola la tabla de cambios por año de compararConPublicado.
+ * @param {Map<string, {anadidos: number, modificados: number, eliminados: number, total: number}>} porAnio
+ */
+export function mostrarCambios(porAnio) {
+  console.log('\n📋 Cambios respecto a lo publicado:');
+  console.log('   Año        Total  Añadidos  Modificados  Eliminados');
+  for (const anio of [...porAnio.keys()].sort().reverse()) {
+    const f = porAnio.get(anio);
+    console.log(`   ${anio.padEnd(9)} ${String(f.total).padStart(6)} ${String(f.anadidos).padStart(9)} ${String(f.modificados).padStart(12)} ${String(f.eliminados).padStart(11)}`);
+  }
+}
+
+/**
  * Sustituye los contratos publicados por la copia de trabajo y la elimina.
  * @throws {Error} Si la copia de trabajo no está validada
  */
@@ -291,6 +342,7 @@ export function publicarTrabajo() {
   const anterior = PUBLICADO_DIR + '.anterior';
   fs.rmSync(anterior, { recursive: true, force: true });
   if (fs.existsSync(PUBLICADO_DIR)) fs.renameSync(PUBLICADO_DIR, anterior);
+  fs.mkdirSync(path.dirname(PUBLICADO_DIR), { recursive: true });
   try {
     fs.renameSync(TRABAJO_DIR, PUBLICADO_DIR);
   } catch (err) {

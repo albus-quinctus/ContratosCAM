@@ -19,8 +19,9 @@
 import fs from 'fs';
 import path from 'path';
 import { claveContrato } from './lib/clave-contrato.js';
+import { FUENTE, FUENTES_VALIDAS } from './lib/fuentes.js';
 import {
-  dirVigente, leerIndice, leerContratosDe, hayContratosEn, anioDe,
+  dirVigente, leerIndice, leerContratosDe, hayContratosEn, compararConPublicado, mostrarCambios,
   leerEliminacionesAutorizadas, marcarTrabajoValidado, PUBLICADO_DIR, TRABAJO_DIR,
 } from './lib/almacen-contratos.js';
 
@@ -30,7 +31,6 @@ import {
 
 const TIPOS_VALIDOS = ['obras', 'servicios', 'suministros', 'administrativo_especial', 'privado', 'concesion_obras', 'concesion_servicios', 'patrimonial', 'otros'];
 const PROCEDIMIENTOS_VALIDOS = ['abierto', 'restringido', 'negociado', 'dialogo_competitivo', 'asociacion_innovacion', 'abierto_simplificado', 'basado_acuerdo_marco', 'menor', 'negociado_sin_publicidad', 'abierto_simplificado_sumario'];
-const FUENTES_VALIDAS = ['placsp', 'ted_ue', 'place_historico', 'cam_transparencia', 'cam_datos_abiertos'];
 const ESTADOS_VALIDOS = [
   // Estados derivados (nuevos, preferidos)
   'en_licitacion', 'en_evaluacion', 'pre_adjudicado', 'adjudicado',
@@ -59,25 +59,26 @@ const MIN_CONTRATOS_AVISO = 100;
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Valida un contrato individual contra el schema.
+ * Prefijo con el que se identifica un contrato en los mensajes de error.
+ * @param {object} contrato
+ * @param {number} index
+ * @returns {string}
+ */
+function prefijo(contrato, index) {
+  return `[#${contrato.id || index}]`;
+}
+
+/**
+ * Valida los campos de los que depende integrar cargas en el almacén
+ * (ver lib/integrar-lote.js). Un error aquí impide siempre publicar.
  * @param {object} contrato
  * @param {number} index
  * @returns {string[]} Array de errores encontrados
  */
-function validarContrato(contrato, index) {
+function validarIntegridad(contrato, index) {
   const errores = [];
-  const prefix = `[#${contrato.id || index}]`;
+  const prefix = prefijo(contrato, index);
 
-  // Campos requeridos
-  if (!contrato.objeto) {
-    errores.push(`${prefix} Campo 'objeto' es requerido`);
-  }
-  // Organismo es requerido para PLACSP, advertencia para fuentes complementarias
-  if (!contrato.organismo && contrato.fuente !== 'ted_ue') {
-    errores.push(`${prefix} Campo 'organismo' es requerido`);
-  }
-
-  // Identidad y procedencia (ver lib/integrar-lote.js)
   if (typeof contrato.id !== 'string' || contrato.id === '') {
     errores.push(`${prefix} 'id' debe ser un texto no vacío, es ${JSON.stringify(contrato.id)}`);
   }
@@ -87,6 +88,28 @@ function validarContrato(contrato, index) {
   }
   if (!contrato.fecha_actualizacion) {
     errores.push(`${prefix} Campo 'fecha_actualizacion' es requerido (decide qué versión gana al integrar)`);
+  }
+
+  return errores;
+}
+
+/**
+ * Valida un contrato individual contra el schema.
+ * @param {object} contrato
+ * @param {number} index
+ * @returns {string[]} Array de errores encontrados
+ */
+function validarContrato(contrato, index) {
+  const errores = [];
+  const prefix = prefijo(contrato, index);
+
+  // Campos requeridos
+  if (!contrato.objeto) {
+    errores.push(`${prefix} Campo 'objeto' es requerido`);
+  }
+  // Organismo es requerido para PLACSP, advertencia para fuentes complementarias
+  if (!contrato.organismo && contrato.fuente !== FUENTE.TED) {
+    errores.push(`${prefix} Campo 'organismo' es requerido`);
   }
 
   // Tipos de datos
@@ -202,46 +225,15 @@ function validarContrato(contrato, index) {
   }
 
   // Coherencia fuente ↔ campos TED
-  if (contrato.fuente === 'ted_ue' && !contrato.ted_publication_number) {
-    errores.push(`${prefix} Fuente 'ted_ue' pero falta 'ted_publication_number'`);
+  if (contrato.fuente === FUENTE.TED && !contrato.ted_publication_number) {
+    errores.push(`${prefix} Fuente '${FUENTE.TED}' pero falta 'ted_publication_number'`);
   }
-  if (contrato.fuente !== 'ted_ue' && contrato.ted_publication_number) {
+  if (contrato.fuente !== FUENTE.TED && contrato.ted_publication_number) {
     // Solo advertencia: puede ser un contrato PLACSP enriquecido con TED
     // No es un error bloqueante
   }
 
   return errores;
-}
-
-/**
- * Compara la copia de trabajo con lo publicado, contrato a contrato por id.
- * @param {object[]} publicados
- * @param {object[]} trabajo
- * @returns {{ porAnio: Map<string, {anadidos: number, modificados: number, eliminados: number, total: number}>, eliminados: object[] }}
- */
-function compararConPublicado(publicados, trabajo) {
-  const porAnio = new Map();
-  const fila = anio => {
-    const clave = anio || 'sin fecha';
-    if (!porAnio.has(clave)) porAnio.set(clave, { anadidos: 0, modificados: 0, eliminados: 0, total: 0 });
-    return porAnio.get(clave);
-  };
-
-  const publicadosPorId = new Map(publicados.map(c => [c.id, c]));
-  const idsTrabajo = new Set();
-  for (const c of trabajo) {
-    idsTrabajo.add(c.id);
-    const f = fila(anioDe(c));
-    f.total++;
-    const anterior = publicadosPorId.get(c.id);
-    if (!anterior) f.anadidos++;
-    else if (JSON.stringify(anterior) !== JSON.stringify(c)) f.modificados++;
-  }
-
-  const eliminados = publicados.filter(c => !idsTrabajo.has(c.id));
-  eliminados.forEach(c => { fila(anioDe(c)).eliminados++; });
-
-  return { porAnio, eliminados };
 }
 
 /**
@@ -254,12 +246,8 @@ function compararConPublicado(publicados, trabajo) {
 function revisarCambios(publicados, trabajo) {
   const { porAnio, eliminados } = compararConPublicado(publicados, trabajo);
 
-  console.log('\n📋 Cambios respecto a lo publicado:');
-  console.log('   Año        Total  Añadidos  Modificados  Eliminados');
-  const anios = [...porAnio.keys()].sort().reverse();
-  for (const anio of anios) {
-    const f = porAnio.get(anio);
-    console.log(`   ${anio.padEnd(9)} ${String(f.total).padStart(6)} ${String(f.anadidos).padStart(9)} ${String(f.modificados).padStart(12)} ${String(f.eliminados).padStart(11)}`);
+  mostrarCambios(porAnio);
+  for (const [anio, f] of porAnio) {
     if (f.total >= MIN_CONTRATOS_AVISO && (f.modificados / f.total) * 100 > UMBRAL_MODIFICADOS_PCT) {
       console.warn(`   ⚠️  ${anio}: se ha modificado más del ${UMBRAL_MODIFICADOS_PCT} % de los contratos; revisa que sea lo esperado`);
     }
@@ -339,10 +327,13 @@ async function main() {
   // Validar cada contrato
   console.log('\n🔍 Validando schema...');
   const todosErrores = [];
+  const erroresIntegridad = [];
   let contratosConErrores = 0;
 
   for (let i = 0; i < datos.length; i++) {
-    const errores = validarContrato(datos[i], i);
+    const integridad = validarIntegridad(datos[i], i);
+    erroresIntegridad.push(...integridad);
+    const errores = [...integridad, ...validarContrato(datos[i], i)];
     if (errores.length > 0) {
       contratosConErrores++;
       todosErrores.push(...errores);
@@ -387,7 +378,9 @@ async function main() {
   const ids = datos.map(c => c.id);
   const idsUnicos = new Set(ids);
   if (idsUnicos.size !== datos.length) {
-    todosErrores.push(`IDs no son únicos: ${datos.length} contratos pero solo ${idsUnicos.size} IDs distintos`);
+    const error = `IDs no son únicos: ${datos.length} contratos pero solo ${idsUnicos.size} IDs distintos`;
+    todosErrores.push(error);
+    erroresIntegridad.push(error);
     console.log('  ❌ IDs duplicados encontrados');
   } else {
     console.log('  ✅ Todos los IDs son únicos');
@@ -438,7 +431,10 @@ async function main() {
   console.log('\n' + '═'.repeat(60));
 
   // Resultado final
-  if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
+  if (erroresIntegridad.length > 0) {
+    console.log(`❌ VALIDACIÓN FALLIDA — ${erroresIntegridad.length} errores de integridad (id, fuentes o fecha de versión). No se puede publicar`);
+    process.exit(1);
+  } else if (todosErrores.length === 0 && camposCriticosFallidos.length === 0) {
     console.log('🎉 VALIDACIÓN EXITOSA — Todos los contratos son válidos');
   } else if (todosErrores.length <= 10 && camposCriticosFallidos.length === 0) {
     console.log('⚠️  VALIDACIÓN CON ADVERTENCIAS — Errores menores encontrados');

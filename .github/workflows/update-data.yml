@@ -57,9 +57,12 @@ jobs:
       - name: Validar datos generados
         run: npm run validate
 
-      # Solo se publica lo que ha pasado la validación (ver scripts/lib/almacen-contratos.js)
+      # Solo se publica lo que ha pasado la validación (ver scripts/lib/almacen-contratos.js).
+      # La confirmación es el total que aprobó validate: si la copia cambia, no coincide y no se publica.
       - name: Publicar datos validados
-        run: npm run publicar
+        run: |
+          TOTAL_VALIDADO=$(node -e "console.log(JSON.parse(require('fs').readFileSync('data/trabajo/validacion.json','utf-8')).total)")
+          npm run publicar -- --confirmar="$TOTAL_VALIDADO"
 
       - name: Verificar salud de los datos
         id: verificar
