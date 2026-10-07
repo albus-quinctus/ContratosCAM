@@ -109,14 +109,15 @@ npm run serve
 | Comando | Descripción |
 |---------|-------------|
 | `npm run download` | Descarga los datos de las fuentes oficiales |
-| `npm run parse` | Convierte CSV/XML descargados a JSON |
+| `npm run download:historico -- --desde=2017 --dry-run` | Lista los ZIP del histórico de PLACSP (perfiles de contratante y plataformas agregadas) que se descargarían; sin `--dry-run` los descarga en `data/raw/historico/` |
+| `npm run parse` | Convierte CSV/XML descargados a JSON; con `-- --historico` incluye el histórico descargado |
 | `npm run transform` | Limpia y normaliza los datos |
 | `npm run import-db` | Importa a SQLite y genera el JSON para el frontend |
 | `npm run validate` | Valida la copia de trabajo y la compara con lo publicado |
 | `npm run publicar` | Muestra los cambios de la copia de trabajo validada; con `-- --confirmar=N` la publica en `data/processed/contratos/` |
 | `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
 | `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
-| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos y del flujo de publicación |
+| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos, del flujo de publicación y del parseo de los feeds |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
