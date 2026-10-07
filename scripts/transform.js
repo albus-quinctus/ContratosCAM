@@ -28,6 +28,7 @@ import { fileURLToPath } from 'url';
 import { dirVigente, leerContratos, guardarContratos, tamanoContratosKb, idsEliminados, TRABAJO_DIR, TIPO_CARGA } from './lib/almacen-contratos.js';
 import { integrarLote, ordenarContratos, idDeContrato, normalizarFechaVersion } from './lib/integrar-lote.js';
 import { FUENTE } from './lib/fuentes.js';
+import { esDeCAM } from './lib/filtro-cam.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_FILE = path.join(__dirname, '../data/raw/parsed-licitaciones.json');
@@ -95,16 +96,6 @@ const ESTADOS_DERIVADOS = [
   'resuelto',
   'anulado',
   'posiblemente_resuelto',
-];
-
-/**
- * Palabras clave que identifican organismos de la Comunidad de Madrid
- * en la jerarquía de PLACSP.
- */
-const FILTROS_CAM = [
-  'Comunidad de Madrid',
-  'COMUNIDAD DE MADRID',
-  'Comunidad Autónoma de Madrid',
 ];
 
 // Nota: La normalización de organismos y la canonización de adjudicatarios
@@ -212,32 +203,6 @@ function derivarEstado({ estadoXml, adjudicatario, fechaAdjudicacion, fechaForma
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones de transformación
 // ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Determina si un contrato pertenece a la Comunidad de Madrid
- * basándose en su jerarquía de organismos.
- * @param {object} contrato - Contrato parseado
- * @returns {boolean}
- */
-function esDeCAM(contrato) {
-  // Verificar en la jerarquía
-  if (contrato.jerarquia && Array.isArray(contrato.jerarquia)) {
-    for (const nivel of contrato.jerarquia) {
-      for (const filtro of FILTROS_CAM) {
-        if (nivel.includes(filtro)) return true;
-      }
-    }
-  }
-
-  // Verificar en el nombre del organismo directamente
-  if (contrato.organismo) {
-    for (const filtro of FILTROS_CAM) {
-      if (contrato.organismo.includes(filtro)) return true;
-    }
-  }
-
-  return false;
-}
 
 /**
  * Normaliza un NIF eliminando caracteres no alfanuméricos.
@@ -348,6 +313,25 @@ function limpiarVacio(valor) {
 }
 
 /**
+ * Normaliza las adjudicaciones de un contrato con varios lotes adjudicados.
+ * Los datos generales del contrato ya recogen el primer adjudicatario y la
+ * suma de los importes (ver parse.js); aquí se conserva el detalle por lote.
+ * @param {object[]|undefined} adjudicaciones - Resultados de adjudicación del parseo
+ * @returns {object[]|null} null si hay un único resultado o ninguno
+ */
+function transformarLotes(adjudicaciones) {
+  if (!adjudicaciones || adjudicaciones.length < 2) return null;
+  return adjudicaciones.map(a => ({
+    lote: limpiarVacio(a.lote),
+    adjudicatario: limpiarVacio(a.adjudicatario),
+    nif_adjudicatario: normalizarNIF(a.nif_adjudicatario),
+    importe: normalizarImporte(a.importe_adjudicacion),
+    importe_iva: normalizarImporte(a.importe_adjudicacion_iva),
+    fecha_adjudicacion: normalizarFecha(a.fecha_adjudicacion),
+  }));
+}
+
+/**
  * Transforma un contrato crudo de PLACSP a formato normalizado.
  * El id estable se asigna al integrarlo en el almacén (lib/integrar-lote.js).
  * @param {object} crudo - Contrato parseado del feed Atom
@@ -389,14 +373,15 @@ function transformarContrato(crudo) {
     cpv_descripcion: limpiarVacio(crudo.cpv_descripcion) || (crudo.cpv ? (CPV_DIVISIONES[crudo.cpv.substring(0, 2)] || null) : null),
     duracion_meses: crudo.duracion_meses != null ? (Number.isFinite(crudo.duracion_meses) ? crudo.duracion_meses : null) : null,
     num_lotes: crudo.num_lotes || null,
+    lotes: transformarLotes(crudo.adjudicaciones),
     adjudicatario: adjudicatarioLimpio,
     nif_adjudicatario: normalizarNIF(crudo.nif_adjudicatario),
     fecha_publicacion: fechaPub,
     fecha_adjudicacion: fechaAdj,
     fecha_formalizacion: null, // No disponible en el feed Atom
     url_origen: limpiarVacio(crudo.url_origen),
-    fuente: FUENTE.PLACSP,
-    fuentes: [FUENTE.PLACSP],
+    fuente: crudo.fuente,
+    fuentes: [crudo.fuente],
     // Última modificación en origen: decide qué versión gana al integrar
     fecha_actualizacion: normalizarFechaVersion(crudo.fecha_actualizacion),
     // Campos enriquecidos (se rellenan si hay datos de TED)

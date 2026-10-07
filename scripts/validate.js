@@ -196,6 +196,15 @@ function validarContrato(contrato, index) {
     }
   }
 
+  // lotes: detalle de las adjudicaciones, solo si hay varias (ver transform.js)
+  if (contrato.lotes != null) {
+    if (!Array.isArray(contrato.lotes) || contrato.lotes.length < 2) {
+      errores.push(`${prefix} 'lotes' debe ser una lista de al menos 2 adjudicaciones`);
+    } else if (contrato.lotes.some(l => l.importe != null && typeof l.importe !== 'number')) {
+      errores.push(`${prefix} 'lotes' tiene importes que no son números`);
+    }
+  }
+
   // valor_estimado: debe ser número positivo si existe
   if (contrato.valor_estimado != null && typeof contrato.valor_estimado !== 'number') {
     errores.push(`${prefix} 'valor_estimado' debe ser number, es ${typeof contrato.valor_estimado}`);
