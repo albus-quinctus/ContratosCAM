@@ -577,7 +577,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Hartford, S.L.",
+    "adjudicatario": "HARTFORD,S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-29",
     "fecha_adjudicacion": "2016-10-26",
@@ -591,7 +591,7 @@
     "num_ofertas": 6,
     "ted_publication_number": "381614-2016",
     "criterios_adjudicacion": "Mejoras respecto a lo especificado en el pliego de prescripciones técnicas (70%)",
-    "entity_id": "hartford sl",
+    "entity_id": "B59416479",
     "categoria_organismo": "distritos_madrid"
   },
   {
@@ -2595,7 +2595,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Adif Alta Velocidad",
+    "organismo": "Adif, Alta Velocidad",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -2630,7 +2630,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Consejería de Economía, Empleo y Hacienda",
+    "organismo": "Consejería de Economía, Hacienda y Empleo",
     "importe": 54880,
     "importe_iva": 54880,
     "valor_estimado": null,
@@ -2686,7 +2686,9 @@
     "fecha_actualizacion": "2016-10-11",
     "num_ofertas": null,
     "ted_publication_number": "353303-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "universidades"
   },
   {
     "id": "2d4937611701",
@@ -2698,7 +2700,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Servicio Madrileño De Salud, Hospital Universitario 12 de Octubre",
+    "organismo": "Servicio Madrileño de Salud, Hospital Universitario 12 de Octubre",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -2733,7 +2735,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Administrador de Infraestructuras Ferroviarias",
+    "organismo": "Adif, Alta Velocidad",
     "importe": 2527499.9,
     "importe_iva": 2527499.9,
     "valor_estimado": null,
@@ -2789,7 +2791,9 @@
     "fecha_actualizacion": "2016-10-11",
     "num_ofertas": null,
     "ted_publication_number": "353767-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "75267b022670",
@@ -2822,7 +2826,9 @@
     "fecha_actualizacion": "2016-10-11",
     "num_ofertas": 3,
     "ted_publication_number": "353649-2016",
-    "criterios_adjudicacion": "Proyecto técnico (21%); Mejoras (50%); Oferta económica (17,20%)"
+    "criterios_adjudicacion": "Proyecto técnico (21%); Mejoras (50%); Oferta económica (17,20%)",
+    "entity_id": "arje slu",
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "cd4113cd1583",
@@ -2842,7 +2848,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "JC Madrid deporte y cultura, S.L.",
+    "adjudicatario": "JC MADRID DEPORTE Y CULTURA SL",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-11",
     "fecha_adjudicacion": "2016-10-06",
@@ -2855,7 +2861,9 @@
     "fecha_actualizacion": "2016-10-11",
     "num_ofertas": 7,
     "ted_publication_number": "353659-2016",
-    "criterios_adjudicacion": "Precio (100%)"
+    "criterios_adjudicacion": "Precio (100%)",
+    "entity_id": "B80345721",
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "ff7caf737efa",
@@ -2867,7 +2875,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias, Servicio de Contratación",
+    "organismo": "Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -2923,7 +2931,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": 2,
     "ted_publication_number": "351519-2016",
-    "criterios_adjudicacion": "Precio (80%); Mejoras en la prestación del servicio (20%)"
+    "criterios_adjudicacion": "Precio (80%); Mejoras en la prestación del servicio (20%)",
+    "entity_id": "loomis spain sa",
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "3510de0a0b92",
@@ -2991,7 +3001,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": 1,
     "ted_publication_number": "351527-2016",
-    "criterios_adjudicacion": "Calidad técnica del proyecto (25%); Mejoras (15%); Mejoras salario (20%); Mejoras formación (15%); Horas libre disposición (10%); Bolsa económica (5%); Precio (10%)"
+    "criterios_adjudicacion": "Calidad técnica del proyecto (25%); Mejoras (15%); Mejoras salario (20%); Mejoras formación (15%); Horas libre disposición (10%); Bolsa económica (5%); Precio (10%)",
+    "entity_id": "actividades de educacion cultura y ocio sl",
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "6123f5dbd8a0",
@@ -3003,7 +3015,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja «San José y Santa Adela»",
+    "organismo": "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja San José y Santa Adela",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3038,7 +3050,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias, Servicio de Contratación",
+    "organismo": "Ayuntamiento de Madrid, Área de Gobierno de Salud, Seguridad y Emergencias",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3059,7 +3071,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": null,
     "ted_publication_number": "351425-2016",
-    "criterios_adjudicacion": "Oferta económica (60%); Mejora 1: Programa específico de limpieza completa de aseos y vestuarios (12%); Mejora 2: Programa de apoyo semanal para cuidados de plantas de interior (18%); Mejora 3: Compromiso de mantenimiento de la plantilla mínima descrita en el PPT durante todo el periodo de ejecución del contrato. (5%); Mejora 4: Mejora de la conciliación de la vida personal, laboral y familiar (5%)"
+    "criterios_adjudicacion": "Oferta económica (60%); Mejora 1: Programa específico de limpieza completa de aseos y vestuarios (12%); Mejora 2: Programa de apoyo semanal para cuidados de plantas de interior (18%); Mejora 3: Compromiso de mantenimiento de la plantilla mínima descrita en el PPT durante todo el periodo de ejecución del contrato. (5%); Mejora 4: Mejora de la conciliación de la vida personal, laboral y familiar (5%)",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "761026cc40c1",
@@ -3092,7 +3106,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": null,
     "ted_publication_number": "351201-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "862c79297298",
@@ -3125,7 +3141,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": null,
     "ted_publication_number": "350901-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "8935fc9884a9",
@@ -3145,7 +3163,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "G.E. Escuelas Urbanas, S.L.",
+    "adjudicatario": "G.E. ESCUELAS URBANAS, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-08",
     "fecha_adjudicacion": "2016-10-05",
@@ -3158,7 +3176,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": null,
     "ted_publication_number": "351655-2016",
-    "criterios_adjudicacion": "Idoneidad y calidad técnica del proyecto (25%); Precio (oferta económica) (45%); Calidad social de la propuesta (30%)"
+    "criterios_adjudicacion": "Idoneidad y calidad técnica del proyecto (25%); Precio (oferta económica) (45%); Calidad social de la propuesta (30%)",
+    "entity_id": "B81468811",
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "9b73239dd3b5",
@@ -3191,7 +3211,9 @@
     "fecha_actualizacion": "2016-10-08",
     "num_ofertas": null,
     "ted_publication_number": "352271-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "b34e2073e68f",
@@ -3203,7 +3225,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Administrador de Infraestructuras Ferroviarias",
+    "organismo": "Adif, Alta Velocidad",
     "importe": 20143441.68,
     "importe_iva": 20143441.68,
     "valor_estimado": null,
@@ -3238,7 +3260,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Adif — Alta Velocidad",
+    "organismo": "Adif, Alta Velocidad",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3273,7 +3295,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "EM Madrid Destino Cultura, Turismo y Negocio, S.A.",
+    "organismo": "EM Madrid Destino Cultura Turismo y Negocio, S.A.",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3364,7 +3386,9 @@
     "fecha_actualizacion": "2016-10-07",
     "num_ofertas": null,
     "ted_publication_number": "349865-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "2df38ed1a272",
@@ -3397,7 +3421,9 @@
     "fecha_actualizacion": "2016-10-07",
     "num_ofertas": null,
     "ted_publication_number": "349859-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "38940b8de75f",
@@ -3430,7 +3456,9 @@
     "fecha_actualizacion": "2016-10-07",
     "num_ofertas": null,
     "ted_publication_number": "350069-2016",
-    "criterios_adjudicacion": "Precio más bajo"
+    "criterios_adjudicacion": "Precio más bajo",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "4dd254221256",
@@ -3442,7 +3470,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Consejería de Economía, Empleo y Hacienda",
+    "organismo": "Consejería de Economía, Hacienda y Empleo",
     "importe": 131820,
     "importe_iva": 131820,
     "valor_estimado": null,
@@ -3498,7 +3526,9 @@
     "fecha_actualizacion": "2016-10-07",
     "num_ofertas": null,
     "ted_publication_number": "349208-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "ffe16930c809",
@@ -3531,7 +3561,9 @@
     "fecha_actualizacion": "2016-10-07",
     "num_ofertas": null,
     "ted_publication_number": "349102-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "universidades"
   },
   {
     "id": "3b0cf307eed3",
@@ -3564,7 +3596,9 @@
     "fecha_actualizacion": "2016-10-06",
     "num_ofertas": null,
     "ted_publication_number": "347964-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "estado_central"
   },
   {
     "id": "95cdc4c0b6ff",
@@ -3597,7 +3631,9 @@
     "fecha_actualizacion": "2016-10-06",
     "num_ofertas": null,
     "ted_publication_number": "348179-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "estado_central"
   },
   {
     "id": "973c4537e7c1",
@@ -3630,7 +3666,9 @@
     "fecha_actualizacion": "2016-10-06",
     "num_ofertas": null,
     "ted_publication_number": "347479-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "a52b5605b676",
@@ -3663,7 +3701,9 @@
     "fecha_actualizacion": "2016-10-06",
     "num_ofertas": 1,
     "ted_publication_number": "347573-2016",
-    "criterios_adjudicacion": "Criterios no valorables en cifras o porcentajes (25%)"
+    "criterios_adjudicacion": "Criterios no valorables en cifras o porcentajes (25%)",
+    "entity_id": "virensis sa",
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "a80ef1a9519b",
@@ -3696,7 +3736,9 @@
     "fecha_actualizacion": "2016-10-06",
     "num_ofertas": null,
     "ted_publication_number": "347186-2016",
-    "criterios_adjudicacion": "Precio (100%)"
+    "criterios_adjudicacion": "Precio (100%)",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "0e58d1b97b91",
@@ -3729,7 +3771,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": null,
     "ted_publication_number": "345238-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "1f64f362f20d",
@@ -3741,7 +3785,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Agencia para la Administración Digital de la CM",
+    "organismo": "Agencia para la Administración Digital de la Comunidad de Madrid",
     "importe": 1224772.28,
     "importe_iva": 1224772.28,
     "valor_estimado": null,
@@ -3797,7 +3841,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": null,
     "ted_publication_number": "346140-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "979477208351",
@@ -3830,7 +3876,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": null,
     "ted_publication_number": "345037-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "992c54d8b935",
@@ -3863,7 +3911,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": null,
     "ted_publication_number": "345476-2016",
-    "criterios_adjudicacion": "Oferta económica (90%); Mejoras para la integración de usuarios con diversidad funcional (ratio alumnos/profesores) (10%)"
+    "criterios_adjudicacion": "Oferta económica (90%); Mejoras para la integración de usuarios con diversidad funcional (ratio alumnos/profesores) (10%)",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "a9ac9e398e9f",
@@ -3896,7 +3946,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": 5,
     "ted_publication_number": "345691-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": "centro espanol de solidaridad",
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "b73418b3ad2d",
@@ -3908,7 +3960,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Servicio Madrileño de Salud, Hospital Universitario «12 de Octubre»",
+    "organismo": "Servicio Madrileño de Salud, Hospital Universitario 12 de Octubre",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3943,7 +3995,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Administrador de Infraestructuras Ferroviarias",
+    "organismo": "Adif, Alta Velocidad",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -3999,7 +4051,9 @@
     "fecha_actualizacion": "2016-10-05",
     "num_ofertas": null,
     "ted_publication_number": "346105-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "55cca08b4712",
@@ -4032,7 +4086,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344092-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "5e83db69d28f",
@@ -4065,7 +4121,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344282-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "60fdf5ffea7a",
@@ -4098,7 +4156,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344386-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "841fe4c30edb",
@@ -4110,7 +4170,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Administrador de Infraestructuras Ferroviarias",
+    "organismo": "Adif, Alta Velocidad",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -4145,7 +4205,7 @@
     "estado": "posiblemente_resuelto",
     "estado_xml": "publicado",
     "estado_verificado_en": null,
-    "organismo": "Consejería de Educación, Juventud y Deporte, Secretaria General Técnica",
+    "organismo": "Consejería de Educación, Ciencia y Universidades",
     "importe": null,
     "importe_iva": null,
     "valor_estimado": null,
@@ -4180,7 +4240,7 @@
     "estado": "adjudicado",
     "estado_xml": "adjudicado",
     "estado_verificado_en": null,
-    "organismo": "Consejería de Economía, Empleo y Hacienda",
+    "organismo": "Consejería de Economía, Hacienda y Empleo",
     "importe": 177256.67,
     "importe_iva": 177256.67,
     "valor_estimado": null,
@@ -4188,7 +4248,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Fundación Laboral de la Construcción",
+    "adjudicatario": "FUNDACION LABORAL DE LA CONSTRUCCION",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-04",
     "fecha_adjudicacion": "2016-09-29",
@@ -4236,7 +4296,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344095-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "cfd6858e4886",
@@ -4269,7 +4331,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344147-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "estado_central"
   },
   {
     "id": "d44780369b09",
@@ -4302,7 +4366,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344054-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "ddb5949762ba",
@@ -4335,7 +4401,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344271-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "e94ff54e9bed",
@@ -4368,7 +4436,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344280-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "f02b07fcf308",
@@ -4401,7 +4471,9 @@
     "fecha_actualizacion": "2016-10-04",
     "num_ofertas": null,
     "ted_publication_number": "344079-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "salud"
   },
   {
     "id": "14ab53381fe5",
@@ -4539,7 +4611,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342130-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "4162d66ce894",
@@ -4712,7 +4786,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342598-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "828774799952",
@@ -4745,7 +4821,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342132-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "93bb5698c062",
@@ -4778,7 +4856,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342129-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "9cb5a734b411",
@@ -4916,7 +4996,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342427-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "c97ba6c92785",
@@ -4949,7 +5031,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342268-2016",
-    "criterios_adjudicacion": "Precio más bajo"
+    "criterios_adjudicacion": "Precio más bajo",
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "d3e2ce719513",
@@ -5192,7 +5276,9 @@
     "fecha_actualizacion": "2016-10-01",
     "num_ofertas": null,
     "ted_publication_number": "342116-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "2a05927adef2",
@@ -5680,7 +5766,9 @@
     "fecha_actualizacion": "2016-09-27",
     "num_ofertas": null,
     "ted_publication_number": "334665-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "1a2d87f08614",
@@ -5748,7 +5836,9 @@
     "fecha_actualizacion": "2016-09-27",
     "num_ofertas": null,
     "ted_publication_number": "334765-2016",
-    "criterios_adjudicacion": "Mejor relación calidad-precio"
+    "criterios_adjudicacion": "Mejor relación calidad-precio",
+    "entity_id": null,
+    "categoria_organismo": "estado_central"
   },
   {
     "id": "4dc6f8b3eae8",
@@ -5781,7 +5871,9 @@
     "fecha_actualizacion": "2016-09-27",
     "num_ofertas": null,
     "ted_publication_number": "334356-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "5945e0e20186",
@@ -5954,7 +6046,9 @@
     "fecha_actualizacion": "2016-09-27",
     "num_ofertas": null,
     "ted_publication_number": "334880-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "investigacion"
   },
   {
     "id": "d3720411496d",
@@ -6022,7 +6116,9 @@
     "fecha_actualizacion": "2016-09-27",
     "num_ofertas": null,
     "ted_publication_number": "334354-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "0dff9107cb72",
@@ -6335,7 +6431,9 @@
     "fecha_actualizacion": "2016-09-24",
     "num_ofertas": null,
     "ted_publication_number": "332836-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "otros"
   },
   {
     "id": "6bda59f6bead",
@@ -6368,7 +6466,9 @@
     "fecha_actualizacion": "2016-09-24",
     "num_ofertas": null,
     "ted_publication_number": "332959-2016",
-    "criterios_adjudicacion": null
+    "criterios_adjudicacion": null,
+    "entity_id": null,
+    "categoria_organismo": "distritos_madrid"
   },
   {
     "id": "84c9b1d7ab52",
@@ -20055,7 +20155,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Fujitsu Technology Solutions, S.A.",
+    "adjudicatario": "FUJITSU TECHNOLOGY SOLUTIONS, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-07-21",
     "fecha_adjudicacion": "2016-07-18",
@@ -20069,7 +20169,7 @@
     "num_ofertas": 8,
     "ted_publication_number": "251532-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "fujitsu technology solutions sa",
+    "entity_id": "A28472819",
     "categoria_organismo": "ayto_madrid"
   },
   {

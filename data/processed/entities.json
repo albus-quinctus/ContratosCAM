@@ -22,12 +22,17 @@
     },
     "A28517308": {
       "nombre_canonico": "EULEN, S.A.",
-      "aliases": [],
+      "aliases": [
+        "Eulen S.A."
+      ],
       "fuente": "auto"
     },
     "A80241789": {
       "nombre_canonico": "SERVEO SERVICIOS, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "SERVEO SERVICIOS, S.A.U. (anteriormente denominada FERROVIAL SERVICIOS, SAU)",
+        "SERVEO SERVICIOS S.A.U."
+      ],
       "fuente": "auto"
     },
     "A62332580": {
@@ -82,7 +87,9 @@
     },
     "B81040503": {
       "nombre_canonico": "CONURMA INGENIEROS CONSULTORES",
-      "aliases": [],
+      "aliases": [
+        "CONURMA INGENIEROS CONSULTORES, S.L."
+      ],
       "fuente": "auto"
     },
     "B82633488": {
@@ -122,7 +129,10 @@
     },
     "B86961877": {
       "nombre_canonico": "SEYS CAD SYSTEMS S.L,",
-      "aliases": [],
+      "aliases": [
+        "SEYS CAD SYSTEMS SL",
+        "Seys Cad Systems, S.L."
+      ],
       "fuente": "auto"
     },
     "B56079940": {
@@ -137,7 +147,9 @@
     },
     "B80299191": {
       "nombre_canonico": "INSTALACIONES Y MANTENIMIENTOS MAGAR, SL",
-      "aliases": [],
+      "aliases": [
+        "INSTALACIONES Y MANTENIMIENTOS MAGAR SL"
+      ],
       "fuente": "auto"
     },
     "B61134607": {
@@ -157,7 +169,9 @@
     },
     "B47707583": {
       "nombre_canonico": "DESARROLLO APLICACIONES TARJETA INTELIGENTE S.L.",
-      "aliases": [],
+      "aliases": [
+        "Desarrollo Aplicaciones Tarjeta Inteligente S.L."
+      ],
       "fuente": "auto"
     },
     "B87352340": {
@@ -172,7 +186,9 @@
     },
     "A28467306": {
       "nombre_canonico": "COARSA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "COARSA SA"
+      ],
       "fuente": "auto"
     },
     "B01694579": {
@@ -187,7 +203,11 @@
     },
     "A08112716": {
       "nombre_canonico": "ACSA OBRAS E INFRAESTRUCTURAS SA",
-      "aliases": [],
+      "aliases": [
+        "ACSA, OBRAS E INFRAESTRUCTURAS, S.A.U.",
+        "ACSA OBRAS E INFRAESTRUCTURAS SAU",
+        "ACSA OBRAS E INFRAESTRUCTURAS S.A.U"
+      ],
       "fuente": "auto"
     },
     "A82733262": {
@@ -217,12 +237,17 @@
     },
     "A78066487": {
       "nombre_canonico": "LICUAS S.A.",
-      "aliases": [],
+      "aliases": [
+        "LICUAS SA"
+      ],
       "fuente": "auto"
     },
     "B64076482": {
       "nombre_canonico": "QUIRON PREVENCION S.L.U",
-      "aliases": [],
+      "aliases": [
+        "QUIRÓN PREVENCIÓN SLU",
+        "QUIRON PREVENCION SLU"
+      ],
       "fuente": "auto"
     },
     "B44572865": {
@@ -242,7 +267,9 @@
     },
     "B80713191": {
       "nombre_canonico": "JOTRINSA, S.L.",
-      "aliases": [],
+      "aliases": [
+        "JOTRINSA, S. L."
+      ],
       "fuente": "auto"
     },
     "B87396818": {
@@ -297,7 +324,11 @@
     },
     "B82755505": {
       "nombre_canonico": "Anadat Consulting, S.L.",
-      "aliases": [],
+      "aliases": [
+        "Anadat Technology, S.L",
+        "ANADAT",
+        "Anadat Technology, S.L."
+      ],
       "fuente": "auto"
     },
     "B84947944": {
@@ -307,12 +338,18 @@
     },
     "B88262431": {
       "nombre_canonico": "GLOBAL TALENT SERVICES MUSIC ENTERTAINMENT SPAIN, S.L.U.,",
-      "aliases": [],
+      "aliases": [
+        "GLOBAL TALENT SERVICES MUSIC ENTERTAINMENT SPAIN, S.L.U",
+        "GLOBAL TALENT SERVICES MUSIC ENTERTAINMENT SPAIN, S.L.U.",
+        "GLOBAL TALENT SERVICES MUSIC ENTERTAIMENT SPAIN, S.L.U."
+      ],
       "fuente": "auto"
     },
     "B24301871": {
       "nombre_canonico": "PRODUCCIONES MIC, S.L.",
-      "aliases": [],
+      "aliases": [
+        "PRODUCCIONES MIC SL"
+      ],
       "fuente": "auto"
     },
     "B87739967": {
@@ -322,7 +359,9 @@
     },
     "B09682121": {
       "nombre_canonico": "MOHATXU PRODUCCIONES, S.L.",
-      "aliases": [],
+      "aliases": [
+        "MOHATXU PRODUCCIONES S.L."
+      ],
       "fuente": "auto"
     },
     "B81325003": {
@@ -357,12 +396,19 @@
     },
     "B80736648": {
       "nombre_canonico": "COPYPOC, S.L.",
-      "aliases": [],
+      "aliases": [
+        "COPYCOC, S.L.",
+        "COPYCOP S.L",
+        "COPYPOC SL",
+        "COPYPOC, S.L"
+      ],
       "fuente": "auto"
     },
     "B87629200": {
       "nombre_canonico": "INGENIERIA ESTUDIOS Y PROYECTOS EUROPEOS, S.L",
-      "aliases": [],
+      "aliases": [
+        "INGENIERÍA, ESTUDIOS Y PROYECTOS EUROPEOS S.L."
+      ],
       "fuente": "auto"
     },
     "B49262363": {
@@ -377,7 +423,9 @@
     },
     "A16199374": {
       "nombre_canonico": "VIALES Y OBRAS PÚBLICAS, S.A.",
-      "aliases": [],
+      "aliases": [
+        "VIALES Y OBRAS PUBLICAS SA"
+      ],
       "fuente": "auto"
     },
     "B81733123": {
@@ -427,12 +475,17 @@
     },
     "A79206223": {
       "nombre_canonico": "LYRECO ESPAÑA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "LYRECO ESPAÑA, S.A",
+        "LYRECO ESPAÑA SAU"
+      ],
       "fuente": "auto"
     },
     "A28135846": {
       "nombre_canonico": "BP ENERGÍA ESPAÑA S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "BP ENERGIA ESPAÑA SAU"
+      ],
       "fuente": "auto"
     },
     "B02596369": {
@@ -441,8 +494,10 @@
       "fuente": "auto"
     },
     "B85319838": {
-      "nombre_canonico": "CITY ICE SL",
-      "aliases": [],
+      "nombre_canonico": "City Ice S.L",
+      "aliases": [
+        "CITY ICE SL"
+      ],
       "fuente": "auto"
     },
     "B87178067": {
@@ -462,7 +517,9 @@
     },
     "A82825456": {
       "nombre_canonico": "SALTOKI CENTRO S.A",
-      "aliases": [],
+      "aliases": [
+        "SALTOKI CENTRO, S.A."
+      ],
       "fuente": "auto"
     },
     "B86842267": {
@@ -497,7 +554,10 @@
     },
     "A61797536": {
       "nombre_canonico": "GAS NATURAL COMERCIALIZADORA S.A.",
-      "aliases": [],
+      "aliases": [
+        "GAS NATURAL COMERICIALIZADORA SA",
+        "GAS NATURAL COMERCIALIZADORA SA"
+      ],
       "fuente": "auto"
     },
     "B86456670": {
@@ -517,12 +577,16 @@
     },
     "B86858552": {
       "nombre_canonico": "SUMINISTROS Y MANTENIMIENTOS CAP, S.L.",
-      "aliases": [],
+      "aliases": [
+        "SUMINISTROS Y MANTENIMIENTOS CAP S.L."
+      ],
       "fuente": "auto"
     },
     "A78033784": {
       "nombre_canonico": "MACOBEL, S.A.",
-      "aliases": [],
+      "aliases": [
+        "MACOBEL SA"
+      ],
       "fuente": "auto"
     },
     "A28570190": {
@@ -532,7 +596,12 @@
     },
     "A25027145": {
       "nombre_canonico": "SERVICIOS MICROINFORMATICA SA",
-      "aliases": [],
+      "aliases": [
+        "SERVICIOS MICROINFORMÁTICA SAU",
+        "Econocom Semic SAU",
+        "ECONOCOM SEMIC SAU",
+        "Servicios Microinformática SA"
+      ],
       "fuente": "auto"
     },
     "B86607611": {
@@ -576,13 +645,17 @@
       "fuente": "auto"
     },
     "A28019461": {
-      "nombre_canonico": "PECSA",
-      "aliases": [],
+      "nombre_canonico": "PROMOCIONES, EDIFICIOS Y CONTRATAS, S.A.",
+      "aliases": [
+        "PECSA"
+      ],
       "fuente": "auto"
     },
     "B86227584": {
       "nombre_canonico": "CENTRALIA SERVICIOS INTEGRALES S.R.L.",
-      "aliases": [],
+      "aliases": [
+        "CENTRALIA SERVICIOS INTEGRALES SRL"
+      ],
       "fuente": "auto"
     },
     "B84892306": {
@@ -622,12 +695,17 @@
     },
     "B67689000": {
       "nombre_canonico": "Rockopop, S.L.",
-      "aliases": [],
+      "aliases": [
+        "ROCKOPOP, S.L.",
+        "ROCKOPOP S.L"
+      ],
       "fuente": "auto"
     },
     "B87615100": {
       "nombre_canonico": "DXC Technology Servicios España S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "DXC TECHNOLOGY SERVICIOS ESPAÑA S.L.U."
+      ],
       "fuente": "auto"
     },
     "B86867710": {
@@ -657,7 +735,10 @@
     },
     "A78159738": {
       "nombre_canonico": "GUTHERSA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "GUTHERSA, S.A",
+        "GUTHERSA,S.A."
+      ],
       "fuente": "auto"
     },
     "U19966449": {
@@ -722,7 +803,14 @@
     },
     "B82560947": {
       "nombre_canonico": "OFI PAPEL CENTER, S.L.",
-      "aliases": [],
+      "aliases": [
+        "OFIPAPEL CENTER S.L.",
+        "OFI PAPEL CENTER, S.L",
+        "OFIPAPEL CENTER, S.L.",
+        "OFIPAPEL CENTER SL",
+        "OFIPAPEL CENTER, SL",
+        "OFIPAPEL CENTER S.L"
+      ],
       "fuente": "auto"
     },
     "G80368160": {
@@ -732,7 +820,9 @@
     },
     "A28733897": {
       "nombre_canonico": "MILAN ACÚSTICA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "MILAN ACUSTICA S.A."
+      ],
       "fuente": "auto"
     },
     "B83086611": {
@@ -752,7 +842,9 @@
     },
     "B78949799": {
       "nombre_canonico": "DISINFOR,S.L.",
-      "aliases": [],
+      "aliases": [
+        "DISINFOR SL"
+      ],
       "fuente": "auto"
     },
     "A28021350": {
@@ -762,12 +854,16 @@
     },
     "B87345880": {
       "nombre_canonico": "Suma Social y Servicios, S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "Suma Social y Servicios, S.L."
+      ],
       "fuente": "auto"
     },
     "A83637074": {
       "nombre_canonico": "MAINTENANCE DEVELOPMENT, S.A.",
-      "aliases": [],
+      "aliases": [
+        "Maintenance Development S.A."
+      ],
       "fuente": "auto"
     },
     "A48037642": {
@@ -787,7 +883,9 @@
     },
     "A28855260": {
       "nombre_canonico": "INETUM ESPAÑA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "INETUM ESPAÑA, S.A"
+      ],
       "fuente": "auto"
     },
     "U13733225": {
@@ -797,7 +895,9 @@
     },
     "A78442597": {
       "nombre_canonico": "MAXPORT,S.A.",
-      "aliases": [],
+      "aliases": [
+        "MAXPORT, S.A."
+      ],
       "fuente": "auto"
     },
     "G67044271": {
@@ -817,17 +917,24 @@
     },
     "B02272490": {
       "nombre_canonico": "EIFFAGE ENERGIA S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "EIFFAGE ENERGÍA, S.L.U.",
+        "EIFFAGE ENERGIA"
+      ],
       "fuente": "auto"
     },
     "A38363917": {
       "nombre_canonico": "Biservicus Sistemas de Seguridad, S.A.U",
-      "aliases": [],
+      "aliases": [
+        "BISERVICUS SISTEMAS DE SEGURIDAD, S.A."
+      ],
       "fuente": "auto"
     },
     "A28013050": {
       "nombre_canonico": "CAJA DE SEGUROS REUNIDOS COMPAÑIA DE SEGUROS Y REASEGUROS",
-      "aliases": [],
+      "aliases": [
+        "CAJA DE SEGUROS REUNIDOS COMPAÑÍA DE SEGUROS Y REASEGUROS S.A (CASER SA)"
+      ],
       "fuente": "auto"
     },
     "B37460938": {
@@ -837,7 +944,9 @@
     },
     "A46609541": {
       "nombre_canonico": "ACCIONA MEDIO AMBIENTE S.A.",
-      "aliases": [],
+      "aliases": [
+        "ACCIONA MEDIO AMBIENTE SA"
+      ],
       "fuente": "auto"
     },
     "G78332541": {
@@ -852,12 +961,16 @@
     },
     "B30856439": {
       "nombre_canonico": "ODILO TID, S.L.",
-      "aliases": [],
+      "aliases": [
+        "ODILOTID S.L."
+      ],
       "fuente": "auto"
     },
     "B63698138": {
       "nombre_canonico": "PRODUCCIONES SON DE TRES Y EVENTOS MUSICALES S.L.",
-      "aliases": [],
+      "aliases": [
+        "Producciones Son de Tres y Eventos Musicales S.L."
+      ],
       "fuente": "auto"
     },
     "B76664861": {
@@ -872,7 +985,9 @@
     },
     "B44570281": {
       "nombre_canonico": "LOS BAILES DE MARTE S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "LOS BAILES DE MARTE. SLU"
+      ],
       "fuente": "auto"
     },
     "B87348470": {
@@ -892,12 +1007,17 @@
     },
     "B70912027": {
       "nombre_canonico": "UN DIA CUALQUIERA SL TEKILAJAZZ SL UTE",
-      "aliases": [],
+      "aliases": [
+        "UN DIA CUALQUIERA PRODUCCIONES S.L.",
+        "UN DIA CUALQUIERA PRODUCCIONES SL"
+      ],
       "fuente": "auto"
     },
     "B13792452": {
       "nombre_canonico": "CULTURA PERIFÉRICA, S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "Cultura Periférica SLU"
+      ],
       "fuente": "auto"
     },
     "B86102381": {
@@ -952,7 +1072,9 @@
     },
     "B79483459": {
       "nombre_canonico": "YSARCA S.L.",
-      "aliases": [],
+      "aliases": [
+        "YSARCA SL"
+      ],
       "fuente": "auto"
     },
     "B72798408": {
@@ -962,12 +1084,16 @@
     },
     "A28109247": {
       "nombre_canonico": "AON IBERIA CORREDURIA DE SEGUROS Y REASEGUROS SAU",
-      "aliases": [],
+      "aliases": [
+        "AON IBERIA, S.A.U Correduría de Seguros"
+      ],
       "fuente": "auto"
     },
     "B82806738": {
       "nombre_canonico": "CONTENUR, S.L.",
-      "aliases": [],
+      "aliases": [
+        "CONTENUR S.L."
+      ],
       "fuente": "auto"
     },
     "A28961639": {
@@ -987,7 +1113,10 @@
     },
     "A84408954": {
       "nombre_canonico": "ACEINSA MOVILIDAD, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ACEINSA MOVILIDAD SA",
+        "ACEINSA MOVILIDAD, SA"
+      ],
       "fuente": "auto"
     },
     "F78477403": {
@@ -1017,7 +1146,10 @@
     },
     "B88595558": {
       "nombre_canonico": "TREEBECA SERVICIOS INTEGRALES DE INGENIERÍA, S.L.",
-      "aliases": [],
+      "aliases": [
+        "TREEBECA SERVICIOS INTEGRALES DE INGENIERIA, S.L.",
+        "TREEBECA SERVICIOS INTEGRALES DE INGENIERIA SL"
+      ],
       "fuente": "auto"
     },
     "B78800380": {
@@ -1092,7 +1224,9 @@
     },
     "B84794528": {
       "nombre_canonico": "GRUPO SOTOVAL DE CONSTRUCCIONES Y PROYECTOS  SL",
-      "aliases": [],
+      "aliases": [
+        "UTE: GRUPO SOTOVAL DE CONSTRUCCIONES Y PROYECTOS  SL - MATIAS ARROM BIBILONI S.L."
+      ],
       "fuente": "auto"
     },
     "B16383473": {
@@ -1122,7 +1256,9 @@
     },
     "B19327634": {
       "nombre_canonico": "SERCO GUMA, S.L.",
-      "aliases": [],
+      "aliases": [
+        "SERCOGUMA S.L"
+      ],
       "fuente": "auto"
     },
     "A28695021": {
@@ -1137,7 +1273,9 @@
     },
     "A78053147": {
       "nombre_canonico": "Telefónica Soluciones de Informática y Comunicaciones de España S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "TELEFÓNICA SOLUCIONES DE INFORMÁTICA Y COMUNICACIONES DE ESPAÑA, S.A.U"
+      ],
       "fuente": "auto"
     },
     "B84293133": {
@@ -1167,12 +1305,17 @@
     },
     "B87596276": {
       "nombre_canonico": "ASENGA LOGISTICA S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "ASENGA LOGISTICA, S.L.U.",
+        "ASENGA LOGISTICA"
+      ],
       "fuente": "auto"
     },
     "A91096412": {
       "nombre_canonico": "ALBAZUL, SERVICIOS INTEGRALES, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ALBAZUL SERVICIOS INTEGRALES SA"
+      ],
       "fuente": "auto"
     },
     "A58649351": {
@@ -1212,7 +1355,9 @@
     },
     "B80713753": {
       "nombre_canonico": "Centro Especializado de Jardinería Apascovi, S.L.",
-      "aliases": [],
+      "aliases": [
+        "CE DE JARDINERIA APASCOVI S.L."
+      ],
       "fuente": "auto"
     },
     "B85406742": {
@@ -1227,12 +1372,17 @@
     },
     "A79189940": {
       "nombre_canonico": "SERANCO SAU",
-      "aliases": [],
+      "aliases": [
+        "SERANCO, S.A.U.",
+        "SERANCO S.A.U."
+      ],
       "fuente": "auto"
     },
     "B20981593": {
       "nombre_canonico": "PROMOCIONES MUSICALES GET IN SLU",
-      "aliases": [],
+      "aliases": [
+        "Producciones Musicales Get i S,L"
+      ],
       "fuente": "auto"
     },
     "B87773222": {
@@ -1252,7 +1402,9 @@
     },
     "B86208824": {
       "nombre_canonico": "SRCL CONSENUR, S.L.",
-      "aliases": [],
+      "aliases": [
+        "CONSENUR SANITARIOS, S.L."
+      ],
       "fuente": "auto"
     },
     "B74085408": {
@@ -1297,7 +1449,10 @@
     },
     "B45674132": {
       "nombre_canonico": "PRODUCCIONES MULTIPLE S.L.",
-      "aliases": [],
+      "aliases": [
+        "PRODUCCIONES MULTIPLE S.L",
+        "PRODUCCIONES MÚLTIPLE S.L."
+      ],
       "fuente": "auto"
     },
     "B86016284": {
@@ -1342,7 +1497,9 @@
     },
     "A80887201": {
       "nombre_canonico": "FERRETERIA IBERMADRID, S.A.",
-      "aliases": [],
+      "aliases": [
+        "FERRETERÍA IBERMADRID S.A."
+      ],
       "fuente": "auto"
     },
     "B81767246": {
@@ -1357,7 +1514,9 @@
     },
     "A78320736": {
       "nombre_canonico": "EMPARK APARCAMIENTOS Y SERVICIOS , S.A.",
-      "aliases": [],
+      "aliases": [
+        "EMPARK APARCAMIENTOS Y SERVICIOS, S.A.."
+      ],
       "fuente": "auto"
     },
     "B99537854": {
@@ -1366,8 +1525,10 @@
       "fuente": "auto"
     },
     "B19207083": {
-      "nombre_canonico": "FITNESS PROJECT CENTER SL",
-      "aliases": [],
+      "nombre_canonico": "FITNESS PROJECT CENTER, S.L.",
+      "aliases": [
+        "FITNESS PROJECT CENTER SL"
+      ],
       "fuente": "auto"
     },
     "A28345577": {
@@ -1381,8 +1542,10 @@
       "fuente": "auto"
     },
     "B19253954": {
-      "nombre_canonico": "ILUMINACIONES LUVISAZ S.L.",
-      "aliases": [],
+      "nombre_canonico": "ILUMINACIONES  LUVISAZ S.L.",
+      "aliases": [
+        "ILUMINACIONES LUVISAZ S.L."
+      ],
       "fuente": "auto"
     },
     "A39000013": {
@@ -1432,7 +1595,9 @@
     },
     "A28141935": {
       "nombre_canonico": "MAPFRE ESPAÑA COMPAÑIA  DE SEGUROS Y REASEGUROS,S.A.",
-      "aliases": [],
+      "aliases": [
+        "MAPFRE ESPAÑA, Cía. de Seguros y Reaseguros, S.A."
+      ],
       "fuente": "auto"
     },
     "B97611164": {
@@ -1457,12 +1622,16 @@
     },
     "B79385035": {
       "nombre_canonico": "INGENIERÍA BÁSICA OBRAS Y PROYECTOS S.L.",
-      "aliases": [],
+      "aliases": [
+        "INGENIERIA BASICA OBRAS Y PROYECTOS, S.L."
+      ],
       "fuente": "auto"
     },
     "A27178789": {
       "nombre_canonico": "OHL SERVICIOS-INGESAN, S.A.",
-      "aliases": [],
+      "aliases": [
+        "OHL Servicios-Ingesan, S.A."
+      ],
       "fuente": "auto"
     },
     "N0394221F": {
@@ -1502,7 +1671,12 @@
     },
     "B13007414": {
       "nombre_canonico": "RECIO, S.L.",
-      "aliases": [],
+      "aliases": [
+        "Recio S.L.",
+        "RECIO S.L.",
+        "RECIO SL",
+        "RECIO S.L"
+      ],
       "fuente": "auto"
     },
     "B47291117": {
@@ -1527,7 +1701,9 @@
     },
     "A82280124": {
       "nombre_canonico": "AUBAY SPAIN, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "Aubay Spain S.A.U."
+      ],
       "fuente": "auto"
     },
     "A78608940": {
@@ -1547,7 +1723,9 @@
     },
     "A80994460": {
       "nombre_canonico": "UNION CASTELLANA DE ALIMENTACION UCALSA SA",
-      "aliases": [],
+      "aliases": [
+        "Unión Castellana de Alimentación UCALSA,S.A."
+      ],
       "fuente": "auto"
     },
     "B81590606": {
@@ -1557,7 +1735,9 @@
     },
     "B82789389": {
       "nombre_canonico": "CITYLIGHT, S.L.",
-      "aliases": [],
+      "aliases": [
+        "CITYLIGHT, S.A."
+      ],
       "fuente": "auto"
     },
     "A28760692": {
@@ -1587,7 +1767,9 @@
     },
     "B80387095": {
       "nombre_canonico": "BBR INSTALACIONES, S.L.",
-      "aliases": [],
+      "aliases": [
+        "BBR INSTALACIONES SL"
+      ],
       "fuente": "auto"
     },
     "B82336868": {
@@ -1637,7 +1819,11 @@
     },
     "A82018474": {
       "nombre_canonico": "TELEFÓNICA DE ESPAÑA S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "TELEFÓNICA DE ESPAÑA, S.A.U.",
+        "TELEFONICA DE ESPAÑA, SAU",
+        "TELEFÓNICA DE ESPAÑA, S.A.U"
+      ],
       "fuente": "auto"
     },
     "A79054748": {
@@ -1652,7 +1838,9 @@
     },
     "A28544807": {
       "nombre_canonico": "FERROVIAL ENERGÍA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "FERROVIAL ENERGÍA, S.A.U."
+      ],
       "fuente": "auto"
     },
     "A08472276": {
@@ -1667,7 +1855,9 @@
     },
     "A29035896": {
       "nombre_canonico": "Riego Verde, S.A (RIVERSA)",
-      "aliases": [],
+      "aliases": [
+        "RIEGO VERDE, SA"
+      ],
       "fuente": "auto"
     },
     "G88597596": {
@@ -1692,7 +1882,9 @@
     },
     "B59416479": {
       "nombre_canonico": "HARTFORD,S.L.",
-      "aliases": [],
+      "aliases": [
+        "HARTFORD SL"
+      ],
       "fuente": "auto"
     },
     "A79380465": {
@@ -1732,12 +1924,16 @@
     },
     "A83052407": {
       "nombre_canonico": "SOCIEDAD ESTATAL CORREOS Y TELÉGRAFOS, S.A., S.M.E.",
-      "aliases": [],
+      "aliases": [
+        "SOCIEDAD ESTATAL CORREOS Y TELEGRAFOS, S.A. SME"
+      ],
       "fuente": "auto"
     },
     "B70212634": {
-      "nombre_canonico": "INGENIO MEDIA SL",
-      "aliases": [],
+      "nombre_canonico": "Ingenio Media S.L",
+      "aliases": [
+        "INGENIO MEDIA SL"
+      ],
       "fuente": "auto"
     },
     "A28006377": {
@@ -1772,7 +1968,9 @@
     },
     "B23739493": {
       "nombre_canonico": "PUBLIPRINTERS GLOBAL, S.L.",
-      "aliases": [],
+      "aliases": [
+        "PUBLIPRINTERS GLOBAL SL"
+      ],
       "fuente": "auto"
     },
     "V07103419": {
@@ -1797,7 +1995,10 @@
     },
     "A79486833": {
       "nombre_canonico": "ELECNOR SERVICIOS Y PROYECTOS,S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "ELECNOR SERVICIOS Y PROYECTOS, S.A.U.",
+        "ELECNOR SERVICIOS Y PROYECTOS S.A.U."
+      ],
       "fuente": "auto"
     },
     "F48113161": {
@@ -1807,7 +2008,9 @@
     },
     "A08749079": {
       "nombre_canonico": "KARCHER, SA",
-      "aliases": [],
+      "aliases": [
+        "KARCHER SA"
+      ],
       "fuente": "auto"
     },
     "B81322638": {
@@ -1847,7 +2050,9 @@
     },
     "A78053634": {
       "nombre_canonico": "KYOCERA DOCUMENT SOLUTIONS S.A.",
-      "aliases": [],
+      "aliases": [
+        "KYOCERA DOCUMENT SOLUTIONS ESPAÑA, S.A."
+      ],
       "fuente": "auto"
     },
     "B23817695": {
@@ -1857,7 +2062,9 @@
     },
     "A46066791": {
       "nombre_canonico": "ETRALUX, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ETRALUX SA"
+      ],
       "fuente": "auto"
     },
     "B88582002": {
@@ -1881,8 +2088,10 @@
       "fuente": "auto"
     },
     "B82435678": {
-      "nombre_canonico": "GRUPO TECNOLOGIA DEL TRAFICO, S.L.",
-      "aliases": [],
+      "nombre_canonico": "Grupo Tecnología del Tráfico, S.L.",
+      "aliases": [
+        "GRUPO TECNOLOGIA DEL TRAFICO, S.L."
+      ],
       "fuente": "auto"
     },
     "B20559191": {
@@ -1907,7 +2116,9 @@
     },
     "B33490426": {
       "nombre_canonico": "ASAC COMUNICACIONES, SL",
-      "aliases": [],
+      "aliases": [
+        "ASAC COMUNICACIONES SL"
+      ],
       "fuente": "auto"
     },
     "B81613085": {
@@ -1922,12 +2133,19 @@
     },
     "B41632332": {
       "nombre_canonico": "AYTOS SOLUCIONES INFORMATICAS, S.L.U. (actualmente BL ESPAÑA SOFTWARE, S.L.U.)",
-      "aliases": [],
+      "aliases": [
+        "BL España Software S.L.U.",
+        "AYTOS SOLUCIONES INFORMÁTICAS, S.L.U.",
+        "BL ESPAÑA SOFTWARE, S.L.U",
+        "BL ESPAÑA SOFTWARE, S.L.U."
+      ],
       "fuente": "auto"
     },
     "B82352410": {
       "nombre_canonico": "PROACTIVA FORMACIÓN S.L.",
-      "aliases": [],
+      "aliases": [
+        "PROACTIVA FORMACION SL"
+      ],
       "fuente": "auto"
     },
     "B19308576": {
@@ -1997,7 +2215,9 @@
     },
     "A28231744": {
       "nombre_canonico": "UGARTE FEIJOO, S.A. EMPRESA CONSTRUCTORA",
-      "aliases": [],
+      "aliases": [
+        "UGARTE FEIJOO, S.A."
+      ],
       "fuente": "auto"
     },
     "A81942674": {
@@ -2022,7 +2242,10 @@
     },
     "A28010478": {
       "nombre_canonico": "IMESAPI, S.A.",
-      "aliases": [],
+      "aliases": [
+        "IMESAPI S.A.",
+        "Imesapi S.A."
+      ],
       "fuente": "auto"
     },
     "B83375576": {
@@ -2072,7 +2295,9 @@
     },
     "B87452322": {
       "nombre_canonico": "DESARROLLOS LOGÍSTICOS Y FOMENTO DE SUELO, S.L.",
-      "aliases": [],
+      "aliases": [
+        "DESARROLLOS LOGISTICOS Y FOMENTO DE SUELO, S.L."
+      ],
       "fuente": "auto"
     },
     "B83054072": {
@@ -2157,7 +2382,9 @@
     },
     "B86934809": {
       "nombre_canonico": "ALQUILER Y VENTA DE VALLAS ARTE, S.L.",
-      "aliases": [],
+      "aliases": [
+        "ALQUILER Y VENTA DE VALLAS ARTE,S.L."
+      ],
       "fuente": "auto"
     },
     "B26450932": {
@@ -2192,7 +2419,10 @@
     },
     "A50878842": {
       "nombre_canonico": "ESPUBLICO SERVICIOS PARA LA ADMINISTRACIÓN S.A.",
-      "aliases": [],
+      "aliases": [
+        "ESPUBLICO SERVICIOS PARA LA ADMINISTRACION S.A.",
+        "ESPUBLICO SERVICIOS PARA LA ADMINISTRACION, S.A."
+      ],
       "fuente": "auto"
     },
     "A62518121": {
@@ -2272,7 +2502,9 @@
     },
     "B19597509": {
       "nombre_canonico": "SECUR SEGURIDAD Y CONTROL 2015, SL",
-      "aliases": [],
+      "aliases": [
+        "SECUR SEGURIDAD Y CONTROL 2015 SL"
+      ],
       "fuente": "auto"
     },
     "B83399865": {
@@ -2281,8 +2513,11 @@
       "fuente": "auto"
     },
     "B00000000": {
-      "nombre_canonico": "EULEN, S.A.- EULEN CENTRO ESPECIAL DE EMPLEO, S.A.",
-      "aliases": [],
+      "nombre_canonico": "UTE ASISPA y Sociedad BIG Formación (Academia Trinidad SL)",
+      "aliases": [
+        "EULEN, S.A.- EULEN CENTRO ESPECIAL DE EMPLEO, S.A.",
+        "UTE INTEGRA SAGARDOY"
+      ],
       "fuente": "auto"
     },
     "B58574526": {
@@ -2342,7 +2577,10 @@
     },
     "A82009812": {
       "nombre_canonico": "ORANGE ESPAGNE, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "ORANGE ESPAGNE SAU",
+        "orange espagne sau"
+      ],
       "fuente": "auto"
     },
     "B83703363": {
@@ -2377,7 +2615,9 @@
     },
     "B81748808": {
       "nombre_canonico": "Acaya Naturaleza y Vida S.L.",
-      "aliases": [],
+      "aliases": [
+        "ACAYA NATURALEZA Y VIDA SL"
+      ],
       "fuente": "auto"
     },
     "B61077020": {
@@ -2412,12 +2652,17 @@
     },
     "A80644081": {
       "nombre_canonico": "ACUNTIA S.A.U. (MARCA AXIANS)",
-      "aliases": [],
+      "aliases": [
+        "ACUNTIA S.A.U.",
+        "ACUNTIA, S.A.U."
+      ],
       "fuente": "auto"
     },
     "B90264599": {
       "nombre_canonico": "AMASCA 2016 S.L",
-      "aliases": [],
+      "aliases": [
+        "AMASCA 2016 SL"
+      ],
       "fuente": "auto"
     },
     "B79944864": {
@@ -2436,8 +2681,10 @@
       "fuente": "auto"
     },
     "B66940230": {
-      "nombre_canonico": "Acqustic Platform, S.L.",
-      "aliases": [],
+      "nombre_canonico": "ACQUSTIC PLATFORM SL",
+      "aliases": [
+        "Acqustic Platform, S.L."
+      ],
       "fuente": "auto"
     },
     "Q2873018B": {
@@ -2457,7 +2704,10 @@
     },
     "B86694056": {
       "nombre_canonico": "NOCTURNA TEAM SL",
-      "aliases": [],
+      "aliases": [
+        "NOCTURNA TEAM, S.L.",
+        "NOCTURNA TEAM S.L"
+      ],
       "fuente": "auto"
     },
     "B37321122": {
@@ -2477,7 +2727,9 @@
     },
     "B88322524": {
       "nombre_canonico": "JAGH SISTEMAS, S.L.",
-      "aliases": [],
+      "aliases": [
+        "JAGHSISTEMAS SL"
+      ],
       "fuente": "auto"
     },
     "U26806836": {
@@ -2497,7 +2749,10 @@
     },
     "A29021334": {
       "nombre_canonico": "CENTRO DE ESTUDIOS DE MATERIALES Y CONTROL DE OBRA, S.A. (CEMOSA)",
-      "aliases": [],
+      "aliases": [
+        "CENTRO DE ESTUDIOS  DE MATERIALES Y CONTROL DE OBRA, S.A",
+        "CENTRO DE ESTUDIOS DE MATERIALES Y CONTROL DE OBRA, S.A (CEMOSA)"
+      ],
       "fuente": "auto"
     },
     "B40582751": {
@@ -2507,7 +2762,10 @@
     },
     "B70429840": {
       "nombre_canonico": "LOMUNIOA, S.L.",
-      "aliases": [],
+      "aliases": [
+        "LOMUNOIA SLU",
+        "LOMUNOIA, SL."
+      ],
       "fuente": "auto"
     },
     "A32016511": {
@@ -2527,7 +2785,9 @@
     },
     "A26019992": {
       "nombre_canonico": "FCC AQUALIA S.A.",
-      "aliases": [],
+      "aliases": [
+        "FCC Aqualia, S.A."
+      ],
       "fuente": "auto"
     },
     "B29831112": {
@@ -2551,8 +2811,10 @@
       "fuente": "auto"
     },
     "A82741067": {
-      "nombre_canonico": "PREZERO ESPAÑA, S.A.",
-      "aliases": [],
+      "nombre_canonico": "PREZERO ESPAÑA, S.A.U.",
+      "aliases": [
+        "PREZERO ESPAÑA, S.A."
+      ],
       "fuente": "auto"
     },
     "B29070943": {
@@ -2597,7 +2859,9 @@
     },
     "W0072130H": {
       "nombre_canonico": "ZURICH INSURANCE AG SUCURSAL EN ESPAÑA",
-      "aliases": [],
+      "aliases": [
+        "ZURICH INSURANCE EUROPE AG, SUCURSAL EN ESPAÑA"
+      ],
       "fuente": "auto"
     },
     "A60531811": {
@@ -2682,7 +2946,9 @@
     },
     "A80375058": {
       "nombre_canonico": "TRENASA S.A.",
-      "aliases": [],
+      "aliases": [
+        "TRENASA SA"
+      ],
       "fuente": "auto"
     },
     "B86045523": {
@@ -2707,7 +2973,10 @@
     },
     "A81948077": {
       "nombre_canonico": "ENDESA ENERGÍA S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "ENDESA ENERGÍA, S.A.U",
+        "ENDESA ENERGIA SAU"
+      ],
       "fuente": "auto"
     },
     "B27495720": {
@@ -2727,12 +2996,16 @@
     },
     "A28229599": {
       "nombre_canonico": "Mapfre Vida, de Seguros y Reaseguros sobre la Vida Humana, S.A.",
-      "aliases": [],
+      "aliases": [
+        "MAPFRE VIDA SA DE SEGUROS Y REASEGUROS SOBRE LA VIDA HUMANA"
+      ],
       "fuente": "auto"
     },
     "B86290020": {
       "nombre_canonico": "Dinamo Educacion Deportes y Viajes S.L",
-      "aliases": [],
+      "aliases": [
+        "DINAMO EDUCACION DEPORTES Y VIAJES S.L"
+      ],
       "fuente": "auto"
     },
     "B10416774": {
@@ -2741,8 +3014,10 @@
       "fuente": "auto"
     },
     "B73610669": {
-      "nombre_canonico": "INTEGRA MGSI CEE MADRID, S.L.",
-      "aliases": [],
+      "nombre_canonico": "INTEGRA MANTENIMIENTO GESTIÓN Y SERVICIOS INTEGRADOS, CENTRO ESPECIAL EMPLEO MADRID, S.L",
+      "aliases": [
+        "INTEGRA MGSI CEE MADRID, S.L."
+      ],
       "fuente": "auto"
     },
     "A41441122": {
@@ -2797,12 +3072,17 @@
     },
     "F20025318": {
       "nombre_canonico": "Orona, S.Coop.",
-      "aliases": [],
+      "aliases": [
+        "ORONA S C L",
+        "Orona S.Coop."
+      ],
       "fuente": "auto"
     },
     "B84382761": {
       "nombre_canonico": "AEBIA TECNOLOGÍA Y SERVICIOS S.L.",
-      "aliases": [],
+      "aliases": [
+        "AEBIA TECNOLOGIA Y SERVICIOS S.L."
+      ],
       "fuente": "auto"
     },
     "B26799262": {
@@ -2882,7 +3162,9 @@
     },
     "B91410456": {
       "nombre_canonico": "MAC PUAR ASCENSORES S.L.",
-      "aliases": [],
+      "aliases": [
+        "MAC PUAR ASCENSORES SL"
+      ],
       "fuente": "auto"
     },
     "B82790569": {
@@ -2927,7 +3209,9 @@
     },
     "B88105507": {
       "nombre_canonico": "UMILES ENTERTAINMENT,S.L.",
-      "aliases": [],
+      "aliases": [
+        "UMILES Entertainment SL"
+      ],
       "fuente": "auto"
     },
     "B83041350": {
@@ -2947,7 +3231,9 @@
     },
     "46635049L": {
       "nombre_canonico": "JOSEP COMPTE URPI",
-      "aliases": [],
+      "aliases": [
+        "JOSEP COMPTE"
+      ],
       "fuente": "auto"
     },
     "B80077027": {
@@ -3027,7 +3313,9 @@
     },
     "B80690910": {
       "nombre_canonico": "INTERVENTO 2, S.L.",
-      "aliases": [],
+      "aliases": [
+        "INTERVENTO 2 S.L."
+      ],
       "fuente": "auto"
     },
     "B98255466": {
@@ -3057,7 +3345,9 @@
     },
     "A50316595": {
       "nombre_canonico": "CONSTRUCCIONES MARIANO LÓPEZ NAVARRO, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "CONSTRUCCIONES MARIANO LOPEZ NAVARRO, S.A.U."
+      ],
       "fuente": "auto"
     },
     "B05246400": {
@@ -3287,7 +3577,9 @@
     },
     "A28410850": {
       "nombre_canonico": "Obras y Pavimentos Especiales (OPSA)",
-      "aliases": [],
+      "aliases": [
+        "OBRAS Y PAVIMENTOS ESPECIALES, S.A"
+      ],
       "fuente": "auto"
     },
     "A47326475": {
@@ -3302,7 +3594,9 @@
     },
     "A78873973": {
       "nombre_canonico": "EUROFINS MEGALAB, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "EUROFINS MEGALAB SAU"
+      ],
       "fuente": "auto"
     },
     "B70626924": {
@@ -3371,8 +3665,10 @@
       "fuente": "auto"
     },
     "A81608077": {
-      "nombre_canonico": "T-Systems ITC Iberia, S.A.U.",
-      "aliases": [],
+      "nombre_canonico": "T-SYSTEMS ITC IBERIA, SAU",
+      "aliases": [
+        "T-Systems ITC Iberia, S.A.U."
+      ],
       "fuente": "auto"
     },
     "B42511386": {
@@ -3486,8 +3782,10 @@
       "fuente": "auto"
     },
     "B41485228": {
-      "nombre_canonico": "TEKNOSERVICE SL",
-      "aliases": [],
+      "nombre_canonico": "TEKNOSERVICE, S. L.",
+      "aliases": [
+        "TEKNOSERVICE SL"
+      ],
       "fuente": "auto"
     },
     "A78015880": {
@@ -3587,7 +3885,9 @@
     },
     "A79668430": {
       "nombre_canonico": "CONSTRUCCIONES PEREZ EGEA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "CONSTRUCCIONES PEREZ EGEA SA"
+      ],
       "fuente": "auto"
     },
     "B05259213": {
@@ -3596,8 +3896,10 @@
       "fuente": "auto"
     },
     "A79022299": {
-      "nombre_canonico": "EULEN SERVICIO SOCIOSANITARIOS, S.A.",
-      "aliases": [],
+      "nombre_canonico": "EULEN SERVICIOS SOCIOSANITARIOS, S.A.",
+      "aliases": [
+        "EULEN SERVICIO SOCIOSANITARIOS, S.A."
+      ],
       "fuente": "auto"
     },
     "B75985614": {
@@ -3687,7 +3989,10 @@
     },
     "A73998346": {
       "nombre_canonico": "ASCH INFRAESTRUCTURAS Y SERVICIOS, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ASCH INFRAESTRUCTURA Y SERVICIOS SA",
+        "ASCH INFRAESTRUCTURAS Y SERVICIOS SA"
+      ],
       "fuente": "auto"
     },
     "B85355071": {
@@ -3697,7 +4002,9 @@
     },
     "A81982225": {
       "nombre_canonico": "COORDINADORA DE GESTIÓN DE INGRESOS, SA",
-      "aliases": [],
+      "aliases": [
+        "COORDINADORA DE GESTIÓN DE INGRESOS, S.A. (CGI)"
+      ],
       "fuente": "auto"
     },
     "U72665862": {
@@ -3847,7 +4154,9 @@
     },
     "A28057230": {
       "nombre_canonico": "Sociedad Anonima De Distribucion Edicion Y Librerias, S.A.",
-      "aliases": [],
+      "aliases": [
+        "SOCIEDAD ANONIMA DE DISTRIBUCION, EDICION Y LIBRERIAS"
+      ],
       "fuente": "auto"
     },
     "B72528326": {
@@ -3886,8 +4195,10 @@
       "fuente": "auto"
     },
     "B06304984": {
-      "nombre_canonico": "CULLIGAN WATER SPAIN SL",
-      "aliases": [],
+      "nombre_canonico": "CULLIGAN WATER SPAIN SLU",
+      "aliases": [
+        "CULLIGAN WATER SPAIN SL"
+      ],
       "fuente": "auto"
     },
     "A08602815": {
@@ -3916,8 +4227,10 @@
       "fuente": "auto"
     },
     "B26421750": {
-      "nombre_canonico": "PROVISER IBERICA S.L.",
-      "aliases": [],
+      "nombre_canonico": "PROVISER IBÉRICA, S.L.U.",
+      "aliases": [
+        "PROVISER IBERICA S.L."
+      ],
       "fuente": "auto"
     },
     "A28896330": {
@@ -3997,7 +4310,10 @@
     },
     "A28119220": {
       "nombre_canonico": "OCCIDENT GCO, S.A. De Seguros y Reaseguros, Sociedad Unipersonal",
-      "aliases": [],
+      "aliases": [
+        "OCCIDENT GCO",
+        "OCCIDENT GCO SOCIEDAD ANONIMA DE SEGUROS Y REASEGUROS"
+      ],
       "fuente": "auto"
     },
     "B33819806": {
@@ -4087,7 +4403,9 @@
     },
     "A41050113": {
       "nombre_canonico": "ITURRI, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ITURRI S.A."
+      ],
       "fuente": "auto"
     },
     "B02921617": {
@@ -4177,7 +4495,9 @@
     },
     "B84921147": {
       "nombre_canonico": "PROYECT BUILDING OF SPACE, S.L.",
-      "aliases": [],
+      "aliases": [
+        "PROYECT BUILDING OF SPACE S.L"
+      ],
       "fuente": "auto"
     },
     "G86527496": {
@@ -4252,7 +4572,10 @@
     },
     "B46001897": {
       "nombre_canonico": "TK Elevadores España,S.L.",
-      "aliases": [],
+      "aliases": [
+        "TK Elevadores España, S.L.U",
+        "TK ELEVADORES ESPAÑA S.L. UNIPERSONAL"
+      ],
       "fuente": "auto"
     },
     "U88810510": {
@@ -4276,8 +4599,10 @@
       "fuente": "auto"
     },
     "B85690303": {
-      "nombre_canonico": "3 y 3 GESTIÓN DE INVERSIONES, SL.",
-      "aliases": [],
+      "nombre_canonico": "TRES Y TRES GESTION DE INVERSIONES",
+      "aliases": [
+        "3 y 3 GESTIÓN DE INVERSIONES, SL."
+      ],
       "fuente": "auto"
     },
     "B82309980": {
@@ -4322,7 +4647,9 @@
     },
     "B02331981": {
       "nombre_canonico": "UNION PROTECCION CIVIL, S.L.",
-      "aliases": [],
+      "aliases": [
+        "UNION PROTECCIONCIVIL, S.L."
+      ],
       "fuente": "auto"
     },
     "B87933172": {
@@ -4402,7 +4729,9 @@
     },
     "A78456506": {
       "nombre_canonico": "ANTALIS IBERIA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "ANTALIS IBERIA SA"
+      ],
       "fuente": "auto"
     },
     "B87274148": {
@@ -4427,7 +4756,9 @@
     },
     "A80415433": {
       "nombre_canonico": "I2A PROYECTOS INFORMÁTICOS, S.A.",
-      "aliases": [],
+      "aliases": [
+        "I2A PROYECTOS INFORMATICOS, S.A."
+      ],
       "fuente": "auto"
     },
     "B66987876": {
@@ -4522,7 +4853,9 @@
     },
     "A28003119": {
       "nombre_canonico": "MOEVE, S.A",
-      "aliases": [],
+      "aliases": [
+        "MOEVE, S.A."
+      ],
       "fuente": "auto"
     },
     "B94129756": {
@@ -4757,7 +5090,9 @@
     },
     "B19970474": {
       "nombre_canonico": "JPW FLOW, S.L",
-      "aliases": [],
+      "aliases": [
+        "JPWFLOW SL"
+      ],
       "fuente": "auto"
     },
     "B47719463": {
@@ -4831,8 +5166,10 @@
       "fuente": "auto"
     },
     "A81727810": {
-      "nombre_canonico": "Simplifae Technolgies Spain, S.A.",
-      "aliases": [],
+      "nombre_canonico": "Simplifae Technologies Spain, S.A.",
+      "aliases": [
+        "Simplifae Technolgies Spain, S.A."
+      ],
       "fuente": "auto"
     },
     "B67654384": {
@@ -4907,7 +5244,9 @@
     },
     "A25014382": {
       "nombre_canonico": "ROS ROCA, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "Ros Roca S.A.U."
+      ],
       "fuente": "auto"
     },
     "U70696661": {
@@ -5177,7 +5516,9 @@
     },
     "A80897770": {
       "nombre_canonico": "UNIVERSITAS XXI, SOLUCIONES Y TECNOLOGÍA PARA LA UNIVERSIDAD, S.A.",
-      "aliases": [],
+      "aliases": [
+        "Universitas XXI Soluciones y Tecnología de la Universidad, S.A."
+      ],
       "fuente": "auto"
     },
     "B24098824": {
@@ -5597,7 +5938,9 @@
     },
     "B81470841": {
       "nombre_canonico": "INGENIERIA Y PREVENCIÓN DE RIESGOS, S.L.",
-      "aliases": [],
+      "aliases": [
+        "Ingeniería y Prevención de riesgos, S.L."
+      ],
       "fuente": "auto"
     },
     "B70036181": {
@@ -5862,7 +6205,9 @@
     },
     "A58710740": {
       "nombre_canonico": "PALEX MEDICAL, S.A.",
-      "aliases": [],
+      "aliases": [
+        "PALEX MEDICAL S.A."
+      ],
       "fuente": "auto"
     },
     "B11630886": {
@@ -6047,7 +6392,9 @@
     },
     "A28317543": {
       "nombre_canonico": "GRUPORAGA, S.A.",
-      "aliases": [],
+      "aliases": [
+        "GRUPO RAGA SA"
+      ],
       "fuente": "auto"
     },
     "A43058387": {
@@ -6206,8 +6553,10 @@
       "fuente": "auto"
     },
     "B86063823": {
-      "nombre_canonico": "IBDDA CREACIONES SLU",
-      "aliases": [],
+      "nombre_canonico": "IBDDA CREACIONES, SL",
+      "aliases": [
+        "IBDDA CREACIONES SLU"
+      ],
       "fuente": "auto"
     },
     "B84044650": {
@@ -6222,7 +6571,9 @@
     },
     "B86048923": {
       "nombre_canonico": "MOMO ART INTERIORISMO",
-      "aliases": [],
+      "aliases": [
+        "MOMO ART INTERIORISMO, .L."
+      ],
       "fuente": "auto"
     },
     "G08215824": {
@@ -6727,12 +7078,16 @@
     },
     "B65244956": {
       "nombre_canonico": "IDENTIFICATION CARE, SL",
-      "aliases": [],
+      "aliases": [
+        "IDENTIFICATION CARE S.L."
+      ],
       "fuente": "auto"
     },
     "B85596914": {
       "nombre_canonico": "AGORA INGENIERIA, SERVICIOS Y PREVENCIÓN, S.L.-ANETO S.L",
-      "aliases": [],
+      "aliases": [
+        "AGORA INGENIERIA, SERVICIOS Y PREVENCIÓN, S.L."
+      ],
       "fuente": "auto"
     },
     "B48303036": {
@@ -6917,12 +7272,16 @@
     },
     "A97152094": {
       "nombre_canonico": "FULTON SERVICIOS INTEGRALES, S.A.",
-      "aliases": [],
+      "aliases": [
+        "FULTON SERVICIOS INTEGRALES SA"
+      ],
       "fuente": "auto"
     },
     "A80364243": {
       "nombre_canonico": "CLECE, S.A.",
-      "aliases": [],
+      "aliases": [
+        "CLECE, S.A"
+      ],
       "fuente": "auto"
     },
     "B87772505": {
@@ -7086,8 +7445,10 @@
       "fuente": "auto"
     },
     "B84851278": {
-      "nombre_canonico": "GESTION INTEGRAL DE OFICINA SL",
-      "aliases": [],
+      "nombre_canonico": "GIO - Gestión Integral de Oficina, S.L.",
+      "aliases": [
+        "GESTION INTEGRAL DE OFICINA SL"
+      ],
       "fuente": "auto"
     },
     "B03693645": {
@@ -7122,7 +7483,9 @@
     },
     "G28821254": {
       "nombre_canonico": "ALDEAS INFANTILES SOS DE ESPAÑA",
-      "aliases": [],
+      "aliases": [
+        "ALDEAS INFANTILES SOS"
+      ],
       "fuente": "auto"
     },
     "B15829443": {
@@ -7541,8 +7904,10 @@
       "fuente": "auto"
     },
     "A61648069": {
-      "nombre_canonico": "LYNTIA NETWORKS SA",
-      "aliases": [],
+      "nombre_canonico": "LYNTIA NETWORKS SAU",
+      "aliases": [
+        "LYNTIA NETWORKS SA"
+      ],
       "fuente": "auto"
     },
     "G83385781": {
@@ -8356,8 +8721,10 @@
       "fuente": "auto"
     },
     "B86858701": {
-      "nombre_canonico": "CLEVER EVENTS SL",
-      "aliases": [],
+      "nombre_canonico": "Clever Events SL",
+      "aliases": [
+        "CLEVER EVENTS SL"
+      ],
       "fuente": "auto"
     },
     "B40272502": {
@@ -8482,7 +8849,9 @@
     },
     "G86671021": {
       "nombre_canonico": "ASOCIACIÓN CULTURAL DELICALISTEN",
-      "aliases": [],
+      "aliases": [
+        "A.C. DELICALISTEN"
+      ],
       "fuente": "auto"
     },
     "B19325190": {
@@ -8621,8 +8990,10 @@
       "fuente": "auto"
     },
     "B79184115": {
-      "nombre_canonico": "MERCK LIFE SCIENCE, S.L.U",
-      "aliases": [],
+      "nombre_canonico": "Merck Life Science S.L.U.",
+      "aliases": [
+        "MERCK LIFE SCIENCE, S.L.U"
+      ],
       "fuente": "auto"
     },
     "B70296975": {
@@ -8796,8 +9167,10 @@
       "fuente": "auto"
     },
     "B80121676": {
-      "nombre_canonico": "PROLISER SL",
-      "aliases": [],
+      "nombre_canonico": "PROLISER S.L.",
+      "aliases": [
+        "PROLISER SL"
+      ],
       "fuente": "auto"
     },
     "B13624630": {
@@ -9212,7 +9585,9 @@
     },
     "B86657640": {
       "nombre_canonico": "PROSEGUR SERVICIOS DE EFECTIVO ESPAÑA, S.L.",
-      "aliases": [],
+      "aliases": [
+        "PROSEGUR SERVICIOS DE EFECTIVO ESPAÑA S.L."
+      ],
       "fuente": "auto"
     },
     "A81638108": {
@@ -9529,6 +9904,1119 @@
       "nombre_canonico": "FRUTICOLAS ATECA, S.L.",
       "aliases": [],
       "fuente": "auto"
+    },
+    "U75964239": {
+      "nombre_canonico": "UTE SERANCO, S.A.U. - INGENIERÍA OBRAS Y TECNOLOGÍA EUROPEA, S.L. - PRODESUR CONSTRUCCIÓN Y PROYECTOS, S.L., abreviadamente UTE AM URBANIZACIÓN LOTE 3",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B09627712": {
+      "nombre_canonico": "Toros de Concha y Sierra , S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B62110507": {
+      "nombre_canonico": "FUNDUCTIL TARREGA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28582013": {
+      "nombre_canonico": "CHM OBRAS E INFRAESTRUCTURAS SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28013548": {
+      "nombre_canonico": "IMPORTACIONES INDUSTRIALES, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28750891": {
+      "nombre_canonico": "PONS IP, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78623048": {
+      "nombre_canonico": "PROSELEC SEGURIDAD, S.A.U",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B26490086": {
+      "nombre_canonico": "LOPEZ CID PROCURADORES ASOCIADOS SLP",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B15828643": {
+      "nombre_canonico": "HOMELAND SECURITY SPAIN VIGILANCIA PROTECCION Y ESCOLTAS S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A79816690": {
+      "nombre_canonico": "GLOBAL MEDIA & ENTERTAINMENT SAU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B05563986": {
+      "nombre_canonico": "PIROTECNIA ANGEL CANOVAS S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A81505752": {
+      "nombre_canonico": "TARGET TECNOLIGIA, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A84036391": {
+      "nombre_canonico": "FOLDER PAPELERIAS, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G87798088": {
+      "nombre_canonico": "FUNDACIÓN CASA DE MEXICO EN ESPAÑA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B64204514": {
+      "nombre_canonico": "Flow Vacuum S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B42799353": {
+      "nombre_canonico": "We are Medianuts SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78538774": {
+      "nombre_canonico": "COCINAS CENTRALES, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87300034": {
+      "nombre_canonico": "MAGENTICA SOCIAL, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "W0254387D": {
+      "nombre_canonico": "BETA GROUP SERVICES SAS SUCURSAL EN ESPAÑA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B39866199": {
+      "nombre_canonico": "ASCAN SERVICIOS URBANOS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B83603191": {
+      "nombre_canonico": "BABEL SISTEMAS DE INFORMACIÓN, S.L.",
+      "aliases": [
+        "Babel Sistemas de Información, SLU"
+      ],
+      "fuente": "auto"
+    },
+    "B27441401": {
+      "nombre_canonico": "RG GESTION Y ENERGIA, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13846159": {
+      "nombre_canonico": "MODI SEGURIDAD, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B18379735": {
+      "nombre_canonico": "IBERICA DE ESTRATIFICADOS, SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B99135832": {
+      "nombre_canonico": "LIBELIUM COMUNICACIONES DISTRIBUIDAS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B04940698": {
+      "nombre_canonico": "Euritmia Servicios Integrales Comunitarios SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G22559025": {
+      "nombre_canonico": "Asociación BRILLAVERDE Comunidad Energética",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A80827694": {
+      "nombre_canonico": "APLICACIONES Y TRATAMIENTOS DE SISTEMAS, SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A86405305": {
+      "nombre_canonico": "SPHERA DESARROLLO E INNOVACION EN TECNOLOGIAS DE LA INFORMACION, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A84864941": {
+      "nombre_canonico": "DRACE GEOCISA, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80580566": {
+      "nombre_canonico": "ALAMEDA, GESTIÓN ARTÍSTICA Y CULTURAL, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B46589420": {
+      "nombre_canonico": "DISPROIN LEVANTE, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B05448501": {
+      "nombre_canonico": "Ciclópea Creativa SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A10991727": {
+      "nombre_canonico": "INTAN SYSTEM, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G28702504": {
+      "nombre_canonico": "ASOCIACIÓN DE SERVICIO INTEGRAL SECTORIAL PARA ANCIANOS (ASISPA)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85512572": {
+      "nombre_canonico": "OCON MADRILEÑA DE TRANSPORTES SLU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B10935112": {
+      "nombre_canonico": "ZINKO SMART SERVICES",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82422015": {
+      "nombre_canonico": "VASS CONSULTORÍA DE SISTEMAS S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B96971171": {
+      "nombre_canonico": "IMPREBIS 2000 S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B33947508": {
+      "nombre_canonico": "TALENTO TRANSFORMACION DIGITAL, SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B65243560": {
+      "nombre_canonico": "INTRO SERVICIOS INTEGRALES, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G81393548": {
+      "nombre_canonico": "Fundación Tiriángulo",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B59156034": {
+      "nombre_canonico": "COMERCIAL BLAUTEC, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82172073": {
+      "nombre_canonico": "SERIGRAFIA DE MECO, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B21509625": {
+      "nombre_canonico": "AW Soluciones Web, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B06994115": {
+      "nombre_canonico": "Kavo Dental Iberia, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B35529908": {
+      "nombre_canonico": "COMPAÑÍA DE EFICIENCIA Y SERVICIOS INTEGRALES, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87030961": {
+      "nombre_canonico": "IMPULSE PROMOTIONS TEAM S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85204758": {
+      "nombre_canonico": "ENVINYA SPORTS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G98929110": {
+      "nombre_canonico": "ASOCIACIÓN VALENCIANA DE STARTUPS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85909984": {
+      "nombre_canonico": "VT PROYECTOS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B83887125": {
+      "nombre_canonico": "SW AUDITORES ESPAÑA, S.L.P",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82871310": {
+      "nombre_canonico": "VIGON GARCIA SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56893787": {
+      "nombre_canonico": "MERGE DIGITAL S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56618416": {
+      "nombre_canonico": "Vívida Residencial S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A47032891": {
+      "nombre_canonico": "MUMECA, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A81839219": {
+      "nombre_canonico": "VOCENTO MEDIOS SAU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88365127": {
+      "nombre_canonico": "CLOSERSTILL MEDIA TECNOLOGIA S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A97929566": {
+      "nombre_canonico": "NUNSYS, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A11604238": {
+      "nombre_canonico": "ALFONSO BENITEZ, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B61098638": {
+      "nombre_canonico": "INTEGRACION SOCIAL DE MINUSVALIDOS S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87969234": {
+      "nombre_canonico": "WORLD CORPORATE GOLF CHALLENGE MANAGEMENT, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80924111": {
+      "nombre_canonico": "PANATEC SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87343190": {
+      "nombre_canonico": "CERTIFICACIÓN Y CONFIANZA CÁMARA, S.L.U.,",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "06561903A": {
+      "nombre_canonico": "MILAGROS GONZÁLEZ MENÉNDEZ",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G87007746": {
+      "nombre_canonico": "FUNDACIÓN MHW",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85990463": {
+      "nombre_canonico": "RYA RESIDENCIAS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78990413": {
+      "nombre_canonico": "MONCOBRA, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "V28306678": {
+      "nombre_canonico": "HERMANDAD NACIONAL DE ARQUITECTOS, ARQUITECTOS TECNICOS Y QUIMICOS, MUTUALIDAD DE PREVISION SOCIAL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B54303169": {
+      "nombre_canonico": "Overant Internet SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "F84415231": {
+      "nombre_canonico": "LOS OCHO GIRASOLES SOCIEDAD COOP MADRID",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78051984": {
+      "nombre_canonico": "VISEGUR S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28767077": {
+      "nombre_canonico": "REPUESTOS AUTO MOTOR RAM SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A08480519": {
+      "nombre_canonico": "LASING, S.A.",
+      "aliases": [
+        "Lasing, S.A."
+      ],
+      "fuente": "auto"
+    },
+    "B82041740": {
+      "nombre_canonico": "Conservación de Aparatos Elevadores Express, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B23974959": {
+      "nombre_canonico": "NEGOSCIOS PRACTICOS EN TRATAMIENTO DE RESIDUOS , S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B02582690": {
+      "nombre_canonico": "ESTUDIO DE ARQUITECTURA E INGENIERÍA INGETEO, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B63976567": {
+      "nombre_canonico": "ADDIENT EMPRESA CERTIFICADORA SLU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "Q2878005D": {
+      "nombre_canonico": "FEDERACION ESPAÑOLA DE BALONCESTO",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B40221921": {
+      "nombre_canonico": "GESTIONA DESARROLLO DE SERVICIOS INTEGRALES S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U10643005": {
+      "nombre_canonico": "SERVEO SERVICIOS, S.A.U., SUMELZO, S.A. y SIECSA CONSTRUCCIÓN Y SERVICIOS, S.A. UNIÓN TEMPORAL DE EMPRESAS (UTE EMT ENTREVÍAS)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13883293": {
+      "nombre_canonico": "CONCESUR MADRID SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "53409856S": {
+      "nombre_canonico": "Javier González Sánchez",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80275035": {
+      "nombre_canonico": "TOWER TBA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A08431090": {
+      "nombre_canonico": "NATURGY CLIENTES EMPRESAS SAU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82391186": {
+      "nombre_canonico": "TEAM SERVICE FACILITY S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28727840": {
+      "nombre_canonico": "CARTOUR,S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81682007": {
+      "nombre_canonico": "Daisi Ofiservices",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A79135414": {
+      "nombre_canonico": "Desarrollo, Asesoría y Formación Informática, S.A. (DAYFISA)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B70952718": {
+      "nombre_canonico": "UN NUEVO ERROR S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13868872": {
+      "nombre_canonico": "Biblio Alibri SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19225366": {
+      "nombre_canonico": "ECO OLEUM, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82757089": {
+      "nombre_canonico": "PREVENCION INDIVIDUAL Y COLECTIVA SL UNIPERSONAL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88285911": {
+      "nombre_canonico": "PRODUCCIONES ROKAMBOLESKAS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86014461": {
+      "nombre_canonico": "CONSISTROL ÁLVAREZ Y ASOCIADOS S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B42891978": {
+      "nombre_canonico": "ALBALA GESTIÓN DOCUMENTAL, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82575929": {
+      "nombre_canonico": "Hormigones La Poveda, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B78185410": {
+      "nombre_canonico": "TRAFOSAN MEDIO AMBIENTE, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B32280760": {
+      "nombre_canonico": "FORMATO VERDE, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A80495864": {
+      "nombre_canonico": "Servicios de Teleasistencia S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U93761591": {
+      "nombre_canonico": "DON ADOLFO MALDONADO MARTÍN Y “TRASDÓS TÉCNICAS Y ARQUITECTURAS DE CUENCA, S.L.P.” UNIÓN TEMPORAL DE EMPRESAS, LEY 18/1982, DE 26 DE MAYO, abreviadamente «UTE MALDONADO-TRASDÓS VALLECAS 71»",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85099828": {
+      "nombre_canonico": "ÁLAMOCONSULTING S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "Q5018001G": {
+      "nombre_canonico": "UNIVERSIDAD DE ZARAGOZA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28472819": {
+      "nombre_canonico": "FUJITSU TECHNOLOGY SOLUTIONS, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B47753892": {
+      "nombre_canonico": "DISTRIASVY, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87650842": {
+      "nombre_canonico": "IPARVENDING CENTRO ESPECIAL DE EMPLEO, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "N2502367B": {
+      "nombre_canonico": "JobTeaser",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A83202358": {
+      "nombre_canonico": "MANAGEMENT FOCUS S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84838515": {
+      "nombre_canonico": "RON LALA TEATRO S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A80929490": {
+      "nombre_canonico": "AMADEUS SOLUCIONES TECNOLÓGICAS, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G86553591": {
+      "nombre_canonico": "Asociación Pedagogías Invisibles",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56481013": {
+      "nombre_canonico": "SINGLE AND JAM, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B75689034": {
+      "nombre_canonico": "DYNAMIC SPORT MANAGEMENT&CONSULTANCY, S.L.",
+      "aliases": [
+        "DYNAMIC SPORT MANAGEMENT & CONSULTANCY, SL"
+      ],
+      "fuente": "auto"
+    },
+    "Q0873006A": {
+      "nombre_canonico": "FIRA INTERNACIONAL DE BARCELONA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B59843920": {
+      "nombre_canonico": "STACKS CONSULTING E INGENIERÍA EN SOFTWARE, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19494392": {
+      "nombre_canonico": "52 GESTIÓN DEPORTIVA INTEGRAL SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B97645980": {
+      "nombre_canonico": "INIA NEURAL SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88586920": {
+      "nombre_canonico": "Elsamex Gestión de Infraestructuras, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82719774": {
+      "nombre_canonico": "RED2RED CONSULTORES, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B47403043": {
+      "nombre_canonico": "ALPA COPIADORAS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B15675515": {
+      "nombre_canonico": "CITANIAS OBRAS Y SERVICIOS, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A45662764": {
+      "nombre_canonico": "VETTONIA SEGURIDAD, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B23737562": {
+      "nombre_canonico": "TRANS-ASISTENCIA DE LA CHICA SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85494748": {
+      "nombre_canonico": "TLS-Boca Systems Spain SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "F91513705": {
+      "nombre_canonico": "TEATRO CLÁSICO DE SEVILLA SCA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80574536": {
+      "nombre_canonico": "ESPACIO TECNICO Z S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87161485": {
+      "nombre_canonico": "EYOWN TECHNOLOGIES S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86855608": {
+      "nombre_canonico": "GEN Europe Soluciones Energéticas S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G82270489": {
+      "nombre_canonico": "Asociación MASI (Monitores de Apoyo Social a la Infancia)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B79032850": {
+      "nombre_canonico": "ATOSA AGLOMERADOS TOLEDO, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B73492423": {
+      "nombre_canonico": "REGENERA LEVANTE, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "06234259V": {
+      "nombre_canonico": "SAYME MONITORIZACIÓN ESTRUCTURAL,S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88339312": {
+      "nombre_canonico": "Soluciones Integrales para Cocinas Profesionales S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B16544926": {
+      "nombre_canonico": "CALIDAD CROMÁTICA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B01683077": {
+      "nombre_canonico": "Churrería y Cafetería la Fabrica SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78964012": {
+      "nombre_canonico": "FRANCISCO NUÑEZ SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "38557811J": {
+      "nombre_canonico": "TROMBER DEVELOPMENT, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84373034": {
+      "nombre_canonico": "ILUFIESTA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86525920": {
+      "nombre_canonico": "TAC TEC TENIS ACADEMY S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19623057": {
+      "nombre_canonico": "SYCO SISTEMAS E INSTALACIONES S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19489129": {
+      "nombre_canonico": "MAD GASTRO RESTAURACION SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B02558393": {
+      "nombre_canonico": "Total Ekip S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13475009": {
+      "nombre_canonico": "CORPORACION JUDIRICA MERCANTIL FERNANDEZ Y FERNANDEZ ASOCIADOS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81230252": {
+      "nombre_canonico": "MR Informática, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19837202": {
+      "nombre_canonico": "FSAS Technologies S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B99273369": {
+      "nombre_canonico": "ANEUM LED SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B23267131": {
+      "nombre_canonico": "Bujarkay S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88455639": {
+      "nombre_canonico": "PALOMA BARRIOS MARTIN S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U19977792": {
+      "nombre_canonico": "UTE: ELSAMEX GESTION DE INFRAESTRUCTURAS S.L - COMSA SERVICE FACILITY MANAGEMENT S.A.U, (UTE MEJORA EE FUENLABRADA,)",
+      "aliases": [
+        "UTE: ELSAMEX GESTION DEINFRAESTRUCTURAS S.L - COMSASERVICE FACILITY MANAGEMENT S.A.U.(UTE MEJORA EE FUENLABRADA)"
+      ],
+      "fuente": "auto"
+    },
+    "B28474443": {
+      "nombre_canonico": "SANFIZ, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B09553876": {
+      "nombre_canonico": "ARTISTAS Y ORQUESTAS, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B16741472": {
+      "nombre_canonico": "DOSNOMADAS 2023 SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A08616724": {
+      "nombre_canonico": "LARA ANDALUCÍA, S. A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84034313": {
+      "nombre_canonico": "Sociedad de apoyo, atención y rehabilitación integral MITA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G78511292": {
+      "nombre_canonico": "FUNDACION JOSE MARIA DE LLANOS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A84486018": {
+      "nombre_canonico": "ABACO QUALITY, S.A.U",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "70038452W": {
+      "nombre_canonico": "MARIA CARMEN FERNANDEZ RUIZ",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B49154818": {
+      "nombre_canonico": "CEVIAM EPC, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84054204": {
+      "nombre_canonico": "Arnaiz Aparejadores SLP",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B42719112": {
+      "nombre_canonico": "KOMBU DATA SERVICES SLU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G09667676": {
+      "nombre_canonico": "Kubics Creación Digital para la Transformación Social Asociación",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U87999280": {
+      "nombre_canonico": "GESTIÓN INTELIGENTE DE CARGA, S.L. - ETRALUX, S.A. (UTE PLATAFORMA GIC)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A37500725": {
+      "nombre_canonico": "ACEINSA SALAMANCA SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88965124": {
+      "nombre_canonico": "OKAPI SERVICIOS OCIO EDUCATIVOS S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B61791935": {
+      "nombre_canonico": "ISERN PATENTES Y MARCAS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "50319303H": {
+      "nombre_canonico": "José Luis Ramos Romo",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87759478": {
+      "nombre_canonico": "HIDROSERVICIOS MEDIO AMBIENTE",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80503048": {
+      "nombre_canonico": "AFANIAS JARDISER S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B90364068": {
+      "nombre_canonico": "EDAIR TECHNOLOGIES S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B49290117": {
+      "nombre_canonico": "DMH MEDIA PROJECTS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U93835767": {
+      "nombre_canonico": "NTT DATA SPAIN, S.L.U. - NTT DATA SPAIN BPO, S.L.U",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B54556147": {
+      "nombre_canonico": "ASE MEDITERRÁNEO S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B79283982": {
+      "nombre_canonico": "CONTAMAR ASESORES DE EMPRESA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B39761788": {
+      "nombre_canonico": "UTE VIALINE GESTION S.L.U.-ITM INSTALACIONES Y MANTENIMIENTO DE TELECOMUNICACIONES S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56371701": {
+      "nombre_canonico": "Tiempo de Juegos DYR, SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A79228854": {
+      "nombre_canonico": "PIAMONTE SERVICIOS INTEGRALES S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G87987905": {
+      "nombre_canonico": "ASOCIACIÓN SOCIOEDUCATIVA TEATRO QUE CURA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B98523004": {
+      "nombre_canonico": "Notikumi SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78424900": {
+      "nombre_canonico": "ARPO EMPRESA CONSTRUCTORA, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84614734": {
+      "nombre_canonico": "CINK VENTURING, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "00256072J": {
+      "nombre_canonico": "Miguel Angel Camacho Gonzalez",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56505373": {
+      "nombre_canonico": "LAOFISINICA SVQ, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B75843045": {
+      "nombre_canonico": "RIFF STAR, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82682832": {
+      "nombre_canonico": "PENTATEL COMUNICACIONES, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86798949": {
+      "nombre_canonico": "NTI CAD SYSTEMS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B02975878": {
+      "nombre_canonico": "ORBYN IBU SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B65510018": {
+      "nombre_canonico": "PERALTA MOBILIARIO URBANO Y PUBLICIDAD SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "74724265W": {
+      "nombre_canonico": "RUBEN YERAY CASTRO SEGURA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81724320": {
+      "nombre_canonico": "MOTOR ARJONA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13422902": {
+      "nombre_canonico": "Audisec Seguridad de la Información S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85581155": {
+      "nombre_canonico": "HARPO HABLA SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B24759664": {
+      "nombre_canonico": "MUCHO HIELO, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A46057345": {
+      "nombre_canonico": "INDUSTRIAS SALUDES S.A.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G28562007": {
+      "nombre_canonico": "ASOCIACIÓN DE REVISTAS DE INFORMACIÓN ARI",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B59197707": {
+      "nombre_canonico": "Sumescal S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U72641699": {
+      "nombre_canonico": "UTE VÍAS Y CONSTRUCCIONES, S.A., ACEINSA MOVILIDAD, S.A. Y RETINEO INGENIERIA S.L.U., abreviadamente UTE ACUERDO MARCO ESTRUCTURAS LOTE 2",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B74416371": {
+      "nombre_canonico": "CGS MOVILIDAD, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86241056": {
+      "nombre_canonico": "Foradem Consultores, sl",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B47383328": {
+      "nombre_canonico": "INMEVA INFRAESTRUCTURAS,S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87302881": {
+      "nombre_canonico": "LA PIEL DE MARTINA, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81563207": {
+      "nombre_canonico": "ANDRIALA, SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B28205904": {
+      "nombre_canonico": "BUREAU VERITAS IBERIA SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B50349323": {
+      "nombre_canonico": "CR CONFECCIONES RAMOS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B35537836": {
+      "nombre_canonico": "promoción de la formacion las palmas s.l.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "29104001P": {
+      "nombre_canonico": "TALLERES CAROD, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28011716": {
+      "nombre_canonico": "Viena Reposteria Capellanes, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G88013966": {
+      "nombre_canonico": "COÑUMOR, ASOCIACIÓN DE HUMOR FEMINISTA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82209669": {
+      "nombre_canonico": "CERRAJERIA ORBAMA S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "51265920R": {
+      "nombre_canonico": "HOSKELIN RENE MEJIA CONSTANZA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B22410294": {
+      "nombre_canonico": "TITIRITEROS DE BINEFAR S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B12559290": {
+      "nombre_canonico": "GRUPO MEDITERRANEA SOCIAL Y CULTURAL S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B02890275": {
+      "nombre_canonico": "MOEL ABOGACIA CORPORATIVA, S.L.P.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U24810756": {
+      "nombre_canonico": "UTE EMVS AEBIA-ENVISER",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B45861986": {
+      "nombre_canonico": "CARROCERIA Y SERVICIOS DEL AUTOCAR, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81635278": {
+      "nombre_canonico": "Orchestra Systems, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A46308433": {
+      "nombre_canonico": "JOAQUIN AYORA SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85819712": {
+      "nombre_canonico": "EBENEN ESCUELA DE IDIOMAS SLU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B95792784": {
+      "nombre_canonico": "ASESORES DE ORGANIZACION Y SISTEMAS DE INFORMATICA SLL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A60367927": {
+      "nombre_canonico": "INTIMUS INTERNATIONAL IBERICA, S.A.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85559383": {
+      "nombre_canonico": "SCADI GLOBAL CONSULTING ENTERPRISE, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U56999550": {
+      "nombre_canonico": "SPHERA-NTT SPAIN UTE",
+      "aliases": [],
+      "fuente": "auto"
     }
   },
   "aliases_sin_nif": {
@@ -9590,7 +11078,22 @@
     "dragados sa": "A15139314",
     "disinforsl": "B78949799",
     "vias y construcciones sa": "A28017986",
-    "fundacion atenea grupo gid": "G84392810"
+    "fundacion atenea grupo gid": "G84392810",
+    "excavaciones y construcciones sampe sa": "A78646163",
+    "ute vialine gestion sl - netkia soluciones sl": "U23990989",
+    "jardineria pozuelo sl": "B82222316",
+    "recio sl": "B13007414",
+    "cgs movilidad sl": "B74416371",
+    "mapfre vida sa de seguros y reaseguros sobre la vida humana": "A28229599",
+    "7 estrellas educacion y ocio slu": "B83117291",
+    "aon iberia sau correduria de seguros": "A28109247",
+    "bl espana software slu": "B41632332",
+    "toros de concha y sierra slu": "B09627712",
+    "orbyn ibu sl": "B02975878",
+    "kombu data services slu": "B42719112",
+    "bujarkay sl": "B23267131",
+    "hartford sl": "B59416479",
+    "fujitsu technology solutions sa": "A28472819"
   },
   "organismos": {
     "consejeria_sanidad": {
@@ -9690,7 +11193,9 @@
         "ADI, Alta Velocidad",
         "ADIF-Alta Velocidad",
         "Administrador de Infraestructuras Ferroviarias",
-        "Entidad Pública Empresarial Administrador de Infraestructuras Ferroviarias"
+        "Entidad Pública Empresarial Administrador de Infraestructuras Ferroviarias",
+        "Adif Alta Velocidad",
+        "Adif — Alta Velocidad"
       ]
     },
     "agencia_vivienda_social": {
@@ -9717,13 +11222,16 @@
       "nombre_canonico": "Servicio Madrileño de Salud, Hospital Universitario 12 de Octubre",
       "aliases": [
         "Servicio Madrileño de Salud — Hospital Universitario «12 de Octubre»",
-        "Servicio Madrileño de Salud, Hospital Universitario, 12 de Octubre"
+        "Servicio Madrileño de Salud, Hospital Universitario, 12 de Octubre",
+        "Servicio Madrileño De Salud, Hospital Universitario 12 de Octubre",
+        "Servicio Madrileño de Salud, Hospital Universitario «12 de Octubre»"
       ]
     },
     "hospital_cruz_roja": {
       "nombre_canonico": "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja San José y Santa Adela",
       "aliases": [
-        "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja «San José y Santa Adela»"
+        "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja «San José y Santa Adela»",
+        "Servicio Madrileño de Salud, Hospital Central de la Cruz Roja San José y Santa Adela"
       ]
     },
     "hospital_puerta_hierro": {
@@ -9803,6 +11311,13 @@
         "Consejo de Administración de Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID S.A.)",
         "Dirección General de Mercados Centrales de Abastecimiento de Madrid S.A. (MERCAMADRID S.A.)"
       ]
+    },
+    "em madrid destino cultura turismo y negocio s a": {
+      "nombre_canonico": "EM Madrid Destino Cultura Turismo y Negocio, S.A.",
+      "aliases": [
+        "EM Madrid Destino Cultura, Turismo y Negocio, S.A."
+      ],
+      "fuente": "auto"
     }
   }
 }

@@ -1,10 +1,10 @@
 {
-  "total": 7892,
+  "total": 8184,
   "archivos": [
     {
       "anio": "2026",
       "archivo": "2026.json",
-      "total": 7281
+      "total": 7573
     },
     {
       "anio": "2016",
@@ -12,5 +12,22 @@
       "total": 611
     }
   ],
-  "cargas": []
+  "cargas": [
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-12T14:48:23.126Z",
+      "lote": {
+        "placsp": 1772,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2026-09-29T07:16:55.668Z",
+        "hasta": "2026-10-11T12:11:45.882Z"
+      },
+      "recibidos": 1772,
+      "anadidos": 292,
+      "modificados": 1131,
+      "sin_cambios": 6761
+    }
+  ]
 }
