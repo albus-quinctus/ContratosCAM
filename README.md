@@ -121,6 +121,7 @@ npm run serve
 | `npm run check` | Comprueba la sintaxis de todo el JavaScript (`node --check`) y ejecuta `npm test` |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
+| `node scripts/medir-pasos.js <script>` | Ejecuta `npm run <script>` y apunta su duración; con `--resumen` muestra la tabla de tiempos (los workflows la publican en su resumen) |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
 | `npm run dev` | Alias de `serve` para desarrollo local |
 
