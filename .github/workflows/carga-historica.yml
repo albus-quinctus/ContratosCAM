@@ -114,11 +114,11 @@ jobs:
         run: npm ci
 
       - name: Descargar el histórico
-        run: npm run download:historico -- --desde=${{ matrix.anio }} --hasta=${{ matrix.anio }} --feed=${{ matrix.feed }}
+        run: node scripts/medir-pasos.js download:historico -- --desde=${{ matrix.anio }} --hasta=${{ matrix.anio }} --feed=${{ matrix.feed }}
 
       # Solo se conservan los contratos de la Comunidad de Madrid (pocos MB)
       - name: Parsear el histórico
-        run: npm run parse -- --historico
+        run: node scripts/medir-pasos.js parse -- --historico
 
       - name: Guardar los contratos parseados
         uses: actions/upload-artifact@v4
@@ -127,6 +127,11 @@ jobs:
           path: data/raw/parsed-licitaciones.json
           if-no-files-found: error
           retention-days: 7
+
+      # También si algo ha fallado: es cuando más interesa ver dónde se fue el tiempo
+      - name: Publicar tiempos por paso
+        if: always()
+        run: node scripts/medir-pasos.js --resumen >> "$GITHUB_STEP_SUMMARY"
 
   integrar:
     name: Integrar y validar
@@ -158,15 +163,15 @@ jobs:
           for lote in parseados/*/parsed-licitaciones.json; do
             echo "::group::Integrar $(basename "$(dirname "$lote")")"
             cp "$lote" data/raw/parsed-licitaciones.json
-            npm run transform
+            node scripts/medir-pasos.js transform
             echo "::endgroup::"
           done
 
       - name: Resolver entidades e importar
-        run: npm run resolve && npm run import-db
+        run: node scripts/medir-pasos.js resolve && node scripts/medir-pasos.js import-db
 
       - name: Validar datos generados
-        run: npm run validate
+        run: node scripts/medir-pasos.js validate
 
       - name: Guardar el commit de los datos publicados
         run: git log -1 --format=%H -- data/processed > "$COMMIT_BASE"
@@ -208,6 +213,11 @@ jobs:
             echo "### Para publicar"
             echo "Lanza este workflow desde \`main\` con \`run_id\` = \`${{ github.run_id }}\` y \`confirmar\` = \`$TOTAL_VALIDADO\`."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # También si algo ha fallado: es cuando más interesa ver dónde se fue el tiempo
+      - name: Publicar tiempos por paso
+        if: always()
+        run: node scripts/medir-pasos.js --resumen >> "$GITHUB_STEP_SUMMARY"
 
   # ───────────────────────────────────────────────────────────────────────────
   # Confirmación

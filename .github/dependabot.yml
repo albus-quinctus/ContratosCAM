@@ -1,0 +1,19 @@
+# Avisos de actualización de dependencias. Dependabot solo abre PRs contra
+# develop: nada se actualiza hasta que se revisa y se fusiona.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "deps(actions)"
+
+  - package-ecosystem: npm
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "deps(npm)"
