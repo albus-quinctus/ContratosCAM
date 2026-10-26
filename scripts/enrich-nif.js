@@ -74,7 +74,7 @@ function normalizarNombreEmpresa(nombre) {
   return nombre
     .toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Eliminar tildes
-    .replace(/[.,;:'"()\-\/\\]/g, ' ')  // Puntuación → espacio
+    .replace(/[.,;:'"()\-/\\]/g, ' ')  // Puntuación → espacio
     .replace(/\b(s\.?l\.?u?\.?|s\.?a\.?|s\.?l\.?l\.?|s\.?c\.?|coop\.?)\b/gi, '') // Formas jurídicas
     .replace(/\s+/g, ' ')
     .trim();
@@ -208,7 +208,7 @@ async function buscarNifEnPLACSP(url, nombreAdjudicatario) {
 
     // Fallback: devolver el primer NIF de empresa encontrado
     return nifsEmpresa[0] || null;
-  } catch (error) {
+  } catch {
     // Timeout, error de red, etc. — no es crítico
     return null;
   }
@@ -266,7 +266,7 @@ async function buscarNifEnOpenCorporates(nombreEmpresa) {
     }
 
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

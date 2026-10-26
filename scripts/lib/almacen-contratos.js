@@ -104,7 +104,7 @@ export function leerContratosDe(dir) {
     try {
       return JSON.parse(fs.readFileSync(path.join(dir, archivo), 'utf-8'));
     } catch (err) {
-      throw new Error(`No se pudo leer ${archivo}: ${err.message}`);
+      throw new Error(`No se pudo leer ${archivo}: ${err.message}`, { cause: err });
     }
   });
 }
