@@ -117,7 +117,8 @@ npm run serve
 | `npm run publicar` | Muestra los cambios de la copia de trabajo validada; con `-- --confirmar=N` la publica en `data/processed/contratos/` |
 | `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
 | `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
-| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos, del flujo de publicación y del parseo de los feeds |
+| `npm test` | Ejecuta todas las suites de pruebas (`scripts/_qa-*.js`): deduplicación, almacén de contratos, flujo de publicación y parseo de los feeds |
+| `npm run check` | Comprueba la sintaxis de todo el JavaScript (`node --check`) y ejecuta `npm test` |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
