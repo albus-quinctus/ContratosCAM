@@ -27,3 +27,34 @@ jobs:
 
       - name: Ejecutar tests
         run: npm test
+
+  web:
+    name: Prueba de humo de la web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar Chromium para Playwright
+        run: npx playwright install --with-deps chromium
+
+      # Construye el sitio, lo sirve en local y abre cada página (playwright.config.js)
+      - name: Ejecutar la prueba de humo
+        run: npm run test:web
+
+      - name: Guardar las trazas si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prueba-humo-web
+          path: test-results/
+          retention-days: 7

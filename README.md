@@ -118,6 +118,7 @@ npm run serve
 | `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
 | `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
 | `npm test` | Ejecuta todas las suites de pruebas (`scripts/_qa-*.js`): deduplicación, almacén de contratos, flujo de publicación y parseo de los feeds |
+| `npm run test:web` | Prueba de humo de la web con Playwright: construye el sitio, lo sirve en local y comprueba que cada página (también `/en/`) carga los datos sin errores |
 | `npm run check` | Comprueba la sintaxis de todo el JavaScript (`node --check`) y ejecuta `npm test` |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
