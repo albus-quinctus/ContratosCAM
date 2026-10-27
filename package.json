@@ -31,6 +31,7 @@
     "test": "node scripts/ejecutar-tests.js",
     "lint": "eslint .",
     "check": "node scripts/comprobar-sintaxis.js && npm run lint && npm test",
+    "test:web": "playwright test",
     "enrich:nif": "node scripts/enrich-nif.js",
     "etl": "npm run download && npm run parse && npm run transform && npm run resolve && npm run import-db && npm run validate && npm run publicar",
     "etl:ted": "npm run download:ted && npm run parse:ted",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "eslint": "^10.12.0",
     "globals": "^17.13.0",
     "serve": "^14.2.1"
