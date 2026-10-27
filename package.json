@@ -29,7 +29,8 @@
     "descartar": "node scripts/publicar-datos.js --descartar",
     "eliminar": "node scripts/eliminar-contratos.js",
     "test": "node scripts/ejecutar-tests.js",
-    "check": "node scripts/comprobar-sintaxis.js && npm test",
+    "lint": "eslint .",
+    "check": "node scripts/comprobar-sintaxis.js && npm run lint && npm test",
     "enrich:nif": "node scripts/enrich-nif.js",
     "etl": "npm run download && npm run parse && npm run transform && npm run resolve && npm run import-db && npm run validate && npm run publicar",
     "etl:ted": "npm run download:ted && npm run parse:ted",
@@ -48,6 +49,9 @@
     "sql.js": "^1.12.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
     "serve": "^14.2.1"
   },
   "keywords": [

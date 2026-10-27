@@ -83,21 +83,6 @@ const ESTADOS_XML = {
   'PRE': 'pre_adjudicacion',
 };
 
-/**
- * Estados derivados del contrato — valores finales normalizados.
- * Se infieren a partir del estado XML + datos disponibles (adjudicatario, fechas, antigüedad).
- */
-const ESTADOS_DERIVADOS = [
-  'en_licitacion',
-  'en_evaluacion',
-  'pre_adjudicado',
-  'adjudicado',
-  'formalizado',
-  'resuelto',
-  'anulado',
-  'posiblemente_resuelto',
-];
-
 // Nota: La normalización de organismos y la canonización de adjudicatarios
 // se realizan en scripts/resolve-entities.js (paso separado del pipeline).
 // transform.js solo se encarga de normalizar campos individuales.

@@ -25,5 +25,5 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Ejecutar tests
-        run: npm test
+      - name: Comprobar sintaxis, lint y tests
+        run: npm run check
