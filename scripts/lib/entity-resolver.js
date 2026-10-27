@@ -258,7 +258,7 @@ export function construirRegistro(contratos, registroExistente = null) {
   }
 
   // Para cada grupo sin NIF, verificar si algún alias coincide con una empresa conocida
-  for (const [clave, freq] of porClave) {
+  for (const [clave] of porClave) {
     // ¿Ya existe en el índice de aliases?
     if (registro.aliases_sin_nif[clave]) continue;
 
