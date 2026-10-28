@@ -93,7 +93,7 @@ export function idDeContrato(contrato) {
  * @param {object} contrato
  * @returns {string[]}
  */
-function fuentesDe(contrato) {
+export function fuentesDe(contrato) {
   return contrato.fuentes || [contrato.fuente];
 }
 

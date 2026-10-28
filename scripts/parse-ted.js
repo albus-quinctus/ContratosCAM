@@ -17,6 +17,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
+import { FUENTE } from './lib/fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw/ted');
@@ -374,7 +375,7 @@ function extraerContratoTED(parsed, publicationNumber) {
     fecha_adjudicacion: fechaAdjudicacion,
     nuts_code: nutsCodes[0] || 'ES300',
     url_origen: urlOrigen,
-    fuente: 'ted_ue',
+    fuente: FUENTE.TED,
     // Campos enriquecidos exclusivos de TED
     ted_publication_number: publicationNumber,
     num_ofertas: numOfertas,
