@@ -22,6 +22,10 @@ const CONFIG = Object.freeze({
   DEBOUNCE_MS: 300,
 });
 
+// Identificador de la fuente TED en los contratos. Debe coincidir con
+// FUENTE.TED de scripts/lib/fuentes.js (lo comprueba scripts/_qa-fuentes.js)
+const FUENTE_TED = 'ted_ue';
+
 const COLORES = [
   '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
   '#16a085', '#d35400', '#2c3e50', '#f39c12', '#1abc9c',
@@ -301,7 +305,7 @@ function renderizarTabla() {
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
     '<td class="col-tipo">' +
       '<span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' +
-      (c.ted_publication_number || c.fuente === 'ted_ue' ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">🇪🇺</span>' : '') +
+      (c.ted_publication_number || c.fuente === FUENTE_TED ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">🇪🇺</span>' : '') +
     '</td>' +
     '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +

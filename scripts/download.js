@@ -14,6 +14,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { PREFIJO_ATOM_SEMANAL } from './lib/feeds-placsp.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
@@ -178,7 +179,7 @@ async function main() {
   while (urlActual && paginaActual <= MAX_PAGINAS) {
     console.log(`\n📥 Página ${paginaActual}/${MAX_PAGINAS}`);
 
-    const nombreArchivo = `placsp-licitaciones-${fecha}-p${String(paginaActual).padStart(2, '0')}.atom`;
+    const nombreArchivo = `${PREFIJO_ATOM_SEMANAL}${fecha}-p${String(paginaActual).padStart(2, '0')}.atom`;
     const rutaDestino = path.join(RAW_DIR, nombreArchivo);
 
     // No volver a descargar si ya existe el archivo de hoy

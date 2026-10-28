@@ -16,6 +16,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import initSqlJs from 'sql.js';
 import { dirVigente, leerContratos } from './lib/almacen-contratos.js';
+import { FUENTE } from './lib/fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,7 +45,7 @@ const SQL_CREAR_TABLAS = `
     fecha_adjudicacion      TEXT,
     fecha_formalizacion     TEXT,
     url_origen              TEXT,
-    fuente                  TEXT DEFAULT 'placsp',
+    fuente                  TEXT DEFAULT '${FUENTE.PLACSP}',
     num_ofertas             INTEGER,
     ted_publication_number  TEXT,
     created_at              TEXT DEFAULT (datetime('now')),
@@ -250,7 +251,7 @@ async function main() {
   const meta = {
     generado_en: new Date().toISOString(),
     total_contratos: procesados,
-    fuente: 'placsp',
+    fuente: FUENTE.PLACSP,
   };
   fs.writeFileSync(META_PATH, JSON.stringify(meta, null, 2), 'utf-8');
   console.log(`\n📋 Metadatos escritos en: ${path.basename(META_PATH)}`);

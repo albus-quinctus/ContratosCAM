@@ -20,7 +20,7 @@ import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
 import { FUENTE } from './lib/fuentes.js';
 import { esDeCAM } from './lib/filtro-cam.js';
-import { EXTENSION_ZIP, FEEDS_HISTORICO, HISTORICO_DIR } from './lib/feeds-placsp.js';
+import { EXTENSION_ZIP, FEEDS_HISTORICO, HISTORICO_DIR, PREFIJO_ATOM_SEMANAL } from './lib/feeds-placsp.js';
 import { atomsDeZip, leerDeZip } from './lib/zip.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -343,7 +343,7 @@ function extraerJerarquia(locatedParty) {
  */
 function listarFicheros(conHistorico) {
   const ficheros = fs.readdirSync(RAW_DIR)
-    .filter(f => f.startsWith('placsp-') && f.endsWith('.atom'))
+    .filter(f => f.startsWith(PREFIJO_ATOM_SEMANAL) && f.endsWith('.atom'))
     .sort()
     .map(f => ({ nombre: f, fuente: FUENTE.PLACSP, leer: () => fs.readFileSync(path.join(RAW_DIR, f), 'utf-8') }));
 
