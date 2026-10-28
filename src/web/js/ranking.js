@@ -23,10 +23,7 @@ const CONFIG = Object.freeze({
   TOP_CHART: 10,
 });
 
-const COLORES = [
-  '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
-  '#16a085', '#d35400', '#2c3e50', '#f39c12', '#1abc9c',
-];
+const { COLOR_PRINCIPAL } = window.Presentacion;
 
 // Mapa de criterio de ordenación → función comparadora
 const ORDENADORES = {
@@ -117,9 +114,9 @@ function badgeClass(tipo) {
 }
 
 function medalla(posicion) {
-  if (posicion <= 3)  return '<span class="medal medal--gold"   aria-label="Top 3">🥇</span>';
-  if (posicion <= 10) return '<span class="medal medal--silver" aria-label="Top 10">🥈</span>';
-  if (posicion <= 25) return '<span class="medal medal--bronze" aria-label="Top 25">🥉</span>';
+  if (posicion <= 3)  return '<span class="medal medal--gold"   role="img" aria-label="Top 3"></span>';
+  if (posicion <= 10) return '<span class="medal medal--silver" role="img" aria-label="Top 10"></span>';
+  if (posicion <= 25) return '<span class="medal medal--bronze" role="img" aria-label="Top 25"></span>';
   return '';
 }
 
@@ -372,7 +369,6 @@ function renderizarTabla() {
   if (pagina.length === 0) {
     tbody.innerHTML =
       '<tr><td colspan="7"><div class="empty-state">' +
-      '<div class="empty-state-icon">🔍</div>' +
       '<p>' + esc(t('ranking.sinAdjudicatarios')) + '</p>' +
       '</div></td></tr>';
     return;
@@ -423,7 +419,7 @@ function renderizarTabla() {
       '<td class="col-importe-total">' +
         '<span class="cell-importe">' + formatearImporte(entrada.importeTotal) + '</span>' +
         (estado.incluirEstimacionUte && entrada.importeUteEstimado > 0
-          ? '<div class="ute-estimacion">+' + formatearImporte(entrada.importeUteEstimado) + ' ⚠️</div>'
+          ? '<div class="ute-estimacion">≈ +' + formatearImporte(entrada.importeUteEstimado) + '</div>'
           : '') +
       '</td>' +
       '<td class="col-importe-medio">' +
@@ -477,8 +473,8 @@ function actualizarEstadisticas() {
     datos.reduce((s, e) => s + e.numContratos, 0).toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, e) => s + e.importeTotal, 0);
-  document.getElementById('stat-importe-total').textContent =
-    importeTotal > 0 ? formatearImporte(importeTotal) : '—';
+  Presentacion.mostrarImporteDestacado(
+    document.getElementById('stat-importe-total'), importeTotal, formatearImporte(importeTotal));
 
   const nombre = datos.length > 0 ? datos[0].nombre : null;
   document.getElementById('stat-top-empresa').textContent = nombre
@@ -506,6 +502,7 @@ function renderizarGrafica() {
     estado.chartTop10 = null;
   }
 
+  Presentacion.aplicarEstiloGraficas();
   estado.chartTop10 = new Chart(canvas, {
     type: 'bar',
     data: {
@@ -513,9 +510,7 @@ function renderizarGrafica() {
       datasets: [{
         label: labelEje,
         data: valores,
-        backgroundColor: COLORES,
-        borderRadius: 4,
-        borderSkipped: false,
+        backgroundColor: COLOR_PRINCIPAL,
       }],
     },
     options: {

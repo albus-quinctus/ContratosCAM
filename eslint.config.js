@@ -29,10 +29,12 @@ export default [
       globals: {
         ...globals.browser,
         // Definidos por otros <script> de la página: Chart.js (CDN),
-        // i18next (js/vendor/) y DatosCAM (js/datos.js)
+        // i18next (js/vendor/), DatosCAM (js/datos.js) y Presentacion
+        // (js/presentacion.js)
         Chart: 'readonly',
         i18next: 'readonly',
         DatosCAM: 'readonly',
+        Presentacion: 'readonly',
       },
     },
   },

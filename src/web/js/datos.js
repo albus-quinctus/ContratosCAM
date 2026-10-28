@@ -148,7 +148,7 @@ function mostrarErrorCarga() {
   const tbody = document.getElementById('tabla-body');
   tbody.innerHTML =
     '<tr><td colspan="' + COLUMNAS_TABLA + '"><div class="empty-state">' +
-    '<div class="empty-state-icon">⚠️</div><p></p>' +
+    '<p></p>' +
     '</div></td></tr>';
   tbody.querySelector('.empty-state p').textContent = t('comun.errorCargaDatos');
 }
