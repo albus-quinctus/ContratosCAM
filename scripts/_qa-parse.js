@@ -8,7 +8,8 @@
  *
  * Comprueba que se conservan solo los contratos de la Comunidad de Madrid,
  * que se guardan todos los lotes adjudicados, que el histórico solo se lee
- * con --historico, de dentro de sus ZIP, y que cada feed anota su fuente.
+ * con --historico, de dentro de sus ZIP, y que cada feed, semanal o
+ * histórico, anota su fuente.
  *
  * Uso: node scripts/_qa-parse.js
  */
@@ -18,7 +19,7 @@ import os from 'os';
 import path from 'path';
 import { execFileSync, spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { FEEDS_HISTORICO, feedPorClave, periodosHistorico, urlZip } from './lib/feeds-placsp.js';
+import { FEEDS_HISTORICO, feedDeFicheroSemanal, feedPorClave, periodosHistorico, urlAtomSemanal, urlZip } from './lib/feeds-placsp.js';
 import { FUENTE } from './lib/fuentes.js';
 import { assert, assertDeep, terminar } from './lib/qa.js';
 
@@ -34,6 +35,7 @@ fs.cpSync(__dirname, path.join(RAIZ, 'scripts'), { recursive: true });
 fs.symlinkSync(path.join(__dirname, '../node_modules'), path.join(RAIZ, 'node_modules'));
 fs.mkdirSync(path.join(RAIZ, 'data/raw'), { recursive: true });
 
+const FEED_PERFILES = feedPorClave('perfiles');
 const FEED_AGREGADAS = feedPorClave('agregadas');
 const DIR_HISTORICO = path.join(RAIZ, 'data/raw/historico', FEED_AGREGADAS.clave);
 const ZIP_HISTORICO = path.join(DIR_HISTORICO, '2019.zip');
@@ -155,8 +157,17 @@ const JERARQUIA_OTRA = ['Sector Público', 'Comunidad Autónoma de Prueba'];
 // se reconoce por el código de órgano
 const JERARQUIA_AGREGADA = ['Consejería de Sanidad', 'Servicio Madrileño de Salud'];
 
-// Feed semanal: un contrato de la CAM con dos lotes y otro de fuera de la CAM
-fs.writeFileSync(path.join(RAIZ, 'data/raw/placsp-licitaciones-2026-10-05-p01.atom'), feed([
+/**
+ * Nombre de una página del feed semanal, como los que guarda download.js.
+ * @param {object} feedPlacsp - Elemento de FEEDS_HISTORICO
+ * @returns {string}
+ */
+function ficheroSemanal(feedPlacsp) {
+  return `${feedPlacsp.prefijoSemanal}-2026-10-05-p01.atom`;
+}
+
+// Feed semanal de perfiles: un contrato de la CAM con dos lotes y otro de fuera de la CAM
+fs.writeFileSync(path.join(RAIZ, 'data/raw', ficheroSemanal(FEED_PERFILES)), feed([
   entrada({
     expediente: 'CAM-LOTES',
     jerarquia: JERARQUIA_CAM,
@@ -166,6 +177,21 @@ fs.writeFileSync(path.join(RAIZ, 'data/raw/placsp-licitaciones-2026-10-05-p01.at
     ],
   }),
   entrada({ expediente: 'OTRA-CCAA', jerarquia: JERARQUIA_OTRA }),
+]), 'utf-8');
+
+// Feed semanal de plataformas agregadas: un contrato de la CAM reconocido por
+// el código de órgano
+fs.writeFileSync(path.join(RAIZ, 'data/raw', ficheroSemanal(FEED_AGREGADAS)), feed([
+  entrada({
+    expediente: 'CAM-SEMANAL-AGREGADAS',
+    jerarquia: JERARQUIA_AGREGADA,
+    identificadores: [{ esquema: 'ID_OC_PLAT', id: 'A13013764' }],
+  }),
+]), 'utf-8');
+
+// Un fichero de data/raw/ que no es de ningún feed semanal no se parsea
+fs.writeFileSync(path.join(RAIZ, 'data/raw/otro-feed-2026-10-05-p01.atom'), feed([
+  entrada({ expediente: 'CAM-SIN-FEED', jerarquia: JERARQUIA_CAM }),
 ]), 'utf-8');
 
 // Histórico de plataformas agregadas, en un ZIP como los de PLACSP: un
@@ -211,6 +237,21 @@ console.log('\n📋 Tests: periodos del histórico');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Tests: feeds semanales
+// ─────────────────────────────────────────────────────────────────────────────
+
+console.log('\n📋 Tests: feeds semanales');
+
+{
+  assert('la URL del feed semanal es la del Atom del feed', urlAtomSemanal(FEED_AGREGADAS), `${FEED_AGREGADAS.urlBase}.atom`);
+  assert('cada feed tiene su propio prefijo semanal', new Set(FEEDS_HISTORICO.map(f => f.prefijoSemanal)).size, FEEDS_HISTORICO.length);
+  for (const feedPlacsp of FEEDS_HISTORICO) {
+    assert(`reconoce los ficheros semanales del feed ${feedPlacsp.clave}`, feedDeFicheroSemanal(ficheroSemanal(feedPlacsp)), feedPlacsp);
+  }
+  assert('un fichero de otro feed no es de ninguno', feedDeFicheroSemanal('otro-feed-2026-10-05-p01.atom'), undefined);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Tests: parseo del feed semanal
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -223,6 +264,9 @@ console.log('\n📋 Tests: parseo del feed semanal');
   assert('conserva el contrato de la CAM', 'CAM-LOTES' in contratos, true);
   assert('descarta el de otra administración', 'OTRA-CCAA' in contratos, false);
   assert('sin --historico no lee el histórico', 'CAM-HISTORICO' in contratos, false);
+  assert('no lee ficheros que no son de un feed semanal', 'CAM-SIN-FEED' in contratos, false);
+  assert('lee el feed semanal de plataformas agregadas', 'CAM-SEMANAL-AGREGADAS' in contratos, true);
+  assert('…con la fuente de su feed', contratos['CAM-SEMANAL-AGREGADAS'].fuente, FUENTE.PLACSP_AGREGADAS);
 
   const conLotes = contratos['CAM-LOTES'];
   assert('anota la fuente del feed', conLotes.fuente, FUENTE.PLACSP);
