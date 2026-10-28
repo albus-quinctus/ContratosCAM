@@ -126,6 +126,13 @@
         </div>
       </div>
 
+      <!-- Años cargados: los más recientes al abrir, el resto bajo demanda (ver js/datos.js) -->
+      <div class="selector-anios" role="group" aria-labelledby="selector-anios-titulo">
+        <span class="filter-label" id="selector-anios-titulo" data-i18n="anios.titulo">Años</span>
+        <div class="selector-anios-casillas" id="selector-anios-casillas"></div>
+        <button id="btn-todos-anios" class="btn btn--secondary btn--sm" type="button" data-i18n="anios.todos">Todos</button>
+      </div>
+
       <!-- Filtros y ordenación -->
       <div class="ranking-filters">
 
@@ -147,13 +154,6 @@
           <label class="filter-label" for="filtro-organismo" data-i18n="comun.organismo">Organismo</label>
           <select id="filtro-organismo" class="filter-select">
             <option value="" data-i18n="filtros.todosOrganismos">Todos los organismos</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="filtro-anio" data-i18n="filtros.anio">Año</label>
-          <select id="filtro-anio" class="filter-select">
-            <option value="" data-i18n="filtros.todosAnios">Todos los años</option>
           </select>
         </div>
 
@@ -298,6 +298,7 @@
           <li>Incluye licitaciones en curso (sin adjudicatario aún) y contratos adjudicados.</li>
           <li><strong>No incluye</strong> contratos menores no publicados en PLACSP (por debajo de los umbrales de publicación).</li>
         </ul>
+        <p id="sobre-periodo"></p>
         <h3 data-i18n="sobre.frecuenciaTitulo">¿Con qué frecuencia se actualiza?</h3>
         <p data-i18n-html="sobre.frecuenciaTexto">
           Los datos se actualizan automáticamente cada <strong>lunes</strong> mediante GitHub Actions.

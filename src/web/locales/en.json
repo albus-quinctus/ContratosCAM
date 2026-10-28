@@ -66,13 +66,18 @@
     "limpiarFiltros": "✕ Clear filters",
     "limpiar": "✕ Clear",
     "tipoContrato": "Contract type",
-    "anio": "Year",
-    "todosAnios": "All years",
     "ordenarPor": "Sort by",
     "ordenImporte": "Highest total amount",
     "ordenContratos": "Most contracts",
     "ordenMedia": "Highest average amount",
     "ordenNombre": "Name (A-Z)"
+  },
+  "anios": {
+    "titulo": "Years",
+    "todos": "All",
+    "sinFecha": "No date",
+    "contratos_one": "{{count, number}} contract",
+    "contratos_other": "{{count, number}} contracts"
   },
   "paginacion": {
     "anterior": "← Previous",
@@ -225,6 +230,7 @@
     "procesoTexto": "An automated pipeline downloads the PLACSP Atom feed every week, keeps the contracts of the <strong>Community of Madrid</strong>, normalises the fields (dates, amounts, names of contracting bodies), removes duplicates and generates the JSON file this website loads. All the code is public and auditable on <a href=\"https://github.com/albus-quinctus/ContratosCAM\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>.",
     "alcanceTitulo": "Which contracts are included?",
     "alcanceLista": "<li>Contracts published on PLACSP by bodies of the Community of Madrid.</li><li>All procedures: open, negotiated, restricted, minor, etc.</li><li>Both ongoing tenders (not yet awarded) and awarded contracts.</li><li><strong>Not included:</strong> minor contracts not published on PLACSP (below the publication thresholds).</li>",
+    "periodo": "Available period: contracts published between {{desde}} and {{hasta}}.",
     "frecuenciaTitulo": "How often is it updated?",
     "frecuenciaTexto": "The data is updated automatically every <strong>Monday</strong> through GitHub Actions. The date of the last update is shown at the top of the page.",
     "legalTitulo": "Legal framework",

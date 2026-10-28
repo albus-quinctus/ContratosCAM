@@ -3,7 +3,7 @@
  *
  * Lógica principal del frontend de ContratosCAM.
  *
- * Carga los datos desde un JSON estático, gestiona búsqueda, filtros,
+ * Carga los datos por años desde JSON estáticos, gestiona búsqueda, filtros,
  * paginación, ordenación, modal de detalle, exportación CSV y gráficas.
  */
 
@@ -26,6 +26,11 @@ const COLORES = [
   '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
   '#16a085', '#d35400', '#2c3e50', '#f39c12', '#1abc9c',
 ];
+
+// Selectores de filtro cuyas opciones salen de los contratos cargados
+const SELECTS_FILTRO = Object.freeze([
+  'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-procedimiento', 'filtro-estado',
+]);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Estado de la aplicación
@@ -735,6 +740,27 @@ function inicializarFiltros() {
   });
 }
 
+/**
+ * Vuelve a poblar los filtros con los contratos cargados, conservando lo
+ * elegido si sigue disponible.
+ */
+function repoblarFiltros() {
+  const valores = DatosCAM.leerValores(SELECTS_FILTRO);
+  inicializarFiltros();
+  filtrarOrganismosPorCategoria(valores.get('filtro-categoria'));
+  DatosCAM.restaurarValores(valores);
+}
+
+/**
+ * Muestra los contratos de los años marcados en el selector de años.
+ * @param {Array} datos
+ */
+function mostrarAnios(datos) {
+  estado.datos = datos;
+  repoblarFiltros();
+  aplicarFiltros();
+}
+
 function inicializarOrdenacion() {
   document.querySelectorAll('.contratos-table th.sortable').forEach(th => {
     th.addEventListener('click', () => {
@@ -759,10 +785,13 @@ function inicializarOrdenacion() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos, metadatos y traducciones
+  // 1. Cargar índice, metadatos y traducciones, y los años por defecto
   let datosRaw, meta;
   try {
-    [datosRaw, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta(), window.I18n.listo]);
+    let encontrado;
+    [encontrado, meta] = await Promise.all([DatosCAM.cargarIndice(), DatosCAM.cargarMeta(), window.I18n.listo]);
+    DatosCAM.mostrarPeriodo(encontrado.indice);
+    datosRaw = await DatosCAM.cargarSeleccion(DatosCAM.montarSelectorAnios(encontrado.indice, mostrarAnios));
   } catch (err) {
     console.error(err);
     await window.I18n.listo;
@@ -770,7 +799,8 @@ async function init() {
     mostrarFechaActualizacion(null);
     return;
   }
-  estado.datos = datosRaw;
+  // Si ya se ha marcado otra selección, sus contratos llegan por mostrarAnios
+  if (datosRaw) estado.datos = datosRaw;
   estado.filtrados = [...estado.datos];
   mostrarFechaActualizacion(meta);
 
