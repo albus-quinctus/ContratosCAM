@@ -3,7 +3,7 @@
  *
  * Lógica de la página de ranking de adjudicatarios de ContratosCAM.
  *
- * Carga los datos desde el JSON estático, agrega por adjudicatario y
+ * Carga los datos por años desde JSON estáticos, agrega por adjudicatario y
  * presenta un ranking interactivo con filtros, gráfica y modal de detalle.
  */
 
@@ -48,6 +48,9 @@ const CAMPO_METRICA = {
 // ─────────────────────────────────────────────────────────────────────────────
 // Estado de la aplicación
 // ─────────────────────────────────────────────────────────────────────────────
+
+// Selectores de filtro cuyas opciones salen de los contratos cargados
+const SELECTS_FILTRO = Object.freeze(['filtro-tipo', 'filtro-categoria', 'filtro-organismo']);
 
 const estado = {
   ranking: [],            // Array de entradas agregadas por adjudicatario
@@ -185,7 +188,6 @@ function construirRanking(contratos) {
         tipos: new Set(),
         organismos: new Set(),
         categorias: new Set(),
-        anios: new Set(),
         esUte: false,
         miembrosUte: [],
       });
@@ -212,10 +214,6 @@ function construirRanking(contratos) {
     if (c.tipo) entrada.tipos.add(c.tipo);
     if (c.organismo) entrada.organismos.add(c.organismo);
     if (c.categoria_organismo) entrada.categorias.add(c.categoria_organismo);
-    if (c.fecha_publicacion) {
-      const anio = c.fecha_publicacion.substring(0, 4);
-      if (anio) entrada.anios.add(anio);
-    }
   }
 
   const ranking = [...mapa.values()].map(entrada => {
@@ -232,7 +230,6 @@ function construirRanking(contratos) {
       tipos: [...entrada.tipos].sort(),
       organismos: [...entrada.organismos].sort(),
       categorias: [...entrada.categorias].sort(),
-      anios: [...entrada.anios].sort(),
       contratos: entrada.contratos,
       esUte: entrada.esUte,
       miembrosUte: entrada.miembrosUte,
@@ -287,14 +284,13 @@ function obtenerFiltros() {
     tipo:       document.getElementById('filtro-tipo').value,
     categoria:  document.getElementById('filtro-categoria').value,
     organismo:  document.getElementById('filtro-organismo').value,
-    anio:       document.getElementById('filtro-anio').value,
     ordenarPor: document.getElementById('ordenar-por').value,
   };
 }
 
 function aplicarFiltros() {
   const f = obtenerFiltros();
-  const hayFiltroContrato = !!(f.tipo || f.categoria || f.organismo || f.anio);
+  const hayFiltroContrato = !!(f.tipo || f.categoria || f.organismo);
 
   const resultado = estado.ranking.filter(entrada => {
     if (f.busqueda) {
@@ -308,7 +304,6 @@ function aplicarFiltros() {
     if (f.tipo      && !entrada.tipos.includes(f.tipo))           return false;
     if (f.categoria && !entrada.categorias.includes(f.categoria)) return false;
     if (f.organismo && !entrada.organismos.includes(f.organismo)) return false;
-    if (f.anio      && !entrada.anios.includes(f.anio))           return false;
     return true;
   });
 
@@ -322,7 +317,6 @@ function aplicarFiltros() {
         if (f.tipo && c.tipo !== f.tipo) return false;
         if (f.categoria && (c.categoria_organismo || 'otros') !== f.categoria) return false;
         if (f.organismo && c.organismo !== f.organismo) return false;
-        if (f.anio && (!c.fecha_publicacion || c.fecha_publicacion.substring(0, 4) !== f.anio)) return false;
         return true;
       });
       const n = contratosFiltrados.length;
@@ -871,12 +865,32 @@ function filtrarOrganismosPorCategoria(categoriaSeleccionada) {
 
 function inicializarFiltros() {
   const tipos = [...new Set(estado.ranking.flatMap(e => e.tipos))].sort();
-  const anios = [...new Set(estado.ranking.flatMap(e => e.anios))].sort().reverse();
 
   poblarSelect('filtro-tipo', tipos);
   poblarSelectCategoria();
   poblarSelectOrganismoConOptgroup();
-  poblarSelect('filtro-anio', anios);
+}
+
+/**
+ * Vuelve a poblar los filtros con el ranking calculado, conservando lo
+ * elegido si sigue disponible.
+ */
+function repoblarFiltros() {
+  const valores = DatosCAM.leerValores(SELECTS_FILTRO);
+  inicializarFiltros();
+  filtrarOrganismosPorCategoria(valores.get('filtro-categoria'));
+  DatosCAM.restaurarValores(valores);
+}
+
+/**
+ * Recalcula el ranking con los contratos de los años marcados en el selector
+ * de años.
+ * @param {Array} contratos
+ */
+function mostrarAnios(contratos) {
+  estado.ranking = construirRanking(contratos);
+  repoblarFiltros();
+  aplicarFiltros();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -884,10 +898,13 @@ function inicializarFiltros() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // 1. Cargar datos, metadatos y traducciones en paralelo
+  // 1. Cargar índice, metadatos y traducciones, y los años por defecto
   let contratos, meta;
   try {
-    [contratos, meta] = await Promise.all([DatosCAM.cargarContratos(), DatosCAM.cargarMeta(), window.I18n.listo]);
+    let encontrado;
+    [encontrado, meta] = await Promise.all([DatosCAM.cargarIndice(), DatosCAM.cargarMeta(), window.I18n.listo]);
+    DatosCAM.mostrarPeriodo(encontrado.indice);
+    contratos = await DatosCAM.cargarSeleccion(DatosCAM.montarSelectorAnios(encontrado.indice, mostrarAnios));
   } catch (err) {
     console.error(err);
     await window.I18n.listo;
@@ -895,7 +912,8 @@ async function init() {
     mostrarFechaActualizacion(null);
     return;
   }
-  estado.ranking         = construirRanking(contratos);
+  // Si ya se ha marcado otra selección, sus contratos llegan por mostrarAnios
+  if (contratos) estado.ranking = construirRanking(contratos);
   estado.rankingFiltrado = [...estado.ranking];
   mostrarFechaActualizacion(meta);
 
@@ -918,7 +936,6 @@ async function init() {
     aplicarFiltros();
   });
   document.getElementById('filtro-organismo').addEventListener('change', aplicarFiltros);
-  document.getElementById('filtro-anio').addEventListener('change', aplicarFiltros);
   document.getElementById('ordenar-por').addEventListener('change', aplicarFiltros);
 
   // 4b. Toggle de estimación UTEs
@@ -932,7 +949,7 @@ async function init() {
 
   // 5. Limpiar filtros
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-anio'].forEach(id => {
+    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('ordenar-por').value = 'importe';

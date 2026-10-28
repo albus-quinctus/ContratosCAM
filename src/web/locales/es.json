@@ -66,13 +66,18 @@
     "limpiarFiltros": "✕ Limpiar filtros",
     "limpiar": "✕ Limpiar",
     "tipoContrato": "Tipo de contrato",
-    "anio": "Año",
-    "todosAnios": "Todos los años",
     "ordenarPor": "Ordenar por",
     "ordenImporte": "Mayor importe total",
     "ordenContratos": "Más contratos",
     "ordenMedia": "Mayor importe medio",
     "ordenNombre": "Nombre (A-Z)"
+  },
+  "anios": {
+    "titulo": "Años",
+    "todos": "Todos",
+    "sinFecha": "Sin fecha",
+    "contratos_one": "{{count, number}} contrato",
+    "contratos_other": "{{count, number}} contratos"
   },
   "paginacion": {
     "anterior": "← Anterior",
@@ -225,6 +230,7 @@
     "procesoTexto": "Un pipeline automatizado descarga semanalmente el feed Atom de PLACSP, filtra los contratos de la <strong>Comunidad de Madrid</strong>, normaliza los campos (fechas, importes, nombres de organismos), elimina duplicados y genera el archivo JSON que carga esta web. Todo el código es público y auditable en <a href=\"https://github.com/albus-quinctus/ContratosCAM\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>.",
     "alcanceTitulo": "¿Qué contratos incluye?",
     "alcanceLista": "<li>Contratos publicados en PLACSP por organismos de la Comunidad de Madrid.</li><li>Todos los procedimientos: abierto, negociado, restringido, menor, etc.</li><li>Incluye licitaciones en curso (sin adjudicatario aún) y contratos adjudicados.</li><li><strong>No incluye</strong> contratos menores no publicados en PLACSP (por debajo de los umbrales de publicación).</li>",
+    "periodo": "Periodo disponible: contratos publicados entre {{desde}} y {{hasta}}.",
     "frecuenciaTitulo": "¿Con qué frecuencia se actualiza?",
     "frecuenciaTexto": "Los datos se actualizan automáticamente cada <strong>lunes</strong> mediante GitHub Actions. La fecha de la última actualización aparece en la cabecera de la página.",
     "legalTitulo": "Marco legal",
