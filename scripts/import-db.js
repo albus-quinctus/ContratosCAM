@@ -17,6 +17,7 @@ import { fileURLToPath } from 'url';
 import initSqlJs from 'sql.js';
 import { dirVigente, leerContratos } from './lib/almacen-contratos.js';
 import { FUENTE } from './lib/fuentes.js';
+import { fuentesDe } from './lib/integrar-lote.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -251,7 +252,8 @@ async function main() {
   const meta = {
     generado_en: new Date().toISOString(),
     total_contratos: procesados,
-    fuente: FUENTE.PLACSP,
+    // Fuentes que han aportado algún contrato de los datos importados
+    fuentes: [...new Set(contratos.flatMap(fuentesDe))].sort(),
   };
   fs.writeFileSync(META_PATH, JSON.stringify(meta, null, 2), 'utf-8');
   console.log(`\n📋 Metadatos escritos en: ${path.basename(META_PATH)}`);
