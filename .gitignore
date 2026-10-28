@@ -57,3 +57,7 @@ tmp/
 temp/
 *.tmp
 _site/
+
+# ── Resultados de la prueba de humo de la web (Playwright) ───────────────────
+test-results/
+playwright-report/

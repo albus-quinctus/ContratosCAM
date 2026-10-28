@@ -109,34 +109,6 @@ function textoParrafos(node) {
 }
 
 /**
- * Mapea códigos de tipo de contrato de TED al esquema normalizado.
- */
-function mapearTipoContrato(code) {
-  const mapa = {
-    '1': 'obras',
-    '2': 'suministros',
-    '4': 'servicios',
-    '3': 'servicios', // En TED, 3 = public works concession, mapeamos a servicios
-  };
-  return mapa[code] || 'otros';
-}
-
-/**
- * Mapea códigos de procedimiento de TED al esquema normalizado.
- */
-function mapearProcedimiento(code) {
-  const mapa = {
-    '1': 'abierto',
-    '2': 'restringido',
-    '3': 'negociado',
-    '4': 'negociado',
-    '6': 'negociado_sin_publicidad',
-    'V': 'negociado_sin_publicidad', // Award without prior publication
-  };
-  return mapa[code] || 'abierto';
-}
-
-/**
  * Extrae los criterios de adjudicación del formulario TED.
  *
  * Los criterios pueden estar en:
@@ -254,13 +226,9 @@ function extraerContratoTED(parsed, publicationNumber) {
   // Tipo de documento (solo nos interesan adjudicaciones: TD=7)
   const tdCode = get(codifData, 'TD_DOCUMENT_TYPE', '@_CODE');
 
-  // Tipo de contrato
+  // Tipo de contrato y procedimiento (transform.js los traduce al esquema normalizado)
   const ncCode = get(codifData, 'NC_CONTRACT_NATURE', '@_CODE');
-  const tipo = mapearTipoContrato(ncCode);
-
-  // Procedimiento
   const prCode = get(codifData, 'PR_PROC', '@_CODE');
-  const procedimiento = mapearProcedimiento(prCode);
 
   // Valores
   const valuesNode = get(noticeData, 'VALUES');

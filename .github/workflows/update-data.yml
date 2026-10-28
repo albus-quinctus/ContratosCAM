@@ -45,11 +45,11 @@ jobs:
         run: npm ci
 
       - name: Ejecutar pipeline ETL PLACSP
-        run: npm run download && npm run parse
+        run: node scripts/medir-pasos.js download && node scripts/medir-pasos.js parse
 
       - name: Descargar y parsear datos TED-UE
         id: ted
-        run: npm run download:ted && npm run parse:ted
+        run: node scripts/medir-pasos.js download:ted && node scripts/medir-pasos.js parse:ted
         continue-on-error: true  # TED es fuente complementaria, no bloquear si falla
 
       - name: Registrar estado de TED
@@ -57,10 +57,10 @@ jobs:
         run: echo "⚠️ TED-UE falló en esta ejecución. Los datos se publican solo con PLACSP." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Transformar, resolver entidades e importar datos combinados
-        run: npm run transform && npm run resolve && npm run import-db
+        run: node scripts/medir-pasos.js transform && node scripts/medir-pasos.js resolve && node scripts/medir-pasos.js import-db
 
       - name: Validar datos generados
-        run: npm run validate
+        run: node scripts/medir-pasos.js validate
 
       # Solo se publica lo que ha pasado la validación (ver scripts/lib/almacen-contratos.js).
       # La confirmación es el total que aprobó validate: si la copia cambia, no coincide y no se publica.
@@ -115,6 +115,11 @@ jobs:
           echo "---" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "📁 Carpeta: \`data/processed/contratos/\` (un fichero por año)" >> "$GITHUB_STEP_SUMMARY"
+
+      # También si algo ha fallado: es cuando más interesa ver dónde se fue el tiempo
+      - name: Publicar tiempos por paso
+        if: always()
+        run: node scripts/medir-pasos.js --resumen >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     name: Desplegar en GitHub Pages

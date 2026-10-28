@@ -117,9 +117,13 @@ npm run serve
 | `npm run publicar` | Muestra los cambios de la copia de trabajo validada; con `-- --confirmar=N` la publica en `data/processed/contratos/` |
 | `npm run descartar` | Muestra qué se descartaría; con `-- --confirmar=N` descarta la copia de trabajo sin publicarla |
 | `npm run eliminar` | Elimina contratos de forma explícita (pide `--motivo` y `--confirmar=N`) |
-| `npm test` | Ejecuta las pruebas de deduplicación, del almacén de contratos, del flujo de publicación y del parseo de los feeds |
+| `npm test` | Ejecuta todas las suites de pruebas (`scripts/_qa-*.js`): deduplicación, almacén de contratos, flujo de publicación y parseo de los feeds |
+| `npm run test:web` | Prueba de humo de la web con Playwright: construye el sitio, lo sirve en local y comprueba que cada página (también `/en/`) carga los datos sin errores |
+| `npm run lint` | Revisa el JavaScript con ESLint (reglas recomendadas: variables sin usar, globales sin definir, etc.) |
+| `npm run check` | Comprueba la sintaxis de todo el JavaScript (`node --check`), pasa `npm run lint` y ejecuta `npm test` |
 | `npm run etl` | Ejecuta todo el pipeline (download → parse → transform → import-db → validate) y muestra qué se publicaría |
 | `npm run etl:validate` | Pipeline completo + validación |
+| `node scripts/medir-pasos.js <script>` | Ejecuta `npm run <script>` y apunta su duración; con `--resumen` muestra la tabla de tiempos (los workflows la publican en su resumen) |
 | `npm run serve` | Sirve el proyecto en `localhost:3000` (frontend en `/src/web/`) |
 | `npm run dev` | Alias de `serve` para desarrollo local |
 
