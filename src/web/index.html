@@ -21,7 +21,7 @@
   <meta name="referrer" content="no-referrer" />
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23faf8f3'/><text x='16' y='25' font-family='Georgia,serif' font-size='26' font-weight='700' text-anchor='middle' fill='%23c8102e'>C</text></svg>" />
 
   <!-- Chart.js con Subresource Integrity (SRI) -->
   <script
@@ -42,74 +42,86 @@
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════════ CABECERA -->
+  <!-- ═══════════════════════════════════════════════ CABECERA (MANCHETA) -->
   <header class="site-header">
     <div class="container">
+      <div class="header-top">
+        <p class="header-lema" data-i18n="cabecera.lema">Datos abiertos · Proyecto de código abierto</p>
+        <span class="nav-idioma" role="group" aria-label="Idioma" data-i18n-aria-label="nav.idiomaAria">
+          <a class="nav-link--idioma" data-idioma="es" hreflang="es" lang="es">ES</a>
+          <a class="nav-link--idioma" data-idioma="en" hreflang="en" lang="en">EN</a>
+        </span>
+      </div>
       <div class="header-brand">
-        <span class="header-icon" aria-hidden="true">🏛️</span>
-        <div>
-          <h1 class="header-title">ContratosCAM</h1>
-          <p class="header-subtitle" data-i18n="cabecera.subtitulo">Contratación pública de la Comunidad de Madrid</p>
-        </div>
+        <h1 class="header-title">Contratos<span class="header-title-acento">CAM</span></h1>
+        <p class="header-subtitle" data-i18n="cabecera.subtitulo">Contratación pública de la Comunidad de Madrid</p>
       </div>
       <nav class="header-nav" aria-label="Navegación principal" data-i18n-aria-label="nav.aria">
-        <a href="#buscador" class="nav-link active" data-i18n="nav.contratos">Contratos</a>
-        <a href="ranking.html" class="nav-link nav-link--page" data-i18n="nav.ranking">🏆 Ranking</a>
-        <button id="btn-sobre-datos" class="nav-link nav-link--btn" type="button" data-i18n="nav.sobreDatos">ℹ️ Sobre los datos</button>
+        <a href="#buscador" class="nav-link" aria-current="page" data-i18n="nav.contratos">Contratos</a>
+        <a href="ranking.html" class="nav-link" data-i18n="nav.ranking">Ranking</a>
+        <button id="btn-sobre-datos" class="nav-link nav-link--btn" type="button" data-i18n="nav.sobreDatos">Sobre los datos</button>
         <a href="https://github.com/albus-quinctus/ContratosCAM" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">
-          GitHub ↗
+          <span data-i18n="nav.github">Código en GitHub</span> ↗
         </a>
-        <span class="nav-idioma" role="group" aria-label="Idioma" data-i18n-aria-label="nav.idiomaAria">
-          <a class="nav-link nav-link--idioma" data-idioma="es" hreflang="es" lang="es">ES</a>
-          <a class="nav-link nav-link--idioma" data-idioma="en" hreflang="en" lang="en">EN</a>
-        </span>
       </nav>
+      <!-- Línea de fecha: última actualización de los datos -->
+      <div class="update-banner" id="update-banner" aria-live="polite">
+        <span id="data-update-date" data-i18n="actualizacion.cargando">Cargando fecha de actualización…</span>
+        <span class="update-banner-frecuencia" data-i18n="actualizacion.frecuencia">Se actualiza cada semana</span>
+      </div>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- ══════════════════════════════════════════════════════ BANNER ACTUALIZACIÓN -->
-    <div class="update-banner" id="update-banner" aria-live="polite">
-      <span class="update-banner-icon" aria-hidden="true">🔄</span>
-      <span id="data-update-date" data-i18n="actualizacion.cargando">Cargando fecha de actualización…</span>
-    </div>
+    <!-- ══════════════════════════════════════════ APERTURA Y DATOS CLAVE -->
+    <section class="apertura" aria-labelledby="apertura-titular">
+      <div class="apertura-texto">
+        <p class="antetitulo" data-i18n="indice.antetitulo">Transparencia</p>
+        <h2 class="apertura-titular" id="apertura-titular" data-i18n="indice.titular">¿En qué gasta la Comunidad de Madrid?</h2>
+        <p class="entradilla" data-i18n="indice.entradilla">Los contratos públicos adjudicados por la Comunidad, sus organismos y los ayuntamientos de la región, reunidos a partir de fuentes oficiales y consultables en abierto.</p>
+      </div>
 
-    <!-- ═══════════════════════════════════════════════════ ESTADÍSTICAS RÁPIDAS -->
-    <section class="stats-bar" id="stats-bar" aria-label="Resumen de datos" data-i18n-aria-label="indice.statsAria">
-      <div class="stat-card">
-        <span class="stat-number" id="stat-total">—</span>
-        <span class="stat-label" data-i18n="comun.contratos">Contratos</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-importe">—</span>
-        <span class="stat-label" data-i18n="comun.importeTotal">Importe total</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-organismos">—</span>
-        <span class="stat-label" data-i18n="indice.organismos">Organismos</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-adjudicatarios">—</span>
-        <span class="stat-label" data-i18n="comun.adjudicatarios">Adjudicatarios</span>
+      <div class="stats-bar" id="stats-bar" role="group" aria-label="Resumen de datos" data-i18n-aria-label="indice.statsAria">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-total">—</span>
+          <span class="stat-label" data-i18n="comun.contratos">Contratos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-importe">—</span>
+          <span class="stat-label"><span data-i18n="comun.importeTotal">Importe total</span><sup class="llamada"><a href="#nota-importe">1</a></sup></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-organismos">—</span>
+          <span class="stat-label" data-i18n="indice.organismos">Organismos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-adjudicatarios">—</span>
+          <span class="stat-label" data-i18n="comun.adjudicatarios">Adjudicatarios</span>
+        </div>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ BUSCADOR -->
     <section class="search-section" id="buscador" aria-label="Búsqueda y filtros" data-i18n-aria-label="indice.busquedaAria">
       <div class="search-bar">
-        <div class="search-input-wrapper">
-          <span class="search-icon" aria-hidden="true">🔍</span>
-          <input
-            type="search"
-            id="input-busqueda"
-            class="search-input"
-            placeholder="Buscar por objeto, organismo, adjudicatario, NIF o expediente..."
-            data-i18n-placeholder="indice.busquedaPlaceholder"
-            autocomplete="off"
-            aria-label="Buscar contratos"
-            data-i18n-aria-label="indice.busquedaInputAria"
-          />
+        <div class="search-row">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input
+              type="search"
+              id="input-busqueda"
+              class="search-input"
+              placeholder="Buscar por objeto, organismo, adjudicatario, NIF o expediente..."
+              data-i18n-placeholder="indice.busquedaPlaceholder"
+              autocomplete="off"
+              aria-label="Buscar contratos"
+              data-i18n-aria-label="indice.busquedaInputAria"
+            />
+          </div>
+          <button id="btn-filtros" class="btn btn--secondary" type="button" aria-expanded="false" aria-controls="panel-filtros">
+            <svg class="btn-icono" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span id="btn-filtros-texto" data-i18n="filtros.boton">Filtros</span>
+          </button>
         </div>
         <div class="search-terms" id="search-terms" aria-live="polite" hidden></div>
       </div>
@@ -121,8 +133,8 @@
         <button id="btn-todos-anios" class="btn btn--secondary btn--sm" type="button" data-i18n="anios.todos">Todos</button>
       </div>
 
-      <!-- Filtros -->
-      <div class="filters">
+      <!-- Filtros: plegados tras el botón "Filtros" (ver alternarPanelFiltros en js/app.js) -->
+      <div class="filters" id="panel-filtros" role="group" aria-label="Filtros de búsqueda" data-i18n-aria-label="filtros.panelAria" hidden>
         <div class="filter-group">
           <label class="filter-label" for="filtro-tipo" data-i18n="comun.tipo">Tipo</label>
           <select id="filtro-tipo" class="filter-select">
@@ -176,7 +188,7 @@
           </div>
         </div>
 
-        <button id="btn-limpiar" class="btn btn--secondary" type="button" data-i18n="filtros.limpiarFiltros">✕ Limpiar filtros</button>
+        <button id="btn-limpiar" class="btn btn--secondary" type="button" data-i18n="filtros.limpiarFiltros">Limpiar filtros</button>
       </div>
     </section>
 
@@ -185,7 +197,7 @@
       <div class="results-header">
         <p class="results-count" id="results-count" aria-live="polite" data-i18n="comun.cargandoDatos">Cargando datos...</p>
         <div class="results-actions">
-          <button id="btn-exportar" class="btn btn--secondary btn--sm" type="button" data-i18n="comun.exportarCsv">⬇ Exportar CSV</button>
+          <button id="btn-exportar" class="btn btn--enlace" type="button" data-i18n="comun.exportarCsv">Descargar CSV</button>
         </div>
       </div>
 
@@ -220,11 +232,17 @@
         <span class="pagination-info" id="pagination-info" aria-live="polite" data-i18n="paginacion.primera">Página 1</span>
         <button id="btn-siguiente" class="btn btn--secondary btn--sm" type="button" disabled data-i18n="paginacion.siguiente">Siguiente →</button>
       </nav>
+
+      <!-- Notas al pie de la tabla, como en un informe -->
+      <footer class="notas">
+        <p data-i18n-html="notas.fuente"><strong>Fuente:</strong> Plataforma de Contratación del Sector Público y Portal de Transparencia de la Comunidad de Madrid. Elaboración propia.</p>
+        <p id="nota-importe"><sup>1</sup> <span data-i18n="indice.notaImporte">Suma de los importes sin IVA de los contratos que cumplen la búsqueda y los filtros, en los años seleccionados.</span></p>
+      </footer>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════ ESTADÍSTICAS -->
     <section class="charts-section" id="estadisticas" aria-label="Estadísticas y gráficas" data-i18n-aria-label="indice.graficas.aria">
-      <h2 class="section-title" data-i18n="indice.graficas.titulo">📊 Estadísticas</h2>
+      <h2 class="section-title" data-i18n="indice.graficas.titulo">Estadísticas</h2>
 
       <div class="charts-grid">
         <div class="chart-card">
@@ -294,7 +312,7 @@
   <div class="modal-overlay" id="modal-sobre-overlay" hidden>
     <div class="modal modal--sobre" role="dialog" aria-modal="true" aria-labelledby="modal-sobre-heading">
       <button class="modal-close" id="modal-sobre-close" type="button" aria-label="Cerrar" data-i18n-aria-label="comun.cerrar">✕</button>
-      <h2 id="modal-sobre-heading" class="modal-sobre-title" data-i18n="sobre.titulo">ℹ️ Sobre los datos</h2>
+      <h2 id="modal-sobre-heading" class="modal-sobre-title" data-i18n="sobre.titulo">Sobre los datos</h2>
       <div class="modal-sobre-content">
         <h3 data-i18n="sobre.origenTitulo">¿De dónde vienen los datos?</h3>
         <p data-i18n-html="sobre.origenTexto">
@@ -342,6 +360,7 @@
   </div>
 
   <script src="js/datos.js" defer></script>
+  <script src="js/presentacion.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>

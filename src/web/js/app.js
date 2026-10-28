@@ -26,14 +26,17 @@ const CONFIG = Object.freeze({
 // FUENTE.TED de scripts/lib/fuentes.js (lo comprueba scripts/_qa-fuentes.js)
 const FUENTE_TED = 'ted_ue';
 
-const COLORES = [
-  '#c0392b', '#2980b9', '#27ae60', '#e67e22', '#8e44ad',
-  '#16a085', '#d35400', '#2c3e50', '#f39c12', '#1abc9c',
-];
+const { COLORES, COLOR_PRINCIPAL, COLOR_RELLENO, COLOR_FONDO } = window.Presentacion;
 
 // Selectores de filtro cuyas opciones salen de los contratos cargados
 const SELECTS_FILTRO = Object.freeze([
   'filtro-tipo', 'filtro-categoria', 'filtro-organismo', 'filtro-procedimiento', 'filtro-estado',
+]);
+
+// Campos del panel de filtros (el buscador queda fuera: siempre está a la vista)
+const CAMPOS_FILTRO = Object.freeze([
+  ...SELECTS_FILTRO,
+  'filtro-importe-min', 'filtro-importe-max', 'filtro-fecha-desde', 'filtro-fecha-hasta',
 ]);
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -245,6 +248,7 @@ function aplicarFiltros() {
 
   estado.paginaActual = 1;
   renderizarTerminosBusqueda();
+  actualizarBotonFiltros();
   renderizarTabla();
   renderizarPaginacion();
   actualizarEstadisticas();
@@ -274,6 +278,26 @@ function renderizarTerminosBusqueda() {
     '<span class="search-terms-mode">' + esc(t('indice.modoBusqueda')) + '</span>';
 }
 
+/**
+ * Muestra u oculta el panel de filtros.
+ */
+function alternarPanelFiltros() {
+  const boton = document.getElementById('btn-filtros');
+  const panel = document.getElementById(boton.getAttribute('aria-controls'));
+  panel.hidden = !panel.hidden;
+  boton.setAttribute('aria-expanded', String(!panel.hidden));
+}
+
+/**
+ * Indica en el botón de filtros cuántos hay aplicados, para que se vean
+ * aunque el panel esté cerrado.
+ */
+function actualizarBotonFiltros() {
+  const activos = CAMPOS_FILTRO.filter(id => document.getElementById(id).value !== '').length;
+  document.getElementById('btn-filtros-texto').textContent =
+    activos === 0 ? t('filtros.boton') : t('filtros.botonActivos', { count: activos });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Renderizado de tabla
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,7 +316,6 @@ function renderizarTabla() {
   if (pagina.length === 0) {
     tbody.innerHTML =
       '<tr><td colspan="7"><div class="empty-state">' +
-      '<div class="empty-state-icon">🔍</div>' +
       '<p>' + esc(t('indice.sinContratos')) + '</p>' +
       '</div></td></tr>';
     return;
@@ -305,7 +328,7 @@ function renderizarTabla() {
     '<td class="col-organismo"><div class="cell-organismo">' + (resaltar(c.organismo) || '—') + '</div></td>' +
     '<td class="col-tipo">' +
       '<span class="badge ' + badgeClass(c.tipo) + '">' + (esc(c.tipo) || '—') + '</span>' +
-      (c.ted_publication_number || c.fuente === FUENTE_TED ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">🇪🇺</span>' : '') +
+      (c.ted_publication_number || c.fuente === FUENTE_TED ? ' <span class="badge badge--ted" title="' + esc(t('indice.tedTitulo')) + '">TED</span>' : '') +
     '</td>' +
     '<td class="col-estado"><span class="badge ' + est.cls + '">' + esc(est.label) + '</span></td>' +
     '<td class="col-importe"><span class="cell-importe">' + formatearImporte(c.importe) + '</span></td>' +
@@ -485,8 +508,8 @@ function actualizarEstadisticas() {
     datos.length.toLocaleString(locale);
 
   const importeTotal = datos.reduce((s, c) => s + (c.importe || 0), 0);
-  document.getElementById('stat-importe').textContent =
-    importeTotal > 0 ? formatearImporte(importeTotal) : '—';
+  Presentacion.mostrarImporteDestacado(
+    document.getElementById('stat-importe'), importeTotal, formatearImporte(importeTotal));
 
   document.getElementById('stat-organismos').textContent =
     new Set(datos.map(c => c.organismo).filter(Boolean)).size.toLocaleString(locale);
@@ -509,6 +532,7 @@ function crearOActualizarChart(canvasId, tipo, data, opciones) {
     estado.charts[canvasId].destroy();
   }
 
+  Presentacion.aplicarEstiloGraficas();
   estado.charts[canvasId] = new Chart(canvas, {
     type: tipo,
     data,
@@ -527,7 +551,7 @@ function renderizarGraficas() {
   });
   crearOActualizarChart('chart-tipos', 'doughnut', {
     labels: Object.keys(conteoTipos),
-    datasets: [{ data: Object.values(conteoTipos), backgroundColor: COLORES, borderWidth: 2, borderColor: '#fff' }],
+    datasets: [{ data: Object.values(conteoTipos), backgroundColor: COLORES, borderWidth: 2, borderColor: COLOR_FONDO }],
   }, { plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } } });
 
   // Gráfica 2: Top 10 organismos (barras horizontales)
@@ -536,7 +560,7 @@ function renderizarGraficas() {
   const topOrg = Object.entries(conteoOrg).sort((a, b) => b[1] - a[1]).slice(0, 10);
   crearOActualizarChart('chart-organismos', 'bar', {
     labels: topOrg.map(([k]) => k.length > 35 ? k.substring(0, 35) + '…' : k),
-    datasets: [{ label: t('comun.contratos'), data: topOrg.map(([, v]) => v), backgroundColor: COLORES[0], borderRadius: 4 }],
+    datasets: [{ label: t('comun.contratos'), data: topOrg.map(([, v]) => v), backgroundColor: COLOR_PRINCIPAL }],
   }, {
     indexAxis: 'y',
     plugins: { legend: { display: false } },
@@ -557,11 +581,11 @@ function renderizarGraficas() {
     datasets: [{
       label: t('indice.graficas.contratosPublicados'),
       data: meses.map(m => conteoMes[m]),
-      borderColor: COLORES[0],
-      backgroundColor: 'rgba(192,57,43,.1)',
+      borderColor: COLOR_PRINCIPAL,
+      backgroundColor: COLOR_RELLENO,
       fill: true,
-      tension: 0.3,
-      pointRadius: 3,
+      tension: 0,
+      pointRadius: 0,
     }],
   }, {
     plugins: { legend: { display: false } },
@@ -576,7 +600,7 @@ function renderizarGraficas() {
   });
   crearOActualizarChart('chart-procedimientos', 'doughnut', {
     labels: Object.keys(conteoProcedimiento),
-    datasets: [{ data: Object.values(conteoProcedimiento), backgroundColor: COLORES.slice(1), borderWidth: 2, borderColor: '#fff' }],
+    datasets: [{ data: Object.values(conteoProcedimiento), backgroundColor: COLORES.slice(1), borderWidth: 2, borderColor: COLOR_FONDO }],
   }, { plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } } });
 }
 
@@ -830,11 +854,10 @@ async function init() {
   document.getElementById('filtro-fecha-desde').addEventListener('change', aplicarFiltros);
   document.getElementById('filtro-fecha-hasta').addEventListener('change', aplicarFiltros);
 
-  // 4. Limpiar filtros
+  // 4. Mostrar u ocultar el panel de filtros, y limpiarlos
+  document.getElementById('btn-filtros').addEventListener('click', alternarPanelFiltros);
   document.getElementById('btn-limpiar').addEventListener('click', () => {
-    ['input-busqueda', 'filtro-tipo', 'filtro-categoria', 'filtro-organismo',
-      'filtro-procedimiento', 'filtro-estado', 'filtro-importe-min', 'filtro-importe-max',
-      'filtro-fecha-desde', 'filtro-fecha-hasta']
+    ['input-busqueda', ...CAMPOS_FILTRO]
       .forEach(id => { document.getElementById(id).value = ''; });
     filtrarOrganismosPorCategoria('');
     aplicarFiltros();
