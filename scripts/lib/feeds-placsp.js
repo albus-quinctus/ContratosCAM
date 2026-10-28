@@ -1,13 +1,17 @@
 /**
  * scripts/lib/feeds-placsp.js
  *
- * Feeds de sindicación de PLACSP que se cargan como histórico, con la fuente
- * que se anota en sus contratos. Fuente única de estos valores para la
- * descarga (download-historico.js) y el parseo (parse.js).
+ * Feeds de sindicación de PLACSP que se cargan, con la fuente que se anota en
+ * sus contratos. Fuente única de estos valores para la descarga semanal
+ * (download.js), la del histórico (download-historico.js) y el parseo
+ * (parse.js).
  *
- * PLACSP publica el histórico de cada feed en ficheros ZIP: uno por año para
- * los años cerrados y uno por mes para el año en curso. Cada ZIP contiene los
- * ficheros Atom del periodo, y se guarda sin descomprimir (ver lib/zip.js).
+ * PLACSP publica cada feed de dos formas:
+ * - Un feed Atom paginado con las últimas modificaciones, que se descarga
+ *   cada semana en data/raw/<prefijoSemanal>-<fecha>-pNN.atom.
+ * - El histórico en ficheros ZIP: uno por año para los años cerrados y uno
+ *   por mes para el año en curso. Cada ZIP contiene los ficheros Atom del
+ *   periodo, y se guarda sin descomprimir (ver lib/zip.js).
  *
  * Documentación de sindicación PLACSP:
  * https://contrataciondelestado.es/wps/portal/plataforma/es/Sindicacion
@@ -25,22 +29,34 @@ export const HISTORICO_DIR = path.join(__dirname, '../../data/raw/historico');
 /** Extensión de los ZIP del histórico, en PLACSP y en local */
 export const EXTENSION_ZIP = '.zip';
 
+/** Extensión de los ficheros Atom, en PLACSP y en local */
+export const EXTENSION_ATOM = '.atom';
+
 /** Base de las URL de sindicación de PLACSP */
 const URL_SINDICACION = 'https://contrataciondelsectorpublico.gob.es/sindicacion';
 
-/** Feeds del histórico */
+/**
+ * Feeds de PLACSP. `paginasSemanales` es el máximo de páginas del feed Atom
+ * que se descargan cada semana: el de perfiles trae unas 450 entradas por
+ * página, y el de plataformas agregadas unas dos páginas por día, así que
+ * con 30 cubre unas dos semanas por si falla una ejecución.
+ */
 export const FEEDS_HISTORICO = Object.freeze([
   {
     clave: 'perfiles',
     descripcion: 'Perfiles de contratante alojados en PLACSP (sindicación 643)',
     fuente: FUENTE.PLACSP,
     urlBase: `${URL_SINDICACION}/sindicacion_643/licitacionesPerfilesContratanteCompleto3`,
+    prefijoSemanal: 'placsp-licitaciones',
+    paginasSemanales: 50,
   },
   {
     clave: 'agregadas',
     descripcion: 'Plataformas autonómicas agregadas por PLACSP, sin contratos menores (sindicación 1044)',
     fuente: FUENTE.PLACSP_AGREGADAS,
     urlBase: `${URL_SINDICACION}/sindicacion_1044/PlataformasAgregadasSinMenores`,
+    prefijoSemanal: 'placsp-agregadas',
+    paginasSemanales: 30,
   },
 ]);
 
@@ -101,4 +117,22 @@ export function urlZip(feed, periodo) {
  */
 export function rutaZip(feed, periodo) {
   return path.join(HISTORICO_DIR, feed.clave, `${periodo}${EXTENSION_ZIP}`);
+}
+
+/**
+ * URL de la primera página del feed Atom semanal de un feed.
+ * @param {object} feed - Elemento de FEEDS_HISTORICO
+ * @returns {string}
+ */
+export function urlAtomSemanal(feed) {
+  return `${feed.urlBase}${EXTENSION_ATOM}`;
+}
+
+/**
+ * Feed al que pertenece un fichero Atom semanal de data/raw/, por su prefijo.
+ * @param {string} nombre - Nombre del fichero
+ * @returns {object|undefined} Elemento de FEEDS_HISTORICO, o undefined si no es de ninguno
+ */
+export function feedDeFicheroSemanal(nombre) {
+  return FEEDS_HISTORICO.find(f => nombre.startsWith(`${f.prefijoSemanal}-`) && nombre.endsWith(EXTENSION_ATOM));
 }

@@ -10,23 +10,27 @@
     }
   },
   "cabecera": {
-    "subtitulo": "Contratación pública de la Comunidad de Madrid"
+    "subtitulo": "Contratación pública de la Comunidad de Madrid",
+    "lema": "Datos abiertos · Proyecto de código abierto"
   },
   "nav": {
     "aria": "Navegación principal",
     "contratos": "Contratos",
-    "ranking": "🏆 Ranking",
-    "sobreDatos": "ℹ️ Sobre los datos",
+    "ranking": "Ranking",
+    "sobreDatos": "Sobre los datos",
+    "github": "Código en GitHub",
     "idiomaAria": "Idioma"
   },
   "actualizacion": {
     "cargando": "Cargando fecha de actualización…",
     "fecha": "Actualizado el {{fecha}}",
-    "desconocida": "Fecha de actualización desconocida"
+    "desconocida": "Fecha de actualización desconocida",
+    "frecuencia": "Se actualiza cada semana"
   },
   "comun": {
     "contratos": "Contratos",
     "importeTotal": "Importe total",
+    "millones": "{{cifra}} M€",
     "organismo": "Organismo",
     "adjudicatarios": "Adjudicatarios",
     "adjudicatario": "Adjudicatario",
@@ -40,7 +44,7 @@
     "cargandoDatos": "Cargando datos...",
     "datosNoDisponibles": "Datos no disponibles",
     "errorCargaDatos": "No se han podido cargar los datos de contratos. Inténtalo de nuevo más tarde.",
-    "exportarCsv": "⬇ Exportar CSV",
+    "exportarCsv": "Descargar CSV",
     "cerrar": "Cerrar",
     "cerrarDetalle": "Cerrar detalle",
     "sinClasificar": "Sin clasificar",
@@ -50,6 +54,10 @@
   },
   "filtros": {
     "todosTipos": "Todos los tipos",
+    "boton": "Filtros",
+    "botonActivos_one": "Filtros ({{count}})",
+    "botonActivos_other": "Filtros ({{count}})",
+    "panelAria": "Filtros de búsqueda",
     "categoria": "Categoría de organismo",
     "todasCategorias": "Todas las categorías",
     "todosOrganismos": "Todos los organismos",
@@ -63,16 +71,21 @@
     "fechaPublicacion": "Fecha publicación",
     "fechaDesde": "Fecha desde",
     "fechaHasta": "Fecha hasta",
-    "limpiarFiltros": "✕ Limpiar filtros",
-    "limpiar": "✕ Limpiar",
+    "limpiarFiltros": "Limpiar filtros",
+    "limpiar": "Limpiar",
     "tipoContrato": "Tipo de contrato",
-    "anio": "Año",
-    "todosAnios": "Todos los años",
     "ordenarPor": "Ordenar por",
     "ordenImporte": "Mayor importe total",
     "ordenContratos": "Más contratos",
     "ordenMedia": "Mayor importe medio",
     "ordenNombre": "Nombre (A-Z)"
+  },
+  "anios": {
+    "titulo": "Años",
+    "todos": "Todos",
+    "sinFecha": "Sin fecha",
+    "contratos_one": "{{count, number}} contrato",
+    "contratos_other": "{{count, number}} contratos"
   },
   "paginacion": {
     "anterior": "← Anterior",
@@ -113,6 +126,10 @@
   },
   "indice": {
     "statsAria": "Resumen de datos",
+    "antetitulo": "Transparencia",
+    "titular": "¿En qué gasta la Comunidad de Madrid?",
+    "entradilla": "Los contratos públicos adjudicados por la Comunidad, sus organismos y los ayuntamientos de la región, reunidos a partir de fuentes oficiales y consultables en abierto.",
+    "notaImporte": "Suma de los importes sin IVA de los contratos que cumplen la búsqueda y los filtros, en los años seleccionados.",
     "organismos": "Organismos",
     "busquedaAria": "Búsqueda y filtros",
     "busquedaPlaceholder": "Buscar por objeto, organismo, adjudicatario, NIF o expediente...",
@@ -130,7 +147,7 @@
     "tedTitulo": "Datos europeos (TED-UE)",
     "graficas": {
       "aria": "Estadísticas y gráficas",
-      "titulo": "📊 Estadísticas",
+      "titulo": "Estadísticas",
       "porTipo": "Contratos por tipo",
       "porTipoAria": "Gráfica de contratos por tipo",
       "topOrganismos": "Top 10 organismos por número de contratos",
@@ -149,7 +166,7 @@
       "fechaPublicacion": "Fecha publicación",
       "fechaAdjudicacion": "Fecha adjudicación",
       "fechaFormalizacion": "Fecha formalización",
-      "tedBadge": "🇪🇺 Datos europeos (TED)",
+      "tedBadge": "Datos europeos (TED)",
       "ofertas": "Ofertas recibidas",
       "numTed": "Nº publicación TED",
       "criterios": "Criterios de adjudicación",
@@ -159,8 +176,10 @@
   },
   "ranking": {
     "heroAria": "Introducción al ranking",
-    "titulo": "🏆 Ranking de Adjudicatarios",
+    "antetitulo": "Quién recibe los contratos",
+    "titulo": "Ranking de adjudicatarios",
     "descripcion": "¿Qué empresas reciben más dinero público de la Comunidad de Madrid? Explora el ranking de adjudicatarios ordenado por importe total acumulado o por número de contratos.",
+    "notaImporte": "Suma de los importes sin IVA de los contratos de los adjudicatarios que cumplen los filtros, en los años seleccionados.",
     "statsAria": "Resumen del ranking",
     "adjudicatariosUnicos": "Adjudicatarios únicos",
     "contratosAdjudicados": "Contratos adjudicados",
@@ -169,7 +188,7 @@
     "busquedaPlaceholder": "Buscar empresa o adjudicatario...",
     "busquedaInputAria": "Buscar adjudicatario",
     "uteToggleTitulo": "Incluir importes estimados de participación en UTEs (dividido entre miembros)",
-    "uteToggle": "⚠️ Estimación UTEs",
+    "uteToggle": "Estimación UTEs",
     "graficaAria": "Gráfica top 10 adjudicatarios",
     "graficaTitulo": "Top 10 adjudicatarios por importe total",
     "graficaToggleAria": "Cambiar métrica de la gráfica",
@@ -194,14 +213,14 @@
     "ver": "Ver →",
     "participaUtes_one": "Participa en {{count}} UTE",
     "participaUtes_other": "Participa en {{count}} UTEs",
-    "numUtes_one": "🤝 {{count}} UTE",
-    "numUtes_other": "🤝 {{count}} UTEs",
+    "numUtes_one": "{{count}} UTE",
+    "numUtes_other": "{{count}} UTEs",
     "viaUte": "+{{count, number}} vía UTE",
     "detalle": {
       "importeMedioContrato": "Importe medio por contrato",
       "desgloseTipo": "Desglose por tipo de contrato",
       "organismosContratantes": "Organismos contratantes ({{count}})",
-      "participacionUtes": "🤝 Participación en UTEs ({{count}})",
+      "participacionUtes": "Participación en UTEs ({{count}})",
       "uteContratos_one": "{{count}} contrato",
       "uteContratos_other": "{{count}} contratos",
       "uteTotal": "{{importe}} total",
@@ -217,14 +236,18 @@
     "fuentes": "Datos procedentes del <a href=\"https://contrataciondelestado.es\" target=\"_blank\" rel=\"noopener noreferrer\">Portal de Contratación del Estado</a> y del <a href=\"https://www.comunidad.madrid/transparencia\" target=\"_blank\" rel=\"noopener noreferrer\">Portal de Transparencia de la CAM</a>. Reutilización amparada por la <a href=\"https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814\" target=\"_blank\" rel=\"noopener noreferrer\">Ley 37/2007</a>.",
     "autoria": "Proyecto de código abierto por <a href=\"https://github.com/albus-quinctus\" target=\"_blank\" rel=\"noopener noreferrer\">Albus Quinctus</a>. Inspirado en <a href=\"https://contratosdecantabria.es\" target=\"_blank\" rel=\"noopener noreferrer\">contratosdecantabria.es</a> de <a href=\"https://github.com/JaimeObregon\" target=\"_blank\" rel=\"noopener noreferrer\">Jaime Gómez-Obregón</a>."
   },
+  "notas": {
+    "fuente": "<strong>Fuente:</strong> Plataforma de Contratación del Sector Público y Portal de Transparencia de la Comunidad de Madrid. Elaboración propia."
+  },
   "sobre": {
-    "titulo": "ℹ️ Sobre los datos",
+    "titulo": "Sobre los datos",
     "origenTitulo": "¿De dónde vienen los datos?",
     "origenTexto": "Los contratos provienen de la <a href=\"https://contrataciondelestado.es\" target=\"_blank\" rel=\"noopener noreferrer\">Plataforma de Contratación del Sector Público (PLACSP)</a>, el portal oficial del Ministerio de Hacienda donde todos los organismos públicos están obligados a publicar sus licitaciones desde la entrada en vigor de la <strong>Ley 9/2017 de Contratos del Sector Público</strong>.",
     "procesoTitulo": "¿Cómo se procesan?",
     "procesoTexto": "Un pipeline automatizado descarga semanalmente el feed Atom de PLACSP, filtra los contratos de la <strong>Comunidad de Madrid</strong>, normaliza los campos (fechas, importes, nombres de organismos), elimina duplicados y genera el archivo JSON que carga esta web. Todo el código es público y auditable en <a href=\"https://github.com/albus-quinctus/ContratosCAM\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>.",
     "alcanceTitulo": "¿Qué contratos incluye?",
     "alcanceLista": "<li>Contratos publicados en PLACSP por organismos de la Comunidad de Madrid.</li><li>Todos los procedimientos: abierto, negociado, restringido, menor, etc.</li><li>Incluye licitaciones en curso (sin adjudicatario aún) y contratos adjudicados.</li><li><strong>No incluye</strong> contratos menores no publicados en PLACSP (por debajo de los umbrales de publicación).</li>",
+    "periodo": "Periodo disponible: contratos publicados entre {{desde}} y {{hasta}}.",
     "frecuenciaTitulo": "¿Con qué frecuencia se actualiza?",
     "frecuenciaTexto": "Los datos se actualizan automáticamente cada <strong>lunes</strong> mediante GitHub Actions. La fecha de la última actualización aparece en la cabecera de la página.",
     "legalTitulo": "Marco legal",

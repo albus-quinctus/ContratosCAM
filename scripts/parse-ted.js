@@ -17,6 +17,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
+import { FUENTE } from './lib/fuentes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw/ted');
@@ -106,34 +107,6 @@ function textoParrafos(node) {
     return node.map(p => texto(p)).filter(Boolean).join(' ');
   }
   return texto(node);
-}
-
-/**
- * Mapea códigos de tipo de contrato de TED al esquema normalizado.
- */
-function mapearTipoContrato(code) {
-  const mapa = {
-    '1': 'obras',
-    '2': 'suministros',
-    '4': 'servicios',
-    '3': 'servicios', // En TED, 3 = public works concession, mapeamos a servicios
-  };
-  return mapa[code] || 'otros';
-}
-
-/**
- * Mapea códigos de procedimiento de TED al esquema normalizado.
- */
-function mapearProcedimiento(code) {
-  const mapa = {
-    '1': 'abierto',
-    '2': 'restringido',
-    '3': 'negociado',
-    '4': 'negociado',
-    '6': 'negociado_sin_publicidad',
-    'V': 'negociado_sin_publicidad', // Award without prior publication
-  };
-  return mapa[code] || 'abierto';
 }
 
 /**
@@ -254,13 +227,9 @@ function extraerContratoTED(parsed, publicationNumber) {
   // Tipo de documento (solo nos interesan adjudicaciones: TD=7)
   const tdCode = get(codifData, 'TD_DOCUMENT_TYPE', '@_CODE');
 
-  // Tipo de contrato
+  // Tipo de contrato y procedimiento (transform.js los traduce al esquema normalizado)
   const ncCode = get(codifData, 'NC_CONTRACT_NATURE', '@_CODE');
-  const tipo = mapearTipoContrato(ncCode);
-
-  // Procedimiento
   const prCode = get(codifData, 'PR_PROC', '@_CODE');
-  const procedimiento = mapearProcedimiento(prCode);
 
   // Valores
   const valuesNode = get(noticeData, 'VALUES');
@@ -406,7 +375,7 @@ function extraerContratoTED(parsed, publicationNumber) {
     fecha_adjudicacion: fechaAdjudicacion,
     nuts_code: nutsCodes[0] || 'ES300',
     url_origen: urlOrigen,
-    fuente: 'ted_ue',
+    fuente: FUENTE.TED,
     // Campos enriquecidos exclusivos de TED
     ted_publication_number: publicationNumber,
     num_ofertas: numOfertas,

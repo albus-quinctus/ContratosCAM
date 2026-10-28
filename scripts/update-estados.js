@@ -152,7 +152,7 @@ async function obtenerEstadoActual(url) {
 
     const html = await response.text();
     return extraerEstadoDeHTML(html);
-  } catch (error) {
+  } catch {
     // Timeout, error de red, etc. — no es crítico
     return null;
   }

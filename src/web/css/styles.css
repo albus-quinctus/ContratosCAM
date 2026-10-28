@@ -1,5 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    ContratosCAM — Estilos principales
+
+   Estilo de periódico o informe de datos: fondo papel, texto en tinta,
+   filetes en lugar de tarjetas y sombras, titulares y cifras en serif, y el
+   rojo de la bandera de Madrid solo como acento. Todas las fuentes son del
+   sistema: la web no descarga tipografías.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Accesibilidad: visualmente oculto pero legible por lectores de pantalla */
@@ -17,29 +22,26 @@
 
 
 /* ── Variables de diseño ─────────────────────────────────────────────────── */
+/* Los colores de las gráficas están en js/presentacion.js y deben coincidir */
 :root {
-  --color-primary:      #c0392b;
-  --color-primary-dark: #96281b;
-  --color-secondary:    #2c3e50;
-  --color-bg:           #f5f6fa;
+  --color-primary:      #c8102e;   /* Rojo de la bandera de Madrid: solo acentos */
+  --color-primary-dark: #9b0c23;
+  --color-secondary:    #16191f;   /* Tinta */
+  --color-bg:           #faf8f3;   /* Papel */
   --color-surface:      #ffffff;
-  --color-border:       #dde1e7;
-  --color-text:         #2c3e50;
-  --color-text-muted:   #7f8c8d;
-  --color-success:      #27ae60;
+  --color-highlight:    #f3eee2;   /* Fila resaltada al pasar el ratón */
+  --color-border:       #e5e0d5;   /* Filete fino */
+  --color-border-strong:#cfc9bd;
+  --color-rule:         #16191f;   /* Regla gruesa */
+  --color-text:         #16191f;
+  --color-text-soft:    #3d434d;
+  --color-text-muted:   #6a6f78;
 
-  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.10);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --font-sans:  system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --transition: 150ms ease;
-  --max-width:  1280px;
+  --max-width:  1200px;
 }
 
 /* ── Reset y base ────────────────────────────────────────────────────────── */
@@ -50,14 +52,22 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--color-text);
   background: var(--color-bg);
   min-height: 100vh;
 }
 
 a { color: var(--color-primary); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+/* Cifras alineadas en columnas */
+.stat-number,
+.contratos-table td,
+.modal-contratos-table td,
+.pagination-info { font-variant-numeric: tabular-nums lining-nums; }
 
 /* ── Layout ──────────────────────────────────────────────────────────────── */
 .container {
@@ -66,165 +76,283 @@ a:hover { text-decoration: underline; }
   padding: 0 1.5rem;
 }
 
-/* ── Cabecera ────────────────────────────────────────────────────────────── */
-.site-header {
-  background: var(--color-secondary);
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: var(--shadow-md);
-}
+/* ── Cabecera (mancheta) ─────────────────────────────────────────────────── */
+.site-header { padding-top: 1rem; }
 
-.site-header .container {
+.header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
   gap: 1rem;
+  font-size: .78rem;
+  color: var(--color-text-muted);
+}
+
+/* Selector de idioma (ES / EN) */
+.nav-idioma { display: flex; gap: .6rem; }
+
+.nav-link--idioma {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.nav-link--idioma[aria-current] {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .header-brand {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
+  text-align: center;
+  padding: .5rem 0 .75rem;
 }
-
-.header-icon { font-size: 2rem; }
 
 .header-title {
-  font-size: 1.4rem;
+  font-family: var(--font-serif);
+  font-size: 3rem;
   font-weight: 700;
-  color: white;
-  line-height: 1.2;
+  letter-spacing: -.02em;
+  line-height: 1;
+  color: var(--color-text);
 }
+
+.header-title-acento { color: var(--color-primary); }
 
 .header-subtitle {
-  font-size: .8rem;
-  color: rgba(255,255,255,.65);
-  line-height: 1;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-text-soft);
+  margin-top: .3rem;
 }
 
+/* Secciones, entre la regla doble y un filete */
 .header-nav {
   display: flex;
-  align-items: center;
-  gap: .25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .25rem 2rem;
+  padding: .55rem 0;
+  border-top: 3px double var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .nav-link {
-  color: rgba(255,255,255,.8);
-  padding: .4rem .8rem;
-  border-radius: var(--radius-sm);
-  font-size: .875rem;
-  transition: background var(--transition), color var(--transition);
+  color: var(--color-text-soft);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color var(--transition);
 }
 
-.nav-link:hover,
-.nav-link.active,
-.nav-link[aria-current] {
-  background: rgba(255,255,255,.15);
-  color: white;
-  text-decoration: none;
-}
-
-.nav-link--github { border: 1px solid rgba(255,255,255,.3); }
-
-/* Selector de idioma (ES / EN) */
-.nav-idioma { display: flex; gap: .125rem; }
-.nav-link--idioma { padding: .4rem .5rem; font-weight: 600; }
+.nav-link:hover { color: var(--color-text); text-decoration: none; }
+.nav-link[aria-current] { color: var(--color-primary); }
 
 /* Botón de nav con apariencia de enlace (para <button> en la nav) */
 .nav-link--btn {
   background: none;
   border: none;
   cursor: pointer;
-  font: inherit;
+  font-family: inherit;
 }
 
-/* ── Estadísticas rápidas ────────────────────────────────────────────────── */
+/* Línea de fecha bajo las secciones */
+.update-banner {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Apertura: antetítulo, titular, entradilla y datos clave ─────────────── */
+.apertura {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  padding: 1.75rem 0 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.antetitulo {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.apertura-titular {
+  font-family: var(--font-serif);
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  margin: .35rem 0 .6rem;
+}
+
+.entradilla {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+}
+
+/* Datos clave */
 .stats-bar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  gap: 1.1rem 1.5rem;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--color-border);
 }
 
-.stat-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-top: 3px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.25rem;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-}
+.stat-card { min-width: 0; }
 
 .stat-number {
   display: block;
-  font-size: 1.6rem;
+  font-family: var(--font-serif);
+  font-size: 2.1rem;
   font-weight: 700;
-  color: var(--color-primary);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+/* Dato que es un nombre y no una cifra (mayor adjudicatario) */
+.stat-number--texto {
+  font-size: 1.25rem;
   line-height: 1.2;
 }
 
 .stat-label {
-  font-size: .8rem;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: .05em;
+  display: block;
+  font-size: .82rem;
+  color: var(--color-text-soft);
+  border-top: 1px solid var(--color-border);
+  padding-top: .3rem;
+  margin-top: .3rem;
 }
+
+/* Llamada a una nota al pie (¹) */
+.llamada { font-size: .7em; font-weight: 700; margin-left: .1em; }
+.llamada a { color: var(--color-primary); }
 
 /* ── Buscador y filtros ──────────────────────────────────────────────────── */
-.search-section {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
-  box-shadow: var(--shadow-sm);
-}
+.search-section { padding: 1.25rem 0 .5rem; }
 
-.search-bar { margin-bottom: 1rem; }
+.search-bar { margin-bottom: .9rem; }
+
+.search-row {
+  display: flex;
+  gap: .75rem;
+  align-items: stretch;
+}
 
 .search-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .search-icon {
   position: absolute;
-  left: .875rem;
-  font-size: 1rem;
+  left: .8rem;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text);
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  padding: .75rem 1rem .75rem 2.5rem;
+  padding: .7rem .9rem .7rem 2.4rem;
   font-size: 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  color: var(--color-text);
-  transition: border-color var(--transition), box-shadow var(--transition);
   font-family: var(--font-sans);
+  border: 1px solid var(--color-rule);
+  border-radius: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
+.search-input::placeholder { color: var(--color-text-muted); }
+
 .search-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(192,57,43,.15);
-  background: white;
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
 }
+
+/* Selector de años cargados (ver js/datos.js): pestañas de texto */
+.selector-anios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.selector-anios-casillas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.1rem;
+}
+
+.anio-chip {
+  position: relative;
+  font-size: .9rem;
+  color: var(--color-text-muted);
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+/* La casilla sigue siendo accesible, pero solo se ve la pestaña */
+.anio-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.anio-chip:hover { color: var(--color-text); }
+
+.anio-chip:has(input:checked) {
+  color: var(--color-text);
+  font-weight: 700;
+  border-bottom-color: var(--color-primary);
+}
+
+.anio-chip:has(input:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+.selector-anios .btn--sm {
+  border: none;
+  padding: 0;
+  font-size: .9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+}
+
+.selector-anios .btn--sm:hover { color: var(--color-text); background: none; }
 
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: .75rem;
   align-items: flex-end;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border);
 }
+
+.filters[hidden] { display: none; }
 
 .filter-group {
   display: flex;
@@ -236,29 +364,29 @@ a:hover { text-decoration: underline; }
 .filter-group--range { min-width: 220px; }
 
 .filter-label {
-  font-size: .75rem;
-  font-weight: 600;
+  font-size: .72rem;
+  font-weight: 700;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: .1em;
 }
 
 .filter-select,
 .filter-input {
-  padding: .45rem .75rem;
+  padding: .45rem .6rem;
   font-size: .875rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  color: var(--color-text);
   font-family: var(--font-sans);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
   transition: border-color var(--transition);
 }
 
 .filter-select:focus,
 .filter-input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: var(--color-rule);
 }
 
 .range-inputs {
@@ -275,54 +403,57 @@ a:hover { text-decoration: underline; }
   display: inline-flex;
   align-items: center;
   gap: .4rem;
-  padding: .55rem 1.1rem;
-  font-size: .875rem;
+  padding: .55rem 1rem;
+  font-size: .85rem;
   font-weight: 600;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition), transform var(--transition);
   font-family: var(--font-sans);
-  white-space: nowrap;
-}
-
-.btn:active { transform: scale(.98); }
-
-.btn--primary { background: var(--color-primary); color: white; }
-.btn--primary:hover { background: var(--color-primary-dark); }
-
-.btn--secondary {
-  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-radius: 0;
+  background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition);
 }
-.btn--secondary:hover { background: var(--color-border); }
 
-.btn--sm { padding: .35rem .75rem; font-size: .8rem; }
+.btn:hover { background: var(--color-highlight); }
+.btn:disabled { opacity: .4; cursor: default; background: transparent; }
+
+.btn-icono { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn--secondary { background: transparent; }
+
+.btn--sm { padding: .3rem .7rem; font-size: .8rem; }
+
+/* Botón con aspecto de enlace (Descargar CSV) */
+.btn--enlace {
+  border: none;
+  padding: 0;
+  background: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn--enlace:hover { background: none; color: var(--color-primary); }
 
 /* ── Resultados ──────────────────────────────────────────────────────────── */
 .results-section {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 2rem;
+  border-top: 3px solid var(--color-rule);
+  margin: .75rem 0 2.5rem;
 }
 
 .results-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  padding: .875rem 1.25rem;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-bg);
+  gap: 1rem;
+  padding: .55rem 0 .6rem;
 }
 
 .results-count {
-  font-size: .875rem;
-  color: var(--color-text-muted);
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 /* ── Tabla ───────────────────────────────────────────────────────────────── */
@@ -335,53 +466,42 @@ a:hover { text-decoration: underline; }
 .contratos-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: .875rem;
+  font-size: .88rem;
   table-layout: auto;    /* El navegador calcula anchos; evita expansión descontrolada */
 }
 
-.contratos-table thead {
-  background: var(--color-secondary);
-  color: white;
-}
-
 .contratos-table th {
-  padding: .75rem 1rem;
+  padding: .45rem .75rem .45rem 0;
   text-align: left;
-  font-weight: 600;
-  font-size: .8rem;
-  text-transform: uppercase;
-  letter-spacing: .04em;
+  font-weight: 700;
+  font-size: .78rem;
   white-space: nowrap;
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .contratos-table th.sortable {
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
-  transition: background var(--transition);
 }
 
-.contratos-table th.sortable:hover { background: rgba(255,255,255,.1); }
+.contratos-table th.sortable:hover { color: var(--color-primary); }
 
 .contratos-table th.sortable .sort-icon {
-  opacity: .4;
+  opacity: .35;
   font-size: .7rem;
-  margin-left: .25rem;
+  margin-left: .15rem;
   transition: opacity var(--transition);
 }
 
-.contratos-table th.sorted-asc .sort-icon::after { content: '▲'; }
-.contratos-table th.sorted-desc .sort-icon::after { content: '▼'; }
+.contratos-table th.sorted-asc .sort-icon::after { content: '▲'; font-size: .6rem; }
+.contratos-table th.sorted-desc .sort-icon::after { content: '▼'; font-size: .6rem; }
 
 .contratos-table th.sorted-asc .sort-icon,
 .contratos-table th.sorted-desc .sort-icon {
   opacity: 1;
   font-size: 0; /* Oculta el ↕ original */
-}
-
-.contratos-table th.sorted-asc,
-.contratos-table th.sorted-desc {
-  background: rgba(255,255,255,.12);
+  color: var(--color-primary);
 }
 
 .contratos-table tbody tr {
@@ -390,25 +510,23 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
 }
 
-.contratos-table tbody tr:hover { background: #fef9f9; }
-.contratos-table tbody tr:last-child { border-bottom: none; }
+.contratos-table tbody tr:hover { background: var(--color-highlight); }
 
 .contratos-table td {
-  padding: .75rem 1rem;
+  padding: .7rem .75rem .7rem 0;
   vertical-align: top;
 }
 
 .col-objeto      { min-width: 280px; max-width: 400px; }
 .col-organismo   { min-width: 180px; max-width: 240px; }
 .col-tipo        { min-width: 100px; }
-.col-estado      { min-width: 120px; white-space: nowrap; }
+.col-estado      { min-width: 110px; white-space: nowrap; }
 .col-importe     { min-width: 110px; text-align: right; white-space: nowrap; }
-.col-fecha       { min-width: 100px; white-space: nowrap; }
+.col-fecha       { min-width: 95px; white-space: nowrap; }
 .col-adjudicatario { min-width: 160px; max-width: 220px; }
 
 .cell-objeto {
   font-weight: 500;
-  color: var(--color-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -417,20 +535,18 @@ a:hover { text-decoration: underline; }
 
 /* Resaltado de términos de búsqueda */
 .search-highlight {
-  background-color: #fef3cd;
+  background-color: #f6e7b8;
   color: inherit;
-  padding: 0 2px;
-  border-radius: 2px;
-  font-style: normal;
+  padding: 0 1px;
 }
 
-/* Chips de términos de búsqueda activos */
+/* Términos de búsqueda activos */
 .search-terms {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: .4rem;
-  padding: .5rem 0;
+  padding: .5rem 0 0;
   font-size: .8rem;
 }
 
@@ -441,25 +557,20 @@ a:hover { text-decoration: underline; }
 
 .search-term-chip {
   display: inline-block;
-  background: var(--color-primary);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .02em;
+  border-bottom: 2px solid var(--color-primary);
+  font-weight: 700;
 }
 
 .search-terms-mode {
   color: var(--color-text-muted);
-  font-size: .7rem;
+  font-size: .75rem;
   font-style: italic;
 }
 
 .cell-organismo,
 .cell-adjudicatario {
   color: var(--color-text-muted);
-  font-size: .825rem;
+  font-size: .82rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -467,42 +578,50 @@ a:hover { text-decoration: underline; }
 }
 
 .cell-importe {
-  font-weight: 600;
-  color: var(--color-success);
+  font-weight: 700;
   text-align: right;
 }
 
-.cell-fecha { color: var(--color-text-muted); font-size: .825rem; }
+.cell-fecha { color: var(--color-text-muted); font-size: .82rem; }
 
+/* Tipo y estado: texto sobrio, sin etiquetas de colores */
 .badge {
   display: inline-block;
-  padding: .2rem .55rem;
-  border-radius: 999px;
-  font-size: .75rem;
-  font-weight: 600;
+  font-size: .82rem;
   white-space: nowrap;
 }
 
-.badge--obras       { background: #fdebd0; color: #e67e22; }
-.badge--servicios   { background: #d5e8d4; color: #27ae60; }
-.badge--suministros { background: #dae8fc; color: #2980b9; }
-.badge--default     { background: #f0f0f0; color: #666; }
-.badge--ted         { background: #e8f0fe; color: #1a4fa0; font-size: 0.75rem; padding: 0.15em 0.4em; }
-.badge--ute         { background: #fff3e0; color: #e65100; font-size: 0.7rem; padding: 0.15em 0.4em; font-weight: 600; letter-spacing: 0.03em; }
+.badge--obras,
+.badge--servicios,
+.badge--suministros,
+.badge--default { color: var(--color-text-soft); }
+
+/* Marcas pequeñas en versalitas: fuente TED y UTE */
+.badge--ted,
+.badge--ute {
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 0 .3em;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-soft);
+  vertical-align: .1em;
+}
+
 .ute-miembros-list  { margin: 0.3em 0 0 1.2em; padding: 0; list-style: disc; }
 .ute-miembros-list li { margin-bottom: 0.15em; font-size: 0.92em; }
 
-/* Badges de estado del contrato */
-.badge--estado-licitacion  { background: #fff3cd; color: #856404; }   /* Amarillo — en licitación/publicado */
-.badge--estado-evaluacion  { background: #cff4fc; color: #055160; }   /* Cian — en evaluación / pre-adjudicado */
-.badge--estado-adjudicado  { background: #cfe2ff; color: #084298; }   /* Azul — adjudicado */
-.badge--estado-formalizado { background: #d1e7dd; color: #0a3622; }   /* Verde oscuro — formalizado */
-.badge--estado-resuelto    { background: #d1e7dd; color: #0a3622; }   /* Verde — resuelto */
-.badge--estado-anulado     { background: #f8d7da; color: #842029; }   /* Rojo — anulado */
-.badge--estado-posible     { background: #e2e3e5; color: #41464b; }   /* Gris — posiblemente resuelto */
+/* Estados del contrato */
+.badge--estado-licitacion  { font-style: italic; }                          /* En licitación / publicado */
+.badge--estado-evaluacion  { font-style: italic; color: var(--color-text-soft); } /* En evaluación / pre-adjudicado */
+.badge--estado-adjudicado,
+.badge--estado-formalizado,
+.badge--estado-resuelto    { color: var(--color-text); }
+.badge--estado-anulado     { color: var(--color-primary-dark); text-decoration: line-through; }
+.badge--estado-posible     { color: var(--color-text-muted); }               /* Posiblemente resuelto */
 
 /* Texto secundario del estado XML en el modal */
-.modal-estado-xml { font-size: 0.75rem; color: #888; margin-left: 0.4em; }
+.modal-estado-xml { font-size: 0.75rem; color: var(--color-text-muted); margin-left: 0.4em; }
 
 /* ── Loading / Empty ─────────────────────────────────────────────────────── */
 .loading-cell {
@@ -512,10 +631,10 @@ a:hover { text-decoration: underline; }
 }
 
 .loading-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--color-border);
-  border-top-color: var(--color-primary);
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-rule);
   border-radius: 50%;
   animation: spin .8s linear infinite;
   margin: 0 auto .75rem;
@@ -526,50 +645,72 @@ a:hover { text-decoration: underline; }
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
   color: var(--color-text-muted);
 }
-
-.empty-state-icon { font-size: 3rem; margin-bottom: .5rem; }
 
 /* ── Paginación ──────────────────────────────────────────────────────────── */
 .pagination {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
-  padding: 1rem;
-  border-top: 1px solid var(--color-border);
+  padding: .8rem 0;
+}
+
+.pagination .btn {
+  border: none;
+  padding: 0;
+  background: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .pagination-info {
-  font-size: .875rem;
+  font-size: .85rem;
   color: var(--color-text-muted);
-  min-width: 120px;
   text-align: center;
 }
 
+/* ── Notas al pie: fuente y aclaraciones ─────────────────────────────────── */
+.notas {
+  padding-top: .5rem;
+  border-top: 1px solid var(--color-border);
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.notas p + p { margin-top: .15rem; }
+
+.notas sup { color: var(--color-primary); font-weight: 700; }
+
+.notas strong { color: var(--color-text-soft); }
+
 /* ── Gráficas ────────────────────────────────────────────────────────────── */
-.charts-section { margin-bottom: 3rem; }
+.charts-section {
+  border-top: 3px solid var(--color-rule);
+  padding-top: .55rem;
+  margin-bottom: 3rem;
+}
 
 .section-title {
-  font-size: 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-secondary);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));  /* minmax(0,1fr) evita que las celdas desborden */
-  gap: 1.25rem;
+  gap: 1.75rem 2.5rem;
 }
 
 .chart-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
+  border-top: 1px solid var(--color-rule);
+  padding-top: .6rem;
   min-width: 0;          /* Permite que el item de grid se comprima */
   overflow: hidden;      /* Contiene el canvas si Chart.js lo desborda */
 }
@@ -577,12 +718,10 @@ a:hover { text-decoration: underline; }
 .chart-card--wide { grid-column: 1 / -1; }
 
 .chart-title {
-  font-size: .9rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .75rem;
 }
 
 /* Contenedor de canvas: posición relativa + altura fija + ancho 100% del padre */
@@ -601,22 +740,19 @@ a:hover { text-decoration: underline; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.5);
+  background: rgba(22, 25, 31, .55);
   z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
 }
 
 .modal-overlay[hidden] { display: none; }
 
 .modal {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  background: var(--color-bg);
+  border-top: 4px solid var(--color-primary);
   max-width: 680px;
   width: 100%;
   max-height: 90vh;
@@ -627,27 +763,26 @@ a:hover { text-decoration: underline; }
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: .75rem;
+  right: .75rem;
   background: none;
   border: none;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   cursor: pointer;
   color: var(--color-text-muted);
   padding: .25rem .5rem;
-  border-radius: var(--radius-sm);
-  transition: background var(--transition);
+  transition: color var(--transition);
 }
 
-.modal-close:hover { background: var(--color-bg); }
+.modal-close:hover { color: var(--color-text); }
 
 .modal-field { margin-bottom: 1rem; }
 
 .modal-field-label {
-  font-size: .75rem;
+  font-size: .72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: .1em;
   color: var(--color-text-muted);
   margin-bottom: .2rem;
 }
@@ -658,15 +793,17 @@ a:hover { text-decoration: underline; }
 }
 
 .modal-field-value--large {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-secondary);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .modal-field-value--importe {
-  font-size: 1.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-success);
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .modal-grid {
@@ -684,31 +821,32 @@ a:hover { text-decoration: underline; }
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 .site-footer {
-  background: var(--color-secondary);
-  color: rgba(255,255,255,.7);
-  padding: 1.5rem 0;
+  border-top: 3px double var(--color-rule);
+  color: var(--color-text-muted);
+  padding: 1.25rem 0 2rem;
   margin-top: 2rem;
 }
 
-.footer-content { display: flex; flex-direction: column; gap: .5rem; }
+.footer-content { display: flex; flex-direction: column; gap: .4rem; }
 
 .footer-text { font-size: .8rem; line-height: 1.6; }
 
 .footer-text a {
-  color: rgba(255,255,255,.85);
+  color: var(--color-text-soft);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.footer-text a:hover { color: white; }
+.footer-text a:hover { color: var(--color-primary); }
 
 /* ── Responsive — página principal ──────────────────────────────────────── */
 
 /* Tablet (≤ 900px) */
 @media (max-width: 900px) {
-  .stats-bar                        { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .apertura                         { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .stats-bar                        { padding-left: 0; border-left: 0; border-top: 1px solid var(--color-rule); padding-top: 1rem; }
   .charts-grid                      { grid-template-columns: minmax(0, 1fr); }
   .chart-card--wide                 { grid-column: auto; }
-  .header-subtitle                  { display: none; }
   /* Reducir altura de gráficas en tablet */
   .chart-container                  { height: 240px; }
   .chart-container--wide            { height: 200px; }
@@ -716,49 +854,70 @@ a:hover { text-decoration: underline; }
 
 /* Móvil grande (≤ 600px) */
 @media (max-width: 600px) {
-  /* Cabecera: ocultar links de sección, mantener enlace a otra página y GitHub */
-  .header-nav .nav-link:not(.nav-link--github):not(.nav-link--page):not(.nav-link--idioma) { display: none; }
-  /* Hueco para el selector de idioma sin desbordar la cabecera */
-  .header-nav       { gap: 0; }
-  .nav-link--idioma { padding: .4rem .3rem; }
+  .container          { padding: 0 1rem; }
 
-  /* Stats: 2 columnas con número más pequeño para evitar desbordamiento */
-  .stats-bar        { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
-  .stat-number      { font-size: 1.1rem; word-break: break-all; }
-  .stat-card        { padding: .75rem .5rem; }
+  /* Mancheta más compacta: sin lema ni enlace a GitHub */
+  .header-lema        { visibility: hidden; }
+  .header-title       { font-size: 2.2rem; }
+  .header-subtitle    { font-size: .9rem; }
+  .header-nav         { justify-content: space-between; gap: .25rem .5rem; }
+  .nav-link           { font-size: .72rem; letter-spacing: .05em; }
+  .nav-link--github   { display: none; }
+  .update-banner-frecuencia { display: none; }
+
+  .apertura           { padding-top: 1.25rem; }
+  .apertura-titular   { font-size: 1.75rem; }
+  .entradilla         { font-size: 1rem; }
+  .stat-number        { font-size: 1.65rem; }
+  .stat-number--texto { font-size: 1.1rem; }
+  .results-count      { font-size: 1.1rem; line-height: 1.3; }
+
+  /* Buscador: el botón de filtros queda solo con su icono */
+  .search-row .btn span { display: none; }
+
+  /* Años: una sola línea que se desplaza */
+  .selector-anios-casillas { flex-wrap: nowrap; overflow-x: auto; }
+  .anio-chip               { white-space: nowrap; }
 
   /* Filtros en columna */
-  .filters          { flex-direction: column; }
+  .filters          { flex-direction: column; align-items: stretch; }
   .filter-group     { min-width: 100%; width: 100%; }
   .filter-select,
   .filter-input     { width: 100%; }
   .filter-group--range .range-inputs { flex-wrap: wrap; }
   .filter-group--range .filter-input { width: calc(50% - .75rem); }
 
-  /* results-header en columna para evitar overflow */
-  .results-header   { flex-direction: column; align-items: flex-start; gap: .5rem; }
-
-  /* Tabla principal: ocultar columnas secundarias en móvil */
-  .col-tipo           { display: none; }
-  .col-estado         { display: none; }
-  .col-adjudicatario  { display: none; }
+  /* Tabla de contratos: cada fila pasa a ser una ficha */
+  .contratos-table:not(.ranking-table) thead { display: none; }
+  .contratos-table:not(.ranking-table) tbody tr {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "objeto objeto objeto importe"
+      "organismo organismo organismo organismo"
+      "estado fecha tipo tipo"
+      "adjudicatario adjudicatario adjudicatario adjudicatario";
+    column-gap: .75rem;
+    padding: .8rem 0;
+  }
+  .contratos-table:not(.ranking-table) td { padding: 0; min-width: 0; max-width: none; }
+  .contratos-table:not(.ranking-table) .col-objeto        { grid-area: objeto; }
+  .contratos-table:not(.ranking-table) .col-importe       { grid-area: importe; }
+  .contratos-table:not(.ranking-table) .col-organismo     { grid-area: organismo; margin-top: .15rem; }
+  .contratos-table:not(.ranking-table) .col-estado        { grid-area: estado; margin-top: .2rem; }
+  .contratos-table:not(.ranking-table) .col-fecha         { grid-area: fecha; margin-top: .2rem; }
+  .contratos-table:not(.ranking-table) .col-tipo          { grid-area: tipo; margin-top: .2rem; }
+  .contratos-table:not(.ranking-table) .col-adjudicatario { grid-area: adjudicatario; margin-top: .1rem; }
+  .contratos-table:not(.ranking-table) .col-organismo .cell-organismo { -webkit-line-clamp: 1; }
+  .contratos-table:not(.ranking-table) td[colspan] { grid-column: 1 / -1; }
 
   /* Gráficas más bajas */
   .chart-container      { height: 200px; }
   .chart-container--wide { height: 180px; }
 
   /* Modal */
-  .modal            { padding: 1rem; border-radius: var(--radius-md); }
+  .modal            { padding: 1.25rem 1rem; }
   .modal-grid       { grid-template-columns: 1fr; }
-}
-
-/* Móvil pequeño (≤ 400px) */
-@media (max-width: 400px) {
-  .stats-bar        { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stat-number      { font-size: .95rem; }
-  .header-icon      { display: none; }
-  .header-title     { font-size: 1.1rem; }
-  .chart-container  { height: 180px; }
 }
 
 
@@ -766,63 +925,34 @@ a:hover { text-decoration: underline; }
    PÁGINA DE RANKING — Estilos específicos
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Hero de la página de ranking ────────────────────────────────────────── */
-.ranking-hero {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, #3d5166 100%);
-  color: white;
-  border-radius: var(--radius-lg);
-  padding: 1.75rem 2rem;
-  margin: 1.5rem 0 1rem;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.ranking-hero-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: .4rem;
-}
-
-.ranking-hero-desc {
-  font-size: .9rem;
-  color: rgba(255,255,255,.75);
-  line-height: 1.6;
-  max-width: 680px;
-}
-
 /* ── Controles del ranking ───────────────────────────────────────────────── */
-.ranking-controls {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
-  box-shadow: var(--shadow-sm);
-}
+.ranking-controls { padding: 1.25rem 0 .5rem; }
 
-.ranking-controls .search-bar { margin-bottom: 1rem; }
+.ranking-controls .search-bar { margin-bottom: .9rem; }
 
 .ranking-filters {
   display: flex;
   flex-wrap: wrap;
   gap: .75rem;
   align-items: flex-end;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border);
 }
 
 /* ── Sección de gráfica del ranking ──────────────────────────────────────── */
 .chart-section-ranking {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-/* .chart-section-ranking .chart-card hereda todos los estilos de .chart-card */
+.chart-section-ranking .chart-card {
+  border-top: 3px solid var(--color-rule);
+}
 
 .chart-card-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: .75rem;
   flex-wrap: wrap;
   gap: .5rem;
 }
@@ -833,71 +963,71 @@ a:hover { text-decoration: underline; }
   width: 100%;
 }
 
-/* Toggle de métrica en la gráfica */
+/* Cambio de métrica de la gráfica: dos pestañas de texto */
 .chart-toggle {
   display: flex;
-  gap: .25rem;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: .2rem;
+  gap: 1rem;
 }
 
 .chart-toggle-btn {
-  padding: .3rem .75rem;
-  font-size: .8rem;
-  font-weight: 600;
+  padding: 0 0 2px;
+  font-size: .85rem;
+  font-family: var(--font-sans);
   border: none;
-  border-radius: calc(var(--radius-sm) - 2px);
-  background: transparent;
+  border-bottom: 2px solid transparent;
+  background: none;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: background var(--transition), color var(--transition);
-  font-family: var(--font-sans);
+  transition: color var(--transition), border-color var(--transition);
 }
 
 .chart-toggle-btn.active {
-  background: var(--color-primary);
-  color: white;
+  color: var(--color-text);
+  font-weight: 700;
+  border-bottom-color: var(--color-primary);
 }
 
-.chart-toggle-btn:not(.active):hover {
-  background: var(--color-border);
-  color: var(--color-text);
-}
+.chart-toggle-btn:not(.active):hover { color: var(--color-text); }
 
 /* ── Tabla de ranking ────────────────────────────────────────────────────── */
-.ranking-table .col-pos           { width: 70px; text-align: center; white-space: nowrap; }
+.ranking-table .col-pos           { width: 64px; white-space: nowrap; }
 .ranking-table .col-empresa       { min-width: 0; width: auto; }   /* Cede espacio en lugar de forzar ancho */
 .ranking-table .col-ncontratos    { width: 90px; text-align: right; white-space: nowrap; }
 .ranking-table .col-importe-total { width: 130px; text-align: right; white-space: nowrap; }
 .ranking-table .col-importe-medio { width: 120px; text-align: right; white-space: nowrap; }
 .ranking-table .col-tipos         { width: 110px; }
-.ranking-table .col-acciones      { width: 70px; text-align: center; white-space: nowrap; }
+.ranking-table .col-acciones      { width: 70px; text-align: right; white-space: nowrap; }
 
-/* Posición y medalla */
+/* Posición y marca de los primeros puestos */
 .pos-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: .3rem;
+  gap: .4rem;
 }
 
 .pos-number {
-  font-size: .95rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--color-text-muted);
   min-width: 24px;
   text-align: right;
 }
 
-.medal { font-size: 1rem; line-height: 1; }
+/* Marca cuadrada: rojo los 3 primeros, tinta hasta el 10, gris hasta el 25 */
+.medal {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+}
 
-/* Nombre de empresa y barra de progreso */
+.medal--gold   { background: var(--color-primary); }
+.medal--silver { background: var(--color-rule); }
+.medal--bronze { background: var(--color-border-strong); }
+
+/* Nombre de empresa y barra de proporción */
 .empresa-nombre {
   font-weight: 600;
-  color: var(--color-secondary);
-  margin-bottom: .15rem;
+  margin-bottom: .1rem;
 }
 
 .empresa-nif {
@@ -907,38 +1037,33 @@ a:hover { text-decoration: underline; }
 }
 
 .ranking-bar-wrapper {
-  height: 4px;
+  height: 3px;
   background: var(--color-border);
-  border-radius: 2px;
   overflow: hidden;
   max-width: 100%;       /* Se adapta al ancho de la celda en lugar de fijo 240px */
 }
 
 .ranking-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), #e74c3c);
-  border-radius: 2px;
+  background: var(--color-primary);
   transition: width .4s ease;
   min-width: 2px;
 }
 
 /* Número de contratos */
-.num-contratos {
-  font-weight: 700;
-  color: var(--color-secondary);
-}
+.num-contratos { font-weight: 700; }
 
 /* Importe medio */
-.cell-importe-medio {
-  font-weight: 500;
-  color: var(--color-text-muted);
-}
+.cell-importe-medio { color: var(--color-text-muted); }
 
-/* Leyenda de medallas (dl/dt/dd) */
+/* Botón de detalle de cada fila */
+.btn-detalle { border-color: var(--color-border-strong); }
+
+/* Leyenda de las marcas (dl/dt/dd) */
 .ranking-legend {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .4rem;
   flex-wrap: wrap;
   font-size: .8rem;
   color: var(--color-text-muted);
@@ -953,7 +1078,7 @@ a:hover { text-decoration: underline; }
 }
 
 .ranking-legend dd {
-  margin-inline-end: .5rem;
+  margin-inline-end: .6rem;
 }
 
 /* ── Modal ampliado para detalle de empresa ──────────────────────────────── */
@@ -966,10 +1091,10 @@ a:hover { text-decoration: underline; }
 }
 
 .modal-empresa-nombre {
-  font-size: 1.3rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-secondary);
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .modal-empresa-nif {
@@ -978,39 +1103,36 @@ a:hover { text-decoration: underline; }
   margin-top: .2rem;
 }
 
-/* Métricas en el modal */
+/* Métricas en el modal: como los datos clave de la apertura */
 .modal-metricas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   margin: 1rem 0;
 }
 
 .modal-metrica {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: .875rem 1rem;
-  text-align: center;
+  border-top: 1px solid var(--color-rule);
+  padding-top: .4rem;
+  font-size: .82rem;
+  color: var(--color-text-soft);
 }
 
 .modal-metrica-valor {
-  font-size: 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--color-secondary);
-  margin-top: .25rem;
+  color: var(--color-text);
+  margin-top: .15rem;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.modal-metrica-valor--importe {
-  color: var(--color-success);
-  font-size: 1.3rem;
-}
+.modal-metrica-valor--importe { font-size: 1.45rem; }
 
 /* Desglose por tipo */
 .modal-tipos-lista {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
   margin-top: .5rem;
 }
 
@@ -1018,41 +1140,34 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .35rem .5rem;
-  background: var(--color-bg);
-  border-radius: var(--radius-sm);
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .modal-tipo-importe {
-  font-weight: 600;
-  color: var(--color-success);
+  font-weight: 700;
   font-size: .9rem;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 /* Organismos contratantes */
 .modal-organismos-lista {
   display: flex;
   flex-wrap: wrap;
-  gap: .4rem;
+  gap: .3rem .9rem;
   margin-top: .5rem;
 }
 
 .modal-organismo-tag {
   display: inline-block;
-  padding: .2rem .6rem;
-  background: #eaf0fb;
-  color: #2980b9;
-  border-radius: 999px;
-  font-size: .78rem;
-  font-weight: 500;
+  color: var(--color-text-soft);
+  font-size: .82rem;
 }
 
 /* Tabla de contratos dentro del modal */
 .modal-tabla-wrapper {
   overflow-x: auto;
   margin-top: .5rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
 }
 
 .modal-contratos-table {
@@ -1061,36 +1176,29 @@ a:hover { text-decoration: underline; }
   font-size: .82rem;
 }
 
-.modal-contratos-table thead {
-  background: var(--color-secondary);
-  color: white;
-}
-
 .modal-contratos-table th {
-  padding: .5rem .75rem;
+  padding: .4rem .75rem .4rem 0;
   text-align: left;
   font-size: .75rem;
-  text-transform: uppercase;
-  letter-spacing: .04em;
+  font-weight: 700;
   white-space: nowrap;
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .modal-contratos-table tbody tr {
   border-bottom: 1px solid var(--color-border);
 }
 
-.modal-contratos-table tbody tr:last-child { border-bottom: none; }
-.modal-contratos-table tbody tr:hover { background: #fef9f9; }
+.modal-contratos-table tbody tr:hover { background: var(--color-highlight); }
 
 .modal-contratos-table td {
-  padding: .5rem .75rem;
+  padding: .5rem .75rem .5rem 0;
   vertical-align: top;
 }
 
 .modal-contrato-objeto {
   min-width: 200px;
   max-width: 300px;
-  color: var(--color-secondary);
   font-weight: 500;
 }
 
@@ -1104,8 +1212,7 @@ a:hover { text-decoration: underline; }
 .modal-contrato-importe {
   white-space: nowrap;
   text-align: right;
-  font-weight: 600;
-  color: var(--color-success);
+  font-weight: 700;
 }
 
 .modal-contrato-fecha {
@@ -1145,23 +1252,16 @@ a:hover { text-decoration: underline; }
   /* Modal: métricas en 2 columnas */
   .modal-metricas  { grid-template-columns: 1fr 1fr; }
   .modal--wide     { max-width: 100%; }
-
-  /* Hero: reducir padding */
-  .ranking-hero    { padding: 1.25rem 1.5rem; }
 }
 
 /* Móvil grande (≤ 600px) */
 @media (max-width: 600px) {
-  /* Hero */
-  .ranking-hero       { padding: 1rem; margin: 1rem 0 .75rem; }
-  .ranking-hero-title { font-size: 1.15rem; }
-  .ranking-hero-desc  { font-size: .82rem; }
-
   /* Controles: filtros en columna */
-  .ranking-filters                  { flex-direction: column; }
+  .ranking-filters                  { flex-direction: column; align-items: stretch; }
   .ranking-filters .filter-group    { min-width: 100%; width: 100%; }
   .ranking-filters .filter-select   { width: 100%; }
-  .ranking-filters .btn             { width: 100%; justify-content: center; }
+  .ranking-filters .btn             { justify-content: center; }
+  .ranking-filters .btn--enlace     { justify-content: flex-start; }
 
   /* Tabla: ocultar columna de contratos para ganar espacio */
   .ranking-table .col-ncontratos    { display: none; }
@@ -1172,11 +1272,8 @@ a:hover { text-decoration: underline; }
   /* Modal: métricas en 1 columna */
   .modal-metricas                   { grid-template-columns: 1fr; }
 
-  /* Leyenda de medallas: ocultar en móvil */
+  /* Leyenda de las marcas: ocultar en móvil */
   .ranking-legend                   { display: none; }
-
-  /* results-header en columna */
-  .results-header                   { flex-direction: column; align-items: flex-start; gap: .5rem; }
 }
 
 /* Móvil pequeño (≤ 400px) */
@@ -1184,24 +1281,7 @@ a:hover { text-decoration: underline; }
   /* En pantallas muy pequeñas ocultar también importe total de la tabla
      y dejar solo posición, empresa y botón */
   .ranking-table .col-importe-total { display: none; }
-  .ranking-hero-title               { font-size: 1rem; }
 }
-
-/* ── Banner de fecha de actualización ───────────────────────────────────── */
-.update-banner {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  padding: .45rem 1rem;
-  background: rgba(192, 57, 43, .07);
-  border-left: 3px solid var(--color-primary);
-  border-radius: var(--radius-sm);
-  font-size: .82rem;
-  color: var(--color-text-muted);
-  margin: 1rem 0 .5rem;
-}
-
-.update-banner-icon { font-size: .9rem; }
 
 /* ── Modal "Sobre los datos" ─────────────────────────────────────────────── */
 .modal--sobre {
@@ -1212,28 +1292,29 @@ a:hover { text-decoration: underline; }
 }
 
 .modal-sobre-title {
-  font-size: 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
   font-weight: 700;
-  color: var(--color-secondary);
-  margin-bottom: 1.5rem;
-  padding-bottom: .75rem;
-  border-bottom: 2px solid var(--color-border);
+  margin-bottom: 1.25rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .modal-sobre-content h3 {
-  font-size: .95rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--color-secondary);
-  margin: 1.25rem 0 .4rem;
+  margin: 1.25rem 0 .35rem;
 }
 
 .modal-sobre-content h3:first-child { margin-top: 0; }
 
 .modal-sobre-content p,
 .modal-sobre-content li {
-  font-size: .9rem;
-  line-height: 1.65;
-  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: .98rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
 }
 
 .modal-sobre-content ul {
@@ -1246,13 +1327,13 @@ a:hover { text-decoration: underline; }
 .modal-sobre-content a {
   color: var(--color-primary);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .modal-sobre-content a:hover { color: var(--color-primary-dark); }
 
 @media (max-width: 600px) {
   .modal--sobre { padding: 1.5rem 1.25rem; }
-  .update-banner { font-size: .78rem; }
 }
 
 /* ── UTE: Ranking & Modal ────────────────────────────────────────────────── */
@@ -1260,60 +1341,46 @@ a:hover { text-decoration: underline; }
 /* Info de participación en UTEs (debajo del NIF en la tabla de ranking) */
 .empresa-ute-info {
   font-size: .75rem;
-  color: #e65100;
-  font-weight: 600;
-  margin-top: .15rem;
+  color: var(--color-text-soft);
+  font-style: italic;
+  margin-top: .1rem;
 }
 
 /* Estimación UTE (importes/contratos vía UTE, visibles con toggle) */
 .ute-estimacion {
   font-size: .72rem;
-  color: #bf360c;
-  font-weight: 500;
+  color: var(--color-text-muted);
+  font-style: italic;
   margin-top: .15rem;
-  opacity: .85;
 }
 
-/* Toggle de estimación UTEs en la barra de filtros */
+/* Casilla de estimación UTEs en la barra de filtros */
 .toggle-ute {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
   cursor: pointer;
-  font-size: .82rem;
+  font-size: .85rem;
   color: var(--color-text);
-  padding: .35rem .6rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  transition: background var(--transition), border-color var(--transition);
+  padding: .55rem 0;
   white-space: nowrap;
   -webkit-user-select: none;
   user-select: none;
 }
 
-.toggle-ute:hover {
-  border-color: #e65100;
-  background: #fff8f0;
-}
-
 .toggle-ute input[type="checkbox"] {
-  accent-color: #e65100;
+  accent-color: var(--color-primary);
   width: 14px;
   height: 14px;
   cursor: pointer;
 }
 
-.toggle-ute-label {
-  font-weight: 500;
-  letter-spacing: .01em;
-}
+.toggle-ute-label { font-weight: 500; }
 
 /* Modal: participaciones en UTEs */
 .modal-ute-participaciones {
   display: flex;
   flex-direction: column;
-  gap: .4rem;
   margin-top: .3rem;
 }
 
@@ -1321,10 +1388,9 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-direction: column;
   gap: .1rem;
-  padding: .4rem .6rem;
-  background: #fff8f0;
-  border-left: 3px solid #e65100;
-  border-radius: var(--radius-sm);
+  padding: .4rem 0 .4rem .75rem;
+  border-left: 2px solid var(--color-border-strong);
+  margin-bottom: .4rem;
   font-size: .85rem;
 }
 
@@ -1336,10 +1402,4 @@ a:hover { text-decoration: underline; }
 .modal-ute-detalle {
   font-size: .78rem;
   color: var(--color-text-muted);
-}
-
-@media (max-width: 768px) {
-  .toggle-ute { font-size: .75rem; padding: .25rem .4rem; }
-  .empresa-ute-info { font-size: .7rem; }
-  .ute-estimacion { font-size: .68rem; }
 }

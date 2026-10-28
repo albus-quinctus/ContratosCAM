@@ -6,7 +6,7 @@
  *
  * Solo conserva los contratos de la Comunidad de Madrid (lib/filtro-cam.js).
  *
- * Entrada: data/raw/placsp-licitaciones-*.atom
+ * Entrada: data/raw/<prefijoSemanal>-*.atom (feeds semanales de lib/feeds-placsp.js)
  *          data/raw/historico/<feed>/<periodo>.zip (con --historico; los
  *          .atom se leen de dentro del ZIP sin descomprimirlo a disco)
  * Salida:  data/raw/parsed-licitaciones.json
@@ -18,9 +18,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
-import { FUENTE } from './lib/fuentes.js';
 import { esDeCAM } from './lib/filtro-cam.js';
-import { EXTENSION_ZIP, FEEDS_HISTORICO, HISTORICO_DIR } from './lib/feeds-placsp.js';
+import { EXTENSION_ZIP, FEEDS_HISTORICO, HISTORICO_DIR, feedDeFicheroSemanal } from './lib/feeds-placsp.js';
 import { atomsDeZip, leerDeZip } from './lib/zip.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -336,16 +335,17 @@ function extraerJerarquia(locatedParty) {
 
 /**
  * Ficheros Atom que hay que parsear, con la fuente de cada uno y cómo leerlo:
- * el feed semanal de data/raw/ y, con --historico, los que hay dentro de los
+ * los feeds semanales de data/raw/ y, con --historico, los que hay dentro de los
  * ZIP que guarda download-historico.js en data/raw/historico/<feed>/<periodo>.zip.
  * @param {boolean} conHistorico
  * @returns {{nombre: string, fuente: string, leer: () => string}[]}
  */
 function listarFicheros(conHistorico) {
   const ficheros = fs.readdirSync(RAW_DIR)
-    .filter(f => f.startsWith('placsp-') && f.endsWith('.atom'))
     .sort()
-    .map(f => ({ nombre: f, fuente: FUENTE.PLACSP, leer: () => fs.readFileSync(path.join(RAW_DIR, f), 'utf-8') }));
+    .map(f => ({ nombre: f, feed: feedDeFicheroSemanal(f) }))
+    .filter(({ feed }) => feed)
+    .map(({ nombre, feed }) => ({ nombre, fuente: feed.fuente, leer: () => fs.readFileSync(path.join(RAW_DIR, nombre), 'utf-8') }));
 
   if (!conHistorico) return ficheros;
 
@@ -420,7 +420,7 @@ async function main() {
         // el XML completo y no se acumula en memoria (con el histórico no cabría)
         todosLosContratos.push(structuredClone(contrato));
         deCAM++;
-      } catch (err) {
+      } catch {
         errores++;
       }
     }
