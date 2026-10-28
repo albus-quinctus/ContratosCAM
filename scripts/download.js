@@ -4,9 +4,10 @@
  * Descarga los datos de contratos de la Comunidad de Madrid
  * desde la Plataforma de Contratación del Sector Público (PLACSP).
  *
- * Fuente principal: Feed Atom paginado de licitaciones.
- * El feed contiene contratos de toda España; el filtrado por CAM
- * se realiza en la fase de transformación (transform.js).
+ * Fuente: los feeds Atom paginados de lib/feeds-placsp.js (perfiles de
+ * contratante y plataformas agregadas), cada uno en sus propios ficheros.
+ * Los feeds contienen contratos de toda España; el filtrado por CAM se
+ * realiza en el parseo (parse.js).
  *
  * Uso: node scripts/download.js
  */
@@ -14,7 +15,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { PREFIJO_ATOM_SEMANAL } from './lib/feeds-placsp.js';
+import { EXTENSION_ATOM, FEEDS_HISTORICO, urlAtomSemanal } from './lib/feeds-placsp.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RAW_DIR = path.join(__dirname, '../data/raw');
@@ -30,34 +31,15 @@ const TIMEOUT_MS = 120_000;
 const DELAY_ENTRE_PAGINAS_MS = 3_000;
 
 /**
- * Número máximo de páginas a descargar del feed Atom.
- * - Modo normal (semanal): 50 páginas (~22.500 licitaciones)
- * - Modo full (--full): 500 páginas (~225.000 licitaciones, toda la historia disponible)
- *
- * El feed tiene ~451 entries por página. Con 500 páginas cubrimos todo el histórico
- * disponible en PLACSP (desde 2018 aprox).
+ * Número máximo de páginas a descargar de cada feed Atom.
+ * - Modo normal (semanal): las `paginasSemanales` de cada feed (lib/feeds-placsp.js)
+ * - Modo full (--full): 500 páginas (~225.000 licitaciones por feed)
  */
 const MODO_FULL = process.argv.includes('--full');
-const MAX_PAGINAS = MODO_FULL ? 500 : 50;
+const PAGINAS_FULL = 500;
 
 /** User-Agent identificativo del proyecto */
 const USER_AGENT = 'ContratosCAM/0.1 (https://github.com/albus-quinctus/ContratosCAM)';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// URLs de descarga
-//
-// Fuente: Plataforma de Contratación del Sector Público (PLACSP)
-// https://contrataciondelestado.es
-//
-// El feed Atom v3 contiene licitaciones de todos los perfiles de contratante
-// de España. Es paginado: cada página tiene un enlace <link rel="next">
-// que apunta a la siguiente página.
-//
-// Documentación de sindicación PLACSP:
-// https://contrataciondelestado.es/wps/portal/plataforma/es/Sindicacion
-// ─────────────────────────────────────────────────────────────────────────────
-
-const FEED_ATOM_URL = 'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Funciones
@@ -145,41 +127,34 @@ function esperar(ms) {
 }
 
 /**
- * Función principal: descarga el feed Atom paginado de PLACSP.
+ * Descarga el feed Atom paginado de un feed de PLACSP.
  *
  * Estrategia:
  * 1. Descarga la primera página del feed (las licitaciones más recientes)
  * 2. Sigue los enlaces <link rel="next"> para obtener más páginas
- * 3. Se detiene cuando no hay más páginas o se alcanza MAX_PAGINAS
+ * 3. Se detiene cuando no hay más páginas o se alcanza el máximo de páginas
  * 4. Guarda cada página como un archivo separado en data/raw/
+ *
+ * @param {object} feed - Elemento de FEEDS_HISTORICO
+ * @param {string} fecha - Fecha de la descarga (AAAA-MM-DD), para el nombre de los ficheros
+ * @returns {Promise<{archivos: string[], entradas: number, bytes: number}>}
  */
-async function main() {
-  console.log('🔽 ContratosCAM — Descarga de datos de PLACSP');
-  console.log('═'.repeat(60));
-  console.log(`📡 Fuente: Plataforma de Contratación del Sector Público`);
-  console.log(`📄 Feed: licitacionesPerfilesContratanteCompleto3 (Atom v3)`);
-  console.log(`📑 Máximo de páginas: ${MAX_PAGINAS} (modo: ${MODO_FULL ? 'FULL — descarga histórica completa' : 'normal — últimas semanas'})`);
-  if (MODO_FULL) {
-    console.log(`⚠️  Modo FULL: esto puede tardar 30-60 minutos y descargar ~1-2 GB`);
-  }
-  console.log('');
+async function descargarFeed(feed, fecha) {
+  const maxPaginas = MODO_FULL ? PAGINAS_FULL : feed.paginasSemanales;
 
-  // Crear directorio si no existe
-  if (!fs.existsSync(RAW_DIR)) {
-    fs.mkdirSync(RAW_DIR, { recursive: true });
-  }
+  console.log(`\n📡 Feed ${feed.clave}: ${feed.descripcion}`);
+  console.log(`📑 Máximo de páginas: ${maxPaginas}`);
 
-  const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   let totalBytes = 0;
   let totalEntradas = 0;
   let paginaActual = 1;
-  let urlActual = FEED_ATOM_URL;
+  let urlActual = urlAtomSemanal(feed);
   const archivosDescargados = [];
 
-  while (urlActual && paginaActual <= MAX_PAGINAS) {
-    console.log(`\n📥 Página ${paginaActual}/${MAX_PAGINAS}`);
+  while (urlActual && paginaActual <= maxPaginas) {
+    console.log(`\n📥 ${feed.clave}: página ${paginaActual}/${maxPaginas}`);
 
-    const nombreArchivo = `${PREFIJO_ATOM_SEMANAL}${fecha}-p${String(paginaActual).padStart(2, '0')}.atom`;
+    const nombreArchivo = `${feed.prefijoSemanal}-${fecha}-p${String(paginaActual).padStart(2, '0')}${EXTENSION_ATOM}`;
     const rutaDestino = path.join(RAW_DIR, nombreArchivo);
 
     // No volver a descargar si ya existe el archivo de hoy
@@ -224,7 +199,7 @@ async function main() {
 
       // Si falla una página intermedia, no abortar todo
       if (paginaActual === 1) {
-        console.error('\n❌ Error en la primera página. Abortando.');
+        console.error(`\n❌ Error en la primera página del feed ${feed.clave}. Abortando.`);
         process.exit(1);
       }
       console.error('  ⚠️  Continuando con las páginas ya descargadas.');
@@ -234,29 +209,54 @@ async function main() {
     paginaActual++;
 
     // Pausa entre descargas (excepto la última)
-    if (urlActual && paginaActual <= MAX_PAGINAS) {
+    if (urlActual && paginaActual <= maxPaginas) {
       console.log(`  ⏳ Esperando ${DELAY_ENTRE_PAGINAS_MS / 1000}s antes de la siguiente página...`);
       await esperar(DELAY_ENTRE_PAGINAS_MS);
     }
   }
 
+  return { archivos: archivosDescargados, entradas: totalEntradas, bytes: totalBytes };
+}
+
+/**
+ * Función principal: descarga uno tras otro los feeds de PLACSP.
+ */
+async function main() {
+  console.log('🔽 ContratosCAM — Descarga de datos de PLACSP');
+  console.log('═'.repeat(60));
+  console.log(`📡 Fuente: Plataforma de Contratación del Sector Público`);
+  console.log(`📄 Feeds: ${FEEDS_HISTORICO.map(f => f.clave).join(', ')} (Atom v3)`);
+  console.log(`📑 Modo: ${MODO_FULL ? 'FULL — descarga histórica completa' : 'normal — últimas semanas'}`);
+  if (MODO_FULL) {
+    console.log(`⚠️  Modo FULL: esto puede tardar 30-60 minutos por feed y descargar ~1-2 GB`);
+  }
+
+  // Crear directorio si no existe
+  if (!fs.existsSync(RAW_DIR)) {
+    fs.mkdirSync(RAW_DIR, { recursive: true });
+  }
+
+  const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const resultados = [];
+  for (const feed of FEEDS_HISTORICO) {
+    resultados.push({ feed, ...await descargarFeed(feed, fecha) });
+  }
+
   // Resumen
   console.log('\n' + '═'.repeat(60));
   console.log('📊 RESUMEN DE DESCARGA');
-  console.log('─'.repeat(60));
-  console.log(`  📄 Páginas descargadas: ${archivosDescargados.length}`);
-  console.log(`  📝 Total de entradas (licitaciones): ${totalEntradas}`);
-  console.log(`  💾 Tamaño total: ${(totalBytes / 1024 / 1024).toFixed(2)} MB`);
-  console.log(`  📁 Directorio: ${RAW_DIR}`);
-  console.log('─'.repeat(60));
-  console.log('  Archivos:');
-  archivosDescargados.forEach(f => console.log(`    • ${f}`));
-  console.log('═'.repeat(60));
-
-  if (archivosDescargados.length === 0) {
-    console.error('\n❌ No se descargó ningún archivo.');
-    process.exit(1);
+  for (const { feed, archivos, entradas, bytes } of resultados) {
+    console.log('─'.repeat(60));
+    console.log(`  📡 Feed ${feed.clave}`);
+    console.log(`  📄 Páginas descargadas: ${archivos.length}`);
+    console.log(`  📝 Total de entradas (licitaciones): ${entradas}`);
+    console.log(`  💾 Tamaño total: ${(bytes / 1024 / 1024).toFixed(2)} MB`);
+    console.log('  Archivos:');
+    archivos.forEach(f => console.log(`    • ${f}`));
   }
+  console.log('─'.repeat(60));
+  console.log(`  📁 Directorio: ${RAW_DIR}`);
+  console.log('═'.repeat(60));
 
   console.log('\n✅ Descarga completada.');
   console.log('💡 Siguiente paso: npm run parse');

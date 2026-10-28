@@ -297,9 +297,10 @@ No se usa como fuente primaria del pipeline por la dificultad de parsear PDFs, p
 Prioridad 1: PLACSP (feed Atom) ✅ ACTIVO
 └── Licitaciones recientes de todos los organismos CAM
 └── Actualización: diaria (el feed se actualiza continuamente)
-└── Automatizado en scripts/download.js
-└── Modo normal: 50 páginas (~4.500 licitaciones CAM)
-└── Modo completo: 500 páginas (~225.000 licitaciones, todo el histórico disponible)
+└── Automatizado en scripts/download.js, con dos feeds (scripts/lib/feeds-placsp.js):
+    └── Perfiles de contratante (sindicación 643): 50 páginas por semana
+    └── Plataformas agregadas sin menores (sindicación 1044): 30 páginas por semana (~2 semanas)
+└── Modo completo: 500 páginas por feed
 └── Acumulación incremental: transform.js combina con histórico existente
 
 Prioridad 2: TED-UE (API REST v3) ✅ ACTIVO

@@ -8,9 +8,7 @@
  */
 
 import { execFileSync } from 'child_process';
-
-/** Extensión de los ficheros Atom que contienen los ZIP */
-const EXTENSION_ATOM = '.atom';
+import { EXTENSION_ATOM } from './feeds-placsp.js';
 
 /** Tamaño máximo de un fichero Atom leído del ZIP (bytes) */
 const MAX_ATOM_BYTES = 512 * 1024 * 1024;

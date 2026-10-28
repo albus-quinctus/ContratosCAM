@@ -108,7 +108,7 @@ npm run serve
 
 | Comando | Descripción |
 |---------|-------------|
-| `npm run download` | Descarga los datos de las fuentes oficiales |
+| `npm run download` | Descarga las últimas páginas de los feeds Atom de PLACSP (perfiles de contratante y plataformas agregadas) |
 | `npm run download:historico -- --desde=2017 --dry-run` | Lista los ZIP del histórico de PLACSP (perfiles de contratante y plataformas agregadas) que se descargarían; sin `--dry-run` los descarga, sin descomprimir, en `data/raw/historico/` |
 | `npm run parse` | Convierte CSV/XML descargados a JSON; con `-- --historico` incluye el histórico descargado |
 | `npm run transform` | Limpia y normaliza los datos |
