@@ -1,9 +1,10 @@
 /**
  * scripts/lib/feeds-placsp.js
  *
- * Feeds de sindicación de PLACSP que se cargan como histórico, con la fuente
- * que se anota en sus contratos. Fuente única de estos valores para la
- * descarga (download-historico.js) y el parseo (parse.js).
+ * Feeds de sindicación de PLACSP: los que se cargan como histórico, con la
+ * fuente que se anota en sus contratos, y el nombre de los ficheros del feed
+ * semanal. Fuente única de estos valores para la descarga (download.js,
+ * download-historico.js) y el parseo (parse.js).
  *
  * PLACSP publica el histórico de cada feed en ficheros ZIP: uno por año para
  * los años cerrados y uno por mes para el año en curso. Cada ZIP contiene los
@@ -21,6 +22,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** Directorio donde se guarda el histórico: <dir>/<feed>/<periodo>.zip */
 export const HISTORICO_DIR = path.join(__dirname, '../../data/raw/historico');
+
+/** Prefijo de los ficheros Atom del feed semanal que se guardan en data/raw/ */
+export const PREFIJO_ATOM_SEMANAL = 'placsp-licitaciones-';
 
 /** Extensión de los ZIP del histórico, en PLACSP y en local */
 export const EXTENSION_ZIP = '.zip';

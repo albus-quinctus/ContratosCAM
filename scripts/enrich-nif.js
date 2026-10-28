@@ -51,6 +51,19 @@ const NIF_REGEX_HTML = /\b([ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J])\b/g;
 /** Regex para validar formato NIF/CIF */
 const NIF_VALIDO_REGEX = /^[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]$/;
 
+/** Fuentes de NIF que se pueden elegir con --source (TODAS las consulta en cascada) */
+const FUENTE_NIF = Object.freeze({
+  TODAS: 'all',
+  PLACSP: 'placsp',
+  OPENCORPORATES: 'opencorporates',
+});
+
+/** Origen que se anota en la caché según la fuente que encontró el NIF */
+const ORIGEN_CACHE = Object.freeze({
+  [FUENTE_NIF.PLACSP]: 'placsp_scraping',
+  [FUENTE_NIF.OPENCORPORATES]: 'opencorporates',
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Utilidades
 // ─────────────────────────────────────────────────────────────────────────────
@@ -61,6 +74,16 @@ const NIF_VALIDO_REGEX = /^[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]$/;
  */
 function esperar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Indica si hay que consultar una fuente de NIF con la opción --source elegida.
+ * @param {string} elegida - Valor de --source
+ * @param {string} fuente - Fuente de FUENTE_NIF
+ * @returns {boolean}
+ */
+function consultarFuente(elegida, fuente) {
+  return elegida === FUENTE_NIF.TODAS || elegida === fuente;
 }
 
 /**
@@ -284,7 +307,7 @@ async function main() {
   const maxArg = args.find(a => a.startsWith('--max='));
   const sourceArg = args.find(a => a.startsWith('--source='));
   const maxContratos = maxArg ? parseInt(maxArg.split('=')[1]) : Infinity;
-  const source = sourceArg ? sourceArg.split('=')[1] : 'all';
+  const source = sourceArg ? sourceArg.split('=')[1] : FUENTE_NIF.TODAS;
 
   console.log(`📋 Configuración:`);
   console.log(`   Máximo contratos: ${maxContratos === Infinity ? 'sin límite' : maxContratos}`);
@@ -364,7 +387,7 @@ async function main() {
     }
 
     // ─── Paso 2: Scraping PLACSP ─────────────────────────────────────────
-    if (source === 'all' || source === 'placsp') {
+    if (consultarFuente(source, FUENTE_NIF.PLACSP)) {
       if (contrato.url_origen) {
         await esperar(DELAY_PLACSP_MS);
         consultasPLACSP++;
@@ -374,7 +397,7 @@ async function main() {
           contrato.nif_adjudicatario = nif;
           cache.set(nombreNorm, {
             nif,
-            fuente: 'placsp_scraping',
+            fuente: ORIGEN_CACHE[FUENTE_NIF.PLACSP],
             fecha: new Date().toISOString().split('T')[0],
             nombre_original: contrato.adjudicatario,
           });
@@ -385,7 +408,7 @@ async function main() {
     }
 
     // ─── Paso 3: OpenCorporates API ──────────────────────────────────────
-    if ((source === 'all' || source === 'opencorporates') && !rateLimited) {
+    if (consultarFuente(source, FUENTE_NIF.OPENCORPORATES) && !rateLimited) {
       if (consultasOpenCorp >= MAX_OPENCORPORATES_POR_EJECUCION) {
         if (!rateLimited) {
           console.log(`  ⚠️  Límite de OpenCorporates alcanzado (${MAX_OPENCORPORATES_POR_EJECUCION} consultas)`);
@@ -402,7 +425,7 @@ async function main() {
           contrato.nif_adjudicatario = nif;
           cache.set(nombreNorm, {
             nif,
-            fuente: 'opencorporates',
+            fuente: ORIGEN_CACHE[FUENTE_NIF.OPENCORPORATES],
             fecha: new Date().toISOString().split('T')[0],
             nombre_original: contrato.adjudicatario,
           });

@@ -18,7 +18,7 @@ import os from 'os';
 import path from 'path';
 import { execFileSync, spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { FEEDS_HISTORICO, feedPorClave, periodosHistorico, urlZip } from './lib/feeds-placsp.js';
+import { FEEDS_HISTORICO, PREFIJO_ATOM_SEMANAL, feedPorClave, periodosHistorico, urlZip } from './lib/feeds-placsp.js';
 import { FUENTE } from './lib/fuentes.js';
 import { assert, assertDeep, terminar } from './lib/qa.js';
 
@@ -156,7 +156,7 @@ const JERARQUIA_OTRA = ['Sector Público', 'Comunidad Autónoma de Prueba'];
 const JERARQUIA_AGREGADA = ['Consejería de Sanidad', 'Servicio Madrileño de Salud'];
 
 // Feed semanal: un contrato de la CAM con dos lotes y otro de fuera de la CAM
-fs.writeFileSync(path.join(RAIZ, 'data/raw/placsp-licitaciones-2026-10-05-p01.atom'), feed([
+fs.writeFileSync(path.join(RAIZ, `data/raw/${PREFIJO_ATOM_SEMANAL}2026-10-05-p01.atom`), feed([
   entrada({
     expediente: 'CAM-LOTES',
     jerarquia: JERARQUIA_CAM,
