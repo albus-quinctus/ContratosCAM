@@ -1,5 +1,9 @@
 {
-  "generado_en": "2026-10-26T12:55:49.360Z",
-  "total_contratos": 8435,
-  "fuente": "placsp"
+  "generado_en": "2026-10-29T01:16:14.914Z",
+  "total_contratos": 65464,
+  "fuentes": [
+    "placsp",
+    "placsp_agregadas",
+    "ted_ue"
+  ]
 }

@@ -1,10 +1,55 @@
 {
-  "total": 8435,
+  "total": 65464,
   "archivos": [
     {
       "anio": "2026",
       "archivo": "2026.json",
-      "total": 7820
+      "total": 19168
+    },
+    {
+      "anio": "2025",
+      "archivo": "2025.json",
+      "total": 15843
+    },
+    {
+      "anio": "2024",
+      "archivo": "2024.json",
+      "total": 14386
+    },
+    {
+      "anio": "2023",
+      "archivo": "2023.json",
+      "total": 9169
+    },
+    {
+      "anio": "2022",
+      "archivo": "2022.json",
+      "total": 3115
+    },
+    {
+      "anio": "2021",
+      "archivo": "2021.json",
+      "total": 1009
+    },
+    {
+      "anio": "2020",
+      "archivo": "2020.json",
+      "total": 824
+    },
+    {
+      "anio": "2019",
+      "archivo": "2019.json",
+      "total": 854
+    },
+    {
+      "anio": "2018",
+      "archivo": "2018.json",
+      "total": 431
+    },
+    {
+      "anio": "2017",
+      "archivo": "2017.json",
+      "total": 50
     },
     {
       "anio": "2016",
@@ -60,6 +105,326 @@
       "anadidos": 2,
       "modificados": 1,
       "sin_cambios": 8432
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:44.578Z",
+      "lote": {
+        "placsp": 56,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2017-06-08T05:10:18.548Z",
+        "hasta": "2018-01-04T13:55:34.576Z"
+      },
+      "recibidos": 56,
+      "anadidos": 56,
+      "modificados": 0,
+      "sin_cambios": 8435
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:45.140Z",
+      "lote": {
+        "placsp": 489,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2018-01-03T06:25:50.413Z",
+        "hasta": "2019-01-02T13:55:26.105Z"
+      },
+      "recibidos": 489,
+      "anadidos": 115,
+      "modificados": 16,
+      "sin_cambios": 8475
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:45.740Z",
+      "lote": {
+        "placsp": 960,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2019-01-02T10:25:26.860Z",
+        "hasta": "2019-12-31T05:55:28.214Z"
+      },
+      "recibidos": 960,
+      "anadidos": 137,
+      "modificados": 88,
+      "sin_cambios": 8518
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:46.345Z",
+      "lote": {
+        "placsp": 687,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2019-12-31T05:55:26.871Z",
+        "hasta": "2020-12-31T18:10:52.768Z"
+      },
+      "recibidos": 687,
+      "anadidos": 107,
+      "modificados": 54,
+      "sin_cambios": 8689
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:46.951Z",
+      "lote": {
+        "placsp": 813,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2020-12-30T18:10:51.177Z",
+        "hasta": "2021-12-30T09:56:18.924Z"
+      },
+      "recibidos": 813,
+      "anadidos": 80,
+      "modificados": 101,
+      "sin_cambios": 8749
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:47.551Z",
+      "lote": {
+        "placsp": 680,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2022-01-03T09:41:22.618Z",
+        "hasta": "2022-12-30T11:40:50.800Z"
+      },
+      "recibidos": 680,
+      "anadidos": 107,
+      "modificados": 83,
+      "sin_cambios": 8847
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:48.194Z",
+      "lote": {
+        "placsp": 1740,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2023-01-02T08:55:54.852Z",
+        "hasta": "2023-12-29T23:26:10.497Z"
+      },
+      "recibidos": 1740,
+      "anadidos": 839,
+      "modificados": 26,
+      "sin_cambios": 9011
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:50.062Z",
+      "lote": {
+        "placsp": 30998,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2024-01-02T06:26:17.147Z",
+        "hasta": "2024-12-31T13:41:16.815Z"
+      },
+      "recibidos": 30998,
+      "anadidos": 6271,
+      "modificados": 591,
+      "sin_cambios": 9285
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:52.153Z",
+      "lote": {
+        "placsp": 28913,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2024-12-31T07:56:04.513Z",
+        "hasta": "2025-12-31T23:26:13.913Z"
+      },
+      "recibidos": 28913,
+      "anadidos": 4457,
+      "modificados": 2630,
+      "sin_cambios": 13517
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:54.445Z",
+      "lote": {
+        "placsp": 28926,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2025-12-30T14:41:06.295Z",
+        "hasta": "2026-10-27T23:26:18.368Z"
+      },
+      "recibidos": 28926,
+      "anadidos": 3309,
+      "modificados": 3216,
+      "sin_cambios": 17388
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:55.623Z",
+      "lote": {
+        "placsp": 72,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2017-02-08T11:57:57.145Z",
+        "hasta": "2017-12-22T11:08:25.014Z"
+      },
+      "recibidos": 72,
+      "anadidos": 34,
+      "modificados": 0,
+      "sin_cambios": 23913
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:56.812Z",
+      "lote": {
+        "placsp": 1202,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2018-01-03T11:00:01.303Z",
+        "hasta": "2018-12-29T11:19:39.553Z"
+      },
+      "recibidos": 1202,
+      "anadidos": 545,
+      "modificados": 9,
+      "sin_cambios": 23938
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:57.992Z",
+      "lote": {
+        "placsp": 1942,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2018-12-28T14:34:17.797Z",
+        "hasta": "2020-01-02T08:28:26.272Z"
+      },
+      "recibidos": 1942,
+      "anadidos": 788,
+      "modificados": 157,
+      "sin_cambios": 24335
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:14:59.271Z",
+      "lote": {
+        "placsp": 2173,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2019-12-30T13:56:42.568Z",
+        "hasta": "2020-12-31T09:15:26.083Z"
+      },
+      "recibidos": 2173,
+      "anadidos": 796,
+      "modificados": 243,
+      "sin_cambios": 25037
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:00.585Z",
+      "lote": {
+        "placsp": 2830,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2020-12-31T09:15:26.083Z",
+        "hasta": "2021-12-30T18:30:11.860Z"
+      },
+      "recibidos": 2830,
+      "anadidos": 978,
+      "modificados": 244,
+      "sin_cambios": 25832
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:02.288Z",
+      "lote": {
+        "placsp": 11417,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2019-09-23T07:47:30.923Z",
+        "hasta": "2022-12-31T14:45:28.501Z"
+      },
+      "recibidos": 11417,
+      "anadidos": 4701,
+      "modificados": 354,
+      "sin_cambios": 26700
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:05.322Z",
+      "lote": {
+        "placsp": 38281,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2019-09-23T07:47:30.923Z",
+        "hasta": "2023-12-31T14:56:21.525Z"
+      },
+      "recibidos": 38281,
+      "anadidos": 9488,
+      "modificados": 2057,
+      "sin_cambios": 29698
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:08.806Z",
+      "lote": {
+        "placsp": 41772,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2020-10-14T12:53:34.760Z",
+        "hasta": "2024-12-30T15:27:35.989Z"
+      },
+      "recibidos": 41772,
+      "anadidos": 10902,
+      "modificados": 2443,
+      "sin_cambios": 38800
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:13.188Z",
+      "lote": {
+        "placsp": 44791,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2021-09-29T12:35:54.354Z",
+        "hasta": "2025-12-29T17:22:48.225Z"
+      },
+      "recibidos": 44791,
+      "anadidos": 10416,
+      "modificados": 3214,
+      "sin_cambios": 48931
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-10-29T01:15:17.508Z",
+      "lote": {
+        "placsp": 42264,
+        "ted_ue": 0
+      },
+      "periodo_origen": {
+        "desde": "2021-09-29T12:35:54.354Z",
+        "hasta": "2026-10-27T17:45:26.390Z"
+      },
+      "recibidos": 42264,
+      "anadidos": 2903,
+      "modificados": 7680,
+      "sin_cambios": 54881
     }
   ]
 }

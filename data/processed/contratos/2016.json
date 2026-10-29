@@ -437,7 +437,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Fomento de Construcciones y Contratas, S.A.",
+    "adjudicatario": "FOMENTO DE CONSTRUCCIONES Y CONTRATAS S.A",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-11-02",
     "fecha_adjudicacion": "2016-10-28",
@@ -451,7 +451,7 @@
     "num_ofertas": 2,
     "ted_publication_number": "384561-2016",
     "criterios_adjudicacion": "Mejora de las condiciones laborales (10 puntos%); Disponibilidad desde el inicio del contrato de superficie de aparcamiento adicional ofertada por los licitadores (5 puntos%); Número de camiones recolectores compactadores de caja cerrada propulsados por sistemas calificados como de cero emisiones por la Dirección General de Tráfico, capacidad mínima de 7 m³, con reversión (9 puntos%); Mejora del servicio de saneamiento de contenedores (7 puntos%); Incremento del porcentaje de suministro de contenedores adaptados a personas con diversidad funcional (5 puntos%); Establecimiento de equipos adicionales a los señalados en el pliego para la recogida de biorresiduo en el periodo piloto (5 puntos%); Equipos de informadores ambientales y ambientólogos de apoyo a las campañas de implantación de las fases piloto de la recogida de biorresiduo (4 puntos%); Porcentaje de baja sobre los precios unitarios de licitación (55 puntos%)",
-    "entity_id": "fomento de construcciones y contratas sa",
+    "entity_id": "A28037224",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -1632,7 +1632,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "M3 Informática, S.L.",
+    "adjudicatario": "M3 INFORMATICA, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-22",
     "fecha_adjudicacion": "2016-10-19",
@@ -1646,7 +1646,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "371180-2016",
     "criterios_adjudicacion": "Negociado sin publicidad (100%)",
-    "entity_id": "m3 informatica sl",
+    "entity_id": "B79448270",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -1702,7 +1702,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Sinergias de Vigilancia y Seguridad, S.A.",
+    "adjudicatario": "SINERGIAS DE VIGILANCIA Y SEGURIDAD, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-22",
     "fecha_adjudicacion": "2016-10-19",
@@ -1716,7 +1716,7 @@
     "num_ofertas": 10,
     "ted_publication_number": "371195-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "sinergias de vigilancia y seguridad sa",
+    "entity_id": "A76151950",
     "categoria_organismo": "consejerias"
   },
   {
@@ -3128,7 +3128,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Actividades de Educación Cultura y Ocio, S.L.",
+    "adjudicatario": "ACTIVIDADES DE EDUCACIÓN, CULTURA Y OCIO, SL",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-08",
     "fecha_adjudicacion": "2016-10-04",
@@ -3142,7 +3142,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "351527-2016",
     "criterios_adjudicacion": "Calidad técnica del proyecto (25%); Mejoras (15%); Mejoras salario (20%); Mejoras formación (15%); Horas libre disposición (10%); Bolsa económica (5%); Precio (10%)",
-    "entity_id": "actividades de educacion cultura y ocio sl",
+    "entity_id": "B82999129",
     "categoria_organismo": "distritos_madrid"
   },
   {
@@ -3618,7 +3618,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Aula Intercultural, S.L.",
+    "adjudicatario": "AULA INTERCULTURAL, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-07",
     "fecha_adjudicacion": "2016-10-03",
@@ -3632,7 +3632,7 @@
     "num_ofertas": 8,
     "ted_publication_number": "349310-2016",
     "criterios_adjudicacion": "Mejoras (60%)",
-    "entity_id": "aula intercultural sl",
+    "entity_id": "B82614215",
     "categoria_organismo": "consejerias"
   },
   {
@@ -3933,7 +3933,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Panda Security, S.L.",
+    "adjudicatario": "PANDA SECURITY, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-05",
     "fecha_adjudicacion": "2016-09-30",
@@ -3947,7 +3947,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "345615-2016",
     "criterios_adjudicacion": "Negociado sin publicidad (100%)",
-    "entity_id": "panda security sl",
+    "entity_id": "B48435218",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -4073,7 +4073,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Centro Español de Solidaridad",
+    "adjudicatario": "CENTRO ESPAÑOL DE SOLIDARIDAD",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-05",
     "fecha_adjudicacion": "2016-09-30",
@@ -4087,7 +4087,7 @@
     "num_ofertas": 5,
     "ted_publication_number": "345691-2016",
     "criterios_adjudicacion": null,
-    "entity_id": "centro espanol de solidaridad",
+    "entity_id": "G28948990",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -4773,7 +4773,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Informática El Corte Inglés, S.A.",
+    "adjudicatario": "INETUM ESPAÑA, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-01",
     "fecha_adjudicacion": "2016-09-28",
@@ -4787,7 +4787,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "341288-2016",
     "criterios_adjudicacion": "Criterio número 2. — valoración de la mejora de la eficiencia en la ejecución (8 puntos%); Criterio número 3 — propuestas para la prestación de los servicios de (20 puntos%); Criterio número 4 — propuestas para la prestación del servicio de administración (3 puntos%); Criterio número 5 — propuestas para la prestación del servicio de atención (3 puntos%); Criterio número 6 — propuestas para la prestación del servicio de implantación de (3 puntos%); Criterio número 7 — propuestas para la prestación del servicio de coordinación (3 puntos%)",
-    "entity_id": "informatica el corte ingles sa",
+    "entity_id": "A28855260",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -5053,7 +5053,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Microsoft Ibérica, S.R.L.",
+    "adjudicatario": "MICROSOFT IBÉRICA S.R.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-01",
     "fecha_adjudicacion": "2016-09-27",
@@ -5067,7 +5067,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "341271-2016",
     "criterios_adjudicacion": "Negociado sin publicidad (100%)",
-    "entity_id": "microsoft iberica srl",
+    "entity_id": "B78603495",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -5263,7 +5263,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Eurocop Security Systems, S.L.",
+    "adjudicatario": "EUROCOP SECURITY SYSTEMS, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-01",
     "fecha_adjudicacion": "2016-09-28",
@@ -5277,7 +5277,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "341287-2016",
     "criterios_adjudicacion": "Negociado sin publicidad (100%)",
-    "entity_id": "eurocop security systems sl",
+    "entity_id": "B84137470",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -5368,7 +5368,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Kern Pharma, S.L.",
+    "adjudicatario": "KERN PHARMA, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-10-01",
     "fecha_adjudicacion": "2016-09-26",
@@ -5382,7 +5382,7 @@
     "num_ofertas": 3,
     "ted_publication_number": "340600-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "kern pharma sl",
+    "entity_id": "B58296773",
     "categoria_organismo": "salud"
   },
   {
@@ -6803,7 +6803,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Integra Mantenimiento Gestión y Servicios Integrados CEE, S.L.",
+    "adjudicatario": "INTEGRA MGSI CEE, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-24",
     "fecha_adjudicacion": "2016-09-21",
@@ -6817,7 +6817,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "332164-2016",
     "criterios_adjudicacion": "Criterios no valorables en cifras o porcentajes (5%); Criterios valorables en cifras o porcentajes (95%)",
-    "entity_id": "integra mantenimiento gestion y servicios integrados cee sl",
+    "entity_id": "B82992744",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -7750,7 +7750,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Tecnologias Plexus, S.L.",
+    "adjudicatario": "TECNOLOGÍAS PLEXUS, S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-20",
     "fecha_adjudicacion": "2016-09-15",
@@ -7764,7 +7764,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "325006-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "tecnologias plexus sl",
+    "entity_id": "B15726177",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -7855,7 +7855,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Servicios Profesionales Sociales, S.A.",
+    "adjudicatario": "SERVICIOS PROFESIONALES SOCIALES",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-20",
     "fecha_adjudicacion": "2016-09-15",
@@ -7869,7 +7869,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "325100-2016",
     "criterios_adjudicacion": null,
-    "entity_id": "servicios profesionales sociales sa",
+    "entity_id": "A80887011",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -7890,7 +7890,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Sociedad Ibérica de Construcciones Eléctricas, S.A. (SICE)",
+    "adjudicatario": "SOCIEDAD IBÉRICA DE CONSTRUCCIONES ELÉCTRICAS, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-20",
     "fecha_adjudicacion": "2016-09-15",
@@ -7904,7 +7904,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "325004-2016",
     "criterios_adjudicacion": "Oferta económica (65%); Desarrollo de las UAs (20%); Capacidad de adaptación del servicio (10%); Estabilidad en el empleo y mantenimiento de condiciones laborales: mantenimiento de condiciones (5%)",
-    "entity_id": "sociedad iberica de construcciones electricas sa (sice)",
+    "entity_id": "A28002335",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -9570,7 +9570,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "TALHER S.A.",
+    "adjudicatario": "TALHER, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-14",
     "fecha_adjudicacion": "2016-09-09",
@@ -10865,7 +10865,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Administradora de Archivos, S.A",
+    "adjudicatario": "ADMINISTRADORA DE ARCHIVOS, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-07",
     "fecha_adjudicacion": "2016-09-05",
@@ -10879,7 +10879,7 @@
     "num_ofertas": 6,
     "ted_publication_number": "309332-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "administradora de archivos sa",
+    "entity_id": "A82284845",
     "categoria_organismo": "consejerias"
   },
   {
@@ -12056,7 +12056,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Alerta y Control, S.A.",
+    "adjudicatario": "ALERTA Y CONTROL, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-09-02",
     "fecha_adjudicacion": "2016-08-31",
@@ -12070,7 +12070,7 @@
     "num_ofertas": 11,
     "ted_publication_number": "304141-2016",
     "criterios_adjudicacion": "Calidad técnica de la oferta (25%); Criterios sociales (30%); Bolsa de horas para servicios extraordinarios (5%)",
-    "entity_id": "alerta y control sa",
+    "entity_id": "A28978807",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -12336,7 +12336,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Cafestore, S.A.U.",
+    "adjudicatario": "CAFESTORE, S.A.U.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-31",
     "fecha_adjudicacion": "2016-08-30",
@@ -12350,7 +12350,7 @@
     "num_ofertas": 6,
     "ted_publication_number": "300545-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "cafestore sau",
+    "entity_id": "A12426086",
     "categoria_organismo": "estado_central"
   },
   {
@@ -12791,7 +12791,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "J. Campos Manipulados del Papel, S.L.",
+    "adjudicatario": "J.CAMPOS MANIPULADOS DEL PAPEL SL",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-30",
     "fecha_adjudicacion": "2016-08-26",
@@ -12805,7 +12805,7 @@
     "num_ofertas": 9,
     "ted_publication_number": "298724-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "j campos manipulados del papel sl",
+    "entity_id": "B28597136",
     "categoria_organismo": "estado_central"
   },
   {
@@ -12826,7 +12826,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "ATM Dos, S.L.",
+    "adjudicatario": "ATM GRUPO MAGGIOLI S.L.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-27",
     "fecha_adjudicacion": "2016-08-25",
@@ -12840,7 +12840,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "297312-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "atm dos sl",
+    "entity_id": "B28798775",
     "categoria_organismo": "entes_cam"
   },
   {
@@ -14785,7 +14785,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "General Electric Healthcare España, S.A.U.",
+    "adjudicatario": "GENERAL ELECTRIC HEALTHCARE ESPAÑA, S.A.U.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-13",
     "fecha_adjudicacion": "2016-08-11",
@@ -14799,7 +14799,7 @@
     "num_ofertas": 3,
     "ted_publication_number": "282416-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "general electric healthcare espana sau",
+    "entity_id": "A28061737",
     "categoria_organismo": "salud"
   },
   {
@@ -14855,7 +14855,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Eulen Seguridad, S.A.",
+    "adjudicatario": "EULEN SEGURIDAD S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-13",
     "fecha_adjudicacion": "2016-08-11",
@@ -14869,7 +14869,7 @@
     "num_ofertas": 6,
     "ted_publication_number": "282913-2016",
     "criterios_adjudicacion": "Organización empresarial y solvencia económica (10 %%); Experiencia (General y en Centros de Enseñanza) (20 %%); Calidad de la Oferta, incluyendo mejoras y aportación de sistema SICC (25 %%); Cumplimiento de Políticas sociales, especialmente la de Protección de la Infancia (15 %%); Precio de la oferta más bajo (30 %%)",
-    "entity_id": "eulen seguridad sa",
+    "entity_id": "A28369395",
     "categoria_organismo": "investigacion"
   },
   {
@@ -14904,7 +14904,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "282404-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "intersystems iberia sl",
+    "entity_id": "B85286755",
     "categoria_organismo": "salud"
   },
   {
@@ -17468,7 +17468,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Sinergias de Vigilancia y Seguridad, S.A.",
+    "adjudicatario": "SINERGIAS DE VIGILANCIA Y SEGURIDAD, S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-02",
     "fecha_adjudicacion": "2016-07-28",
@@ -17482,7 +17482,7 @@
     "num_ofertas": 6,
     "ted_publication_number": "266049-2016",
     "criterios_adjudicacion": "Retribuciones mínimas trabajadores (Hasta 20 puntos%); Formación vigilantes (Hasta 20 puntos%)",
-    "entity_id": "sinergias de vigilancia y seguridad sa",
+    "entity_id": "A76151950",
     "categoria_organismo": "consejerias"
   },
   {
@@ -17573,7 +17573,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "VIAS Y CONSTRUCCIONES, S.A.",
+    "adjudicatario": "VIAS Y CONSTRUCCIONES SA",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-08-02",
     "fecha_adjudicacion": "2016-07-28",
@@ -18195,7 +18195,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "International Business Machines, S.A.",
+    "adjudicatario": "INTERNATIONAL BUSINESS MACHINES S.A.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-07-30",
     "fecha_adjudicacion": "2016-07-27",
@@ -18209,7 +18209,7 @@
     "num_ofertas": 1,
     "ted_publication_number": "263451-2016",
     "criterios_adjudicacion": "Precio (100%)",
-    "entity_id": "international business machines sa",
+    "entity_id": "A28010791",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -20926,7 +20926,7 @@
     "cpv_descripcion": null,
     "duracion_meses": null,
     "num_lotes": null,
-    "adjudicatario": "Sacyr Construcción, S.A.",
+    "adjudicatario": "SACYR CONSTRUCCIÓN, S.A.U.",
     "nif_adjudicatario": null,
     "fecha_publicacion": "2016-07-16",
     "fecha_adjudicacion": "2016-07-13",
@@ -20940,7 +20940,7 @@
     "num_ofertas": 23,
     "ted_publication_number": "244265-2016",
     "criterios_adjudicacion": "Puntuación de la oferta técnica (POT) (25%); Puntuación de la oferta económica (POE) (75%)",
-    "entity_id": "sacyr construccion sa",
+    "entity_id": "A78366382",
     "categoria_organismo": "ferroviario"
   },
   {
