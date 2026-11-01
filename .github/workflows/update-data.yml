@@ -192,7 +192,7 @@ jobs:
       issues: write
     steps:
       - name: Crear issue de error
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const title = `🚨 Pipeline de datos falló — ${new Date().toISOString().split('T')[0]}`;
