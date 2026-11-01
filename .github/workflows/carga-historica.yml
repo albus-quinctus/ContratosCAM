@@ -151,7 +151,7 @@ jobs:
         run: npm ci
 
       - name: Recuperar los contratos parseados
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: parseado-*
           path: parseados
@@ -263,7 +263,7 @@ jobs:
         run: npm ci
 
       - name: Recuperar la copia validada de la simulación
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ env.ARTEFACTO_CARGA }}
           run-id: ${{ inputs.run_id }}
