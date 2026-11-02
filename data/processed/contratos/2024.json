@@ -66858,41 +66858,6 @@
     "categoria_organismo": "aytos_junta"
   },
   {
-    "id": "9fe69dfef66f",
-    "expediente": "P.A.S. 46/2024 HUP",
-    "objeto": "Sistema de Inteligencia Artificial para evaluación de estudios de TC multiparamétrica cerebral de pacientes con sospecha de ictus del Hospital Universitario de la Princesa",
-    "tipo": "suministros",
-    "subtipo": null,
-    "procedimiento": "negociado_sin_publicidad",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Hospital Universitario de La Princesa",
-    "importe": 39604,
-    "importe_iva": null,
-    "valor_estimado": 107040,
-    "cpv": "48180000",
-    "cpv_descripcion": "Software y sistemas informáticos",
-    "duracion_meses": 24,
-    "num_lotes": 1,
-    "lotes": null,
-    "adjudicatario": "NICO-LAB B V",
-    "nif_adjudicatario": null,
-    "fecha_publicacion": "2024-11-21",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/sistema-inteligencia-artificial-evaluacion-estudios-tc-multiparametrica-cerebral",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-11-21T19:11:16.782Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "nico-lab b v",
-    "categoria_organismo": "salud"
-  },
-  {
     "id": "a0a29507edda",
     "expediente": "ASUM037055/203/1/2024/03050",
     "objeto": "Suministro material oficina – Lote 1 (Elementos de escritura, corrección y artículos de dibujo) para Distrito de Retiro",
@@ -95537,7 +95502,7 @@
         "fecha_actualizacion": "2024-10-29T16:16:38.039Z"
       }
     },
-    "entity_id": "ute marsh asterra",
+    "entity_id": "U55464804",
     "categoria_organismo": "aytos_alcaldia",
     "es_ute": true
   },
@@ -224331,41 +224296,6 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
-    "id": "ba0242c251d4",
-    "expediente": "03PA/2022",
-    "objeto": "Redacción de proyectos,direcciones de obra y de ejecución de obra,coordinaciones de seguridad y salud y trabajos complementarios para edificios de viviendas de protección publica, de tres edificios con un total de 324 viviendas, que EMSULE,S.A.U va a promover en diferentes parcelas del plan parcial 4 de Leganés.",
-    "tipo": "servicios",
-    "subtipo": "12",
-    "procedimiento": "abierto",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Consejo de Administración de Empresa Municipal de Suelo de Leganés (EMSULE, S.A.U.)",
-    "importe": 1143090.82,
-    "importe_iva": 1383139.89,
-    "valor_estimado": 1632986.88,
-    "cpv": "71200000",
-    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
-    "duracion_meses": 54,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "FACTORIA, GESTION Y CONSULTORIA S.L.-SUMAR SERVICIO DE URBANISMO Y ARQUITECTURA",
-    "nif_adjudicatario": null,
-    "fecha_publicacion": "2024-08-22",
-    "fecha_adjudicacion": "2022-07-11",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=GlligfmtpcESugstABGr5A%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
-    ],
-    "fecha_actualizacion": "2024-08-22T07:00:00.000Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "factoria gestion y consultoria sl-sumar servicio de urbanismo y arquitectura",
-    "categoria_organismo": "empresas_municipales"
-  },
-  {
     "id": "bf1407213f36",
     "expediente": "300/2021/00294-124",
     "objeto": "Servicios de coordinación en materia de seguridad y salud en las obras de conservación de la instalación eléctrica en el CEIP El Quijote",
@@ -330323,58 +330253,6 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "mancomunidades"
-  },
-  {
-    "id": "9eb24d76df28",
-    "expediente": "41160/2023",
-    "objeto": "Servicio centro de día de atención a personas mayores dependientes y servicio de prevención de la dependencia (PPD) y programa de promoción de la autonomía y de apoyo a personas cuidadoras (PPA) en 2 lotes",
-    "tipo": "servicios",
-    "subtipo": "25",
-    "procedimiento": "abierto",
-    "estado": "adjudicado",
-    "estado_xml": "adjudicado",
-    "estado_verificado_en": null,
-    "organismo": "Junta de Gobierno del Ayuntamiento de Rivas Vaciamadrid",
-    "importe": 745240.98,
-    "importe_iva": 783817.92,
-    "valor_estimado": 4022262.48,
-    "cpv": "85312100",
-    "cpv_descripcion": "Servicios sanitarios y sociales",
-    "duracion_meses": 1,
-    "num_lotes": 2,
-    "lotes": [
-      {
-        "lote": "1",
-        "adjudicatario": "ASISPA-ASISPA SERVICIOS PARA LA ATENCION A PERSONAS EN SITUACION DE DEPENDENCIA Y VULNERABILIDAD, S.L.",
-        "nif_adjudicatario": null,
-        "importe": 604319.31,
-        "importe_iva": 628804.08,
-        "fecha_adjudicacion": "2024-06-03"
-      },
-      {
-        "lote": "2",
-        "adjudicatario": "ASISPA-ASISPA SERVICIOS PARA LA ATENCION A PERSONAS EN SITUACION DE DEPENDENCIA Y VULNERABILIDAD, S.L.",
-        "nif_adjudicatario": null,
-        "importe": 140921.67,
-        "importe_iva": 155013.84,
-        "fecha_adjudicacion": "2024-06-03"
-      }
-    ],
-    "adjudicatario": "ASISPA-ASISPA SERVICIOS PARA LA ATENCION A PERSONAS EN SITUACION DE DEPENDENCIA Y VULNERABILIDAD, S.L.",
-    "nif_adjudicatario": null,
-    "fecha_publicacion": "2024-06-18",
-    "fecha_adjudicacion": "2024-06-03",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=nKq%2Fw%2Bgi5Xy7JOCXkOhcDg%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
-    ],
-    "fecha_actualizacion": "2024-06-18T17:51:21.069Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "asispa-asispa servicios para la atencion a personas en situacion de dependencia y vulnerabilidad sl",
-    "categoria_organismo": "aytos_junta"
   },
   {
     "id": "a4fd121e3591",
@@ -533494,41 +533372,6 @@
     "ted_publication_number": null,
     "entity_id": "B87785671",
     "categoria_organismo": "aytos_junta"
-  },
-  {
-    "id": "ca89ac08c811",
-    "expediente": "A/SER-041973/2020",
-    "objeto": "Servicio de revisión y actualización del plan de autoprotección, implantación, puesta en marcha, difusión y mantenimiento en el Hospital Universitario de Móstoles",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": "abierto",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Hospital Universitario de Móstoles",
-    "importe": 28346.15,
-    "importe_iva": null,
-    "valor_estimado": 41900,
-    "cpv": "71317000",
-    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
-    "duracion_meses": 34,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "INGENIERIA Y CONSERVACIÓN CONTRAINCENDIOS, S.L.",
-    "nif_adjudicatario": "B84194034",
-    "fecha_publicacion": "2024-01-25",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-plan-autoproteccion",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-01-25T08:41:17.095Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "B84194034",
-    "categoria_organismo": "salud"
   },
   {
     "id": "ee4037c9d6a3",

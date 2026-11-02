@@ -1,30 +1,30 @@
 {
-  "total": 65464,
+  "total": 65671,
   "archivos": [
     {
       "anio": "2026",
       "archivo": "2026.json",
-      "total": 19168
+      "total": 19399
     },
     {
       "anio": "2025",
       "archivo": "2025.json",
-      "total": 15843
+      "total": 15822
     },
     {
       "anio": "2024",
       "archivo": "2024.json",
-      "total": 14386
+      "total": 14382
     },
     {
       "anio": "2023",
       "archivo": "2023.json",
-      "total": 9169
+      "total": 9167
     },
     {
       "anio": "2022",
       "archivo": "2022.json",
-      "total": 3115
+      "total": 3114
     },
     {
       "anio": "2021",
@@ -49,12 +49,12 @@
     {
       "anio": "2017",
       "archivo": "2017.json",
-      "total": 50
+      "total": 52
     },
     {
       "anio": "2016",
       "archivo": "2016.json",
-      "total": 615
+      "total": 617
     }
   ],
   "cargas": [
@@ -425,6 +425,22 @@
       "anadidos": 2903,
       "modificados": 7680,
       "sin_cambios": 54881
+    },
+    {
+      "tipo": "integracion",
+      "fecha": "2026-11-02T15:42:58.531Z",
+      "lote": {
+        "placsp": 3271,
+        "ted_ue": 4
+      },
+      "periodo_origen": {
+        "desde": "2016-12-13",
+        "hasta": "2026-11-01T17:56:42.359Z"
+      },
+      "recibidos": 3275,
+      "anadidos": 207,
+      "modificados": 689,
+      "sin_cambios": 64775
     }
   ]
 }

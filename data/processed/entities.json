@@ -1817,7 +1817,8 @@
         "CAJA DE SEGUROS REUNIDOS COMPAÑIA DE SEGUROS Y REASEGUROS SA",
         "CASER SEGUROS",
         "CASER SEGUROS, S.A.",
-        "CAJA DE SEGUROS REUNIDOS CASER, S.A."
+        "CAJA DE SEGUROS REUNIDOS CASER, S.A.",
+        "CAJA DE SEGUROS REUNIDOS, COMPAÑÍA DE SEGUROS Y REASEGUROS"
       ],
       "fuente": "auto"
     },
@@ -2407,7 +2408,8 @@
         "Albazul Servicios Integrales S.A.",
         "ALBAZUL SERVICIOS GENERALES, S.A",
         "ALBAZUL, Servicios Integrales, S.A.",
-        "ALBAZUL SERVICIOS INTEGRALES S.A.L."
+        "ALBAZUL SERVICIOS INTEGRALES S.A.L.",
+        "ALBAZUL, SERVICIOS INTEGRALES"
       ],
       "fuente": "auto"
     },
@@ -3967,7 +3969,8 @@
       "aliases": [
         "EMOCIONAL TECHNOLOGIES 22 S.L.",
         "Emocional Technologies 22",
-        "EMOCIONAL TECHNOLOGIES 22, S.L."
+        "EMOCIONAL TECHNOLOGIES 22, S.L.",
+        "EMOCIONAL TECHNOLOGIES 22 SL"
       ],
       "fuente": "auto"
     },
@@ -5734,7 +5737,8 @@
     "B34149013": {
       "nombre_canonico": "DYNAQUA MEDIO AMBIENTE SL",
       "aliases": [
-        "DYNAQUA MEDIO AMBIENTE S.L"
+        "DYNAQUA MEDIO AMBIENTE S.L",
+        "DYNAQUA MEDIO AMBIENTE, S.L."
       ],
       "fuente": "auto"
     },
@@ -8805,7 +8809,9 @@
     },
     "B83664482": {
       "nombre_canonico": "INGENIA SOLUCIONES PARA LA INGENIERÍA, S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "INGENIA SOLUCIONES PARA LA INGENIERÍA, S.L."
+      ],
       "fuente": "auto"
     },
     "B36724128": {
@@ -9162,7 +9168,8 @@
       "aliases": [
         "MGS SEGUROS Y REASEGUROS SA",
         "MGS Seguros y Reaseguros, S.A.",
-        "MGS SEGUROS  Y REASEGUROS S.A"
+        "MGS SEGUROS  Y REASEGUROS S.A",
+        "MGS SEGUROS Y REASEGUROS S.A."
       ],
       "fuente": "auto"
     },
@@ -14965,7 +14972,8 @@
       "nombre_canonico": "CONSTRUCTORA HORMIGONES MARTÍNEZ SA - OFICINAS CE",
       "aliases": [
         "CHM OBRAS E INFRAESTRUCTURAS SA",
-        "CHM OBRAS E INFRAESTRUCTURAS S.A."
+        "CHM OBRAS E INFRAESTRUCTURAS S.A.",
+        "CHM OBRAS E INFRAESTRUCTURAS, S.A."
       ],
       "fuente": "auto"
     },
@@ -15882,7 +15890,8 @@
         "TOTAL EKIP, S.L",
         "TOTAL EKIP, SOCIEDAD LIMITADA",
         "TOTAL EKIP S.L.",
-        "TOTAL EKIP SOCIEDAD LIMITADA"
+        "TOTAL EKIP SOCIEDAD LIMITADA",
+        "Total Ekip s.l."
       ],
       "fuente": "auto"
     },
@@ -15904,7 +15913,8 @@
       "nombre_canonico": "FSAS TECHNOLOGIES, S.L.U.",
       "aliases": [
         "FSAS Technologies S.L.",
-        "FSAS TECHNOLOGIES,S.L.U"
+        "FSAS TECHNOLOGIES,S.L.U",
+        "FSAS TECHNOLOGIES S.L.U."
       ],
       "fuente": "auto"
     },
@@ -17071,7 +17081,8 @@
         "Air Liquide Healthcare España SL",
         "AIR LIQUIDE HEALTHCARE ESPAÑA",
         "AIR LIQUIDE HEALTHCARE ESPAÑA S.L",
-        "AIR LIQUIDE HEALTHCARE SL"
+        "AIR LIQUIDE HEALTHCARE SL",
+        "AIR LIQUIDE HEALTHCARE ESPAÑA, S.L"
       ],
       "fuente": "auto"
     },
@@ -17116,7 +17127,8 @@
         "SCHMITZ MEDICAL IBÉRICA, S.L",
         "Schmitz u Sohne Iberica, S.L.",
         "SCHMITZ U SHONE IBERICA S.L",
-        "SCHMITZ U SHONE"
+        "SCHMITZ U SHONE",
+        "SHCMITZ MEDICAL IBERICA, S.L."
       ],
       "fuente": "auto"
     },
@@ -17326,7 +17338,8 @@
         "PHILIPS IBERICA, S.A –",
         "PHILIPS IBERICA, S.A. UNIPERSONAL,",
         "PHILIPS IBERÍCA ,S.A.U.",
-        "PHILIPS IBÉRICA, S.A.(SOCIEDAD UNIPERSONAL)"
+        "PHILIPS IBÉRICA, S.A.(SOCIEDAD UNIPERSONAL)",
+        "PHILIPS IBÉRICA S.A.U./"
       ],
       "fuente": "auto"
     },
@@ -18362,7 +18375,8 @@
         "Pfizer, S.L.U",
         "PFIZER, S.L.U,",
         "PFIZER, S.L.U",
-        "PFIZER SLU"
+        "PFIZER SLU",
+        "LABORATORIO PFIZER, S.L.U."
       ],
       "fuente": "auto"
     },
@@ -21948,7 +21962,8 @@
         "COMERCIAL MEDICO QUIRURGICA S.A.",
         "Comercial Médico Quirúrgica, SA",
         "COMERCIAL MÉDICO QUIRÚRGICA, S.A.",
-        "Olympus Iberia S.A.U."
+        "Olympus Iberia S.A.U.",
+        "COMERCIAL MÉDICO QUIRÚRGICA, S.A./"
       ],
       "fuente": "auto"
     },
@@ -22766,7 +22781,8 @@
     "B75233726": {
       "nombre_canonico": "OSTEOPLAC INNOVATIONS, S.L.U.",
       "aliases": [
-        "OSTEOPLAC INNOVATIONS,S.L."
+        "OSTEOPLAC INNOVATIONS,S.L.",
+        "OSTEOPLAC INNOVATIONS,SL"
       ],
       "fuente": "auto"
     },
@@ -23512,7 +23528,8 @@
         "INSTITUTO TECNICO DE MATERIALES Y CONSTRUCCIÓN",
         "INTEMAC",
         "INSTITUTO TECNICO DE MATERIALES Y CONSTRUCCIONES, S.A.",
-        "Instituto Tecnico de Materiales Y Construcciones, S.A.,"
+        "Instituto Tecnico de Materiales Y Construcciones, S.A.,",
+        "INSTITUTO TÉCNICO DE MATERIALES Y CONSTRUCCIONES, S.A. (INTEMAC, S.A.)"
       ],
       "fuente": "auto"
     },
@@ -23646,8 +23663,10 @@
       "fuente": "auto"
     },
     "A20025672": {
-      "nombre_canonico": "ELECTRÓQUIMICA DE HERNANI, S.A.",
-      "aliases": [],
+      "nombre_canonico": "ELECTROQUÍMICA DE HERNANI, S.A.",
+      "aliases": [
+        "ELECTRÓQUIMICA DE HERNANI, S.A."
+      ],
       "fuente": "auto"
     },
     "W0094980": {
@@ -25766,7 +25785,8 @@
         "UTE SACYR FACILITIES, S.A.- VALORIZA CENTRO ESPECIAL DE EMPLEO, S.L.",
         "SERVEO FACILITY MANAGEMENT SA",
         "SACYR FACILITIES",
-        "VALORIZA FACILITIES, S.A.U."
+        "VALORIZA FACILITIES, S.A.U.",
+        "SERVEO FACILITY MANAGEMENT, S.A.U."
       ],
       "fuente": "auto"
     },
@@ -27793,7 +27813,8 @@
     "A31501901": {
       "nombre_canonico": "MAILTECK, S.A.",
       "aliases": [
-        "MailTecK, S.A."
+        "MailTecK, S.A.",
+        "MAILTECK SA"
       ],
       "fuente": "auto"
     },
@@ -29518,8 +29539,10 @@
       "fuente": "auto"
     },
     "B82212788": {
-      "nombre_canonico": "Servicios Móviles Integrados Centrales, S.L:",
-      "aliases": [],
+      "nombre_canonico": "SERVICIOS MÓVILES INTEGRADOS CENTRALES, S.L.",
+      "aliases": [
+        "Servicios Móviles Integrados Centrales, S.L:"
+      ],
       "fuente": "auto"
     },
     "A81951717": {
@@ -30915,7 +30938,8 @@
       "nombre_canonico": "DT PRO EVENTOS SL",
       "aliases": [
         "DT PRO EVENTOS",
-        "DT PRO EVENTOS, S.L."
+        "DT PRO EVENTOS, S.L.",
+        "DT PRO EVENTOS, S.L"
       ],
       "fuente": "auto"
     },
@@ -36804,7 +36828,8 @@
     "B96341193": {
       "nombre_canonico": "ABC ARQUITECTURA MODULAR, S.L.",
       "aliases": [
-        "ABC ARQUITECTURA MODULAR S.L."
+        "ABC ARQUITECTURA MODULAR S.L.",
+        "ABC ARQUITECTURA MODULAR SL"
       ],
       "fuente": "auto"
     },
@@ -37725,7 +37750,8 @@
     "J84769686": {
       "nombre_canonico": "DAVID BENITO MARTIN Y CARLOS MARTIN CALDERÓN S.C.P.",
       "aliases": [
-        "DAVID BENITO MARTIN Y CARLOS MARTIN CALDERÓN S.C.P"
+        "DAVID BENITO MARTIN Y CARLOS MARTIN CALDERÓN S.C.P",
+        "DAVID BENITO MARTIN Y CARLOS MARTIN CALDERON S.C.P."
       ],
       "fuente": "auto"
     },
@@ -41275,8 +41301,10 @@
       "fuente": "auto"
     },
     "B81031486": {
-      "nombre_canonico": "LAETUS SPORT SL",
-      "aliases": [],
+      "nombre_canonico": "LAETUS SPORT S.L.",
+      "aliases": [
+        "LAETUS SPORT SL"
+      ],
       "fuente": "auto"
     },
     "B06928410": {
@@ -43797,7 +43825,8 @@
     "W0174445G": {
       "nombre_canonico": "QBE Europe, SA/NV, Sucursal en España",
       "aliases": [
-        "QBE EUROPE SA/NV SUCURSAL EN ESPAÑA"
+        "QBE EUROPE SA/NV SUCURSAL EN ESPAÑA",
+        "QBE EUROPE"
       ],
       "fuente": "auto"
     },
@@ -49659,7 +49688,9 @@
     },
     "A79486551": {
       "nombre_canonico": "RETAILGAS, S.A.",
-      "aliases": [],
+      "aliases": [
+        "RETAILGAS,S.A."
+      ],
       "fuente": "auto"
     },
     "B83251215": {
@@ -54015,7 +54046,9 @@
     },
     "B18782680": {
       "nombre_canonico": "Agranaltura, S.L.U.",
-      "aliases": [],
+      "aliases": [
+        "Agranaltura, S.L."
+      ],
       "fuente": "auto"
     },
     "18512943J": {
@@ -59751,7 +59784,9 @@
     },
     "B05364013": {
       "nombre_canonico": "SUEZ SMART ENVIRONMENTAL SOLUTIONS SPAIN, SLU",
-      "aliases": [],
+      "aliases": [
+        "SUEZ SMART ENVIRONMENTAL SOLUTIONS SPAIN, S.L.U."
+      ],
       "fuente": "auto"
     },
     "B99121832": {
@@ -65187,8 +65222,10 @@
       "fuente": "auto"
     },
     "B87335071": {
-      "nombre_canonico": "PROCESIA PROYECTOS Y SERVICIOS SL",
-      "aliases": [],
+      "nombre_canonico": "PROCESIA PROYECTOS Y SERVICIOS, S.L.",
+      "aliases": [
+        "PROCESIA PROYECTOS Y SERVICIOS SL"
+      ],
       "fuente": "auto"
     },
     "B86392594": {
@@ -68830,6 +68867,121 @@
       "nombre_canonico": "Contenur, S.L.",
       "aliases": [],
       "fuente": "auto"
+    },
+    "B85958486": {
+      "nombre_canonico": "R para mayores Altagracia, S.L.(C4333)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B81313231": {
+      "nombre_canonico": "SALONES JARDIN EL OLIVAR, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B78960010": {
+      "nombre_canonico": "SERVICIOS DE REGULACION Y CONTROL, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B19366673": {
+      "nombre_canonico": "TERROR MAKERS, SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G28659308": {
+      "nombre_canonico": "YMCA MADRID",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B88105754": {
+      "nombre_canonico": "INNOVASC INTEGRAL SOLUTIONS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B02880383": {
+      "nombre_canonico": "MEDARTIS IBERIA, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U55464804": {
+      "nombre_canonico": "UTE MARSH ASTERRA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80682891": {
+      "nombre_canonico": "GRUAS BARRAGAN,S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B55027932": {
+      "nombre_canonico": "Surfaces For Climbing s.l",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G85041861": {
+      "nombre_canonico": "Confederación Española de Agencias de Viajes (CEAV)",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B95778486": {
+      "nombre_canonico": "STRATENERGY, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G78394764": {
+      "nombre_canonico": "FEDERACIÓN MADRILEÑA DE NATACIÓN",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B67508341": {
+      "nombre_canonico": "ESSENTIA HEALTH PROJECT S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "J86994274": {
+      "nombre_canonico": "ELETEX INSTALACIONES Y MANTENIMIENTO S.C.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B56563901": {
+      "nombre_canonico": "RGC SHOWMEN S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B65808461": {
+      "nombre_canonico": "SIDEPAG, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B83132191": {
+      "nombre_canonico": "PROA PROMOCIONES DE ACTIVIDADES DEPORTIVAS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A48042709": {
+      "nombre_canonico": "SIEMENS ENERGY ENGINES, S.A.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B40277972": {
+      "nombre_canonico": "CONSERVACIÓN DE ARTE ACTUAL, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "53955022N": {
+      "nombre_canonico": "Pablo CALDERA ORTIZ",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86494036": {
+      "nombre_canonico": "Mindala Technologies S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85914752": {
+      "nombre_canonico": "Escuela Abierta de Desarrollo en Ingenieria y Construcción SL",
+      "aliases": [],
+      "fuente": "auto"
     }
   },
   "aliases_sin_nif": {
@@ -69410,7 +69562,88 @@
     "eulen seguridad sa": "A28369395",
     "intersystems iberia sl": "B85286755",
     "international business machines sa": "A28010791",
-    "sacyr construccion sa": "A78366382"
+    "sacyr construccion sa": "A78366382",
+    "ute marsh asterra": "U55464804",
+    "biocartis nv": "N0257991J",
+    "vivendio sostenibilidad energetica sl": "B18943845",
+    "khora urban consulting sl": "B87798146",
+    "ricardo sanchez cuerda": "50966156L",
+    "matanza castaneda ruben": "72081846F",
+    "jofeg sa": "A28346245",
+    "ferro teatro sl": "B85927309",
+    "marcajes galan sl": "B78330636",
+    "inco estudio tecnico sl": "B80596083",
+    "instalaciones manuel plaza sl": "B45658986",
+    "alloga logistica (espana) sl": "N0304355A",
+    "rio rpoducciones y servicios integrales slu": "B74320813",
+    "iluminacines luvisaz sl": "B19253954",
+    "mar menor pupil´s center slu": "B30828032",
+    "hernandez berrocal javier": "08798962J",
+    "carpas madrid sl": "B82587072",
+    "howden iberia sau (howden)": "A82473349",
+    "pacsa servicios urbanos y del medio natural sl": "B85187292",
+    "servicios empresariales arquimedes slp": "B91857870",
+    "ute azvi sau – licuas sa denominada abreviadamente ute madrid centro": "U02863132",
+    "elecnor servicios y proyectos sau": "A79486833",
+    "teknoservice sl": "B41485228",
+    "occident gco sa de seguros y reaseguros sociedad unipersonal": "A28119220",
+    "eico ingenieria y economia sl": "B86842267",
+    "josep compte": "46635049L",
+    "institucion ferial de madrid (ifema)": "Q2873018B",
+    "elsevier b v": "N0039776J",
+    "betan sa": "A28667707",
+    "fei europe bv sucursal en espana (thermo fhisher)": "W0032378B",
+    "ferrovial servicios sau - fcc industrial e infraestructuras energeticas sau": "U42895789",
+    "saja construccion y desarrollo de servicios sl": "B05246400",
+    "lopez de santiago consultores s l": "B84947944",
+    "bonser iniciativas de gestion slu": "B83168427",
+    "sociedad estatal correos y telegrafos sa sme": "A83052407",
+    "compania espanola de petroleos s a": "A28003119",
+    "abaco centro de estudios informaticos sl": "B47039276",
+    "abs informatica slu (berger levrault)": "B59383596",
+    "signar sociedad cooperativa": "F81818437",
+    "lomunioa sl": "B70429840",
+    "thermo fisher scientific slu": "B28954170",
+    "drager hispania sau": "A28063485",
+    "ilunion fuego y conduccion sa": "A78038213",
+    "servicios de espectaculos de navarra sl": "B71081137",
+    "el kiosko franquicia sl": "B87233730",
+    "dt pro eventos (dominguez contreras antonio)": "50743469H",
+    "ute stad42 espacio tecnico slu - urbinges ambiental sl – incope consultores sl": "U16763302",
+    "alquiber qualitysa": "A09373861",
+    "q – matic - ab": "N0304389J",
+    "mac3 studio&design sl": "B87853578",
+    "transtelsa": "A46063814",
+    "ute vialine gestion slu-itm instalaciones y mantenimiento de telecomunicaciones slu": "B39761788",
+    "d javier lavalle oteros": "02667332E",
+    "philips iberica sau": "A28017143",
+    "zurich insurance europe ag sucursal en espana": "W0072130H",
+    "integral architecture systems sl (grupo ias)": "B86163375",
+    "ute acuerdo marco emvs-alquileres (exp 028/2023)": "U56226905",
+    "riso iberica sa": "A60229168",
+    "ute imesapi sa - etralux sa - urbalux sa - citelum sa - sociedad iberica de construcciones electricas sa": "U42800888",
+    "caixabank sa": "A08663619",
+    "ate iluminacion s l": "B86602398",
+    "urbatec consultores sl": "B83333799",
+    "eiffage energia slu": "B02272490",
+    "ceesur integracion sll": "B84467851",
+    "bufete casadeley slu": "B24458333",
+    "metrohm hispania sl": "B88334131",
+    "creara consultores": "B84433424",
+    "ingenieria de gestion y seguridad sl": "B85872422",
+    "soluciones avanzadas en informatica aplicada": "B80004732",
+    "salzillo servicios integrales sl": "B73589814",
+    "schneider electric it spain sl (sociedad unipersonal)": "B60768512",
+    "distribuidora de material de oficina sa": "A78557808",
+    "la trebere sl": "B81847717",
+    "servicios de restauracion gesona sl sillas celada": "B85020568",
+    "global media & entertainment sau": "A79816690",
+    "maquinaria y productos ecologicos sa": "A78052115",
+    "inetum espana sa": "A28855260",
+    "integra mgsi cee sl": "B82992744",
+    "sociedad iberica de construcciones electricas sa": "A28002335",
+    "jcampos manipulados del papel sl": "B28597136",
+    "sacyr construccion sau": "A78366382"
   },
   "organismos": {
     "consejeria_sanidad": {
@@ -69661,6 +69894,13 @@
       "nombre_canonico": "Fundación IMDEA NETWORKS",
       "aliases": [
         "Fundación IMDEA Networks"
+      ],
+      "fuente": "auto"
+    },
+    "madrid destino cultura turismo y negocio s a": {
+      "nombre_canonico": "Madrid Destino Cultura Turismo y Negocio, S.A.",
+      "aliases": [
+        "Madrid Destino Cultura, Turismo y Negocio, S.A."
       ],
       "fuente": "auto"
     }
