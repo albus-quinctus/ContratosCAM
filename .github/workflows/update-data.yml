@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -94,7 +94,7 @@ jobs:
 
       - name: Commit y push de los datos actualizados
         id: commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "data: actualización automática de contratos [skip ci]"
           file_pattern: "data/processed/*.json data/processed/contratos/*.json"
@@ -134,7 +134,7 @@ jobs:
 
     steps:
       - name: Checkout del repositorio (con último commit de datos)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
 
@@ -164,7 +164,7 @@ jobs:
         run: npm run build:web
 
       - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Subir artefacto para Pages
         uses: actions/upload-pages-artifact@v3
@@ -192,7 +192,7 @@ jobs:
       issues: write
     steps:
       - name: Crear issue de error
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const title = `🚨 Pipeline de datos falló — ${new Date().toISOString().split('T')[0]}`;

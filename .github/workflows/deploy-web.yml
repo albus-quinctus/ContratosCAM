@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
 
@@ -45,7 +45,7 @@ jobs:
         run: npm run build:web
 
       - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Subir artefacto para Pages
         uses: actions/upload-pages-artifact@v3

@@ -58,7 +58,7 @@ jobs:
       matriz: ${{ steps.matriz.outputs.matriz }}
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -102,7 +102,7 @@ jobs:
       matrix: ${{ fromJSON(needs.preparar.outputs.matriz) }}
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -139,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -151,7 +151,7 @@ jobs:
         run: npm ci
 
       - name: Recuperar los contratos parseados
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: parseado-*
           path: parseados
@@ -251,7 +251,7 @@ jobs:
           fi
 
       - name: Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -263,7 +263,7 @@ jobs:
         run: npm ci
 
       - name: Recuperar la copia validada de la simulación
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ env.ARTEFACTO_CARGA }}
           run-id: ${{ inputs.run_id }}
@@ -294,7 +294,7 @@ jobs:
           echo "total_contratos=$TOTAL" >> "$GITHUB_OUTPUT"
 
       - name: Commit y push de los datos
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "data: carga histórica de contratos [skip ci]"
           file_pattern: "data/processed/*.json data/processed/contratos/*.json"
