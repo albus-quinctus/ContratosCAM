@@ -94,7 +94,7 @@ jobs:
 
       - name: Commit y push de los datos actualizados
         id: commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "data: actualización automática de contratos [skip ci]"
           file_pattern: "data/processed/*.json data/processed/contratos/*.json"
