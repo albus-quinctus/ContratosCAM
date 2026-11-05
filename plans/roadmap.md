@@ -167,10 +167,12 @@ El proyecto es open source por diseño: cualquiera puede auditar cómo se obtien
 - [x] Implementar modo `--full` en `download.js` (500 páginas vs 50 normal)
 - [x] Implementar acumulación incremental en `transform.js` (merge con histórico + deduplicación)
 - [x] Verificar que el pipeline completo funciona con acumulación (validación exitosa)
-- [ ] Ejecutar `npm run download:full` para la primera descarga masiva (30-60 min)
-- [ ] Evaluar si el volumen resultante requiere activar la migración a Turso (Fase 6)
+- [x] ~~Ejecutar `npm run download:full` para la primera descarga masiva~~ — Sustituido por la carga histórica desde los ZIP anuales de PLACSP (ver abajo)
+- [x] Carga histórica 2017–2026 con el workflow `carga-historica.yml` (simulación y confirmación en dos pasos), publicada el 29-10-2026: 65.464 contratos (perfiles del contratante, plataformas agregadas y TED)
+- [x] Almacén por años (`data/processed/contratos/AAAA.json` + `indice.json`) y web con selector de años
+- [x] Evaluar si el volumen resultante requiere activar la migración a Turso — 65.671 contratos y ~91 MB tras la actualización del 2-11-2026: hay que evaluar la Fase 6
 
-**Entregable:** Pipeline con acumulación incremental que crece semana a semana. Primera descarga masiva pendiente de ejecutar.
+**Entregable:** Histórico desde 2017 publicado y pipeline que acumula contratos semana a semana.
 
 ---
 
@@ -257,7 +259,7 @@ Los contratos tienen un estado que evoluciona: desde publicado → en evaluació
 ### FASE 5e — Ampliación de Cobertura (pendiente)
 > Investigar fuentes adicionales para aumentar el dataset
 
-- [ ] **Bloque A:** Ejecutar `npm run download:full` (500 páginas, ~225.000 licitaciones, 30-60 min)
+- [x] ~~**Bloque A:** Ejecutar `npm run download:full`~~ — Resuelto con la carga histórica de la Fase 5b
 - [ ] **Bloque B:** Investigar PLACSP búsqueda avanzada CSV — puede tener `fecha_formalizacion` y campos extra
   - URL: `https://contrataciondelestado.es` → Búsqueda avanzada → Filtrar CAM → Exportar CSV
   - ⚠️ La IP quedó bloqueada temporalmente (rate limiting por descarga masiva de 314 páginas). Reintentar en ~24h verificando: `node -e "fetch('https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom').then(r => console.log(r.status))"`
@@ -275,9 +277,10 @@ Ver plan detallado en [`plans/mejora-cobertura-y-estados.md`](mejora-cobertura-y
 ### FASE 6 — Migración a Turso (cuando el volumen lo justifique)
 > Escalar la base de datos para datos históricos completos
 
-Esta fase se activa cuando el JSON de datos supere ~20 MB o se quieran incorporar datos históricos de varios años. Con la integración de PLACE histórico (Fase 5b), es probable que se active.
+Esta fase se activa cuando el JSON de datos supere ~20 MB o se quieran incorporar datos históricos de varios años. Tras la carga histórica (Fase 5b) el umbral se ha superado: 2025 y 2026 pesan más de 20 MB cada uno.
 
-- [ ] Evaluar el volumen real de datos tras integrar PLACE histórico
+- [x] Evaluar el volumen real de datos tras la carga histórica — 65.671 contratos, ~91 MB repartidos en un fichero por año (noviembre de 2026)
+- [ ] Decidir si se migra a Turso o se mantiene el JSON estático por años
 - [ ] Crear cuenta en [Turso](https://turso.tech) y configurar base de datos
 - [ ] Añadir `@libsql/client` como dependencia
 - [ ] Modificar `scripts/import-db.js` para insertar en Turso
