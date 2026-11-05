@@ -95,11 +95,29 @@ function resultado({ lote, empresa, nif, importe }) {
 }
 
 /**
- * Entrada de un feed Atom de PLACSP.
- * @param {{expediente: string, jerarquia: string[], identificadores?: {esquema: string, id: string}[], resultados?: object[]}} datos
+ * Anuncio publicado de un contrato, con la fecha de cada medio en que salió.
+ * @param {{tipo: string, fechas: string[]}} datos
  * @returns {string}
  */
-function entrada({ expediente, jerarquia, identificadores = [], resultados = [] }) {
+function anuncio({ tipo, fechas }) {
+  return `
+      <cac-place-ext:ValidNoticeInfo>
+        <cbc-place-ext:NoticeTypeCode>${tipo}</cbc-place-ext:NoticeTypeCode>
+        <cac-place-ext:AdditionalPublicationStatus>
+          <cbc-place-ext:PublicationMediaName>Perfil del contratante</cbc-place-ext:PublicationMediaName>${fechas.map(fecha => `
+          <cac-place-ext:AdditionalPublicationDocumentReference>
+            <cbc:IssueDate>${fecha}</cbc:IssueDate>
+          </cac-place-ext:AdditionalPublicationDocumentReference>`).join('')}
+        </cac-place-ext:AdditionalPublicationStatus>
+      </cac-place-ext:ValidNoticeInfo>`;
+}
+
+/**
+ * Entrada de un feed Atom de PLACSP.
+ * @param {{expediente: string, jerarquia: string[], identificadores?: {esquema: string, id: string}[], resultados?: object[], anuncios?: object[]}} datos
+ * @returns {string}
+ */
+function entrada({ expediente, jerarquia, identificadores = [], resultados = [], anuncios = [] }) {
   // La jerarquía se anida de abajo arriba: el primer padre es el más cercano
   const padres = [...jerarquia].reverse().reduce((interior, nombre) => `
         <cac-place-ext:ParentLocatedParty>
@@ -128,7 +146,7 @@ ${identificadores.map(({ esquema, id }) => `
         <cac:BudgetAmount>
           <cbc:TaxExclusiveAmount currencyID="EUR">5000</cbc:TaxExclusiveAmount>
         </cac:BudgetAmount>
-      </cac:ProcurementProject>${resultados.map(resultado).join('')}
+      </cac:ProcurementProject>${resultados.map(resultado).join('')}${anuncios.map(anuncio).join('')}
     </cac-place-ext:ContractFolderStatus>
   </entry>`;
 }
@@ -175,6 +193,11 @@ fs.writeFileSync(path.join(RAIZ, 'data/raw', ficheroSemanal(FEED_PERFILES)), fee
       { lote: '1', empresa: 'Empresa Uno SL', nif: 'B11111111', importe: 1000 },
       { lote: '2', empresa: 'Empresa Dos SA', nif: 'A22222222', importe: 2500.5 },
     ],
+    // Publicado en 2025 aunque la entrada se modificó en 2026
+    anuncios: [
+      { tipo: 'DOC_CAN_ADJ', fechas: ['2026-09-02'] },
+      { tipo: 'DOC_CN', fechas: ['2025-12-12', '2025-12-10'] },
+    ],
   }),
   entrada({ expediente: 'OTRA-CCAA', jerarquia: JERARQUIA_OTRA }),
 ]), 'utf-8');
@@ -186,6 +209,7 @@ fs.writeFileSync(path.join(RAIZ, 'data/raw', ficheroSemanal(FEED_AGREGADAS)), fe
     expediente: 'CAM-SEMANAL-AGREGADAS',
     jerarquia: JERARQUIA_AGREGADA,
     identificadores: [{ esquema: 'ID_OC_PLAT', id: 'A13013764' }],
+    anuncios: [{ tipo: 'DOC_CN', fechas: ['2026-09-20'] }],
   }),
 ]), 'utf-8');
 
@@ -276,6 +300,8 @@ console.log('\n📋 Tests: parseo del feed semanal');
     [['1', 'Empresa Uno SL', 'B11111111'], ['2', 'Empresa Dos SA', 'A22222222']]);
   assert('el importe adjudicado es la suma de los lotes', conLotes.importe_adjudicacion, 3500.5);
   assert('el adjudicatario general es el del primer resultado', conLotes.adjudicatario, 'Empresa Uno SL');
+  assert('la fecha de publicación es la del primer anuncio, de cualquier tipo y medio', conLotes.fecha_publicacion, '2025-12-10');
+  assert('…también con un solo anuncio', contratos['CAM-SEMANAL-AGREGADAS'].fecha_publicacion, '2026-09-20');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,6 +318,7 @@ console.log('\n📋 Tests: histórico y transformación');
   assert('reconoce la CAM por el código de órgano', 'CAM-CODIGO-ORGANO' in contratos, true);
   assertDeep('no descomprime el ZIP a disco', fs.readdirSync(DIR_HISTORICO), [path.basename(ZIP_HISTORICO)]);
   assert('…pero no por un NIF con el mismo prefijo', 'OTRA-CCAA-CODIGO-ORGANO' in contratos, false);
+  assert('un contrato sin anuncios no tiene fecha de publicación', contratos['CAM-HISTORICO'].fecha_publicacion, null);
 
   assert('transform termina sin errores', ejecutar('transform.js').codigo, 0);
   const normalizados = transformados();
@@ -300,9 +327,11 @@ console.log('\n📋 Tests: histórico y transformación');
   assert('el contrato con lotes guarda su detalle', conLotes.lotes.length, 2);
   assertDeep('…con el importe de cada lote', conLotes.lotes.map(l => l.importe), [1000, 2500.5]);
   assert('…y como importe la suma', conLotes.importe, 3500.5);
+  assert('transform guarda la fecha del primer anuncio', conLotes.fecha_publicacion, '2025-12-10');
 
   const historico = normalizados['CAM-HISTORICO'];
   assert('un contrato con un único resultado no lleva detalle de lotes', historico.lotes, null);
+  assert('sin anuncios, la fecha de publicación es la de la última modificación', historico.fecha_publicacion, '2026-10-05');
   assertDeep('el contrato del histórico conserva su fuente', [historico.fuente, historico.fuentes], [FEED_AGREGADAS.fuente, [FEED_AGREGADAS.fuente]]);
 
   assert('validate aprueba la copia de trabajo', ejecutar('validate.js').codigo, 0);

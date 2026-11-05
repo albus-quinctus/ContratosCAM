@@ -136,6 +136,22 @@ console.log('\n📋 Tests: versiones');
   assert('…sin contar como modificación', resumen.modificados, 0);
 }
 
+{
+  // Antes se guardaba como fecha de publicación la de la última modificación
+  const conFechaModificacion = contrato(1, { fecha_publicacion: '2026-05-01', fecha_actualizacion: '2026-05-01T10:00:00Z' });
+  const conFechaAnuncio = contrato(1, { fecha_publicacion: '2023-02-14', fecha_actualizacion: '2026-05-01T10:00:00Z' });
+  const almacen = integrarLote([], [conFechaModificacion]).contratos;
+
+  const { contratos, resumen } = integrarLote(almacen, [conFechaAnuncio]);
+  assert('Recargar la misma versión con la fecha del primer anuncio la corrige', contratos[0].fecha_publicacion, '2023-02-14');
+  assert('…y cuenta como modificación', resumen.modificados, 1);
+
+  const posterior = contrato(1, { fecha_publicacion: '2026-09-01', fecha_actualizacion: '2026-09-01T10:00:00Z', objeto: 'Objeto 1 modificado' });
+  const [modificado] = integrarLote(contratos, [posterior]).contratos;
+  assert('Una versión posterior no cambia la fecha de publicación', modificado.fecha_publicacion, '2023-02-14');
+  assert('…aunque sí el resto de campos', modificado.objeto, 'Objeto 1 modificado');
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests: fuentes
 // ─────────────────────────────────────────────────────────────────────────────
@@ -208,6 +224,7 @@ console.log('\n📋 Tests: propiedades con cargas aleatorias');
         importe: valorOVacio(0.4, 1000 * n + v),
         adjudicatario: valorOVacio(0.5, `Empresa ${n}-${v}`),
         num_ofertas: valorOVacio(0.7, v + 1),
+        fecha_publicacion: valorOVacio(0.2, FECHAS[Math.floor(azar() * FECHAS.length)].substring(0, 10)),
       }));
     }
   }
@@ -243,6 +260,12 @@ console.log('\n📋 Tests: propiedades con cargas aleatorias');
     if (c.fecha_actualizacion !== suyas[0].fecha_actualizacion || c.fuente !== suyas[0].fuente) campoCorrecto = false;
   }
   assert('Cada campo tiene el valor de la versión más prioritaria y reciente que lo trae', campoCorrecto, true);
+
+  const fechaPublicacionCorrecta = referencia.every(c => {
+    const fechas = versiones.filter(v => v.url_origen === c.url_origen && !esVacio(v.fecha_publicacion)).map(v => v.fecha_publicacion).sort();
+    return c.fecha_publicacion === (fechas[0] ?? null);
+  });
+  assert('La fecha de publicación es la más antigua de las versiones que la traen', fechaPublicacionCorrecta, true);
 
   // Ninguna carga hace desaparecer un contrato ni vacía un campo con valor
   // (origen_campos es una anotación: desaparece cuando ya no hace falta)
