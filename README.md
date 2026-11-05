@@ -4,7 +4,7 @@
 
 **ContratosCAM** es una herramienta de transparencia ciudadana de código abierto que permite buscar, filtrar y explorar todos los contratos públicos adjudicados por la Comunidad de Madrid. Su objetivo es hacer accesible a cualquier ciudadano, periodista o investigador la información sobre cómo se gasta el dinero público de los contribuyentes madrileños.
 
-Los datos provienen de fuentes oficiales (PLACSP, Portal de Transparencia CAM) y se actualizan automáticamente cada semana mediante GitHub Actions.
+Los datos provienen de fuentes oficiales (la Plataforma de Contratación del Sector Público y el Diario Oficial de la UE), cubren desde 2017 y se actualizan automáticamente cada semana mediante GitHub Actions.
 
 Inspirado en el trabajo de [Jaime Gómez-Obregón](https://github.com/JaimeObregon) con [contratosdecantabria.es](https://contratosdecantabria.es).
 
@@ -32,6 +32,7 @@ El código es completamente abierto. Cualquiera puede revisar cómo se descargan
 ## ✨ Funcionalidades
 
 - 🔍 **Búsqueda** por objeto del contrato, organismo o adjudicatario
+- 📅 **Selector de años** — consulta uno o varios años, o todos; por defecto se cargan los dos más recientes
 - 🔎 **Filtros** por tipo de contrato, procedimiento, importe y fecha
 - 📊 **Estadísticas** y gráficas de distribución de contratos (4 gráficas Chart.js)
 - 🏆 **Ranking de adjudicatarios** — empresas ordenadas por importe total, nº de contratos o importe medio, con filtros, gráfica y exportación CSV
@@ -40,6 +41,7 @@ El código es completamente abierto. Cualquiera puede revisar cómo se descargan
 - 📱 **Diseño responsive** — funcional en móvil, tablet y escritorio
 - 🔄 **Actualización automática** semanal de los datos
 - 🌐 **Acceso público** sin registro ni instalación
+- 🇬🇧 **Versión en inglés** en `/en/`
 
 ---
 
@@ -61,18 +63,27 @@ contratoscam/
 │   ├── PRD.md             # Product Requirements Document
 │   └── roadmap.md         # Fases del proyecto
 ├── scripts/               # Pipeline ETL (descarga → parseo → transformación → BD)
-│   ├── download.js        # Descarga datos de fuentes oficiales
+│   ├── download.js        # Descarga los feeds Atom semanales de PLACSP
+│   ├── download-historico.js # Descarga los ZIP anuales del histórico de PLACSP
+│   ├── download-ted.js    # Descarga los anuncios de TED (UE)
 │   ├── parse.js           # Convierte CSV/XML a JSON
-│   ├── transform.js       # Limpia y normaliza los datos
-│   ├── import-db.js       # Importa a SQLite / genera JSON para el frontend
-│   └── validate.js        # Valida integridad y schema del JSON generado
+│   ├── transform.js       # Limpia, normaliza e integra el lote en lo almacenado
+│   ├── import-db.js       # Importa a SQLite y genera meta.json
+│   ├── validate.js        # Valida la copia de trabajo y la compara con lo publicado
+│   ├── publicar-datos.js  # Publica la copia validada (exige confirmación)
+│   └── lib/               # Utilidades compartidas (almacén, integración de lotes, feeds…)
 ├── src/web/               # Frontend de la aplicación (HTML + CSS + JS Vanilla)
 │   ├── index.html         # Página principal: buscador, filtros, tabla, gráficas
 │   ├── ranking.html       # Página de ranking de adjudicatarios
 │   ├── css/styles.css     # Estilos responsive (breakpoints 900/600/400px)
-│   └── js/
-│       ├── app.js         # Lógica del buscador principal
-│       └── ranking.js     # Lógica del ranking de adjudicatarios
+│   ├── js/
+│   │   ├── app.js         # Lógica del buscador principal
+│   │   ├── ranking.js     # Lógica del ranking de adjudicatarios
+│   │   ├── datos.js       # Carga de los contratos por años y selector de años
+│   │   ├── i18n.js        # Traducciones (español e inglés)
+│   │   └── presentacion.js # Formato de importes, fechas y etiquetas
+│   └── locales/           # Textos de la web en español e inglés
+├── tests/                 # Prueba de humo de la web (Playwright)
 ├── .nvmrc                 # Versión de Node.js del proyecto (20)
 └── package.json           # Dependencias y scripts npm
 ```
@@ -197,7 +208,7 @@ Si necesitas actualizar los datos fuera del ciclo semanal:
 1. Ve a la pestaña **Actions** del repositorio en GitHub
 2. Selecciona el workflow **"Actualizar datos de contratos"** en la barra lateral
 3. Haz clic en **"Run workflow"** → selecciona la rama `main` → **"Run workflow"**
-4. Espera ~5 minutos. Al terminar, verás un resumen con el número de contratos procesados
+4. Espera en torno a una hora (PLACSP descarga despacio). Al terminar, verás un resumen con el número de contratos procesados
 
 ### Carga histórica
 
@@ -224,10 +235,10 @@ La copia validada se guarda 14 días. Los dos workflows de datos no se ejecutan 
 
 El proyecto sigue una **estrategia de escalado progresivo**:
 
-### Fase actual — JSON estático
-Los datos procesados se publican como archivos JSON en el repositorio y se sirven directamente desde GitHub Pages. Sin servidor, sin base de datos en la nube, sin coste.
+### Fase actual — JSON estático por años
+Los datos procesados se publican como archivos JSON en el repositorio, un fichero por año más `indice.json`, y se sirven directamente desde GitHub Pages. Sin servidor, sin base de datos en la nube, sin coste. La web solo descarga los años que se seleccionan.
 
-**Adecuado para:** hasta ~50.000 contratos (~25 MB de JSON).
+**Volumen actual (noviembre de 2026):** 65.671 contratos de 2016 a 2026, unos 91 MB de JSON. Los años más recientes pesan más de 20 MB cada uno, así que ya toca evaluar la fase siguiente.
 
 ### Fase futura — Turso (SQLite en la nube)
 Cuando el volumen de datos históricos supere lo manejable con JSON estático, se migrará a [Turso](https://turso.tech): SQLite gestionado en la nube, sin pausas por inactividad, con tier gratuito de 9 GB y compatible con el esquema ya diseñado.
@@ -240,11 +251,13 @@ Cuando el volumen de datos históricos supere lo manejable con JSON estático, s
 
 ## 📊 Fuentes de Datos
 
-| Fuente | URL | Formato |
-|--------|-----|---------|
-| Plataforma de Contratación del Estado (PLACSP) | [contrataciondelestado.es](https://contrataciondelestado.es) | XML (CODICE), CSV, Atom |
-| Portal de Transparencia CAM | [comunidad.madrid/transparencia](https://www.comunidad.madrid/transparencia) | CSV |
-| Datos Abiertos CAM | [datos.comunidad.madrid](https://datos.comunidad.madrid) | CSV, JSON |
+| Fuente | Qué aporta | Formato |
+|--------|------------|---------|
+| [PLACSP](https://contrataciondelestado.es) — perfiles del contratante | Licitaciones publicadas directamente en la Plataforma; feed semanal e histórico anual desde 2017 | Atom (CODICE), ZIP anuales |
+| [PLACSP](https://contrataciondelestado.es) — plataformas agregadas | Licitaciones de la plataforma propia de la Comunidad de Madrid, que PLACSP agrega | Atom (CODICE), ZIP anuales |
+| [TED](https://ted.europa.eu) — Diario Oficial de la UE | Contratos que superan los umbrales europeos: número de ofertas y criterios de adjudicación | API v3, XML |
+
+El Portal de Transparencia y Datos Abiertos de la Comunidad de Madrid se estudiaron como fuente, pero no publican contratos individuales descargables. Ver [`docs/fuentes-datos.md`](docs/fuentes-datos.md).
 
 Los datos son de **dominio público** y su reutilización está amparada por la [Ley 37/2007](https://www.boe.es/buscar/act.php?id=BOE-A-2007-19814) sobre reutilización de la información del sector público y la [Ley 19/2013](https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887) de transparencia.
 
@@ -252,7 +265,8 @@ Los datos son de **dominio público** y su reutilización está amparada por la 
 
 ## 🛠️ Tecnologías
 
-- **ETL / Scripts:** Node.js 20+, `csv-parse`, `fast-xml-parser` v5, `sql.js`
+- **ETL / Scripts:** Node.js 20+, `fast-xml-parser` v5, `sql.js`
+- **Calidad:** ESLint, tests propios del pipeline y prueba de humo de la web con Playwright
 - **Base de datos local:** SQLite (via `sql.js` — WebAssembly, sin compilación nativa)
 - **Base de datos en la nube (futura):** [Turso](https://turso.tech) (SQLite gestionado)
 - **Frontend:** HTML5, CSS3, JavaScript Vanilla (sin frameworks)
@@ -281,8 +295,10 @@ Ver [`plans/roadmap.md`](plans/roadmap.md) para el plan completo de desarrollo.
 - [x] Fase 3 — Web pública en GitHub Pages (MVP) con buscador, filtros, gráficas y diseño responsive
 - [x] Fase 4 — Visualizaciones, estadísticas y **página de ranking de adjudicatarios**
 - [x] Fase 5 — Automatización y actualización semanal (cron + notificación de errores + verificación de salud)
-- [ ] Fase 5b — Datos históricos PLACE (2008–presente)
-- [ ] Fase 5c — Integración TED-UE (contratos europeos enriquecidos)
+- [x] Fase 5b — Datos históricos de PLACSP desde 2017 (65.671 contratos, web por años)
+- [x] Fase 5c — Integración TED-UE (contratos europeos enriquecidos)
+- [x] Fase 5d — Estado del contrato y actualización incremental
+- [ ] Fase 5e — Ampliación de cobertura (CSV de búsqueda avanzada, NIF de adjudicatarios)
 - [ ] Fase 6 — Migración a Turso para datos históricos completos
 - [ ] Fase 7 — Pulido, dominio propio y difusión
 
