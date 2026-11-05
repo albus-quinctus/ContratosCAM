@@ -327,7 +327,8 @@ function transformarContrato(crudo) {
   const importeFinal = crudo.importe_adjudicacion || crudo.importe_sin_iva || null;
   const importeIvaFinal = crudo.importe_adjudicacion_iva || crudo.importe_total || null;
 
-  const fechaPub = normalizarFecha(crudo.fecha_actualizacion);
+  // La del primer anuncio; si no trae anuncios, la de la última modificación
+  const fechaPub = normalizarFecha(crudo.fecha_publicacion) || normalizarFecha(crudo.fecha_actualizacion);
   const fechaAdj = normalizarFecha(crudo.fecha_adjudicacion);
   const adjudicatarioLimpio = limpiarVacio(crudo.adjudicatario);
 

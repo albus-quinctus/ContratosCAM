@@ -48,6 +48,9 @@ const parser = new XMLParser({
       'cac:TenderResult',
       'cac:AwardedTenderedProject',
       'cac:ProcurementProjectLot',
+      'cac-place-ext:ValidNoticeInfo',
+      'cac-place-ext:AdditionalPublicationStatus',
+      'cac-place-ext:AdditionalPublicationDocumentReference',
     ];
     return arrayElements.includes(name);
   },
@@ -152,6 +155,23 @@ function extraerAdjudicacion(result) {
     importe_adjudicacion_iva: importe(get(legalTotal, 'cbc:PayableAmount')),
     fecha_adjudicacion: texto(get(result, 'cbc:AwardDate')),
   };
+}
+
+/**
+ * Fecha de publicación de un contrato: la del primer anuncio publicado
+ * (previo, licitación, adjudicación, formalización…) en cualquier medio.
+ * A diferencia de <updated>, no cambia cuando se modifica el expediente.
+ * @param {object} contractFolder - Objeto parseado de un <cac-place-ext:ContractFolderStatus>
+ * @returns {string|null} null si el contrato no trae anuncios
+ */
+function extraerFechaPublicacion(contractFolder) {
+  const fechas = (get(contractFolder, 'cac-place-ext:ValidNoticeInfo') || [])
+    .flatMap(anuncio => get(anuncio, 'cac-place-ext:AdditionalPublicationStatus') || [])
+    .flatMap(publicacion => get(publicacion, 'cac-place-ext:AdditionalPublicationDocumentReference') || [])
+    .map(documento => texto(get(documento, 'cbc:IssueDate')))
+    .filter(Boolean)
+    .sort();
+  return fechas[0] ?? null;
 }
 
 /**
@@ -275,6 +295,7 @@ function extraerContrato(entry, fuente) {
 
   // Fecha de actualización
   const fechaActualizacion = texto(get(entry, 'updated'));
+  const fechaPublicacion = extraerFechaPublicacion(contractFolder);
 
   return {
     expediente,
@@ -295,6 +316,7 @@ function extraerContrato(entry, fuente) {
     adjudicatario,
     nif_adjudicatario: nifAdjudicatario,
     fecha_adjudicacion: fechaAdjudicacion,
+    fecha_publicacion: fechaPublicacion,
     fecha_actualizacion: fechaActualizacion,
     provincia,
     nuts_code: nutsCode,
