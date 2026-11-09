@@ -2409,7 +2409,8 @@
         "ALBAZUL SERVICIOS GENERALES, S.A",
         "ALBAZUL, Servicios Integrales, S.A.",
         "ALBAZUL SERVICIOS INTEGRALES S.A.L.",
-        "ALBAZUL, SERVICIOS INTEGRALES"
+        "ALBAZUL, SERVICIOS INTEGRALES",
+        "Albazul, Servicios Integrales, SA"
       ],
       "fuente": "auto"
     },
@@ -3281,7 +3282,9 @@
     },
     "A08472276": {
       "nombre_canonico": "Würth España, S.A.",
-      "aliases": [],
+      "aliases": [
+        "WURTH ESPAÑA, S.A."
+      ],
       "fuente": "auto"
     },
     "B80434236": {
@@ -3610,7 +3613,8 @@
         "KYOCERA DOCUMENT SOLUTIONS ESPAÑA, S.A.U.",
         "KYOCERA DOCUMENT SOLUTIONS ESPAÑA, S.A",
         "KYOCERA DOCUMENT SOLUTIONS",
-        "Kyocera Document Solutions España, S.A."
+        "Kyocera Document Solutions España, S.A.",
+        "KYOCERA DOCUMENT SOLUTIONS ESPAÑA S.A."
       ],
       "fuente": "auto"
     },
@@ -4201,7 +4205,8 @@
     "B81405664": {
       "nombre_canonico": "CENTRAL DE CATERING SERVICATERING SL",
       "aliases": [
-        "CENTRAL DE CATERING SERVICATERING, S.L"
+        "CENTRAL DE CATERING SERVICATERING, S.L",
+        "SERVICATERING SL"
       ],
       "fuente": "auto"
     },
@@ -4286,7 +4291,8 @@
         "GRUPO 5 ACCIÓN Y GESTIÓN SOCIAL, S.A",
         "GRUPO 5 ACCIÓN Y GESTIÓN SOCIAL S.A.U",
         "GRUPO 5 ACCION Y GESTION, S.A.",
-        "GRUPO 5, ACCIÓN Y GESTIÓN SOCIAL, SAU - C5638"
+        "GRUPO 5, ACCIÓN Y GESTIÓN SOCIAL, SAU - C5638",
+        "GRUPO 5 ACCIÓN Y GESTIÓN SOCIAL S.A.U. C9724"
       ],
       "fuente": "auto"
     },
@@ -4834,7 +4840,8 @@
         "Schindler S.A.",
         "SCHINDLER, S.L.",
         "Schindler",
-        "Schindler, S.A."
+        "Schindler, S.A.",
+        "SCHINDLER SA"
       ],
       "fuente": "auto"
     },
@@ -5034,7 +5041,8 @@
         "ENDESA ENERGÍA,S.A",
         "Endesa Energía Sau",
         "ENDESA ENERGIA, S.A.",
-        "ENDESA ENERGÍA, S.A.U."
+        "ENDESA ENERGÍA, S.A.U.",
+        "ENDESA ENERGIA, S.A.U"
       ],
       "fuente": "auto"
     },
@@ -6123,7 +6131,8 @@
       "aliases": [
         "AMPER SISTEMAS, S.A.U.",
         "AMPER SISTEMAS, S.A",
-        "AMPER SISTEMAS, S.A.U,"
+        "AMPER SISTEMAS, S.A.U,",
+        "AMPER DEFENSA Y SEGURIDAD S.A.U."
       ],
       "fuente": "auto"
     },
@@ -7671,7 +7680,8 @@
         "ANTALIS IBERIA SA",
         "ANTALIS IBERIA, S.A",
         "ANTALIS IBERIA, S.A.  C/ Pintores, 10 - 28891 Velilla de San Antonio (Madrid)",
-        "ANTALIS IBERIA,S.A."
+        "ANTALIS IBERIA,S.A.",
+        "ANTALIS IBERIA S.A."
       ],
       "fuente": "auto"
     },
@@ -7975,7 +7985,8 @@
         "INDUSTRIAS DE SERIGRAFIA Y MARCAJES VERSAL S.L",
         "INDUSTRIAS DE SERIGRAFIA Y MARCAJES VERSAL SL",
         "INDUSTRIAS DE SERIGRAFÍA Y MARCAJES",
-        "Industrias de Serigrafía y Marcajes Versal S.L."
+        "Industrias de Serigrafía y Marcajes Versal S.L.",
+        "INDUSTRIAS DE SERIGRAFIA Y MARCAJES VERSAL S.L."
       ],
       "fuente": "auto"
     },
@@ -8049,7 +8060,8 @@
       "aliases": [
         "AF Steelcase SA",
         "AF STEELCASE, S.A.",
-        "AF STEELCASE S.A"
+        "AF STEELCASE S.A",
+        "A.F. Steelcase S.A."
       ],
       "fuente": "auto"
     },
@@ -9698,7 +9710,9 @@
     },
     "B66342767": {
       "nombre_canonico": "BITPROM INVESTMENTS S.L.",
-      "aliases": [],
+      "aliases": [
+        "BITPROM INVESTMENTS, S.L."
+      ],
       "fuente": "auto"
     },
     "B84050145": {
@@ -9855,7 +9869,8 @@
         "PALEX MEDICAL,S.A.",
         "ROCHE DIAGNOSTICS,S.L.",
         "PALEX MEDICAL  S.A",
-        "PALEX MEDICA, S.A"
+        "PALEX MEDICA, S.A",
+        "GENERAL ELECTRIC HEALTHCARE ESPAÑA, S.L."
       ],
       "fuente": "auto"
     },
@@ -10084,7 +10099,8 @@
         "GESINVER VALORACIONES, SL",
         "GESTINVER VALORACIONES, SL",
         "GESTINVER VALORACIONES, S.L.",
-        "GESTIMVER VALORACIONES, SL"
+        "GESTIMVER VALORACIONES, SL",
+        "GESTIMVER VALORACIONES SL"
       ],
       "fuente": "auto"
     },
@@ -10240,7 +10256,8 @@
     "A80007248": {
       "nombre_canonico": "WALKIA S.A.",
       "aliases": [
-        "WALKIA SA"
+        "WALKIA SA",
+        "WALKIA, S.A."
       ],
       "fuente": "auto"
     },
@@ -10285,8 +10302,10 @@
       "fuente": "auto"
     },
     "B42929968": {
-      "nombre_canonico": "SL",
-      "aliases": [],
+      "nombre_canonico": "FUNERARIA MADRID SAN JOSE SL",
+      "aliases": [
+        "SL"
+      ],
       "fuente": "auto"
     },
     "B14546980": {
@@ -10298,7 +10317,9 @@
         "RAFITEXTIL DTT 3,8 S.L.",
         "RAFITEXTIL DTT 3.8, S.L.U.",
         "RAFITEXTIL DTT 3.8 SLU",
-        "RAFITEXTIL DTT 3.8 S.L.U"
+        "RAFITEXTIL DTT 3.8 S.L.U",
+        "RAFITEXTIL DTT 3.8, S.L.",
+        "RAFITEXTIL DTT 3,8, S.L."
       ],
       "fuente": "auto"
     },
@@ -10618,7 +10639,8 @@
     "B84465863": {
       "nombre_canonico": "INNOPULSE ASESORES TECNOLÓGICOS, S.L.",
       "aliases": [
-        "INNOPULSE ASESORES TECNOLOGICOS SL"
+        "INNOPULSE ASESORES TECNOLOGICOS SL",
+        "IFORMAL-IA & INNOPULSE SL"
       ],
       "fuente": "auto"
     },
@@ -11980,7 +12002,8 @@
         "INVESTIGACIÓN Y CONTROL DE CALIDAD S.A",
         "INVESTIGACIÓN Y CONTROL DE CALIDAD, S.A.",
         "Investigación y Control de Calidad, SA",
-        "INVESTIGACION Y CONTROL DE CALIDAD SAU"
+        "INVESTIGACION Y CONTROL DE CALIDAD SAU",
+        "INVESTIGACIÓN Y CONTROL DE CALIDAD S.A. Unipersonal (INCOSA)"
       ],
       "fuente": "auto"
     },
@@ -14259,8 +14282,10 @@
       "fuente": "auto"
     },
     "A41115320": {
-      "nombre_canonico": "OFIDISMA",
-      "aliases": [],
+      "nombre_canonico": "OFIDISMA.S.A",
+      "aliases": [
+        "OFIDISMA"
+      ],
       "fuente": "auto"
     },
     "A08804841": {
@@ -14310,7 +14335,8 @@
       "aliases": [
         "Saglas Obras y Servicios SA",
         "Saglas Obras y Servicios, S.A.- NITLUX",
-        "SAGLAS OBRAS Y SERVICIOS SA"
+        "SAGLAS OBRAS Y SERVICIOS SA",
+        "Saglas obras y servicios SA"
       ],
       "fuente": "auto"
     },
@@ -17019,7 +17045,8 @@
       "nombre_canonico": "SISTEMAS TECNICOS ENDOSCOPICOS, S.A.",
       "aliases": [
         "SISTEMAS TECNICOS ENDOSCOPICOS S.A",
-        "Sistemas técnicos endoscópicos S.A."
+        "Sistemas técnicos endoscópicos S.A.",
+        "SISTEMAS TECNICOS ENDOSCOPICOS, S.A"
       ],
       "fuente": "auto"
     },
@@ -17066,7 +17093,9 @@
         "Getinge Group Spain, SLU",
         "Getinge Group Spain, S. L.",
         "GENTINGE GROUP SPAIN SLU (ANTES MAQUET)",
-        "GETINGE GROUP SPAIN SLU"
+        "GETINGE GROUP SPAIN SLU",
+        "GETINGE GROUP SPAIN,S.L.",
+        "GETINGE GROUP SPÀIN S.L."
       ],
       "fuente": "auto"
     },
@@ -18039,7 +18068,8 @@
       "nombre_canonico": "ISLA VERDE OBRAS Y SERVICIOS S.L.",
       "aliases": [
         "ISLA VERDE OBRAS Y SERVICIOS, S.L.",
-        "ISLA VERDE OBRAS Y SERVICIOS, SL"
+        "ISLA VERDE OBRAS Y SERVICIOS, SL",
+        "ISLA VERDE OBRAS Y SERVICIOS SL"
       ],
       "fuente": "auto"
     },
@@ -18698,7 +18728,8 @@
         "Curium Pharma",
         "CURIUM PHARMA SPAIN,SA(ANTES IBA MOL)",
         "Curium Pharma Spain,S.A.",
-        "Curium Pharma S.A"
+        "Curium Pharma S.A",
+        "CURIUM PHARMA SPAIN SA."
       ],
       "fuente": "auto"
     },
@@ -20181,7 +20212,8 @@
         "Abbott Laboratories S.A",
         "ABBOTT LABORATORIES S.A.",
         "Abbott Laboratories, S.A",
-        "ABBOTT LABORATORIES,S.A."
+        "ABBOTT LABORATORIES,S.A.",
+        "BAUSCH & LOMB, S.A."
       ],
       "fuente": "auto"
     },
@@ -21265,7 +21297,8 @@
         "ELEKTA MEDICAL S.A.U",
         "ELEKTA MEDICAL, S.A.U.",
         "Elekta Medical S.A.U",
-        "ELEKTA MEDICAL, S.A.U"
+        "ELEKTA MEDICAL, S.A.U",
+        "ELEKTA MEDICAL, S.A. U."
       ],
       "fuente": "auto"
     },
@@ -22291,7 +22324,8 @@
         "Cardiva 2 S.l.",
         "Cardiva, 2 S.L.",
         "Cardiva 2 S.L.",
-        "CARDIVA2, SL"
+        "CARDIVA2, SL",
+        "CARDIVA2 S.L."
       ],
       "fuente": "auto"
     },
@@ -23330,7 +23364,8 @@
       "aliases": [
         "FIMECORP INTERNATIONAL S L",
         "Fimecorp International SL",
-        "Fimecorp International, S.L."
+        "Fimecorp International, S.L.",
+        "FIMECORP INTERNATIONAL, S.L."
       ],
       "fuente": "auto"
     },
@@ -24055,7 +24090,9 @@
     },
     "B86617909": {
       "nombre_canonico": "ANSIBLE S.L",
-      "aliases": [],
+      "aliases": [
+        "ANSIBLE SL"
+      ],
       "fuente": "auto"
     },
     "B58296773": {
@@ -25231,7 +25268,8 @@
       "nombre_canonico": "HILL-ROM IBERIA S.L",
       "aliases": [
         "HILLROM IBERIA S.L.U",
-        "HILL-ROM IBERIA SL"
+        "HILL-ROM IBERIA SL",
+        "HILLROM IBERIA, S.L.U."
       ],
       "fuente": "auto"
     },
@@ -26196,7 +26234,8 @@
       "aliases": [
         "LINEAS Y CABLES S.A.",
         "LINEAS Y CABLES, SA",
-        "Lineas y Cables, S.A."
+        "Lineas y Cables, S.A.",
+        "LINEAS Y CABLES, S.A."
       ],
       "fuente": "auto"
     },
@@ -26293,7 +26332,8 @@
       "aliases": [
         "FUNDACIÓN DIAGRAMA INTERVENCIÓN PSICOSOCIAL",
         "Fundac. Diagrama Intervención Psicosocial",
-        "Fundación Diagrama"
+        "Fundación Diagrama",
+        "FUNDACIÓN DIAGRAMA INTERVENCION PSICOSOCIAL"
       ],
       "fuente": "auto"
     },
@@ -26622,7 +26662,8 @@
       "nombre_canonico": "AB MEDICA GROUP, S.A.",
       "aliases": [
         "AB MEDICA GROUP,S.A.",
-        "AB MEDICA GROUP S.A."
+        "AB MEDICA GROUP S.A.",
+        "AB MEDICA GROUP"
       ],
       "fuente": "auto"
     },
@@ -29710,7 +29751,9 @@
     },
     "U26787804": {
       "nombre_canonico": "UTE ANETO CONSULTORES, S.L. - FHECOR INGENIEROS CONSULTORES, S.A.",
-      "aliases": [],
+      "aliases": [
+        "UTE FHECOR-ANETO APARCAMIENTOS MADRID"
+      ],
       "fuente": "auto"
     },
     "B04754040": {
@@ -31536,7 +31579,8 @@
       "nombre_canonico": "CIPHERBIT, S.L.U.",
       "aliases": [
         "CIPHERBIT , S.L.U.",
-        "CIPHERBIT S.L.U.,"
+        "CIPHERBIT S.L.U.,",
+        "Cipherbit, S.L.U."
       ],
       "fuente": "auto"
     },
@@ -34290,7 +34334,8 @@
     "B87171286": {
       "nombre_canonico": "UNIVE ABOGADOS SECTOR PUBLICO S.L.P.",
       "aliases": [
-        "Unive Abogados Sector Público S.L.P."
+        "Unive Abogados Sector Público S.L.P.",
+        "UNIVE ABOGADOS SECTOR PUBLICO S.L.P"
       ],
       "fuente": "auto"
     },
@@ -34563,7 +34608,9 @@
     },
     "J88273347": {
       "nombre_canonico": "ÑAS TEATRO, S.C.",
-      "aliases": [],
+      "aliases": [
+        "ÑAS TEATRO S.C."
+      ],
       "fuente": "auto"
     },
     "B63572267": {
@@ -35206,7 +35253,8 @@
         "7ROJO PRODUCCIONES, S.L.",
         "7 ROJO PRODUCCIONES S.L,",
         "7 ROJO PRODUCCIONES, S.L",
-        "7ROJO PRODUCCIONES S.L"
+        "7ROJO PRODUCCIONES S.L",
+        "7 ROJO PRODUCCIONES S.L."
       ],
       "fuente": "auto"
     },
@@ -44210,7 +44258,8 @@
       "aliases": [
         "EMPRESA DE TRANSFORMACIÓN AGRARIA, S.A, S.M.E., M.P.",
         "EMPRESA DE TRANSFORMACIÓN AGRARIA, S.A., S.M.E., M.P. (TRAGSA)",
-        "TRAGSA S.A."
+        "TRAGSA S.A.",
+        "Empresa de Transformación Agraria, S.A., S.M.E., M.P. (TRAGSA)"
       ],
       "fuente": "auto"
     },
@@ -45872,7 +45921,9 @@
     },
     "U16700049": {
       "nombre_canonico": "UTE ACCIONA SERVICIOS URBANOS SRLU Y FCC MEDIO AMBIENTE SAU",
-      "aliases": [],
+      "aliases": [
+        "UTE RSU Y LV COLMENAR"
+      ],
       "fuente": "auto"
     },
     "B13965470": {
@@ -47794,7 +47845,8 @@
     "B91890707": {
       "nombre_canonico": "AFFOR Prevención Psicosocial, S.L.",
       "aliases": [
-        "AFFOR Prevención Psicosocial S.L."
+        "AFFOR Prevención Psicosocial S.L.",
+        "AFFOR PREVENCION PSICOSOCIAL S.L"
       ],
       "fuente": "auto"
     },
@@ -50404,8 +50456,10 @@
       "fuente": "auto"
     },
     "B97027502": {
-      "nombre_canonico": "ATM BROADCAST S.L.",
-      "aliases": [],
+      "nombre_canonico": "ATM BROADCAST, S.L",
+      "aliases": [
+        "ATM BROADCAST S.L."
+      ],
       "fuente": "auto"
     },
     "02631542C": {
@@ -51816,8 +51870,10 @@
       "fuente": "auto"
     },
     "G84657295": {
-      "nombre_canonico": "FUNDACIÓN SUMMA HUMANITATE",
-      "aliases": [],
+      "nombre_canonico": "Fundación Summa Humanitate(C2280)",
+      "aliases": [
+        "FUNDACIÓN SUMMA HUMANITATE"
+      ],
       "fuente": "auto"
     },
     "B65124471": {
@@ -52184,8 +52240,10 @@
       "fuente": "auto"
     },
     "B64291107": {
-      "nombre_canonico": "SIMBIU INTELLIGENCE SL",
-      "aliases": [],
+      "nombre_canonico": "SIMBIU INTELLIGENCE, S.L,",
+      "aliases": [
+        "SIMBIU INTELLIGENCE SL"
+      ],
       "fuente": "auto"
     },
     "B41979360": {
@@ -60121,7 +60179,8 @@
       "aliases": [
         "SERVICIO DE PREVENCION, FORMACION Y CONSULTORIA SL",
         "Servicio de Prevención, Formación y Consultoría, S.L.",
-        "SERVICIO DE PREVENCION, FORMACION Y CONSULTORIA S.L."
+        "SERVICIO DE PREVENCION, FORMACION Y CONSULTORIA S.L.",
+        "ISONOR PREVENCION MADRID S.L."
       ],
       "fuente": "auto"
     },
@@ -60163,8 +60222,10 @@
       "fuente": "auto"
     },
     "B01654847": {
-      "nombre_canonico": "SUMINISTROS TÉCNICOS LÓPEZ SANCHO S.L.",
-      "aliases": [],
+      "nombre_canonico": "Suministros Técnicos López Sancho, S.L.",
+      "aliases": [
+        "SUMINISTROS TÉCNICOS LÓPEZ SANCHO S.L."
+      ],
       "fuente": "auto"
     },
     "B86060126": {
@@ -66733,8 +66794,10 @@
       "fuente": "auto"
     },
     "B85889616": {
-      "nombre_canonico": "PROYECTOS INTEGRALES ESPECIALIZADOS SCP",
-      "aliases": [],
+      "nombre_canonico": "PROYECTOS INTEGRALES ESPECIALIZADOS SCP SLU",
+      "aliases": [
+        "PROYECTOS INTEGRALES ESPECIALIZADOS SCP"
+      ],
       "fuente": "auto"
     },
     "B86276292": {
@@ -68982,6 +69045,126 @@
       "nombre_canonico": "Escuela Abierta de Desarrollo en Ingenieria y Construcción SL",
       "aliases": [],
       "fuente": "auto"
+    },
+    "B19415173": {
+      "nombre_canonico": "PROTEXE AUTOPROTECCIÓN Y EMERGENCIAS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G80739279": {
+      "nombre_canonico": "ASOCIACIÓN DE GANADEROS DE LOZOYA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B96562236": {
+      "nombre_canonico": "Bous al Carrer S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87140596": {
+      "nombre_canonico": "ENERO ARQUITECTURA SLP",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78277506": {
+      "nombre_canonico": "PROYECTOS MECANICOS DE INSTALACIONES INDUSTRIALES, S.A",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85138949": {
+      "nombre_canonico": "Guillermo-Escolar Librerías",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B28451383": {
+      "nombre_canonico": "ESSITY SPAIN, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B45846714": {
+      "nombre_canonico": "COARTEGIFT REGALOS PUBLICITARIOS SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "50114356R": {
+      "nombre_canonico": "UGENA ROMERO, ALVARO FRANCISCO",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A63222533": {
+      "nombre_canonico": "UFD DISTRIBUCION ELECTRICIDAD, S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B71306591": {
+      "nombre_canonico": "NOVA LUX ARTEAN, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85132496": {
+      "nombre_canonico": "ALAMCIA SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B26914937": {
+      "nombre_canonico": "TRIBUNA POPULAR SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87615654": {
+      "nombre_canonico": "CUTMEDIA S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A78229135": {
+      "nombre_canonico": "FUSIONA MANTENIMIENTOS S.A.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84115773": {
+      "nombre_canonico": "Senda Desarrollo Infraestructuras y Medio Ambiente s.l.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B99097123": {
+      "nombre_canonico": "ESCIENCIA EVENTOS CIENTIFICOS S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A86195237": {
+      "nombre_canonico": "SECURITY DOGS SECURITY SERVICES SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85081305": {
+      "nombre_canonico": "BLUEMARA SOLUTIONS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "71296614H": {
+      "nombre_canonico": "Rodrigo Ortega Portillo",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B78341369": {
+      "nombre_canonico": "INTRAVEN, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B86927589": {
+      "nombre_canonico": "AQUAGAS MADRID SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U16978447": {
+      "nombre_canonico": "ASOC DUAL Y GRUPO AZUL CONSULTORES S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U05804364": {
+      "nombre_canonico": "UTE ESPINA OBRAS HIDRÁULICAS, S.A.U. - GRUPO SOTOVAL DE CONSTRUCCIONES Y PROYECTOS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
     }
   },
   "aliases_sin_nif": {
@@ -69643,7 +69826,10 @@
     "integra mgsi cee sl": "B82992744",
     "sociedad iberica de construcciones electricas sa": "A28002335",
     "jcampos manipulados del papel sl": "B28597136",
-    "sacyr construccion sau": "A78366382"
+    "sacyr construccion sau": "A78366382",
+    "jose miguel irigoyen perez": "02638055R",
+    "raul lopez sanchez": "51920873Y",
+    "los suenos de fausto sl": "B85921559"
   },
   "organismos": {
     "consejeria_sanidad": {
