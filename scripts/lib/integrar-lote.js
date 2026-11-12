@@ -77,6 +77,10 @@ const REGLAS_CAMPO = Object.freeze({
   // Fuente y fecha de la versión principal: definen qué versión es
   fuente: principal => principal.fuente,
   fecha_actualizacion: principal => principal.fecha_actualizacion,
+  // La del primer anuncio no cambia entre versiones: se queda la más antigua.
+  // Así se corrigen al recargar las que se guardaron con la de la última
+  // modificación, que nunca es anterior.
+  fecha_publicacion: (principal, secundaria) => fechaMasAntigua(principal.fecha_publicacion, secundaria.fecha_publicacion),
 });
 
 /**
@@ -139,6 +143,17 @@ export function compararFechas(a, b) {
   return soloDia
     ? compararTexto(a.substring(0, LONGITUD_DIA), b.substring(0, LONGITUD_DIA))
     : compararTexto(a, b);
+}
+
+/**
+ * La más antigua de unas fechas, sin contar las vacías.
+ * @param {...(string|null)} fechas
+ * @returns {string|null} null si todas están vacías
+ */
+function fechaMasAntigua(...fechas) {
+  const conValor = fechas.filter(f => !esVacio(f));
+  if (conValor.length === 0) return null;
+  return conValor.reduce((masAntigua, f) => (compararFechas(f, masAntigua) < 0 ? f : masAntigua));
 }
 
 /**
