@@ -117,6 +117,11 @@
       "aliases": [],
       "fuente": "auto"
     },
+    "654091069": {
+      "nombre_canonico": "FUNDACION FESTIVAL INTERNACIONAL TEATRO A MIL",
+      "aliases": [],
+      "fuente": "auto"
+    },
     "654091609": {
       "nombre_canonico": "FUNDACION FESTIVAL INTERNACIONAL TEATRO A MIL",
       "aliases": [],
@@ -181,6 +186,11 @@
     },
     "885867612": {
       "nombre_canonico": "RETINEO INGENIERÍA, S.L.U.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "943368964": {
+      "nombre_canonico": "YERBA BUENA ARTS & EVENTS",
       "aliases": [],
       "fuente": "auto"
     },
@@ -250,7 +260,8 @@
         "EULEN S.A",
         "Eulen, S.A.",
         "EULEN S. A.",
-        "Eulen S.A"
+        "Eulen S.A",
+        "EULEN, S.A"
       ],
       "fuente": "auto"
     },
@@ -570,7 +581,8 @@
         "COARSA S.A.",
         "COARSA, S.A-",
         "COARSA S.A.,",
-        "COARSA, S.A,"
+        "COARSA, S.A,",
+        "COARSA S.A"
       ],
       "fuente": "auto"
     },
@@ -1184,7 +1196,8 @@
       "nombre_canonico": "EDISON NEXT SPAIN, SLU",
       "aliases": [
         "EDISON NEXT SPAIN SLU",
-        "EDISON NEXT SERVICES, S.L."
+        "EDISON NEXT SERVICES, S.L.",
+        "EDISON NEX SPAIN S.L.U."
       ],
       "fuente": "auto"
     },
@@ -2076,7 +2089,8 @@
       "nombre_canonico": "ACEINSA MOVILIDAD, S.A.",
       "aliases": [
         "ACEINSA MOVILIDAD SA",
-        "ACEINSA MOVILIDAD, SA"
+        "ACEINSA MOVILIDAD, SA",
+        "ACEINSA MOVILIDAD S.A."
       ],
       "fuente": "auto"
     },
@@ -2342,7 +2356,8 @@
         "TELEFONICA SOLUCIONES DE INFORMATICA Y COMUNICACIONES DE ESPA?A, S.A.U",
         "TELEFONICA SOLUCIONES DE INFORMATICA Y COMUNICACIONES DE ESPAÑA, S.A.",
         "Telefónica Soluciones Informáticas",
-        "TELEFONICA SOLUCIONES INFORMATICAS Y COMUNICACIONES S.A."
+        "TELEFONICA SOLUCIONES INFORMATICAS Y COMUNICACIONES S.A.",
+        "TELEFÓNICA SOLUCIONES DEINFORMÁTICA Y COMUNICACIONESDE ESPAÑA, S.A.U."
       ],
       "fuente": "auto"
     },
@@ -3413,7 +3428,8 @@
         "CORREOS Y TELEGRAFOS",
         "SOCIEDAD ESTATAL DE CORREOS Y TELEGRAFOS S.A.",
         "SOCIEDAD ESTATAL CORREOS Y TELÉGRAFOS S.A.",
-        "SOCIEDAD ESTATAL CORREOS Y TELEGRAFO"
+        "SOCIEDAD ESTATAL CORREOS Y TELEGRAFO",
+        "SOCIEDAD ESTATAL DE CORREOS Y TELEGRAFOS SA"
       ],
       "fuente": "auto"
     },
@@ -3889,7 +3905,8 @@
       "nombre_canonico": "SAFETY KLEEN ESPAÑA, S.A.",
       "aliases": [
         "SAFETYKLEEN ESPAÑA, S.A.",
-        "SAFETYKLEEN ESPAÑA, S.A.U."
+        "SAFETYKLEEN ESPAÑA, S.A.U.",
+        "SAFETY KLEEN ESPAÑA, S.A"
       ],
       "fuente": "auto"
     },
@@ -4972,7 +4989,8 @@
         "VIVA AQUASERVICE SPAIN, S.A.",
         "VIVA AQUASERVICE SPAIN SA",
         "VIVA AQUA SERVICE SPAIN S.A.",
-        "VIVA AQUA SERVICE SPAIN SA"
+        "VIVA AQUA SERVICE SPAIN SA",
+        "VIVA AQUA SERVICE SPAIN, S.A."
       ],
       "fuente": "auto"
     },
@@ -5218,7 +5236,8 @@
         "LIBERTY MUTUAL INSURANCE EUROPE, Suc. en España",
         "LIBERTY MUTUAL INSURANCE EUR. LTD. SUC ESPAÑA",
         "LIBERTY MUTUAL INSURANCE EUROPE SUC. EN ESPAÑA",
-        "LIBERTY MUTUAL INSURANCE"
+        "LIBERTY MUTUAL INSURANCE",
+        "Coaseguro LIBERTY W.R. BERKLEY"
       ],
       "fuente": "auto"
     },
@@ -5802,7 +5821,8 @@
       "aliases": [
         "PADECASA OBRAS Y SERVICIOS, S.A.,",
         "PADECASA OBRAS Y SERVICIOS S.A",
-        "PADECASA OBRAS Y SERVICIOS SA"
+        "PADECASA OBRAS Y SERVICIOS SA",
+        "PADECASA OBRAS Y SERVICIOS S.A."
       ],
       "fuente": "auto"
     },
@@ -6982,7 +7002,8 @@
     "B97120109": {
       "nombre_canonico": "SERNUTEC, SERVICIOS Y NUEVAS TECNOLOGÍAS, S.L.",
       "aliases": [
-        "SERNUTEC Servicios y Nuevas Tecnologías, S.L."
+        "SERNUTEC Servicios y Nuevas Tecnologías, S.L.",
+        "SERNUTEC, S.L."
       ],
       "fuente": "auto"
     },
@@ -7558,7 +7579,8 @@
         "ELECTRONIC TRAFIC S.A",
         "ELECTRONIC TRAFIC, S.A",
         "ELECTRONIC TRAFIC S.A.",
-        "ELECTRONIC TRAFIC SA"
+        "ELECTRONIC TRAFIC SA",
+        "VALENCIA"
       ],
       "fuente": "auto"
     },
@@ -7972,7 +7994,8 @@
       "aliases": [
         "OFICÁCERES, S.L.",
         "Oficaceres s.l.",
-        "OFICACERES S.L."
+        "OFICACERES S.L.",
+        "OFICÁCERES, S.L"
       ],
       "fuente": "auto"
     },
@@ -8087,7 +8110,8 @@
       "aliases": [
         "MARCAJES GALAN",
         "MARCAJES GALÁN SL.",
-        "MARCAJES GALAN S.L."
+        "MARCAJES GALAN S.L.",
+        "MARCAJES GALÁN, S.L"
       ],
       "fuente": "auto"
     },
@@ -9940,7 +9964,8 @@
     "B97673453": {
       "nombre_canonico": "AVANTA PREVENCIÓN INTEGRAL, S.L.U.",
       "aliases": [
-        "AVANTA PREVENCION INTEGRAL S.L.U."
+        "AVANTA PREVENCION INTEGRAL S.L.U.",
+        "AVANTA PREVENCION INTEGRAL SLU"
       ],
       "fuente": "auto"
     },
@@ -10605,7 +10630,8 @@
     "A28889939": {
       "nombre_canonico": "MARIA DOLORES MARTINEZ VARA DE REY, S.A.",
       "aliases": [
-        "MARIA DOLORES MARTINEZ VARA DE REY, SA"
+        "MARIA DOLORES MARTINEZ VARA DE REY, SA",
+        "M. Dolores Martínez-Vara del Rey, S.A."
       ],
       "fuente": "auto"
     },
@@ -13002,7 +13028,8 @@
     "B06684369": {
       "nombre_canonico": "CEDESA DIGITAL SL",
       "aliases": [
-        "CEDESA DIGITAL S.L.U"
+        "CEDESA DIGITAL S.L.U",
+        "CEDESA DIGITAL, S.L.U."
       ],
       "fuente": "auto"
     },
@@ -13347,7 +13374,8 @@
         "ECONOM SERVICIOS, S.A.",
         "ECONOCOM SERVICIOS, S.A.U",
         "ECONOCOM SERVICIOS, S.A",
-        "ECONOCOM SERVICIOS S.A."
+        "ECONOCOM SERVICIOS S.A.",
+        "ECONOCOM SERVICIOS , S.A."
       ],
       "fuente": "auto"
     },
@@ -13447,7 +13475,8 @@
       "aliases": [
         "FERNANDEZ MOLINA OBRAS Y SERVICIOS, S.A.",
         "Fernández Molina Obras y Servicios, S.A.",
-        "FERNANDEZ MOLINA OBRAS Y SERVICIOS, S.A. Y COTODISA OBRAS Y SERVICIOS, S.A."
+        "FERNANDEZ MOLINA OBRAS Y SERVICIOS, S.A. Y COTODISA OBRAS Y SERVICIOS, S.A.",
+        "FERNÁNDEZ MOLINA OBRAS Y SERVICIOS, S.A."
       ],
       "fuente": "auto"
     },
@@ -17368,7 +17397,8 @@
         "PHILIPS IBERICA, S.A. UNIPERSONAL,",
         "PHILIPS IBERÍCA ,S.A.U.",
         "PHILIPS IBÉRICA, S.A.(SOCIEDAD UNIPERSONAL)",
-        "PHILIPS IBÉRICA S.A.U./"
+        "PHILIPS IBÉRICA S.A.U./",
+        "PHILIPS IBERICA S.A.,"
       ],
       "fuente": "auto"
     },
@@ -17584,7 +17614,8 @@
         "PEREZ FERNANDEZ MATERIAL MEDICO SL",
         "PEREZ FDEZ MATERIAL MÉDICO S.l.",
         "PÉREZ FERNÁNDEZ MATERIAL MÉDICO, S.L.",
-        "PÉREZ FERNÁNDEZ MATERIAL MEDICOS, S.L."
+        "PÉREZ FERNÁNDEZ MATERIAL MEDICOS, S.L.",
+        "PEREZ FERNANDEZ MATERIAL MEDICO, S.L."
       ],
       "fuente": "auto"
     },
@@ -17874,7 +17905,8 @@
         "Medtronic Ibérica, SA",
         "MEDTRONIC  IBERICA, S.A.",
         "MEDTRONIC",
-        "MEDTRONIC IBERICA, S.A.U."
+        "MEDTRONIC IBERICA, S.A.U.",
+        "Medtonic Ibérica, S.A."
       ],
       "fuente": "auto"
     },
@@ -19138,7 +19170,8 @@
       "nombre_canonico": "Akralab, S.L.U",
       "aliases": [
         "AKRALAB, S.L.",
-        "AKRALAB"
+        "AKRALAB",
+        "Akralab, S.L."
       ],
       "fuente": "auto"
     },
@@ -19775,7 +19808,8 @@
         "HOLOGIC IBERIA, S.L.,",
         "HOLOGIC IBERICA, S.L.U.",
         "Hologic Iberia, S.L.",
-        "HOLOGIC IBERIA, S. L."
+        "HOLOGIC IBERIA, S. L.",
+        "HOLOGIC Iberia, S.L.U. (España)"
       ],
       "fuente": "auto"
     },
@@ -22265,7 +22299,8 @@
     "B81111585": {
       "nombre_canonico": "Sanjurjo Arquitectos S.L.P.U.",
       "aliases": [
-        "SANJURJO ARQUITECTOS, SLP"
+        "SANJURJO ARQUITECTOS, SLP",
+        "SANJURJO ARQUITECTOS, S.L.P."
       ],
       "fuente": "auto"
     },
@@ -23158,7 +23193,8 @@
       "nombre_canonico": "UCB PHARMA, S.A.",
       "aliases": [
         "UCB PHARMA, S.A",
-        "LABORATORIO UCB PHA.RMA, S.A"
+        "LABORATORIO UCB PHA.RMA, S.A",
+        "UCB PHARMA S.A."
       ],
       "fuente": "auto"
     },
@@ -25619,7 +25655,8 @@
       "aliases": [
         "MEMORANDUM MULTIMEDIA, S.L.",
         "MEMORANDUM MULTIMEDIA",
-        "Memorándum Multimedia S.L"
+        "Memorándum Multimedia S.L",
+        "MEMORANDUM MULTIMEDIA S.L."
       ],
       "fuente": "auto"
     },
@@ -28535,8 +28572,10 @@
       "fuente": "auto"
     },
     "A20686150": {
-      "nombre_canonico": "GRUPO S21SEC GESTIÓN, S.A.",
-      "aliases": [],
+      "nombre_canonico": "THALES S21 SEC ESPAÑA, S.A.U.",
+      "aliases": [
+        "GRUPO S21SEC GESTIÓN, S.A."
+      ],
       "fuente": "auto"
     },
     "A28007268": {
@@ -31281,8 +31320,10 @@
       "fuente": "auto"
     },
     "A08588170": {
-      "nombre_canonico": "SOLITIUM CONTROL GROUP",
-      "aliases": [],
+      "nombre_canonico": "SOLITIUM CONTROL GROUP, S.A.",
+      "aliases": [
+        "SOLITIUM CONTROL GROUP"
+      ],
       "fuente": "auto"
     },
     "B88576525": {
@@ -33993,7 +34034,8 @@
       "nombre_canonico": "CASTA SALUD, S.L.",
       "aliases": [
         "CASTA SALUD SL",
-        "CASTA SALUD, SLU"
+        "CASTA SALUD, SLU",
+        "CASTA SALUD S.L"
       ],
       "fuente": "auto"
     },
@@ -37173,7 +37215,9 @@
     },
     "A28816221": {
       "nombre_canonico": "EQUIPAMIENTO INSTITUCIONAL, S.A.U.",
-      "aliases": [],
+      "aliases": [
+        "Equipamiento Institucional SAU"
+      ],
       "fuente": "auto"
     },
     "B66363409": {
@@ -38144,8 +38188,10 @@
       "fuente": "auto"
     },
     "B10677185": {
-      "nombre_canonico": "INVERSIONES EVENTOS BRILLA S.L.",
-      "aliases": [],
+      "nombre_canonico": "Inversiones Eventos Brilla S.L.",
+      "aliases": [
+        "INVERSIONES EVENTOS BRILLA S.L."
+      ],
       "fuente": "auto"
     },
     "B21602966": {
@@ -38681,7 +38727,8 @@
       "nombre_canonico": "Rohde & Schwarz España SA",
       "aliases": [
         "ROHDE & SCHWARZ ESPAÑA, S.A.",
-        "Rohde & Schwarz"
+        "Rohde & Schwarz",
+        "rohde&schwarz España S.A."
       ],
       "fuente": "auto"
     },
@@ -39643,8 +39690,10 @@
       "fuente": "auto"
     },
     "B19853613": {
-      "nombre_canonico": "ACASO INTEGRA, S.L.",
-      "aliases": [],
+      "nombre_canonico": "Acaso integra, S.L.",
+      "aliases": [
+        "ACASO INTEGRA, S.L."
+      ],
       "fuente": "auto"
     },
     "B88247127": {
@@ -40149,8 +40198,10 @@
       "fuente": "auto"
     },
     "02856619L": {
-      "nombre_canonico": "María Nieves González Barroso",
-      "aliases": [],
+      "nombre_canonico": "María Nieves Gonzalez Barroso",
+      "aliases": [
+        "María Nieves González Barroso"
+      ],
       "fuente": "auto"
     },
     "B46356481": {
@@ -45211,7 +45262,8 @@
     "A28281368": {
       "nombre_canonico": "RADIO POPULAR, S.A., CADENA DE ONDAS POPULARES ESPAÑOLAS",
       "aliases": [
-        "Radio Popular S.A."
+        "Radio Popular S.A.",
+        "RADIO POPULAR S.A. CADENA DE ONDAS POPULARES ESPAÑOLAS"
       ],
       "fuente": "auto"
     },
@@ -47276,7 +47328,8 @@
         "TECNICAS RADIOFISICAS, S.L.U. (TRF)",
         "TECNICAS RADIOFISICAS, S.L.",
         "TÉCNICAS RADIOFÍSICAS S.L.U.",
-        "Técnicas Radiofísicas SLU"
+        "Técnicas Radiofísicas SLU",
+        "Técnicas Radiofísicas, S.L."
       ],
       "fuente": "auto"
     },
@@ -49293,8 +49346,10 @@
       "fuente": "auto"
     },
     "A28581882": {
-      "nombre_canonico": "ALCAMPO, S.A",
-      "aliases": [],
+      "nombre_canonico": "ALCAMPO, S.A.",
+      "aliases": [
+        "ALCAMPO, S.A"
+      ],
       "fuente": "auto"
     },
     "B16435257": {
@@ -51778,7 +51833,9 @@
     },
     "B99505810": {
       "nombre_canonico": "INGENIO DESDE EL AIRE, S.L.",
-      "aliases": [],
+      "aliases": [
+        "INGENIO DESDE EL AIRE S.L."
+      ],
       "fuente": "auto"
     },
     "G79782892": {
@@ -52331,7 +52388,8 @@
       "nombre_canonico": "ASOCIACIÓN THE CROSS BORDER PROJECT",
       "aliases": [
         "ASOCIACIÓN CROSS BORDER PROJECT",
-        "ASOCIACION THE CROSS BORDER PROJECT"
+        "ASOCIACION THE CROSS BORDER PROJECT",
+        "ASOC. THE CROSS BORDER PROJECT"
       ],
       "fuente": "auto"
     },
@@ -55131,7 +55189,9 @@
     },
     "B81766776": {
       "nombre_canonico": "GANADERIA BALTASAR IBAN, SL",
-      "aliases": [],
+      "aliases": [
+        "GANADERÍA IBAN SL"
+      ],
       "fuente": "auto"
     },
     "B84299213": {
@@ -55403,8 +55463,10 @@
       "fuente": "auto"
     },
     "B87283685": {
-      "nombre_canonico": "PUE DATA, S.L.",
-      "aliases": [],
+      "nombre_canonico": "PUE DATA, S.L. (actualmente denominadaIXEN AI, S.L.)",
+      "aliases": [
+        "PUE DATA, S.L."
+      ],
       "fuente": "auto"
     },
     "B80658461": {
@@ -67285,8 +67347,10 @@
       "fuente": "auto"
     },
     "B86349008": {
-      "nombre_canonico": "Actiem-Air, SL",
-      "aliases": [],
+      "nombre_canonico": "actiem-air slu",
+      "aliases": [
+        "Actiem-Air, SL"
+      ],
       "fuente": "auto"
     },
     "B86511516": {
@@ -68958,7 +69022,9 @@
     },
     "B88105754": {
       "nombre_canonico": "INNOVASC INTEGRAL SOLUTIONS, S.L.",
-      "aliases": [],
+      "aliases": [
+        "WL Gore & Asociados S.L."
+      ],
       "fuente": "auto"
     },
     "B02880383": {
@@ -69163,6 +69229,131 @@
     },
     "U05804364": {
       "nombre_canonico": "UTE ESPINA OBRAS HIDRÁULICAS, S.A.U. - GRUPO SOTOVAL DE CONSTRUCCIONES Y PROYECTOS, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G88337134": {
+      "nombre_canonico": "LA TETERA DE MADERA - LTDM",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U56253040": {
+      "nombre_canonico": "UTE OXER SPORT-STROCK CONSULTING",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A28679637": {
+      "nombre_canonico": "JARIN SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "Q2873001H": {
+      "nombre_canonico": "CÁMARA OFICIAL DE COMERCIO, INDUSTRIA Y SERVICIOS DE MADRID",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B26975722": {
+      "nombre_canonico": "ORTIGA CULTURA, S.L",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B85272854": {
+      "nombre_canonico": "WISDOM TV ESPAÑA S.L.U",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "53560996E": {
+      "nombre_canonico": "PEREZ BAOS ENRIQUE",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87993887": {
+      "nombre_canonico": "TECDATA ENGINEERING, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B45847688": {
+      "nombre_canonico": "MAREQUE SANCHEZ & ASOCIADOS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B87660148": {
+      "nombre_canonico": "MEDITECH REPAIR SL",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G84832658": {
+      "nombre_canonico": "C.D.E. LA GOLONDRINA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80965957": {
+      "nombre_canonico": "VENDIMAR, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B13650320": {
+      "nombre_canonico": "MARKETCHOICE, S.L.U",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B26907469": {
+      "nombre_canonico": "Track Technologies, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "G02956423": {
+      "nombre_canonico": "FUNDACION APADIS",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B75926295": {
+      "nombre_canonico": "Adelante servicios informáticos S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B44811081": {
+      "nombre_canonico": "Andutoros S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "U05701396": {
+      "nombre_canonico": "ARIETE SEGURIDAD S.A., AIME SEGURIDAD S.L., DEPORTES UNIÓN TEMPORAL DE EMPRESAS LEY 18/1982",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B82070152": {
+      "nombre_canonico": "Nuestro Mundo Aranjuez SLU",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "A48002349": {
+      "nombre_canonico": "Comercial Autogena y Electrica, SA",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "51071460Y": {
+      "nombre_canonico": "MARTINEZ MUÑOZ, JENNIFER",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B80067408": {
+      "nombre_canonico": "EQUINVEST, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B84847912": {
+      "nombre_canonico": "ABANCAY, TIEMPO LIBRE Y ANIMACIÓN, S.L.",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B64286891": {
+      "nombre_canonico": "AVINENT IMPLANT SYSTEM",
+      "aliases": [],
+      "fuente": "auto"
+    },
+    "B83449512": {
+      "nombre_canonico": "PHARMIS BIOFARMACÉUTICA, S.L.",
       "aliases": [],
       "fuente": "auto"
     }
@@ -69829,7 +70020,12 @@
     "sacyr construccion sau": "A78366382",
     "jose miguel irigoyen perez": "02638055R",
     "raul lopez sanchez": "51920873Y",
-    "los suenos de fausto sl": "B85921559"
+    "los suenos de fausto sl": "B85921559",
+    "miguel angel ramirez pradas": "A28843159",
+    "adolfo cervera sanchez-cascado": "25416741Q",
+    "nestor josue mejia garcia": "60506235C",
+    "colectividades bedmar sl": "B80232572",
+    "ute oxer sport-strock consulting": "U56253040"
   },
   "organismos": {
     "consejeria_sanidad": {

@@ -23085,6 +23085,162 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "9aca74613e6e",
+    "expediente": "PAPC 2025-1-2",
+    "objeto": "Suministro de Material Diverso de Urología para el Hospital Universitario de Getafe",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario de Getafe",
+    "importe": 896100.08,
+    "importe_iva": null,
+    "valor_estimado": 2200631.58,
+    "cpv": "33140000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": 39,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "MERIT MEDICAL SPAIN S.L.",
+        "nif_adjudicatario": "B87175253",
+        "importe": 12075,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "10",
+        "adjudicatario": "PALEX MEDICAL S.A",
+        "nif_adjudicatario": "A58710740",
+        "importe": 221330,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "11",
+        "adjudicatario": "COOK ESPAÑA, S.L.",
+        "nif_adjudicatario": "B08525073",
+        "importe": 15250,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "14",
+        "adjudicatario": "LELEMAN S.L.",
+        "nif_adjudicatario": "B46193827",
+        "importe": 39693,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "16",
+        "adjudicatario": "FIRMA AMBU S.L.",
+        "nif_adjudicatario": "B81040149",
+        "importe": 73200,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "19",
+        "adjudicatario": "B83365007",
+        "nif_adjudicatario": "PRESURGYSL",
+        "importe": 33180,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "KARL STORZ ENDOSCOPIA IBERICA S.A.",
+        "nif_adjudicatario": "A78936606",
+        "importe": 173880,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "23",
+        "adjudicatario": "COLOPLAST PRODUCTOS MEDICOS, S.A.",
+        "nif_adjudicatario": "A28899003",
+        "importe": 13625,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "25",
+        "adjudicatario": "MEDICINA ANALITICA CONSUMIBLES MAC S.A",
+        "nif_adjudicatario": "A48279723",
+        "importe": 5130,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "34",
+        "adjudicatario": "MERMAID MEDICAL IBERIA S.L.",
+        "nif_adjudicatario": "B86480902",
+        "importe": 6760,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "36",
+        "adjudicatario": "OLYMPUS IBERIA S.A.",
+        "nif_adjudicatario": "A08214157",
+        "importe": 11161.8,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "BOSTON SCIENTIFIC IBERICA, S.A.",
+        "nif_adjudicatario": "A80401821",
+        "importe": 266501.08,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": "TELEFLEX MEDICAL S.A.",
+        "nif_adjudicatario": "A03142114",
+        "importe": 7060,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "7",
+        "adjudicatario": "MEDICINA & MERCADO S.L.",
+        "nif_adjudicatario": "B83007328",
+        "importe": 14541.2,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "8",
+        "adjudicatario": "LABORATORIOS CAIR ESPAÑA S.L.",
+        "nif_adjudicatario": "B82665373",
+        "importe": 2713,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "MERIT MEDICAL SPAIN, S.L.U.",
+    "nif_adjudicatario": "B87175253",
+    "fecha_publicacion": "2024-12-16",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-material-diverso-urologia-hospital-universitario-getafe",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T06:55:56.318Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B87175253",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "a17118120be0",
     "expediente": "23/002/2SDA-CD007",
     "objeto": "Suministro de agendas atemporales y cuadernos de notas.",
@@ -29375,6 +29531,41 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "fb8d35c050f5",
+    "expediente": "A/SER-017072/2024 (12-G/24)",
+    "objeto": "Servicio de operación y mantenimiento integral de las instalaciones solares fotovoltaicas propiedad de la Comunidad de Madrid.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Medio Ambiente, Agricultura e Interior",
+    "importe": 143381.84,
+    "importe_iva": null,
+    "valor_estimado": 382351.6,
+    "cpv": "50532000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "AERONAVAL DE CONSTRUCCIONES E INSTALACIONES S.A.",
+    "nif_adjudicatario": "A28526275",
+    "fecha_publicacion": "2024-12-12",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-operacion-mantenimiento-integral-instalaciones-solares-fotovoltaicas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-05T10:40:51.598Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28526275",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "fbf001f299a9",
     "expediente": "2024/14125",
     "objeto": "Campamento urbano 2024.",
@@ -29536,6 +29727,41 @@
     "ted_publication_number": null,
     "entity_id": "varios",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "01d6bb503200",
+    "expediente": "PA 25/2025",
+    "objeto": "Obra de ejecución de la Ronda Sur Fase III desde Bº Del Castillo hasta Polígono Industrial Los Almendros de Torrejón de Ardoz.",
+    "tipo": "obras",
+    "subtipo": "4500",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Junta de Gobierno del Ayuntamiento de Torrejón de Ardoz",
+    "importe": 5992000,
+    "importe_iva": 7250320,
+    "valor_estimado": 9218530.48,
+    "cpv": "45000000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 22,
+    "num_lotes": null,
+    "adjudicatario": "SERANCO SAU",
+    "nif_adjudicatario": "A79189940",
+    "fecha_publicacion": "2024-12-11",
+    "fecha_adjudicacion": "2025-02-10",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=cF1NmS%2BVm4B70UvEyYJSGw%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-06T08:31:01.836Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A79189940",
+    "categoria_organismo": "aytos_junta",
+    "lotes": null
   },
   {
     "id": "072ffd766e0b",
@@ -37840,39 +38066,72 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
-    "id": "0d628218afa8",
-    "expediente": "SP24-00462",
-    "objeto": "Suministro en régimen de alquiler de los elementos navideños con motivos referenciales de chulapo y chulapa para Madrid Destino",
-    "tipo": "suministros",
-    "subtipo": "1",
-    "procedimiento": "negociado_sin_publicidad",
+    "id": "116830fc7ed2",
+    "expediente": "187-2024",
+    "objeto": "Servicios de A.T. para la realización de los trabajos de coordinación en materia de Seguridad y Salud durante la ejecución de las obras y trabajos de mantenimiento correspondientes a Canal de Isabel II, S.A., M.P. como promotor",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
     "estado": "resuelto",
     "estado_xml": "resuelto",
     "estado_verificado_en": null,
-    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
-    "importe": 23300,
-    "importe_iva": 28193,
-    "valor_estimado": 48000,
-    "cpv": "39298500",
-    "cpv_descripcion": "Mobiliario y equipamiento",
-    "duracion_meses": 24,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "PATRICIA LUCAS CAÑADAS",
-    "nif_adjudicatario": "33523355G",
-    "fecha_publicacion": "2024-12-05",
-    "fecha_adjudicacion": "2024-12-03",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=dGN1xCZB2JzyoM4us5k4vw%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
+    "organismo": "Canal de Isabel II",
+    "importe": 1156412.8,
+    "importe_iva": null,
+    "valor_estimado": 1690339.36,
+    "cpv": "71317210",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 15,
+    "num_lotes": 4,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "ENTRO DE ESTUDIOS DE MATERIALES Y CONTROL DE OBRA S.A. (CEMOSA)",
+        "nif_adjudicatario": "A29021334",
+        "importe": 351456.66,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CONURMA INGENIEROS CONSULTORES S.L.",
+        "nif_adjudicatario": "B81040503",
+        "importe": 439174.43,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "INCOPE CONSULTORES, S.L.",
+        "nif_adjudicatario": "B83665513",
+        "importe": 179126.6,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "COPREDIJE, S.A.",
+        "nif_adjudicatario": "A82003815",
+        "importe": 186655.11,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
     ],
-    "fecha_actualizacion": "2024-12-05T12:49:58.976Z",
+    "adjudicatario": "CENTRO DE ESTUDIOS DE MATERIALES Y CONTROL DE OBRA, S.A. (CEMOSA)",
+    "nif_adjudicatario": "A29021334",
+    "fecha_publicacion": "2024-12-05",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicios-at-realizacion-trabajos-coordinacion-materia-seguridad-salud-ejecucion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T07:56:03.595Z",
     "num_ofertas": null,
     "ted_publication_number": null,
-    "entity_id": "33523355G",
-    "categoria_organismo": "ayto_madrid"
+    "entity_id": "A29021334",
+    "categoria_organismo": "otros"
   },
   {
     "id": "194a537f9235",
@@ -51593,6 +51852,47 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "ce65c8c41907",
+    "expediente": "6672 BIS MRR",
+    "objeto": "LOTE 1.- Rehabilitación de la Casa Consistorial del Ayuntamiento de Alcalá de Henares, dentro de la línea 2 del programa de impulso a la rehabilitación de edificios públicos (PIREP) para Entidades Locales en el marco del plan de recuperación, transformación y resiliencia (Orden Ministerial TMA/178/2022, de 28 de febrero).",
+    "tipo": "obras",
+    "subtipo": "4520",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Junta de Gobierno del Ayuntamiento de Alcalá de Henares",
+    "importe": 1881770.84,
+    "importe_iva": 2276942.72,
+    "valor_estimado": 1900855.85,
+    "cpv": "45000000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 14,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "VIVENDIO SOSTENIBILIDAD ENERGÉTICA, S.L.",
+    "nif_adjudicatario": "B18943845",
+    "fecha_publicacion": "2024-11-29",
+    "fecha_adjudicacion": "2025-02-07",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=JbwWSpEuOfVVq4S9zvaQpQ%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-09T09:45:05.047Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B18943845",
+    "categoria_organismo": "aytos_junta",
+    "origen_campos": {
+      "nif_adjudicatario": {
+        "fuente": "placsp",
+        "fecha_actualizacion": "2026-01-20T08:38:36.023Z"
+      }
+    }
   },
   {
     "id": "d626cc1efad3",
@@ -70263,41 +70563,6 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
-    "id": "a19ee16c829c",
-    "expediente": "ECON/000072/2024",
-    "objeto": "Servicio de revisión automatizada de calidad de contenidos web de los portales de www.comunidad.madrid",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": "negociado_sin_publicidad",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Agencia para la Administración Digital de la Comunidad de Madrid",
-    "importe": 38390,
-    "importe_iva": null,
-    "valor_estimado": 76800,
-    "cpv": "72222300",
-    "cpv_descripcion": "Servicios informáticos y TI",
-    "duracion_meses": 24,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "DISTRIBUTION AS A SERVICE EMEA S.L.",
-    "nif_adjudicatario": "B98626963",
-    "fecha_publicacion": "2024-11-20",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-revision-automatizada-calidad-contenidos-web-portales-0",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-11-20T11:27:15.146Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "B98626963",
-    "categoria_organismo": "entes_cam"
-  },
-  {
     "id": "a307c04dc8ee",
     "expediente": "24/046/2",
     "objeto": "Suministro y reparación de gafas de protección graduadas (monofocales y progresivas), para trabajadores de EMT y servicios ópticos.",
@@ -75826,6 +76091,41 @@
     "ted_publication_number": null,
     "entity_id": "B80736648",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "98f5d20f0506",
+    "expediente": "P.A. 49/2024",
+    "objeto": "Servicio de Mantenimiento integral de los equipos de alta y media tecnología M/Philips tanto preventivo, correctivo y materiales diversos de los equipos detallados en el Anexo I del PPT, en el Hospital Universitario de la Paz y centros adscritos.&nbsp;",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 1181000,
+    "importe_iva": null,
+    "valor_estimado": 3779200,
+    "cpv": "50420000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "PHILIPS IBÉRICA, S.A.U.",
+    "nif_adjudicatario": "A28017143",
+    "fecha_publicacion": "2024-11-18",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-492024-servicio-mantenimiento-integral-equipos-alta-media-tecnologia-mphilips",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T09:11:10.152Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28017143",
+    "categoria_organismo": "salud"
   },
   {
     "id": "9a22c38d29f9",
@@ -87334,41 +87634,6 @@
     "categoria_organismo": "salud"
   },
   {
-    "id": "1a3e8aa1a09b",
-    "expediente": "PAPC 2024-1-31",
-    "objeto": "Suministro de Implantes para Neuromodulación de Raíces Sacras para el Hospital Universitario de Getafe",
-    "tipo": "suministros",
-    "subtipo": null,
-    "procedimiento": "abierto",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Hospital Universitario de Getafe",
-    "importe": 269790,
-    "importe_iva": null,
-    "valor_estimado": 593538,
-    "cpv": "33140000",
-    "cpv_descripcion": "Equipamiento médico y farmacéutico",
-    "duracion_meses": 24,
-    "num_lotes": 1,
-    "lotes": null,
-    "adjudicatario": "MEDTRONIC IBERICA, S.A.",
-    "nif_adjudicatario": "A28389484",
-    "fecha_publicacion": "2024-11-12",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-implantes-neuromodulacion-raices-sacras-hospital-universitario-getafe-0",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-11-12T11:42:55.607Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "A28389484",
-    "categoria_organismo": "salud"
-  },
-  {
     "id": "203ae8e4c0b6",
     "expediente": "093/2024",
     "objeto": "Servicios de asesoramiento fiscal y tributario de la Empresa Municipal de la Vivienda y Suelo de Madrid, S.A.",
@@ -93304,6 +93569,58 @@
     },
     "entity_id": "B18779827",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "3a196a52faed",
+    "expediente": "6012400385",
+    "objeto": "Obras de dotación de cobertura radio Tetra en salidas de emergencia de Metro de Madrid",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 693936.85,
+    "importe_iva": null,
+    "valor_estimado": 830174.43,
+    "cpv": "45232320",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 18,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "COX T&I, S.L.U.",
+        "nif_adjudicatario": "B13966890",
+        "importe": 318766.95,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "AMPER SISTEMAS, S.A.U.",
+        "nif_adjudicatario": "A19024249",
+        "importe": 375169.9,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "COX T&I, S.L.U.",
+    "nif_adjudicatario": "B13966890",
+    "fecha_publicacion": "2024-11-08",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/obras-dotacion-cobertura-radio-tetra-salidas-emergencia-metro-madrid",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T08:55:54.070Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B13966890",
+    "categoria_organismo": "otros"
   },
   {
     "id": "4aedff48dca3",
@@ -102665,6 +102982,41 @@
     "categoria_organismo": "universidades"
   },
   {
+    "id": "2f93666793b5",
+    "expediente": "A/SER-014247/2024",
+    "objeto": "Servicio de vigilancia de la salud para el personal de la Administración de Justicia en la Comunidad de Madrid.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Presidencia, Justicia y Portavocía del Gobierno",
+    "importe": 129069.9,
+    "importe_iva": null,
+    "valor_estimado": 542093.58,
+    "cpv": "85147000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "QUIRON PREVENCION S.L.U",
+    "nif_adjudicatario": "B64076482",
+    "fecha_publicacion": "2024-11-05",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-vigilancia-salud-personal-administracion-justicia-comunidad-madrid-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T11:26:01.207Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B64076482",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "302a644233f5",
     "expediente": "S_2022_0008",
     "objeto": "El objeto de la contratación es la prestación de “SERVICIOS DE CONSULTORÍA Y ASISTENCIA TÉCNICA DE APOYO A LA GESTIÓN DE EXPEDIENTES JURÍDICOS” para la Fundación para el Conocimiento Madrimasd, cuyas características se especifican en el pliego de prescripciones técnicas particulares.",
@@ -105880,6 +106232,41 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "b2117165fa6b",
+    "expediente": "EC/38/24",
+    "objeto": "Servicio de redacción de Proyecto, Dirección Facultativa (Director de Obra y Dirección de Ejecución de Obra) y Coordinación en materia de Seguridad y Salud para la obras de \"Ejecución de pasarela sobre el arroyo Valenoso y conexión ciclista con avenida Víctimas del Terrorismo en Boadilla del Monte.",
+    "tipo": "servicios",
+    "subtipo": "12",
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Junta de Gobierno del Ayuntamiento de Boadilla del Monte",
+    "importe": 33319,
+    "importe_iva": 40315.99,
+    "valor_estimado": 47600,
+    "cpv": "71242000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 6,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "PONTIS XXI INGENIEROS S.L.",
+    "nif_adjudicatario": "B44771152",
+    "fecha_publicacion": "2024-11-04",
+    "fecha_adjudicacion": "2025-01-30",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=JMcIXKoEgE9%2FR5QFTlaM4A%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-06T19:12:52.508Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B44771152",
+    "categoria_organismo": "aytos_junta"
+  },
+  {
     "id": "b47639de4920",
     "expediente": "105/2024/01832",
     "objeto": "Suministro e instalación de un arco detector de metales incluido en el Lote 5: Arcos detectores de metales y detectores de metales portátiles",
@@ -108166,6 +108553,41 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "b123183fa9c1",
+    "expediente": "40/2024 (A/SER-034607/2024)",
+    "objeto": "Muestreo y análisis de muestras aerobiológicas en le ámbito de la Ciudad Universitaria de la Universidad Complutense de Madrid y de la localidad de Collado Villalba para la vigilancia de los niveles de polen y esporas fúngicas en dichas zonas y cuyas series temporales son necesarias para realizar las predicciones de los tipos polínicos más alergénicos en la región.\n\nLas muestras deben someterse a las correspondientes pruebas analíticas que permitan identificar y cuantificar los granos de polen y esporas fúngicas presentes en el aire, y vigilar la exposición de la población a estos contaminantes bióticos, especialmente los responsables de alergias entre la población madrileña",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Sanidad",
+    "importe": 63560.15,
+    "importe_iva": null,
+    "valor_estimado": 190680.45,
+    "cpv": "73210000",
+    "cpv_descripcion": "Servicios de investigación y desarrollo",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "UNIVERSIDAD COMPLUTENSE DE MADRID",
+    "nif_adjudicatario": "Q2818014I",
+    "fecha_publicacion": "2024-10-31",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/analisis-semicuantitativo-cualitativo-contenido-polen-esporas-atmosfera-ciudad",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-05T09:55:53.865Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "Q2818014I",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "b1d268999327",
     "expediente": "300/2021/00711-8",
     "objeto": "Diversos trabajos relacionados en la memoria justificativa de la necesidad del contrato que forma parte del expediente",
@@ -108637,41 +109059,6 @@
     "num_ofertas": null,
     "ted_publication_number": null,
     "entity_id": "A95758389",
-    "categoria_organismo": "ayto_madrid"
-  },
-  {
-    "id": "d6916016ba89",
-    "expediente": "300/2024/00008",
-    "objeto": "Rehabilitación del antiguo mercado de frutas y verduras de Legazpi. Plaza de Legazpi, 7. Distrito de Arganzuela.",
-    "tipo": "obras",
-    "subtipo": "4500",
-    "procedimiento": "abierto",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Área de Gobierno de Obras y Equipamientos",
-    "importe": 64328000,
-    "importe_iva": 77836880,
-    "valor_estimado": 73975945.46,
-    "cpv": "45210000",
-    "cpv_descripcion": "Trabajos de construcción",
-    "duracion_meses": 30,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "FCC CONSTRUCCION, S.A.",
-    "nif_adjudicatario": "A28854727",
-    "fecha_publicacion": "2024-10-31",
-    "fecha_adjudicacion": "2024-10-07",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=4MpvD57btcOFQ%2FlhRK79lA%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
-    ],
-    "fecha_actualizacion": "2024-10-31T16:16:27.135Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "A28854727",
     "categoria_organismo": "ayto_madrid"
   },
   {
@@ -109217,6 +109604,41 @@
     "categoria_organismo": "empresas_municipales"
   },
   {
+    "id": "0d628218afa8",
+    "expediente": "SP24-00462",
+    "objeto": "Suministro en régimen de alquiler de los elementos navideños con motivos referenciales de chulapo y chulapa para Madrid Destino",
+    "tipo": "suministros",
+    "subtipo": "1",
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
+    "importe": 23300,
+    "importe_iva": 28193,
+    "valor_estimado": 48000,
+    "cpv": "39298500",
+    "cpv_descripcion": "Mobiliario y equipamiento",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "PATRICIA LUCAS CAÑADAS",
+    "nif_adjudicatario": "33523355G",
+    "fecha_publicacion": "2024-10-30",
+    "fecha_adjudicacion": "2024-12-03",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=dGN1xCZB2JzyoM4us5k4vw%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-11T12:22:29.304Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "33523355G",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "12c11755ded6",
     "expediente": "300/2024/00978",
     "objeto": "Prestación del servicio de montaje, funcionamiento y desmontaje de elementos ornamentales y decorativos propios de la Navidad.",
@@ -109250,6 +109672,58 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "distritos_madrid"
+  },
+  {
+    "id": "14df260a6f9a",
+    "expediente": "6672 MRR",
+    "objeto": "Rehabilitación de la Casa Consistorial del Ayuntamiento de Alcalá de Henares, dentro de la línea 2 del programa de impulso a la rehabilitación de edificios públicos (PIREP) para Entidades Locales en el marco del plan de recuperación, transformación y resiliencia (Orden Ministerial TMA/178/2022, de 28 de febrero).",
+    "tipo": "obras",
+    "subtipo": "4520",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Junta de Gobierno del Ayuntamiento de Alcalá de Henares",
+    "importe": 24943.94,
+    "importe_iva": 30182.17,
+    "valor_estimado": 1956792.67,
+    "cpv": "45000000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 14,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2024-11-29"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "XÚQUER-ARQING, SL",
+        "nif_adjudicatario": "B98003841",
+        "importe": 24943.94,
+        "importe_iva": 30182.17,
+        "fecha_adjudicacion": "2025-02-07"
+      }
+    ],
+    "adjudicatario": null,
+    "nif_adjudicatario": null,
+    "fecha_publicacion": "2024-10-30",
+    "fecha_adjudicacion": "2024-11-29",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=T%2BY5mG5WTXUadbH3CysQuQ%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-09T10:02:15.869Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": null,
+    "categoria_organismo": "aytos_junta"
   },
   {
     "id": "1db19b3662b0",
@@ -114570,130 +115044,6 @@
     "ted_publication_number": null,
     "entity_id": "G80010713",
     "categoria_organismo": "consejerias"
-  },
-  {
-    "id": "b7cb026f2179",
-    "expediente": "2023-0-019 (A/SUM-024197/2023)",
-    "objeto": "Adquisición de productos de celulosa, aseo, bolsas de plástico, paños y pijamas desechables quirúrgicos",
-    "tipo": "suministros",
-    "subtipo": null,
-    "procedimiento": "abierto",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Hospital Universitario Infanta Leonor",
-    "importe": 224563.46,
-    "importe_iva": null,
-    "valor_estimado": 727559.08,
-    "cpv": "19270000",
-    "cpv_descripcion": "Cuero y textiles",
-    "duracion_meses": 12,
-    "num_lotes": 11,
-    "lotes": [
-      {
-        "lote": "1",
-        "adjudicatario": "KRAPE, S.A.",
-        "nif_adjudicatario": "A28329704",
-        "importe": 51114.05,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "10",
-        "adjudicatario": "DIS RIVAS, S.L.",
-        "nif_adjudicatario": "B36724128",
-        "importe": 5215.2,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "11",
-        "adjudicatario": "DIS RIVAS, S.L.",
-        "nif_adjudicatario": "B36724128",
-        "importe": 7539,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "2",
-        "adjudicatario": "DISTRAUMA MEDICAL, S.L.",
-        "nif_adjudicatario": "B61435079",
-        "importe": 58635.35,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "3",
-        "adjudicatario": "CELULOSAS VASCAS, S.L.",
-        "nif_adjudicatario": "B95631925",
-        "importe": 7038,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "4",
-        "adjudicatario": "DIS RIVAS, S.L.",
-        "nif_adjudicatario": "B36724128",
-        "importe": 21090,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "5",
-        "adjudicatario": "JALSOSA, S.L.",
-        "nif_adjudicatario": "B18220657",
-        "importe": 16500,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "6",
-        "adjudicatario": "KRAPE, S.A.",
-        "nif_adjudicatario": "A28329704",
-        "importe": 11721.6,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "7",
-        "adjudicatario": "SH MEDICAL SALUD Y SERVICIOS IBERICA, S.L",
-        "nif_adjudicatario": "B65083016",
-        "importe": 15421.04,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "8",
-        "adjudicatario": "MEDLINE INTERNATIONAL IBERIA, S.L",
-        "nif_adjudicatario": "B86030723",
-        "importe": 20195.5,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      },
-      {
-        "lote": "9",
-        "adjudicatario": "MEDLINE INTERNATIONAL IBERIA, S.L",
-        "nif_adjudicatario": "B86030723",
-        "importe": 10093.72,
-        "importe_iva": null,
-        "fecha_adjudicacion": null
-      }
-    ],
-    "adjudicatario": "KRAPE, S.A.",
-    "nif_adjudicatario": "A28329704",
-    "fecha_publicacion": "2024-10-29",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-productos-celulosa-aseo-bolsas-plastico-panos-pijamas-desechables",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-10-29T08:11:25.010Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "A28329704",
-    "categoria_organismo": "salud"
   },
   {
     "id": "bac727bcd444",
@@ -121187,6 +121537,41 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "0c2b63a0c238",
+    "expediente": "215/2024",
+    "objeto": "Suministro de energía eléctrica procedente de fuentes de energía 100% renovables a edificios y dependencias propiedad de la Empresa Municipal de la Vivienda y Suelo de Madrid, S.A.",
+    "tipo": "suministros",
+    "subtipo": "2",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Empresa Municipal de la Vivienda y Suelo de Madrid, S.A.",
+    "importe": 1251821.08,
+    "importe_iva": 1514703.51,
+    "valor_estimado": 2002913.73,
+    "cpv": "9310000",
+    "cpv_descripcion": null,
+    "duracion_meses": 2,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "Comercializadora de Electricidad y Gas del Mediterraneo S.L.",
+    "nif_adjudicatario": "B93506681",
+    "fecha_publicacion": "2024-10-23",
+    "fecha_adjudicacion": "2024-12-18",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=dALdToevEPb%2B3JAijKO%2Bkg%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-13T13:15:25.091Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B93506681",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "0d06a2fd6ef6",
     "expediente": "PR24-0112.9",
     "objeto": "Servicio de construcción de escenografía para el espectáculo teatral bernice, que se representará en la sala margarita xirgu del teatro español del 29 de octubre al 8 de diciembre 2024",
@@ -126871,6 +127256,82 @@
     "num_ofertas": null,
     "ted_publication_number": null,
     "entity_id": "B18865253",
+    "categoria_organismo": "otros"
+  },
+  {
+    "id": "3557b179c8a0",
+    "expediente": "SUPRA-A-0035-2024-S",
+    "objeto": "a. Tipo: Acuerdo Marco\n\nb. Descripción: Presentación de los servicios para la DIrección de Obtra y Dirección de Ejecución para Edifición y Dirección de Obra para Infraestructuras para la ejecución de las obras incluidas en las Actuaciones Spramunicipales, incluidas en el Programa de Inversón Reigonal, en el marco de los artículos 127 a), 128 y siguientes de la Ley 2/2003, de 11 de marzo, de Administración Local de la Comunidad de Madrid.\n\nc. Situación: Comunidad de Madrid\n\nd. División por lotes: Sí\n\nLote Nº1: Dirección de Obra+Dirección de Ejecución. Edificación Zona A\n\nLote Nº2: Dirección de Obra+Dirección de Ejecución. Edificación Zona B\n\nLote Nº3: DIrección de Obra, Infraestructuras Zonas A y B. Los municipios que componen cada zona se especifican en el Anejo I del Pliego de Prescripciones Técnicas Particulares.\n\ne. Plazo de vigencia: CUATRO (4) AÑOS, desde el día sguiente a la formación. El plazo de vigencia de los contratos basados comenzará a contar desde el día siguiente a la formalización del contrato y se ajustarán al plazo de ejecución de la obra.\n\nf. Prórrogas: No\n\n&nbsp;",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Planifica Madrid, Proyectos y Obras, S.A.",
+    "importe": 2727272.73,
+    "importe_iva": null,
+    "valor_estimado": 2727272.73,
+    "cpv": "71330000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 4,
+    "num_lotes": 3,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "TPF GETINSA EUROESTUDIOS, S.L.",
+        "nif_adjudicatario": "B84840685",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "TPF GETINSA EUROESTUDIOS, S.L.",
+        "nif_adjudicatario": "B84840685",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "GESTIÓN INTEGRAL DEL SUELO, S.L.",
+        "nif_adjudicatario": "B81480352",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "AMBITEC INGENIERÍA Y CONSULTORÍA AMBIENTAL S.L.",
+        "nif_adjudicatario": "B84013960",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "URBINGES AMBIENTAL, S.L.",
+        "nif_adjudicatario": "B83317032",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "TPF GETINSA EUROESTUDIOS, S.L.",
+    "nif_adjudicatario": "B84840685",
+    "fecha_publicacion": "2024-10-21",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/planifica-madrid-proyectos-obras-mp-sa-expediente-supra-0035-2024-s-acuerdo-marco",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-04T11:26:39.290Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B84840685",
     "categoria_organismo": "otros"
   },
   {
@@ -135854,6 +136315,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "9250bcfefd51",
+    "expediente": "SARA-SUM 048/24",
+    "objeto": "Este contrato tiene por objeto la adquisición de kit de puerto de acceso para sistema de insuflación y aspiración de humos inteligente cuyas características se especifican en el Pliego de Prescripciones Técnicas particulares",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Fundación Alcorcón",
+    "importe": 62250,
+    "importe_iva": null,
+    "valor_estimado": 323700,
+    "cpv": "33140000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 12,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "PALEX MEDICAL, S.A.",
+    "nif_adjudicatario": "A58710740",
+    "fecha_publicacion": "2024-10-16",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-kit-puerto-acceso-sistema-insuflacion-aspiracion-humos-hospital-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T11:26:07.884Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A58710740",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "9c4246fdf988",
     "expediente": "SC01-21/66",
     "objeto": "Suministro Gasóleo A dentro del Sistema de Clasificación SC01-21",
@@ -142002,6 +142498,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "b192a7d07344",
+    "expediente": "P.A. 2024-0-84",
+    "objeto": "Suministro del material necesario para la realización de determinaciones analíticas de detección de microorganismos productores de infecciones de transmisión sexual mediante pcr en tiempo real y la cesión del equipamiento necesario en el servicio de microbiología del Hospital Universitario “La Paz”.&nbsp;",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 409400,
+    "importe_iva": null,
+    "valor_estimado": 905740,
+    "cpv": "33696500",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "WERFEN ESPAÑA, S.A.U.",
+    "nif_adjudicatario": "A28114742",
+    "fecha_publicacion": "2024-10-14",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-2024-0-84-suministro-material-necesario-realizacion-determinaciones-analiticas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T13:11:09.516Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28114742",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "b2151d9af86b",
     "expediente": "PA 88/2021",
     "objeto": "Servicio de gestión integral del centro de protección animal",
@@ -144204,6 +144735,41 @@
     "ted_publication_number": null,
     "entity_id": "B82560947",
     "categoria_organismo": "distritos_madrid"
+  },
+  {
+    "id": "66ac1cdbd841",
+    "expediente": "C-334A/030-24 (A/CSP-036419/2024)",
+    "objeto": "Gestión y explotación del servicio de cafetería, mediante concesión de servicios, en el local ubicado a tal efecto en el Centro Comarcal de Humanidades “Cardenal Gonzaga” Sierra Norte, de La Cabrera.&nbsp;\n\n&nbsp;",
+    "tipo": null,
+    "subtipo": null,
+    "procedimiento": "restringido",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Cultura, Turismo y Deporte",
+    "importe": null,
+    "importe_iva": null,
+    "valor_estimado": 76299.83,
+    "cpv": "55330000",
+    "cpv_descripcion": "Servicios de hostelería y restauración",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "SCM CERVEZA ARTESANA DE BUSTARVIEJO",
+    "nif_adjudicatario": "F87256350",
+    "fecha_publicacion": "2024-10-11",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/gestion-explotacion-servicio-cafeteria-centro-comarcal-humanidades-cardenal-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T11:11:39.526Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "F87256350",
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "6780eaedb888",
@@ -149129,41 +149695,6 @@
     "categoria_organismo": "distritos_madrid"
   },
   {
-    "id": "1d225b552297",
-    "expediente": "SP23-00688",
-    "objeto": "Servicio de suministro de dos (2) puntos de venta y su posterior mantenimiento para Madrid Destino",
-    "tipo": "servicios",
-    "subtipo": "27",
-    "procedimiento": "negociado_sin_publicidad",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
-    "importe": 13655,
-    "importe_iva": 16522.55,
-    "valor_estimado": 19888,
-    "cpv": "72000000",
-    "cpv_descripcion": "Servicios informáticos y TI",
-    "duracion_meses": 24,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "IM Projects, S.L.",
-    "nif_adjudicatario": "B63349559",
-    "fecha_publicacion": "2024-10-09",
-    "fecha_adjudicacion": "2024-10-02",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=eC5yTjIcrLedkQsA7ROvsg%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
-    ],
-    "fecha_actualizacion": "2024-10-09T10:50:12.578Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "B63349559",
-    "categoria_organismo": "ayto_madrid"
-  },
-  {
     "id": "1ddf85dd3383",
     "expediente": "042024CCB",
     "objeto": "Suministro de mobiliario para el Cuerpo de Bomberos del Ayuntamiento de Madrid-LOTE 2 AM 01/2019",
@@ -151015,6 +151546,41 @@
     "ted_publication_number": null,
     "entity_id": "B81322216",
     "categoria_organismo": "salud"
+  },
+  {
+    "id": "a19ee16c829c",
+    "expediente": "ECON/000072/2024",
+    "objeto": "Servicio de revisión automatizada de calidad de contenidos web de los portales de www.comunidad.madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Agencia para la Administración Digital de la Comunidad de Madrid",
+    "importe": 38390,
+    "importe_iva": null,
+    "valor_estimado": 76800,
+    "cpv": "72222300",
+    "cpv_descripcion": "Servicios informáticos y TI",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "DISTRIBUTION AS A SERVICE EMEA S.L.",
+    "nif_adjudicatario": "B98626963",
+    "fecha_publicacion": "2024-10-09",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-revision-automatizada-calidad-contenidos-web-portales-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T10:10:58.618Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B98626963",
+    "categoria_organismo": "entes_cam"
   },
   {
     "id": "a43ce01fcdd9",
@@ -159305,6 +159871,41 @@
     "categoria_organismo": "empresas_municipales"
   },
   {
+    "id": "b74f56ca05b7",
+    "expediente": "A/SER-011896/2024",
+    "objeto": "Este contrato tiene por objeto la recepción de muestras, registro e informatización, desuerado, preparación, procesado, análisis, resultado, control de calidad y emisión de los informes de las enfermedades de los animales de los Programas Nacionales de Erradicación y otras enfermedades emergentes, incluyendo la investigación sanitaria en los animales silvestres, así como la asistencia técnico-científica de un equipo humano que pueda asesorar a la Dirección General de Agricultura, Ganadería y Alimentación, en materia de sanidad animal en el año 2025.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Medio Ambiente, Agricultura e Interior",
+    "importe": 206758.94,
+    "importe_iva": null,
+    "valor_estimado": 454869.67,
+    "cpv": "73111000",
+    "cpv_descripcion": "Servicios de investigación y desarrollo",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "UNIVERSIDAD COMPLUTENSE DE MADRID",
+    "nif_adjudicatario": "Q2818014I",
+    "fecha_publicacion": "2024-10-04",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pruebas-diagnosticas-pcr-gamma-interferon-otras-tecnicas-instalaciones-alta-2",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T11:10:52.742Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "Q2818014I",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "bb87955e227a",
     "expediente": "2023/PASA/005",
     "objeto": "Suministro de equipos informáticos destinados a la Concejalía de Familia, Asuntos Sociales y Mujer",
@@ -163120,6 +163721,82 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "94b4d48e8ce8",
+    "expediente": "A/OBR-006620/ 2024",
+    "objeto": "Ejecución de construcción de Centros de Salud dependientes de la Gerencia Asistencial de Atención Primaria del Servicio Madrileño de Salud",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Gerencia Asistencial de Atención Primaria",
+    "importe": 86156983.56,
+    "importe_iva": null,
+    "valor_estimado": 94071221.16,
+    "cpv": "45215100",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 24,
+    "num_lotes": 5,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "CONSTRUCTORA SAN JOSE, S.A.",
+        "nif_adjudicatario": "A36006666",
+        "importe": 18636973.89,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ASCH INFRAESTRUCTURAS Y SERVICIOS, S.A.",
+        "nif_adjudicatario": "A73998346",
+        "importe": 20790352.12,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "EMPRESA CONSTRUCTORA EJUCA, S.A.",
+        "nif_adjudicatario": "A28976306",
+        "importe": 15179926.5,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "GESTION Y EJECUCION DE OBRA CIVIL, S.A.",
+        "nif_adjudicatario": "A83283861",
+        "importe": 15312746.16,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "TALLER DE CONSTRUCCION TMR, S.A.",
+        "nif_adjudicatario": "A78159654",
+        "importe": 16236984.89,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "Constructora San Jose, S. A.",
+    "nif_adjudicatario": "A36006666",
+    "fecha_publicacion": "2024-10-02",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/ejecucion-construccion-centros-salud-dependientes-gerencia-asistencial-atencion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T08:26:13.082Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A36006666",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "94bb374b1dbf",
     "expediente": "2024/8336",
     "objeto": "Suministro de las licencias de software descritas en el pliego de prescripciones técnicas particulares.",
@@ -165318,6 +165995,41 @@
     "ted_publication_number": null,
     "entity_id": "A33204306",
     "categoria_organismo": "consejerias"
+  },
+  {
+    "id": "66f0bb63dde2",
+    "expediente": "PASA-SER 053/24",
+    "objeto": "El objeto del presente pliego es la contratación del servicio de entrega de medicación hospitalaria en el Hospital Universitario Fundación Alcorcón desde el servicio de Farmacia al domicilio de los pacientes externos. Servicio cuyas características mínimas se especifican en el Pliego de Prescripciones Técnicas.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Fundación Alcorcón",
+    "importe": 16014,
+    "importe_iva": null,
+    "valor_estimado": 55488,
+    "cpv": "60100000",
+    "cpv_descripcion": "Servicios de transporte",
+    "duracion_meses": 12,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "WEST FARGO SOCIEDAD LIMITADA",
+    "nif_adjudicatario": "B79557633",
+    "fecha_publicacion": "2024-10-01",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-entrega-medicacion-hospitalaria-hospital-universitario-fundacion-1",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T10:40:59.142Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B79557633",
+    "categoria_organismo": "salud"
   },
   {
     "id": "777148aaa28c",
@@ -168363,6 +169075,41 @@
     "ted_publication_number": null,
     "entity_id": "B87393484",
     "categoria_organismo": "salud"
+  },
+  {
+    "id": "5d47a8de8233",
+    "expediente": "A-04/25",
+    "objeto": "Prestación de un servicio integral de impresión, fotocopiado y escaneado para la Universidad Autónoma de Madrid.",
+    "tipo": "servicios",
+    "subtipo": "27",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Rectorado de la Universidad Autónoma de Madrid",
+    "importe": 443240.89,
+    "importe_iva": 536321.48,
+    "valor_estimado": 1366452.7,
+    "cpv": "79521000",
+    "cpv_descripcion": "Servicios empresariales y consultoría",
+    "duracion_meses": 2,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "KONICA MINOLTA BUSINESS SOLUTIONS SPAIN, S.A.",
+    "nif_adjudicatario": "A81069197",
+    "fecha_publicacion": "2024-09-29",
+    "fecha_adjudicacion": "2024-12-05",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=O6Tsl5mHRrrkY6rls5tG9A%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-12T17:38:44.491Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A81069197",
+    "categoria_organismo": "universidades"
   },
   {
     "id": "83d39bb63e6c",
@@ -173394,6 +174141,74 @@
     "categoria_organismo": "consejerias"
   },
   {
+    "id": "57e638f57798",
+    "expediente": "A/SER-026057/2024",
+    "objeto": "Acuerdo marco de servicios de asistencia técnica para trabajos geotécnicos de proyectos, pliegos y obras de la Consejería de Educación, Ciencia y Universidades",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Educación, Ciencia y Universidades",
+    "importe": 240820.98,
+    "importe_iva": null,
+    "valor_estimado": 481641.96,
+    "cpv": "71351000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 2,
+    "num_lotes": 4,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "INVESTIGACIÓN Y CONTROL DE CALIDAD S.A.U. (INCOSA)",
+        "nif_adjudicatario": "A24036691",
+        "importe": 124567.88,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "GEONOC CONSULTORES S.L",
+        "nif_adjudicatario": "B86987898",
+        "importe": 76425.4,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "MAC INGEO S.L",
+        "nif_adjudicatario": "B85805497",
+        "importe": 32968.14,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "G.O.C. S.A",
+        "nif_adjudicatario": "A32022535",
+        "importe": 6859.56,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "INVESTIGACIÓN Y CONTROL DE CALIDAD, S.A.U. (INCOSA)",
+    "nif_adjudicatario": "A24036691",
+    "fecha_publicacion": "2024-09-25",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/acuerdo-marco-servicios-asistencia-tecnica-trabajos-geotecnicos-proyectos-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T07:25:48.016Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A24036691",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "59d70ee03109",
     "expediente": "26854/2024",
     "objeto": "Obras de mejora del viario 2024 y el servicio de supervisión de seguridad y salud de las actuaciones en el municipio de Rivas-Vaciamadrid, en dos lotes.",
@@ -175594,6 +176409,47 @@
     "ted_publication_number": null,
     "entity_id": "B28822153",
     "categoria_organismo": "aytos_alcaldia"
+  },
+  {
+    "id": "0af1c9fb27ce",
+    "expediente": "6012400346",
+    "objeto": "Obras del proyecto de implantación de circuito higiénico para personal de Línea Aérea",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 1531990.71,
+    "importe_iva": null,
+    "valor_estimado": 2010683.11,
+    "cpv": "45111100",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 10,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "TEDECON SERVICIOS Y OBRAS, S.L.",
+    "nif_adjudicatario": "B81625113",
+    "fecha_publicacion": "2024-09-24",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/obras-proyecto-implantacion-circuito-higienico-personal-linea-aerea",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T09:56:09.631Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "origen_campos": {
+      "num_lotes": {
+        "fuente": "placsp_agregadas",
+        "fecha_actualizacion": "2025-01-21T11:25:58.145Z"
+      }
+    },
+    "entity_id": "B81625113",
+    "categoria_organismo": "otros"
   },
   {
     "id": "0d3faee4400b",
@@ -180939,41 +181795,6 @@
     "categoria_organismo": "aytos_pleno"
   },
   {
-    "id": "f5edcc814267",
-    "expediente": "SP23-00682",
-    "objeto": "Servicios de plataforma de email marketing para Madrid Destino",
-    "tipo": "servicios",
-    "subtipo": "13",
-    "procedimiento": "negociado_sin_publicidad",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
-    "importe": 49536,
-    "importe_iva": 59938.56,
-    "valor_estimado": 102960,
-    "cpv": "79342100",
-    "cpv_descripcion": "Servicios empresariales y consultoría",
-    "duracion_meses": 24,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "Ipdea Land S.L.",
-    "nif_adjudicatario": "B82785171",
-    "fecha_publicacion": "2024-09-23",
-    "fecha_adjudicacion": "2024-08-26",
-    "fecha_formalizacion": null,
-    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=79BqElz4w06KeVWTb9Scog%3D%3D",
-    "fuente": "placsp",
-    "fuentes": [
-      "placsp"
-    ],
-    "fecha_actualizacion": "2024-09-23T09:14:01.757Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "B82785171",
-    "categoria_organismo": "ayto_madrid"
-  },
-  {
     "id": "f61d709d1d00",
     "expediente": "15/2193/2024 CONCESION SERVICIOS CDM",
     "objeto": "Concesión de servicios de gestión de las instalaciones deportivas municipales: \"Complejo ciudad deportiva de Alpedrete\".",
@@ -186205,6 +187026,41 @@
     "ted_publication_number": null,
     "entity_id": "B54459888",
     "categoria_organismo": "aytos_junta"
+  },
+  {
+    "id": "7385cd9ad426",
+    "expediente": "165/2024",
+    "objeto": "El objeto de esta contratación es la prestación del Servicio Integral de Mantenimiento (correctivo, adaptativo y evolutivo) y de integración de diferentes aplicaciones y sistemas de información de EMVS, así como los trabajos de soporte necesarios para la gestión interna de los citados sistemas, todo ello de conformidad con lo establecido en los pliegos que rigen la licitación.",
+    "tipo": "servicios",
+    "subtipo": "27",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Empresa Municipal de la Vivienda y Suelo de Madrid, S.A.",
+    "importe": 1986080,
+    "importe_iva": 2403156.8,
+    "valor_estimado": 3972160,
+    "cpv": "72500000",
+    "cpv_descripcion": "Servicios informáticos y TI",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "SEIDOR SOLUTIONS, SL",
+    "nif_adjudicatario": "B61172219",
+    "fecha_publicacion": "2024-09-18",
+    "fecha_adjudicacion": "2024-12-18",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=MGDLXrGad18eIBJRHQiPkQ%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-12T12:17:13.916Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B61172219",
+    "categoria_organismo": "ayto_madrid"
   },
   {
     "id": "752208f48831",
@@ -199645,6 +200501,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "accf015212a4",
+    "expediente": "A/SER-007227/2024",
+    "objeto": "El contrato tendrá por objeto el mantenimiento integral de los inmuebles adscritos a la Consejería de Vivienda, Transportes e Infraestructuras de la Comunidad de Madrid que a continuación se relacionan, así como sus instalaciones y equipos, con el fin de garantizar su óptimo rendimiento, así como la ejecución de los trabajos derivados de la gestión de espacios y otras tareas auxiliares",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Vivienda, Transportes e Infraestructuras",
+    "importe": 715875.14,
+    "importe_iva": null,
+    "valor_estimado": 2046016.43,
+    "cpv": "50700000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 2,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "COMSA SERVICE FACILITY MANAGEMENT, S.A.U.",
+    "nif_adjudicatario": "A60470127",
+    "fecha_publicacion": "2024-09-10",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/contrato-servicios-mantenimiento-integral-edificios-adscritos-consejeria-vivienda",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T08:26:05.823Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A60470127",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "c4237adbdf03",
     "expediente": "PA 78/2024",
     "objeto": "Programa Termalismo Social con destino Salamanca para personas mayores de Torrejón de Ardoz",
@@ -202238,6 +203129,41 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
+    "id": "029f38a9a04b",
+    "expediente": "PNSP 2024-1-021",
+    "objeto": "Suministro de marcapasos sin cable AVEIR® y del equipamiento en cesión necesario para su implantación, con destino al Servicio de Cardiología del HCSC",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "negociado",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Clínico San Carlos",
+    "importe": 182473,
+    "importe_iva": null,
+    "valor_estimado": 519750,
+    "cpv": "33184100",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "ABBOTT MEDICAL ESPAÑA, S.A.",
+    "nif_adjudicatario": "A79658845",
+    "fecha_publicacion": "2024-09-06",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-marcapasos-cable-aveirr-equipamiento-cesion-necesario-su-implantacion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-04T12:55:46.773Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A79658845",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "02f9567e3dbb",
     "expediente": "23/001/2SDA-CD095",
     "objeto": "Suministro de Manguera 3 x 1,5 mm2 y otros componentes eléctricos.",
@@ -204204,6 +205130,58 @@
     "ted_publication_number": null,
     "entity_id": "A28061737",
     "categoria_organismo": "salud"
+  },
+  {
+    "id": "d8699639b169",
+    "expediente": "C-334A/010-24 (A/SER-014901/2024)",
+    "objeto": "La prestación del servicio de limpieza en los edificios dependientes de la Dirección General de Cultura e Industrias Creativas, dividido en dos lotes.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Cultura, Turismo y Deporte",
+    "importe": 1011500,
+    "importe_iva": null,
+    "valor_estimado": 2605242.8,
+    "cpv": "90911200",
+    "cpv_descripcion": "Servicios medioambientales",
+    "duracion_meses": 24,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "LIMPIEZAS CRESPO, S.A.",
+        "nif_adjudicatario": "A28396604",
+        "importe": 609000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "LIMPIEZAS CRESPO, S.A",
+        "nif_adjudicatario": "A28396604",
+        "importe": 402500,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "LIMPIEZAS CRESPO S.A.",
+    "nif_adjudicatario": "A28396604",
+    "fecha_publicacion": "2024-09-06",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-limpieza-desinfeccion-gestion-residuos-distintas-sedes-dependientes-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T12:11:03.542Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28396604",
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "da5153810d8e",
@@ -211164,6 +212142,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "1d225b552297",
+    "expediente": "SP23-00688",
+    "objeto": "Servicio de suministro de dos (2) puntos de venta y su posterior mantenimiento para Madrid Destino",
+    "tipo": "servicios",
+    "subtipo": "27",
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
+    "importe": 13655,
+    "importe_iva": 16522.55,
+    "valor_estimado": 19888,
+    "cpv": "72000000",
+    "cpv_descripcion": "Servicios informáticos y TI",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "IM Projects, S.L.",
+    "nif_adjudicatario": "B63349559",
+    "fecha_publicacion": "2024-09-02",
+    "fecha_adjudicacion": "2024-10-02",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=eC5yTjIcrLedkQsA7ROvsg%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-11T13:34:13.036Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B63349559",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "25600e1988dc",
     "expediente": "511/2023/03165 L1-CB17",
     "objeto": "Obras accesorias de urbanización en Calle Cedros, 88 c/v Calle Alemania c/v Calle Mártires de la Ventilla. Distrito de Tetuán",
@@ -213438,6 +214451,58 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "otros"
+  },
+  {
+    "id": "684898966ce4",
+    "expediente": "2024-0-93",
+    "objeto": "Suministro de reactivos y diverso material para las determinaciones analíticas de cribado de drogas de abuso detección de b-hcg en orina y seminograma en el Hospital Universitario 12 de Octubre",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario 12 de Octubre",
+    "importe": 68233,
+    "importe_iva": null,
+    "valor_estimado": 194304,
+    "cpv": "33696500",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "MONLAB S.L",
+        "nif_adjudicatario": "B25039850",
+        "importe": 51840,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "MICROPTIC, S.L.",
+        "nif_adjudicatario": "B62690391",
+        "importe": 16393,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "MONLAB, S.L.",
+    "nif_adjudicatario": "B25039850",
+    "fecha_publicacion": "2024-08-30",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-reactivos-diverso-material-determinaciones-analiticas-cribado-drogas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-30T08:56:22.630Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B25039850",
+    "categoria_organismo": "salud"
   },
   {
     "id": "69a9bf4c36b6",
@@ -232758,6 +233823,41 @@
     "categoria_organismo": "aytos_junta"
   },
   {
+    "id": "b5fadeb2aff1",
+    "expediente": "SG-7/2024",
+    "objeto": "El objeto del contrato es la prestación de servicio de seguridad sin armas en la oficina de gestión ubicada en la Plaza del Descubridor Diego de Ordás 3, con el mismo horario que la propia oficina de atención tiene, esto es, lunes a viernes de 08:00 a 20:00 horas.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Organismo Autónomo Consorcio Regional de Transportes Regulares de Madrid.",
+    "importe": 72900,
+    "importe_iva": null,
+    "valor_estimado": 158878.39,
+    "cpv": "79710000",
+    "cpv_descripcion": "Servicios empresariales y consultoría",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "GRUPO CONTROL EMPRESA DE SEGURIDAD S.A.",
+    "nif_adjudicatario": "A04038014",
+    "fecha_publicacion": "2024-08-14",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/sg-72024-vigilancia-seguridad-oficina-atencion-usuario-tarjeta-transporte-publico",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-13T11:11:06.253Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A04038014",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "bdecf939d2f5",
     "expediente": "ASUM037055/150/5/2024/29154",
     "objeto": "Adquisición de diversos bienes de material de oficina incluidos en el Catálogo de la Junta Central de Compras de la Comunidad de Madrid en el Lote nº 5 denominado “Elementos generales de oficina”.",
@@ -233244,6 +234344,90 @@
     "ted_publication_number": null,
     "entity_id": "B86634029",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "25ca7ef8977c",
+    "expediente": "P.A. 2024-0-52 (A.M.)",
+    "objeto": "Suministro de material protección radiológica",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 49,
+    "importe_iva": null,
+    "valor_estimado": 261837.91,
+    "cpv": "35113400",
+    "cpv_descripcion": "Equipos de seguridad y defensa",
+    "duracion_meses": 12,
+    "num_lotes": 3,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "RADIAPROT, S.L.",
+        "nif_adjudicatario": "B85824621",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "RADIAPROT, S.L.",
+        "nif_adjudicatario": "B85824621",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "INTERSURGICAL ESPAÑA S.L.",
+        "nif_adjudicatario": "B80957889",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "MERMAID MEDICAL IBERIA, S.L.",
+        "nif_adjudicatario": "B86480902",
+        "importe": 49,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "INTERSURGICAL ESPAÑA S.L.",
+        "nif_adjudicatario": "B80957889",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "RADIAPROT, S.L.",
+        "nif_adjudicatario": "B85824621",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "RADIAPROT, S.L.",
+    "nif_adjudicatario": "B85824621",
+    "fecha_publicacion": "2024-08-13",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-2024-0-52am-suministro-material-proteccion-radiologica",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-31T20:40:47.007Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B85824621",
+    "categoria_organismo": "salud"
   },
   {
     "id": "312c191bc03d",
@@ -236003,6 +237187,41 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "aytos_junta"
+  },
+  {
+    "id": "af48f1d40450",
+    "expediente": "ECON/000046/2024",
+    "objeto": "Mantenimiento integral y servicios generales del edificio sede de la Agencia para la Administración Digital de la Comunidad de Madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Digitalización",
+    "importe": 456010.09,
+    "importe_iva": null,
+    "valor_estimado": 1561876.51,
+    "cpv": "50700000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "Gremoba S.L.",
+    "nif_adjudicatario": "B79863148",
+    "fecha_publicacion": "2024-08-12",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/mantenimiento-integral-servicios-generales-edificio-sede-agencia-administracion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T12:11:15.097Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B79863148",
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "b574a7aebc77",
@@ -252114,6 +253333,41 @@
     "categoria_organismo": "aytos_junta"
   },
   {
+    "id": "43b0df59ff61",
+    "expediente": "PA SER 21/2024 (A/SER-012284/2024)",
+    "objeto": "El presente contrato de servicios tiene como objeto una unidad de rehabilitación para niños y adolescentes, de 3 a 14 años de edad, con enfermedades del sistema nervioso, anomalías congénitas y/o trastornos mentales en régimen de hospitalización de día. Es un recurso público sanitario destinado a la rehabilitación integral para niños y adolescentes con Enfermedades del Sistema Nervioso, Anomalías Congénitas y/o Trastornos Mentales que por la gravedad y características de su patología no puedan ser atendidos en el ámbito de los Servicios de Salud Mental, de Educación y Servicios Sociales.\n\nEl servicio prestado para estos tratamientos se realizará durante una jornada completa, dentro del horario y días establecidos, con los recursos humanos y materiales que se definen en pliego de cláusulas prescripciones técnicas, mediante los procedimientos adecuados a las respectivas patologías incluidos en el mismo.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Servicio Madrileño de Salud",
+    "importe": 6613232.65,
+    "importe_iva": null,
+    "valor_estimado": 17194400.98,
+    "cpv": "85111500",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "CENTRO DE REHABILITACIÓN DIONISIA PLAZA MEDICO PSICOPEDAGÓGICO, S.L.",
+    "nif_adjudicatario": "B28650950",
+    "fecha_publicacion": "2024-07-31",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-ser-212024-unidad-rehabilitacion-ninos-adolescentes-3-14-anos-enfermedades",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T12:56:49.547Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B28650950",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "4439a7792afa",
     "expediente": "3518/2024",
     "objeto": "Limpieza de edificios municipales",
@@ -252380,6 +253634,41 @@
       "SOCIEDAD IBERICA DE CONSTRUCCIONES ELECTRICAS, S.A., IMESAPI, S.A., ETRALUX, S.A., URBALUX, S.A.",
       "EDISON NEXT GOVERNMENT, S.R.L."
     ]
+  },
+  {
+    "id": "570f47434185",
+    "expediente": "A/SER-012305/2023",
+    "objeto": "Servicio de vigilancia y seguridad de las instalaciones del Instituto de Formación Integral en Seguridad y Emergencias de la Comunidad de Madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Agencia de Seguridad y Emergencias Madrid 112",
+    "importe": 1043000,
+    "importe_iva": null,
+    "valor_estimado": 2542276.77,
+    "cpv": "79710000",
+    "cpv_descripcion": "Servicios empresariales y consultoría",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "ALCOR SEGURIDAD, S.L.",
+    "nif_adjudicatario": "B27382175",
+    "fecha_publicacion": "2024-07-31",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-vigilancia-seguridad-instalaciones-instituto-formacion-integral-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T12:26:06.214Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B27382175",
+    "categoria_organismo": "otros"
   },
   {
     "id": "599ca94d8daf",
@@ -283842,6 +285131,234 @@
     "categoria_organismo": "otros"
   },
   {
+    "id": "d0cf7d08e056",
+    "expediente": "A/SER-034737/2022",
+    "objeto": "Fijar las condiciones de la contratación de empresas y profesionales para la realización de los servicios de redacción de proyecto, actualización de proyecto, dirección facultativa y coordinación de seguridad y salud, así como otros servicios de ingeniería especializada en materia de geología, geotecnia, levantamiento topográfico, tratamientos o auscultación del terreno.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Presidencia, Justicia y Portavocía del Gobierno",
+    "importe": 65085394.19,
+    "importe_iva": null,
+    "valor_estimado": 21499359.43,
+    "cpv": "71242000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 2,
+    "num_lotes": 5,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "SANJURJO ARQUITECTOS, S.L.P.",
+        "nif_adjudicatario": "B81111585",
+        "importe": 2024104.84,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "UTE GADES MADRID TG-TG4",
+        "nif_adjudicatario": "U75631259",
+        "importe": 1811111.11,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "BUSTREN PM, S.L.",
+        "nif_adjudicatario": "B86365632",
+        "importe": 1861245.83,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "AGORA INGENIERIA SERVICIOS Y PREVENCIÓN, S.L.",
+        "nif_adjudicatario": "B85596914",
+        "importe": 1744452.66,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "TRECHOBS CONSULTORES, S.L",
+        "nif_adjudicatario": "B88301619",
+        "importe": 1628590.1,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "INVESTIGACIÓN Y CONTROL DE CALIDAD, S.A.",
+        "nif_adjudicatario": "A24036691",
+        "importe": 1907776.98,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ALOTARK ARQUITECTOS Y CONSULTORES, S.L.",
+        "nif_adjudicatario": "B65260051",
+        "importe": 4566377.06,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "RUIZ LARREA ARQUITECTURA, S.L.P.",
+        "nif_adjudicatario": "B63676738",
+        "importe": 4424564.04,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "VIARIUM INGENIERIA, S.L,",
+        "nif_adjudicatario": "B05225131",
+        "importe": 3760879.49,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "SOCOTEC ENGINEERING SOLUTIONS SPAIN, S.L.U.",
+        "nif_adjudicatario": "B66113457",
+        "importe": 3965090.14,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "RICO Y VIDAL INGENIERIA CONSTRUCCIÓN Y SERVICIOS, S.L.",
+        "nif_adjudicatario": "B86307626",
+        "importe": 2382552,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "KREAN S COOPERATIVA.",
+        "nif_adjudicatario": "F20545018",
+        "importe": 2093329.34,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "URBINGES AMBIENTAL, S.L.",
+        "nif_adjudicatario": "B83317032",
+        "importe": 1957144.69,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "PROYECTOS Y CONSTRUCCIONES GOA, S.L.",
+        "nif_adjudicatario": "B28578193",
+        "importe": 2351291.88,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "UTE LOTE 3 APPLUS-ANTEA",
+        "nif_adjudicatario": "U21968078",
+        "importe": 2446430.86,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "OMICRON AMEPRO, S.A.",
+        "nif_adjudicatario": "A28520278",
+        "importe": 1892450.18,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "UTE INFRACAM",
+        "nif_adjudicatario": null,
+        "importe": 3190417.66,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "GESTIÓN INTEGRAL DEL SUELO, S.L.",
+        "nif_adjudicatario": "B81480352",
+        "importe": 1888916.45,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "TÉCNICA Y PROYECTOS, S.A.",
+        "nif_adjudicatario": "A28171288",
+        "importe": 5028169.43,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "INCO ESTUDIO TÉCNICO, S.L.",
+        "nif_adjudicatario": "B80596083",
+        "importe": 4733373.12,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "GRUSAMAR INGENIERIA Y CONSULTING, S.L.",
+        "nif_adjudicatario": null,
+        "importe": 4084130.62,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "PROTECNO, S.A.",
+        "nif_adjudicatario": "A78962362",
+        "importe": 4292171.13,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "UTE CALIDAD LOTE 5",
+        "nif_adjudicatario": "U75967653",
+        "importe": 523302.2,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "EPTISA SERVICIOS DE INGENIERIA, S.L.",
+        "nif_adjudicatario": "B85097962",
+        "importe": 527522.38,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "Sanjurjo Arquitectos S.L.P.U.",
+    "nif_adjudicatario": "B81111585",
+    "fecha_publicacion": "2024-07-12",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/acuerdo-marco-servicios-redaccion-proyectos-direccion-facultativa-coordinacion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T14:11:02.222Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B81111585",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "d1115dcc3a7c",
     "expediente": "ASUM037055/190/4/2024/22974",
     "objeto": "Diverso material de oficina",
@@ -287902,6 +289419,63 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "2f35d369c081",
+    "expediente": "6012400271",
+    "objeto": "Obras de renovación integral de la superestructura de vía en Línea 6. las actuaciones incluidas en este contrato podrán ser cofinanciadas al 40% con cargo al programa FEDER 2021-2027 de la Comunidad de Madrid dentro del objetivo político 2. una Europa más verde, hipocarbónica y en transición hacia una economía con cero emisiones netas de carbono, y resiliente, promoviendo una transición energética limpia y equitativa, la inversión verde y azul, la economía circular, la mitigación del cambio climático y la adaptación a él, la prevención y gestión de riesgos y la movilidad urbana sostenible y el objetivo específico RSO2.1. fomentar la eficiencia energética y la reducción de las emisiones de gases de efecto invernadero",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 123705424.03,
+    "importe_iva": null,
+    "valor_estimado": 128233025.11,
+    "cpv": "45234129",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 18,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "UTE LÍNEA 6-LOTE 1 VIAS Y CONSTRUCCIONES, S.A. y CONTRATAS Y VENTAS, S.A.U.",
+        "nif_adjudicatario": "U75318394",
+        "importe": 63120000.01,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "UTE RENOV. LÍNEA 6 LOTE 2 TECSA EMPRESA CONSTRUCTORA, S.A. COMSA S.A.U.",
+        "nif_adjudicatario": "U75314005",
+        "importe": 60585424.02,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "UTE LÍNEA 6-LOTE 1 VIAS Y CONSTRUCCIONES, S.A. y CONTRATAS Y VENTAS, S.A.U.",
+    "nif_adjudicatario": "U75318394",
+    "fecha_publicacion": "2024-07-10",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/obras-renovacion-integral-superestructura-via-linea-6-actuaciones-incluidas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-13T11:25:57.989Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "U75318394",
+    "categoria_organismo": "otros",
+    "es_ute": true,
+    "miembros_ute": [
+      "LÍNEA 6-LOTE 1 VIAS Y CONSTRUCCIONES, S.A.",
+      "CONTRATAS Y VENTAS, S.A.U."
+    ]
+  },
+  {
     "id": "3229addec900",
     "expediente": "A/SER-009753/2024 (322A-003/2024)",
     "objeto": "Servicio para la gestión de Casas de Niños, dividido en 3 lotes",
@@ -290586,6 +292160,41 @@
     "num_ofertas": null,
     "ted_publication_number": null,
     "entity_id": "B86117561",
+    "categoria_organismo": "salud"
+  },
+  {
+    "id": "464f966e9a37",
+    "expediente": "2024000033",
+    "objeto": "Suministro de prótesis de incontinencia urinaria para el servicio de Urología del Hospital Universitario Ramón y Cajal.",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "adjudicado",
+    "estado_xml": "adjudicado",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Ramón y Cajal",
+    "importe": 65100,
+    "importe_iva": null,
+    "valor_estimado": 195468,
+    "cpv": "33184100",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "PRESURGY, S.L.,",
+    "nif_adjudicatario": "B83365007",
+    "fecha_publicacion": "2024-07-09",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-protesis-incontinencia-urinaria-servicio-urologia-hospital",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-13T10:11:01.218Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B83365007",
     "categoria_organismo": "salud"
   },
   {
@@ -294423,6 +296032,41 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
+    "id": "f5edcc814267",
+    "expediente": "SP23-00682",
+    "objeto": "Servicios de plataforma de email marketing para Madrid Destino",
+    "tipo": "servicios",
+    "subtipo": "13",
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Madrid Destino Cultura Turismo y Negocio, S.A.",
+    "importe": 49536,
+    "importe_iva": 59938.56,
+    "valor_estimado": 102960,
+    "cpv": "79342100",
+    "cpv_descripcion": "Servicios empresariales y consultoría",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "Ipdea Land S.L.",
+    "nif_adjudicatario": "B82785171",
+    "fecha_publicacion": "2024-07-08",
+    "fecha_adjudicacion": "2024-08-26",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=79BqElz4w06KeVWTb9Scog%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-11T11:15:39.440Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B82785171",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "fa7dff549445",
     "expediente": "PNSP 2023-8-9",
     "objeto": "Servicio de Mantenimiento Integral del Sistema Enterprise Imaging de la marca AGF HEALTHCARE. (RIS) PNSP 2023-8-9",
@@ -295842,7 +297486,7 @@
     "duracion_meses": 24,
     "num_lotes": null,
     "lotes": null,
-    "adjudicatario": "PUE DATA, S.L.",
+    "adjudicatario": "PUE DATA, S.L. (actualmente denominadaIXEN AI, S.L.)",
     "nif_adjudicatario": "B87283685",
     "fecha_publicacion": "2024-07-05",
     "fecha_adjudicacion": null,
@@ -308912,6 +310556,682 @@
     "categoria_organismo": "universidades"
   },
   {
+    "id": "7586bbc05af5",
+    "expediente": "511202404765",
+    "objeto": "Acuerdo marco para el suministro de fondos bibliográficos en los centros dependientes de la Dirección General de Bibliotecas, Archivos y Museos del Ayuntamiento de Madrid",
+    "tipo": "suministros",
+    "subtipo": "2",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Área de Gobierno de Cultura, Turismo y Deporte",
+    "importe": 9374486,
+    "importe_iva": 9374486,
+    "valor_estimado": 9374486,
+    "cpv": "22110000",
+    "cpv_descripcion": "Material impreso y productos relacionados",
+    "duracion_meses": 48,
+    "num_lotes": 2,
+    "adjudicatario": "VIGON GARCIA SL",
+    "nif_adjudicatario": "B82871310",
+    "fecha_publicacion": "2024-06-30",
+    "fecha_adjudicacion": "2026-06-18",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=r9ht79S0rKrXOjazN1Dw9Q%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-10T09:03:39.548Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "VIGON GARCIA SL",
+        "nif_adjudicatario": "B82871310",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "PAPELERÍAS SETRAINS, S.L.",
+        "nif_adjudicatario": "B84970680",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "MARÍA MARTÍN BAELO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Felicitas Corvillo Romero (Librería Polifemo)",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LATIDO CULTURA, S.L.",
+        "nif_adjudicatario": "B06878151",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "DANIEL DE LA RIVA RODRÍGUEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ESTUDIOS, PROMOCIONES Y NOVEDADES S.L.",
+        "nif_adjudicatario": "B78388485",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERIA AZORIN M&D",
+        "nif_adjudicatario": "B88632708",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "CARLOS ALFONSO DEL HIERRO DÍEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Librería Altamarea",
+        "nif_adjudicatario": "B16762437",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "MARIA HERENA TROITIÑO HERNÁNDEZ - Nocturna de libros",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRA HEREDEROS, S.L. - TAIGA",
+        "nif_adjudicatario": "B88472584",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "FLORENCIO PÉREZ MUÑOZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERIA ALBERTI S.L.",
+        "nif_adjudicatario": "B87443958",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fernando Gayo Oliveras",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "María Begoña Sánchez Fernández - Librería MAY",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "DYKINSON, S.L.",
+        "nif_adjudicatario": "B28001337",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "MARTA GONZALO HERVAS",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "JULIO ELVIRA VERGARA",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "FRAGUA LIBROS, S.L.",
+        "nif_adjudicatario": "B28894368",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERIA JURIDICA LEX NOVA,S.L.U",
+        "nif_adjudicatario": "B83268144",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ALUCHE GRAFFITI SL",
+        "nif_adjudicatario": "B86974433",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "INFOBIBLIOTECAS S.L.",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Librería Sanz y Torres, S.L.",
+        "nif_adjudicatario": "B86498680",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "BOCALANDRO SL",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA LOBO FLACO, S.L.",
+        "nif_adjudicatario": "B78095445",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA EL FARO S.C.",
+        "nif_adjudicatario": "J56367089",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Dlibros difusion y distribucion SL",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ESPASA CALPE, S.A.",
+        "nif_adjudicatario": "A59913509",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ANTONIO HIGUERA DE FRUTOS",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Marcial Pons Librero",
+        "nif_adjudicatario": "B82947326",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Don Lápiz 2.0. SCL",
+        "nif_adjudicatario": "J26708115",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA ACUARELA, S.L.",
+        "nif_adjudicatario": "B09959123",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA EL BOSQUE, S.L.",
+        "nif_adjudicatario": "B16932782",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Alina Zarekaite",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA RENO S.L.",
+        "nif_adjudicatario": "B84008408",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "OLGA RAMOS ROLLÓN",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ALBERTO VILA PEÑA",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "MARÍA OLIVIA DOMÍNGUEZ DEL ÁLAMO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "JOSE ANTONIO MOLINERO GONZÁLEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "GRUPO LOGISTICO CARMEN S.L.",
+        "nif_adjudicatario": "B85893576",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "INFANTIL SAN MARTIN, S.L.",
+        "nif_adjudicatario": "B85969384",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "ANTONIO BALSERA SÁNCHEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Papelería Atenas, S.L.",
+        "nif_adjudicatario": "B28722247",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Tatarana, S.L.",
+        "nif_adjudicatario": "B62818844",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "LIBRERÍA GAZTAMBIDE, S.L.",
+        "nif_adjudicatario": "B80465388",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "EDUCAMAT SL",
+        "nif_adjudicatario": "B80290463",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "J3M, S.L.",
+        "nif_adjudicatario": "B79217568",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Bit Flow Studio SL",
+        "nif_adjudicatario": "B85849065",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "FÁBULA LIBRERÍA PAPELERÍA BELLAS ARTES ALCORCÓN S.L.U.",
+        "nif_adjudicatario": "B10670081",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "REALPRINT SOLUCIONES EMPRESARIALES, S.L.",
+        "nif_adjudicatario": "B87411575",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "CRISTINA GARCÍA MATEOS",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "Bookish Ventures, SL",
+        "nif_adjudicatario": "B67022327",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ISABEL DE LA ROSA SÁNCHEZ",
+        "nif_adjudicatario": "02521824N",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "SUSANA GARCÍA FRAILE CÁMARA (L.P.GNOMO SABIO)",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "RAQUEL MARÍA SÁNCHEZ ORTIZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CRISTINA GONZÁLEZ BOURRELLIS",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CRISTINA GONZÁLEZ BENITO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "FRANCISCO GARCÍA CAÑIZARES",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "AUGE Y MENOSCABO",
+        "nif_adjudicatario": "B87770111",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "Elecece Cultura, S.L.",
+        "nif_adjudicatario": "B05395777",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "MARÍA LOURDES HERNANDO CARRERO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "Zaida Isabel Pérez Gómez",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ROCÍO PALACIOS FERNÁNDEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "MARÍA PAZ HARGUINDEY BUENO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "MÓNICA MATA BLANCO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "JARCHA SL",
+        "nif_adjudicatario": "B28367290",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CRISTINA RODRÍGUEZ FERNÁNDEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "PAPELERÍA Y LIBRERÍA LOS COLEGIOS, S.L.",
+        "nif_adjudicatario": "B87122248",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "BEATRIZ GARCIA ALBA",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "LIBELISTA S.L.",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "Laura García Ruiz",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "Luis Terán López",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CLARA ECHEVERRÍA RUBIO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "JAIME MARTÍN IRUSTA - THE COMIC CO",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "S.A. DE DISTRIBUCIÓN, EDICIÓN Y LIBRERÍAS (DELSA)",
+        "nif_adjudicatario": "A28057230",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "DAVID NIETO RODRÍGUEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "LAURA BATANERO GÓMEZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "LIBRERIA MUGA S.L.",
+        "nif_adjudicatario": "B86956240",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "VANESA PASCUAL PÉREZ",
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": "2026-06-18"
+      }
+    ],
+    "entity_id": "B82871310",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "02663af986fd",
     "expediente": "101/2024/03167",
     "objeto": "Contrato basado de ejecución de obras de obras de reparación y renovación de instalaciones en la E.I. San Antón en la infraestructura del Distrito Centro denominada E.I. San Antón.",
@@ -316788,6 +319108,41 @@
     "ted_publication_number": null,
     "entity_id": "A66505702",
     "categoria_organismo": "aytos_alcaldia"
+  },
+  {
+    "id": "1a3e8aa1a09b",
+    "expediente": "PAPC 2024-1-31",
+    "objeto": "Suministro de Implantes para Neuromodulación de Raíces Sacras para el Hospital Universitario de Getafe",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario de Getafe",
+    "importe": 269790,
+    "importe_iva": null,
+    "valor_estimado": 593538,
+    "cpv": "33140000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "MEDTRONIC IBERICA, S.A.",
+    "nif_adjudicatario": "A28389484",
+    "fecha_publicacion": "2024-06-25",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-implantes-neuromodulacion-raices-sacras-hospital-universitario-getafe-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-13T11:25:58.229Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28389484",
+    "categoria_organismo": "salud"
   },
   {
     "id": "1adec2f5fb43",
@@ -329205,6 +331560,82 @@
     "categoria_organismo": "distritos_madrid"
   },
   {
+    "id": "428b75eed234",
+    "expediente": "6012400239",
+    "objeto": "Servicio de estudios de opinión de Metro de Madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 279940,
+    "importe_iva": null,
+    "valor_estimado": 435000,
+    "cpv": "79320000",
+    "cpv_descripcion": "Servicios empresariales y consultoría",
+    "duracion_meses": 2,
+    "num_lotes": 5,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "ABACO ESTUDIOS DE MERCADO, S.L.U.",
+        "nif_adjudicatario": "B87163564",
+        "importe": 179000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ABACO ESTUDIOS DE MERCADO, S.L.U.",
+        "nif_adjudicatario": "B87163564",
+        "importe": 39600,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "ABACO ESTUDIOS DE MERCADO, S.L.U.",
+        "nif_adjudicatario": "B87163564",
+        "importe": 40000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "IDEARA, S.L.",
+        "nif_adjudicatario": "B36931723",
+        "importe": 15840,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "CENTRO DE OBSERVACIÓN Y TELEDETECCIÓN ESPACIAL, S.A.U.",
+        "nif_adjudicatario": "A47461066",
+        "importe": 5500,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "ABACO ESTUDIOS DE MERCADO S.L.",
+    "nif_adjudicatario": "B87163564",
+    "fecha_publicacion": "2024-06-18",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-estudios-opinion-metro-madrid-1",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T10:41:32.001Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B87163564",
+    "categoria_organismo": "otros"
+  },
+  {
     "id": "451635fb0b30",
     "expediente": "300/2019/01710",
     "objeto": "Mantenimiento integral de los equipamientos adscritos al distrito de villa de Vallecas. 2 lotes.",
@@ -332358,6 +334789,67 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "710d28bfc9d3",
+    "expediente": "A/SER-004046/2024",
+    "objeto": "Servicio destinado al mantenimiento de las aplicaciones pertenecientes al Servicio Madrileño de Salud, las cuales están actualmente listadas en el inventario de aplicaciones del servicio MEDAS (Mantenimiento, Evolución y Desarrollo de Aplicaciones y Análisis de Datos Sanitarios) en vigor. Durante la duración del contrato, se permite la posibilidad de incorporar o sustituir aplicaciones según las necesidades de la DGSD (Dirección General de Salud Digital, sin incurrir en costos adicionales.\n\nEl servicio de mantenimiento incluye servicios tecnológicos recurrentes y servicios tecnológicos bajo demanda según los criterios establecidos en el pliego técnico.&nbsp;En concreto los servicios de mantenimiento a prestar son los siguientes:\n\nServicios tecnológicos recurrentes: Gestión operativa. Apoyo a usuarios. Mantenimiento de aplicaciones (correctivo, perfectivo, preventivo y adaptativo técnico)\n\nServicios tecnológicos bajo demanda: Pequeños evolutivos de mantenimiento de aplicaciones: Evolutivo funcional . Evolutivo adaptativo normativo (el contrato incluye el desarrollo de las integraciones derivadas de las necesidades de evolución de los sistemas y del cumplimiento con las normas y criterios que a este respecto sean definidos por la DGSD) .Actualización tecnológica: Evolutivos adaptativos a las versiones y tecnologías actuales de las infraestructuras de la aplicación\n\n&nbsp;",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Digitalización",
+    "importe": 7053801.73,
+    "importe_iva": null,
+    "valor_estimado": 17112211.2,
+    "cpv": "72000000",
+    "cpv_descripcion": "Servicios informáticos y TI",
+    "duracion_meses": 36,
+    "num_lotes": 3,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "UTE GLOBAL ROSETTA-STACKS CIS",
+        "nif_adjudicatario": "U75333559",
+        "importe": 2670278.4,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "INDRA SOLUCIONES TECNOLOGIAS DE LA INFORMACION S.L.U.",
+        "nif_adjudicatario": "B88018098",
+        "importe": 2541780,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "ACCENTURE, S.L. SOCIEDAD UNIPERSONAL",
+        "nif_adjudicatario": "B79217790",
+        "importe": 1841743.33,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "UTE GLOBAL ROSETTA-STACKS CIS",
+    "nif_adjudicatario": "U75333559",
+    "fecha_publicacion": "2024-06-17",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicios-mantenimiento-aplicaciones-factoria-software-direccion-general-salud",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T08:56:58.494Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "U75333559",
+    "categoria_organismo": "consejerias",
+    "es_ute": true
+  },
+  {
     "id": "72f6e0361e8d",
     "expediente": "E-EXP 21/2024",
     "objeto": "Establecimiento de un Sistema Dinámico de Adquisición (SDA) para el suministro de Agua (Bidones y/o servicio de filtrado), y vasos desechables.",
@@ -334296,6 +336788,41 @@
     "categoria_organismo": "aytos_junta"
   },
   {
+    "id": "d6916016ba89",
+    "expediente": "300/2024/00008",
+    "objeto": "Rehabilitación del antiguo mercado de frutas y verduras de Legazpi. Plaza de Legazpi, 7. Distrito de Arganzuela.",
+    "tipo": "obras",
+    "subtipo": "4500",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Área de Gobierno de Obras y Equipamientos",
+    "importe": 64328000,
+    "importe_iva": 77836880,
+    "valor_estimado": 73975945.46,
+    "cpv": "45210000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 30,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "FCC CONSTRUCCION, S.A.",
+    "nif_adjudicatario": "A28854727",
+    "fecha_publicacion": "2024-06-16",
+    "fecha_adjudicacion": "2024-10-07",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=4MpvD57btcOFQ%2FlhRK79lA%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-11T08:00:00.000Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28854727",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "01d8b7a971cf",
     "expediente": "135/2022/00039/214/2/36",
     "objeto": "Acondicionamiento depuradora de la piscina climatizada a realizar en Polideportivo Moratalaz sito en la calle Valdevernardo 2, Dist. de Moratalaz, CP 28030, Madrid.",
@@ -334405,6 +336932,41 @@
     "ted_publication_number": null,
     "entity_id": "B80596083",
     "categoria_organismo": "distritos_madrid"
+  },
+  {
+    "id": "0a96f3a9d401",
+    "expediente": "205-2023",
+    "objeto": "Servicios de Asistencia Técnica y coordinación de seguridad y salud para &nbsp;la supervisión y control del desarrollo de las obras del “proyecto de acondicionamiento del acceso a la EDAR de Valdemorillo, Madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Canal de Isabel II",
+    "importe": 67575.76,
+    "importe_iva": null,
+    "valor_estimado": 125172.03,
+    "cpv": "71310000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 11,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "CONURMA INGENIEROS CONSULTORES, S.L.",
+    "nif_adjudicatario": "B81040503",
+    "fecha_publicacion": "2024-06-14",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicios-asistencia-tecnica-coordinacion-seguridad-salud-supervision-control-19",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-28T13:41:12.274Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B81040503",
+    "categoria_organismo": "otros"
   },
   {
     "id": "0b606c8e8312",
@@ -337725,6 +340287,146 @@
     "ted_publication_number": null,
     "entity_id": "A19001205",
     "categoria_organismo": "distritos_madrid"
+  },
+  {
+    "id": "a17e7291cb17",
+    "expediente": "2024-0-030 (A/SUM-021156/2024)",
+    "objeto": "Adquisición de productos de higiene, aseo de pacientes y productos de limpieza para el Hospital Universitario Infanta Leonor",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Infanta Leonor",
+    "importe": 49052.63,
+    "importe_iva": null,
+    "valor_estimado": 567517.02,
+    "cpv": "39220000",
+    "cpv_descripcion": "Mobiliario y equipamiento",
+    "duracion_meses": 12,
+    "num_lotes": 13,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "EURODEL HARPAS, S.L.",
+        "nif_adjudicatario": "B79033700",
+        "importe": 13791.38,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "10",
+        "adjudicatario": "EURODEL HARPAS, S.L.",
+        "nif_adjudicatario": "B79033700",
+        "importe": 2919.02,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "11",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "12",
+        "adjudicatario": "DIS-RIVAS, S.L.U.",
+        "nif_adjudicatario": "B36724128",
+        "importe": 4272,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "13",
+        "adjudicatario": "JUVAZQUEZ, S.L.",
+        "nif_adjudicatario": "B28931202",
+        "importe": 847,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "EL CORTE INGLÉS, S.A.",
+        "nif_adjudicatario": "A28017895",
+        "importe": 6858.16,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "IBERIAN CARE 2016, S.L.",
+        "nif_adjudicatario": "B87583019",
+        "importe": 1064.03,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": "PRODUCTOS FAVESAN, S.A.",
+        "nif_adjudicatario": "A45063583",
+        "importe": 12956.4,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "7",
+        "adjudicatario": "DISTRAUMA MEDICAL, S.L.",
+        "nif_adjudicatario": "B61435079",
+        "importe": 2824.64,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "8",
+        "adjudicatario": "GARRIC MEDICA, S.L.",
+        "nif_adjudicatario": "B80196934",
+        "importe": 3520,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "9",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "EURODEL HARPAS S.L.",
+    "nif_adjudicatario": "B79033700",
+    "fecha_publicacion": "2024-06-13",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-productos-higiene-aseo-pacientes-productos-limpieza-hospital",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T10:26:14.865Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B79033700",
+    "categoria_organismo": "salud"
   },
   {
     "id": "b0e2a3012c45",
@@ -342245,6 +344947,74 @@
     "ted_publication_number": null,
     "entity_id": "A24036691",
     "categoria_organismo": "aytos_alcaldia"
+  },
+  {
+    "id": "bade2ce81dc3",
+    "expediente": "2024-0-028 (A/SUM-020157/2024)",
+    "objeto": "Adquisición de fundas de compresión neumática, medias antiembólicas y vendas de zinc para el Hospital Universitario Infanta Leonor” (4 Lotes)",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Infanta Leonor",
+    "importe": 88704.06,
+    "importe_iva": null,
+    "valor_estimado": 570611.6,
+    "cpv": "33140000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 12,
+    "num_lotes": 4,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "MEDICAL SOREVAN, S.L.",
+        "nif_adjudicatario": "B79356218",
+        "importe": 23400,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "IZASA HOSPITA, S.L.",
+        "nif_adjudicatario": "B08438731",
+        "importe": 19298.06,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "INTERSURGICAL ESPAÑA, S.L.",
+        "nif_adjudicatario": "B80957889",
+        "importe": 8246,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "ESSITY SPAIN, S.L.",
+        "nif_adjudicatario": "B28451383",
+        "importe": 37760,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "Medical Sorevan, S.L.",
+    "nif_adjudicatario": "B79356218",
+    "fecha_publicacion": "2024-06-11",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-fundas-compresion-neumatica-medias-antiembolicas-vendas-zinc-hospital",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T10:26:02.447Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B79356218",
+    "categoria_organismo": "salud"
   },
   {
     "id": "bc5afbbdc768",
@@ -352101,6 +354871,41 @@
     "categoria_organismo": "entes_cam"
   },
   {
+    "id": "46ba386c8431",
+    "expediente": "008OBR24",
+    "objeto": "Contrato de la ejecución de obras de la Fase III de la Ciudad Deportiva sita en la Avenida Arroyo Juncal, Navalcarnero (Madrid).",
+    "tipo": "obras",
+    "subtipo": "4500",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Junta de Gobierno del Ayuntamiento de Navalcarnero",
+    "importe": 3891737.87,
+    "importe_iva": 4709002.82,
+    "valor_estimado": 3892905.74,
+    "cpv": "45000000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 18,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "OBRAS Y PAVIMENTOS ESPECIALES, S.A // CONSTRUCCIONES GLESA, S.A",
+    "nif_adjudicatario": null,
+    "fecha_publicacion": "2024-06-04",
+    "fecha_adjudicacion": "2024-09-26",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=oDOd9FJviVOqb7rCcv76BA%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-06T10:15:44.160Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "obras y pavimentos especiales sa // construcciones glesa sa",
+    "categoria_organismo": "aytos_junta"
+  },
+  {
     "id": "4bd98fef3870",
     "expediente": "113/2024/01272_CB11",
     "objeto": "Obras de acondicionamiento de enfermería en el Centro de Mayores y Centro de Día José Manuel Bringas",
@@ -353095,6 +355900,41 @@
     "ted_publication_number": null,
     "entity_id": "B88119581",
     "categoria_organismo": "universidades"
+  },
+  {
+    "id": "dafe86ca4d9c",
+    "expediente": "202-2023",
+    "objeto": "Obras del proyecto de acondicionamiento del acceso a la EDAR de Valdemorillo, Madrid&nbsp;",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Canal de Isabel II",
+    "importe": 695707,
+    "importe_iva": null,
+    "valor_estimado": 812837.51,
+    "cpv": "45233000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 6,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "EXTRACO, CONSTRUCCIÓNS E PROXECTOS, S.A.",
+    "nif_adjudicatario": "A32002644",
+    "fecha_publicacion": "2024-06-04",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/obras-proyecto-acondicionamiento-acceso-edar-valdemorillo-madrid",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T13:26:14.158Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A32002644",
+    "categoria_organismo": "otros"
   },
   {
     "id": "db1cdff54573",
@@ -365923,6 +368763,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "e09e3fe92e2d",
+    "expediente": "300/2024/00260",
+    "objeto": "Contrato de servicios para el desarrollo del proyecto \"Madrid Violencia Cero\"",
+    "tipo": "servicios",
+    "subtipo": "27",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Área de Gobierno de Políticas Sociales, Familia e Igualdad del Ayuntamiento de Madrid",
+    "importe": 260000,
+    "importe_iva": 314600,
+    "valor_estimado": 614050,
+    "cpv": "75130000",
+    "cpv_descripcion": "Servicios de administración pública",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "Enred Consultoria, S.L.",
+    "nif_adjudicatario": "B81143075",
+    "fecha_publicacion": "2024-05-27",
+    "fecha_adjudicacion": "2024-08-06",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=VnnUPx9W0lzpxJFXpLZ%2B2A%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-06T07:59:44.368Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B81143075",
+    "categoria_organismo": "ayto_madrid"
+  },
+  {
     "id": "e1ffb5d04eb7",
     "expediente": "1/2024",
     "objeto": "Servicio de recursos de conciliación para familias de la Mancomunidad La Maliciosa, Lotes 2 y 3; Días no lectivos no festivos y campamentos",
@@ -368544,6 +371419,210 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
+    "id": "d11370455230",
+    "expediente": "C-241A/007-23 (A/SER-043579/2023)",
+    "objeto": "Contratación de Cursos de Formación Profesional en el Centro de Formación Profesional en Tecnologías de la Información y las Comunicaciones (CRN Getafe) (22 lotes).",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Economía, Hacienda y Empleo",
+    "importe": 3788177.94,
+    "importe_iva": null,
+    "valor_estimado": 4867329,
+    "cpv": "80531200",
+    "cpv_descripcion": "Servicios de educación y formación",
+    "duracion_meses": 18,
+    "num_lotes": 22,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "CORE NETWORKS, S.L.",
+        "nif_adjudicatario": "B82999673",
+        "importe": 86724.24,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "10",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 136740,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "11",
+        "adjudicatario": "CONSULTORIA E INTEGRACION DE SISTEMAS, S.L. (CIS)",
+        "nif_adjudicatario": "B81142713",
+        "importe": 98910,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "12",
+        "adjudicatario": "ATRIUM SELECCIÓN Y FORMACIÓN, S.L.",
+        "nif_adjudicatario": "B82226523",
+        "importe": 119265.12,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "13",
+        "adjudicatario": "CAS TRAINING, S.L",
+        "nif_adjudicatario": "B83133629",
+        "importe": 105571.2,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "14",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 200564,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "15",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 124440,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "16",
+        "adjudicatario": "PUE DATA S.L.",
+        "nif_adjudicatario": "B87283685",
+        "importe": 360235,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "17",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 112404,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "18",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 259594,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "CONSULTORIA E INTEGRACION DE SISTEMAS, S.L. (CIS)",
+        "nif_adjudicatario": "B81142713",
+        "importe": 96550,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "20",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 239400,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "21",
+        "adjudicatario": "APLICACIONES Y PROYECTOS TIC S.L.",
+        "nif_adjudicatario": "B83448530",
+        "importe": 116700,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "22",
+        "adjudicatario": "CLOUD COACHERS S.L.",
+        "nif_adjudicatario": "B87682340",
+        "importe": 122000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "PUE DATA S.L.",
+        "nif_adjudicatario": "B87283685",
+        "importe": 245017.5,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "CORE NETWORKS, S.L.",
+        "nif_adjudicatario": "B82999673",
+        "importe": 164225.88,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "GLOBAL KNOWLEDGE NETWORK SPAIN, S.L.",
+        "nif_adjudicatario": "B81366668",
+        "importe": 240543,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": "CAS TRAINING, S.L.",
+        "nif_adjudicatario": "B83133629",
+        "importe": 165910,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "7",
+        "adjudicatario": "GLOBAL KNOWLEDGE NETWORK SPAIN S.L.",
+        "nif_adjudicatario": "B81366668",
+        "importe": 115000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "8",
+        "adjudicatario": "EDUSTANCE, S.L.",
+        "nif_adjudicatario": "B43690940",
+        "importe": 346000,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "9",
+        "adjudicatario": "EXPERIS MANPOWERGROUP S.L.U.",
+        "nif_adjudicatario": "B82062266",
+        "importe": 332384,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "CORE NETWORKS, S.L.",
+    "nif_adjudicatario": "B82999673",
+    "fecha_publicacion": "2024-05-24",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/contratacion-cursos-formacion-profesional-centro-formacion-profesional-5",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T13:12:09.797Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B82999673",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "d9f5c01e3d64",
     "expediente": "101/2024/01375",
     "objeto": "Ejecución de obras de SUSTITUCIÓN DE ENFRIADORA en la infraestructura del Distrito Centro denominada MEJÍA LEQUERICA",
@@ -370381,6 +373460,41 @@
     "ted_publication_number": null,
     "entity_id": "A78493137",
     "categoria_organismo": "consejerias"
+  },
+  {
+    "id": "c829b17b26a6",
+    "expediente": "PNSP SER 46/2023",
+    "objeto": "Servicio de dirección facultativa de las obras de urbanización para la construcción de un paso inferior bajo las vías ferroviarias que separan el Hospital Universitario Infanta Leonor del barrio de Santa Eugenia",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Servicio Madrileño de Salud",
+    "importe": 125550,
+    "importe_iva": null,
+    "valor_estimado": null,
+    "cpv": "71000000",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 9,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "CONURMA INGENIEROS CONSULTORES, S.L.",
+    "nif_adjudicatario": "B81040503",
+    "fecha_publicacion": "2024-05-23",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/direccion-facultativa-obras-urbanizacion-construccion-paso-inferior-vias",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T11:11:12.557Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B81040503",
+    "categoria_organismo": "salud"
   },
   {
     "id": "c925d85bd0a3",
@@ -402618,6 +405732,58 @@
     "categoria_organismo": "otros"
   },
   {
+    "id": "be060e489a07",
+    "expediente": "300/2024/00389",
+    "objeto": "Limpieza en colegios y edificios dependientes del Distrito Villa de Vallecas (2 lotes)",
+    "tipo": "servicios",
+    "subtipo": "14",
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Distrito de Villa de Vallecas",
+    "importe": 5840000,
+    "importe_iva": 7065171.08,
+    "valor_estimado": 14855766.02,
+    "cpv": "90911000",
+    "cpv_descripcion": "Servicios medioambientales",
+    "duracion_meses": 2,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "LIMPIEZAS CRESPO S.A.",
+        "nif_adjudicatario": "A28396604",
+        "importe": 3990000,
+        "importe_iva": 4827391.8,
+        "fecha_adjudicacion": "2024-12-17"
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "LIMPIEZAS CRESPO S.A.",
+        "nif_adjudicatario": "A28396604",
+        "importe": 1850000,
+        "importe_iva": 2237779.28,
+        "fecha_adjudicacion": "2024-12-17"
+      }
+    ],
+    "adjudicatario": "LIMPIEZAS CRESPO S.A.",
+    "nif_adjudicatario": "A28396604",
+    "fecha_publicacion": "2024-04-30",
+    "fecha_adjudicacion": "2024-12-17",
+    "fecha_formalizacion": null,
+    "url_origen": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=3o2BZ2CmyhjLIx6q1oPaMg%3D%3D",
+    "fuente": "placsp",
+    "fuentes": [
+      "placsp"
+    ],
+    "fecha_actualizacion": "2026-11-06T08:00:00.000Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28396604",
+    "categoria_organismo": "distritos_madrid"
+  },
+  {
     "id": "c12d6ea2ef62",
     "expediente": "ASUM037055/216/4/2024/00454",
     "objeto": "- Contrato basado en el acuerdo marco para el suministro de material de oficina (A-SUM-037055-2020)",
@@ -413317,6 +416483,41 @@
     "ted_publication_number": null,
     "entity_id": "B79184115",
     "categoria_organismo": "universidades"
+  },
+  {
+    "id": "d33e09df65ff",
+    "expediente": "A/SER-012597/2024 (321M/002-24)",
+    "objeto": "Mantenimiento preventivo y correctivo de las instalaciones, equipos y sistemas de seguridad, así como la conservación y reparación de las instalaciones de seguridad, de conformidad con las prescripciones recogidas en el Pliego de Prescripciones Técnicas Particulares, en las sedes adscritas a la Consejería de Educación, Ciencia y Universidades, que a continuación se relacionan:\n\n- Sede C/ Alcalá, 30-32\n\n- Sede C/ Santa Hortensia, 30\n\n- Sede C/ Paseo de Recoletos, 14",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Educación, Ciencia y Universidades",
+    "importe": 16840,
+    "importe_iva": null,
+    "valor_estimado": 54648,
+    "cpv": "50610000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "INNOVACIÓN GLOBAL DE SEGURIDAD,S.A.",
+    "nif_adjudicatario": "A86376803",
+    "fecha_publicacion": "2024-04-23",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/mantenimiento-preventivo-correctivo-instalaciones-equipos-sistemas-seguridad-1",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T12:25:53.077Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A86376803",
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "d3618da0e7be",
@@ -424984,6 +428185,58 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "b295cb239c6f",
+    "expediente": "6012400137",
+    "objeto": "Suministro de lunas frontales de cabina para el mantenimiento de los trenes del material móvil de Metro de Madrid",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 282990,
+    "importe_iva": null,
+    "valor_estimado": 300000,
+    "cpv": "34600000",
+    "cpv_descripcion": "Vehículos y equipos de transporte",
+    "duracion_meses": 18,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "RAIL LINE COMPONENTS, S.L.U.",
+        "nif_adjudicatario": "B20947610",
+        "importe": 189540,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "RAIL LINE COMPONENTS, S.L.U.",
+        "nif_adjudicatario": "B20947610",
+        "importe": 93450,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "RAIL LINE COMPONENTS, S.L.U.",
+    "nif_adjudicatario": "B20947610",
+    "fecha_publicacion": "2024-04-16",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/suministro-lunas-frontales-cabina-mantenimiento-trenes-material-movil-metro-madrid",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T10:26:31.442Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B20947610",
+    "categoria_organismo": "otros"
+  },
+  {
     "id": "b447fe5371c1",
     "expediente": "21/111/3AM CB006",
     "objeto": "Asistencia técnica para elaborar el “Plan de Circularidad y Descarbonización de EMT”.",
@@ -433191,41 +436444,6 @@
     "categoria_organismo": "distritos_madrid"
   },
   {
-    "id": "24fcd93a72d1",
-    "expediente": "P/SER-005591/2024",
-    "objeto": "Adquisición de esculturas de \"Meninas\"",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": "negociado",
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Consejería de Presidencia, Justicia y Portavocía del Gobierno",
-    "importe": 48000,
-    "importe_iva": null,
-    "valor_estimado": 48000,
-    "cpv": "92311000",
-    "cpv_descripcion": "Servicios recreativos y culturales",
-    "duracion_meses": 0,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "DUDU FASHION GROUP, S.L.",
-    "nif_adjudicatario": "B84449487",
-    "fecha_publicacion": "2024-04-10",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-esculturas-meninas",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-04-10T07:11:15.457Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "B84449487",
-    "categoria_organismo": "consejerias"
-  },
-  {
     "id": "25955339b8d9",
     "expediente": "511/2023/03115",
     "objeto": "Acuerdo marco para la ejecución de obras de adecuación de viales y mejora de la accesibilidad (6 Lotes). Ayuntamiento de Madrid.",
@@ -441405,6 +444623,41 @@
     "categoria_organismo": "otros"
   },
   {
+    "id": "24fcd93a72d1",
+    "expediente": "P/SER-005591/2024",
+    "objeto": "Adquisición de esculturas de \"Meninas\"",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Presidencia, Justicia y Portavocía del Gobierno",
+    "importe": 48000,
+    "importe_iva": null,
+    "valor_estimado": 48000,
+    "cpv": "92311000",
+    "cpv_descripcion": "Servicios recreativos y culturales",
+    "duracion_meses": 0,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "DUDU FASHION GROUP, S.L.",
+    "nif_adjudicatario": "B84449487",
+    "fecha_publicacion": "2024-04-04",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-esculturas-meninas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T12:41:16.319Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B84449487",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "2b537c884fe2",
     "expediente": "167/2024",
     "objeto": "Servicio de mediación de riesgos y seguros. LOTE 1. ACUERDO MARCO  FEMP",
@@ -444336,6 +447589,41 @@
     "ted_publication_number": null,
     "entity_id": "76440316T",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "e65b9d5c5808",
+    "expediente": "P.A. 2024-0-1",
+    "objeto": "Suministro de Materiales para Resección Transuretral, para el Hospital Universitario La Paz.",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 326610,
+    "importe_iva": null,
+    "valor_estimado": 720140.85,
+    "cpv": "33140000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "KARL STORZ ENDOSCOPIA IBERICA, S.A.",
+    "nif_adjudicatario": "A78936606",
+    "fecha_publicacion": "2024-04-03",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-2024-0-1-suministro-materiales-reseccion-transuretral-hospital-universitario",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T08:41:43.072Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A78936606",
+    "categoria_organismo": "salud"
   },
   {
     "id": "e84fe8106c3d",
@@ -455902,6 +459190,41 @@
     "es_ute": true
   },
   {
+    "id": "58e03ba7e7d2",
+    "expediente": "P.A. 18/2024",
+    "objeto": "suministro de derivados lácteos y varios a las dos cocinas del Hospital del Universitario La Paz",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 122901,
+    "importe_iva": null,
+    "valor_estimado": 512356.8,
+    "cpv": "15500000",
+    "cpv_descripcion": "Alimentos y bebidas",
+    "duracion_meses": 12,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "REPRESENTACIONES MAYORAL, S.A.",
+    "nif_adjudicatario": "A78138294",
+    "fecha_publicacion": "2024-03-21",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-182024-suministro-derivados-lacteos-varios-dos-cocinas-hospital-universitario",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T11:11:10.225Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A78138294",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "5bac2990d334",
     "expediente": "300/2020/00490-2149",
     "objeto": "Suministro de 2000 actas de inspección",
@@ -458787,6 +462110,58 @@
     "ted_publication_number": null,
     "entity_id": "B85097962",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "cdd347294191",
+    "expediente": "6012400105",
+    "objeto": "Obras de renovación de carril en la red de Metro de Madrid",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Metro de Madrid, S.A.",
+    "importe": 14500490.37,
+    "importe_iva": null,
+    "valor_estimado": 14993476.72,
+    "cpv": "45234100",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 4,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "VIAS Y CONSTRUCCIONES, S.A",
+        "nif_adjudicatario": "A28017986",
+        "importe": 7165613.65,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "COMSA, S.A.U.,",
+        "nif_adjudicatario": "A08031098",
+        "importe": 7334876.72,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "VIAS Y CONSTRUCCIONES SA",
+    "nif_adjudicatario": "A28017986",
+    "fecha_publicacion": "2024-03-20",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/obras-renovacion-carril-red-metro-madrid",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T08:56:23.027Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28017986",
+    "categoria_organismo": "otros"
   },
   {
     "id": "cf6c855ca4af",
@@ -492364,6 +495739,90 @@
     "categoria_organismo": "aytos_alcaldia"
   },
   {
+    "id": "71fd26811940",
+    "expediente": "2024-0-012 (A/SUM-002721/2024)",
+    "objeto": "Adquisición de material fungible de impresoras para el Hospital Universitario Infanta Leonor (6 lotes)",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario Infanta Leonor",
+    "importe": 22208.84,
+    "importe_iva": null,
+    "valor_estimado": 215764.28,
+    "cpv": "30124000",
+    "cpv_descripcion": "Equipos informáticos y suministros",
+    "duracion_meses": 12,
+    "num_lotes": 6,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "INFOPRODUCTS S.L.",
+        "nif_adjudicatario": "B98484512",
+        "importe": 4415.26,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "INFOPRODUCTS S.L.",
+        "nif_adjudicatario": "B98484512",
+        "importe": 5132.73,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "INFOPRODUCTS S.L.",
+        "nif_adjudicatario": "B98484512",
+        "importe": 5477.6,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "INFOPRODUCTS S.L.",
+        "nif_adjudicatario": "B98484512",
+        "importe": 6633.45,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "INFOPRODUCTS S.L.",
+        "nif_adjudicatario": "B98484512",
+        "importe": 549.8,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "INFOPRODUCTS S.L.",
+    "nif_adjudicatario": "B98484512",
+    "fecha_publicacion": "2024-02-23",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/adquisicion-material-fungible-impresoras-hospital-universitario-infanta-leonor-6",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T10:26:34.147Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B98484512",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "74ee38936167",
     "expediente": "5672/2023",
     "objeto": "Procedimiento abierto simplificado sumario servicios \"Ejecución acciones formativas Orden 26 de mayo de 2023 Consejería Economía, Hacienda y Empleo CAM, programa público de empleo-formación para activación profesional: EXPTE: APC/0029/2023\".",
@@ -499476,6 +502935,41 @@
     "ted_publication_number": null,
     "entity_id": "U72971260",
     "categoria_organismo": "distritos_madrid"
+  },
+  {
+    "id": "07c00c79aa0e",
+    "expediente": "P.A. 2024-0-7",
+    "objeto": "Arrendamiento de sistemas/chalecos desfibriladores cardioversores portátiles para el Servicio de Cardiología del Hospital Universitario La Paz&nbsp;",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 134396,
+    "importe_iva": null,
+    "valor_estimado": 564480,
+    "cpv": "33182200",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "ZOLL MEDICAL ESPAÑA, S.L.",
+    "nif_adjudicatario": "B16849911",
+    "fecha_publicacion": "2024-02-19",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-2024-0-7-arrendamiento-sistemaschalecos-desfibriladores-cardioversores",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T08:41:42.479Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B16849911",
+    "categoria_organismo": "salud"
   },
   {
     "id": "0e75c6c1ecbf",
@@ -535542,6 +539036,41 @@
     "categoria_organismo": "aytos_junta"
   },
   {
+    "id": "46dd1bc0dfa0",
+    "expediente": "A/SER-038692/2023",
+    "objeto": "Contrato de servicios para la redacción del proyecto de construcción de “carril bici paralelo a la carretera M-501 entre los PP.KK. 5+000 y 17+000",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado_sin_publicidad",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Vivienda, Transportes e Infraestructuras",
+    "importe": 102316.95,
+    "importe_iva": null,
+    "valor_estimado": 135537.09,
+    "cpv": "71311210",
+    "cpv_descripcion": "Servicios de arquitectura e ingeniería",
+    "duracion_meses": 7,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "G.O.C., S.A.",
+    "nif_adjudicatario": "A32022535",
+    "fecha_publicacion": "2024-01-23",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/contrato-servicios-redaccion-proyecto-construccion-carril-bici-paralelo-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T08:25:56.478Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A32022535",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "54ee459db0b0",
     "expediente": "PA 2019-0-028",
     "objeto": "Suministro de Fungible para fibrilación Auricular aislada para el Servicio de Cirugia Cardiaca del Hospital Clínico San Carlos de Madrid",
@@ -539701,41 +543230,6 @@
     "categoria_organismo": "entes_cam"
   },
   {
-    "id": "eb27c1fffccc",
-    "expediente": "033/2024",
-    "objeto": "Garantizar la continuidad asistencial de personas adultas con discapacidad intelectual, gravemente afectadas, a través de 13 plazas de residencia con centro de día, en el centro San Juan de Dios de Valladolid que se pondrán a disposición de la Administración, el día 1 de enero de 2024. Si se produjese la baja de algún usuario en la plaza que ocupa, se amortizará automáticamente, reduciéndose el número de plazas contratadas a medida que se vayan produciendo las bajas",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": null,
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
-    "importe": 1230029.84,
-    "importe_iva": null,
-    "valor_estimado": 2050423.83,
-    "cpv": "85311000",
-    "cpv_descripcion": "Servicios sanitarios y sociales",
-    "duracion_meses": 36,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "CENTRO SAN JUAN DE DIOS",
-    "nif_adjudicatario": "R4700227D",
-    "fecha_publicacion": "2024-01-19",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/atencion-residencial-centro-dia-personas-adultas-discapacidad-intelectual-16",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-01-19T13:26:04.334Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "R4700227D",
-    "categoria_organismo": "consejerias"
-  },
-  {
     "id": "ef94fd6421a8",
     "expediente": "132/2022",
     "objeto": "Suministro de material de oficina y papel",
@@ -542044,41 +545538,6 @@
     "ted_publication_number": null,
     "entity_id": "B19168582",
     "categoria_organismo": "aytos_junta"
-  },
-  {
-    "id": "0727d94104d4",
-    "expediente": "039/2024",
-    "objeto": "Garantizar la continuidad asistencial de personas adultas con discapacidad intelectual, gravemente afectadas, a través de 9 plazas de residencia con centro de día, en el centro Dulce Nombre de María de Málaga que se pondrán a disposición de la Administración, el día 1 de enero de 2024. Si se produjese la baja de algún usuario en la plaza que ocupa, se amortizará automáticamente, reduciéndose el número de plazas contratadas a medida que se vayan produciendo las bajas",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": null,
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
-    "importe": 851559.12,
-    "importe_iva": null,
-    "valor_estimado": 1419524.19,
-    "cpv": "85311000",
-    "cpv_descripcion": "Servicios sanitarios y sociales",
-    "duracion_meses": 36,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "ASOCIACIÓN DE LINARES VON SCHMITERLOW",
-    "nif_adjudicatario": "G92928902",
-    "fecha_publicacion": "2024-01-17",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/atencion-residencial-centro-dia-personas-adultas-discapacidad-intelectual-17",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-01-17T09:11:33.206Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "G92928902",
-    "categoria_organismo": "consejerias"
   },
   {
     "id": "0e86e52e656b",
@@ -547135,6 +550594,114 @@
     "categoria_organismo": "salud"
   },
   {
+    "id": "97730c7c0223",
+    "expediente": "AM-003/2024 (A/SER-030510/2023)",
+    "objeto": "El Acuerdo Marco tiene por objeto fijar las condiciones para la atención residencial de menores extranjeros no acompañados de edades comprendidas entre 12 y 17 años (hasta el día inmediatamente anterior al cumplimiento de los 18 años), atendidos con cargo a la Dirección General de Infancia, Familia y Fomento de la Natalidad",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 21230380.44,
+    "importe_iva": null,
+    "valor_estimado": 46706836.97,
+    "cpv": "85311000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 24,
+    "num_lotes": null,
+    "lotes": [
+      {
+        "lote": null,
+        "adjudicatario": "FUNDACIÓN SAMU",
+        "nif_adjudicatario": "G41914243",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ARQUISOCIAL, S.L.",
+        "nif_adjudicatario": "B22183370",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "RED MADRILEÑA DE INMIGRACION Y AYUDA AL REFUGIADO",
+        "nif_adjudicatario": "G87913133",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "FUNDACIÓN DIAGRAMA INTERVENCION PSICOSOCIAL",
+        "nif_adjudicatario": "G73038457",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN PARA LA FORMACIÓN E INTEGRACIÓN SOCIAL ALMERIENSE (AFINSA)",
+        "nif_adjudicatario": "G04328761",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN PARA EL DESARROLLO Y LA INTEGRACIÓN SOCIAL MERIDIANO",
+        "nif_adjudicatario": "G41843582",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN DUAL",
+        "nif_adjudicatario": "G82693821",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN CENTRO TRAMA",
+        "nif_adjudicatario": "G80054760",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "FUNDACIÓN AMIGÓ",
+        "nif_adjudicatario": "G81454969",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "Fundación SAMU",
+    "nif_adjudicatario": "G41914243",
+    "fecha_publicacion": "2024-01-12",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/acogimiento-residencial-adolescentes-migrantes-no-acompanados-atendidos-cargo",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T08:11:09.830Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "G41914243",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "9b0718284e94",
     "expediente": "2021-3-05",
     "objeto": "&nbsp;\n\nSuministro de Set Medidor para Reconstrucción Valvular Aórtica, de distribución exclusiva de la firma “EPYCARDIO, S.L.” para Cirugía Cardiaca Pediátrica del Hospital Universitario 12 de Octubre",
@@ -551218,41 +554785,6 @@
     "categoria_organismo": "investigacion"
   },
   {
-    "id": "d9fda9be0063",
-    "expediente": "038/2024",
-    "objeto": "Garantizar la continuidad asistencial de personas adultas con discapacidad intelectual gravemente afectadas, a través de 4 plazas de residencia con centro de día, en el centro San Francisco de Asís de Málaga, que se pondrán a disposición de la Administración, el día 1 de enero de 2024. Si se produjese la baja de algún usuario en la plaza que ocupa esta se amortizará automáticamente, reduciéndose el número de plazas contratadas a medida que se vayan produciendo las bajas.",
-    "tipo": "servicios",
-    "subtipo": null,
-    "procedimiento": null,
-    "estado": "resuelto",
-    "estado_xml": "resuelto",
-    "estado_verificado_en": null,
-    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
-    "importe": 378470.72,
-    "importe_iva": null,
-    "valor_estimado": 630899.64,
-    "cpv": "85311000",
-    "cpv_descripcion": "Servicios sanitarios y sociales",
-    "duracion_meses": 36,
-    "num_lotes": null,
-    "lotes": null,
-    "adjudicatario": "Hospital San Francisco de Asís de Málaga",
-    "nif_adjudicatario": "A29055670",
-    "fecha_publicacion": "2024-01-10",
-    "fecha_adjudicacion": null,
-    "fecha_formalizacion": null,
-    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/atencion-residencial-centro-dia-personas-adultas-discapacidad-intelectual-18",
-    "fuente": "placsp_agregadas",
-    "fuentes": [
-      "placsp_agregadas"
-    ],
-    "fecha_actualizacion": "2024-01-10T11:11:18.761Z",
-    "num_ofertas": null,
-    "ted_publication_number": null,
-    "entity_id": "A29055670",
-    "categoria_organismo": "consejerias"
-  },
-  {
     "id": "dcde2f0eb6aa",
     "expediente": "2023126SUMASA",
     "objeto": "Suministro de 30 monitores de fotografía de 24,1 pulgadas con visera para un Laboratorio de Fotografía en el Campus de Aranjuez de la Universidad Rey Juan Carlos",
@@ -551286,6 +554818,106 @@
     "ted_publication_number": null,
     "entity_id": "B46589420",
     "categoria_organismo": "universidades"
+  },
+  {
+    "id": "e3de1b9e9736",
+    "expediente": "AM PA SUM 05/2023",
+    "objeto": "Acuerdo marco para el suministro de 37 lotes de absorbentes, empapadores y compresas para su utilización en los distintos centros dependientes del Sermas",
+    "tipo": "suministros",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Servicio Madrileño de Salud",
+    "importe": 17949705.6,
+    "importe_iva": null,
+    "valor_estimado": 71798882.4,
+    "cpv": "33700000",
+    "cpv_descripcion": "Equipamiento médico y farmacéutico",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": [
+      {
+        "lote": null,
+        "adjudicatario": "ESSITY SPAIN, S.L.",
+        "nif_adjudicatario": "B28451383",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "LABORATORIOS HARTMANN, S.A.",
+        "nif_adjudicatario": "A08032401",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "BARNA IMPORT MEDICA S.A",
+        "nif_adjudicatario": "A58001686",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "AMEBIL, S.L.",
+        "nif_adjudicatario": "B95492716",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ACTIVE MEDICAL DISPOSABLE, S.A.U.",
+        "nif_adjudicatario": "A64247182",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ONTEX, ID, S.A.",
+        "nif_adjudicatario": "A60617875",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "PROCTER & GAMBLE ESPAÑA, S.A.",
+        "nif_adjudicatario": "A28198752",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "LABORATORIOS INDAS, S.A.",
+        "nif_adjudicatario": "A45002516",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "ESSITY SPAIN, S.L.",
+    "nif_adjudicatario": "B28451383",
+    "fecha_publicacion": "2024-01-10",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/acuerdo-marco-suministro-37-lotes-absorbentes-empapadores-compresas-su-utilizacion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T09:41:26.678Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B28451383",
+    "categoria_organismo": "salud"
   },
   {
     "id": "ec8f9c932b26",

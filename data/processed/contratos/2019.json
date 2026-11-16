@@ -7137,6 +7137,162 @@
     "categoria_organismo": "entes_cam"
   },
   {
+    "id": "62cbdf23a604",
+    "expediente": "AM-004/2019",
+    "objeto": "El Acuerdo Marco tiene por objeto determinar las condiciones de la gestión del servicio público del Programa I+I, Atención Integral de Niños, Niñas y Adolescentes en Situación de Riego Social.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 375,
+    "importe_iva": null,
+    "valor_estimado": 7425000,
+    "cpv": "85312000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 4,
+    "num_lotes": null,
+    "lotes": [
+      {
+        "lote": null,
+        "adjudicatario": "YMCA MADRID",
+        "nif_adjudicatario": "G28659308",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "FUNDACIÓN SECRETARIADO GITANO",
+        "nif_adjudicatario": "G83117374",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN DE ANTIGÜOS ALUMNOS DEL COLEGIO JESÚS MARÍA DE MADRID",
+        "nif_adjudicatario": "G79387510",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN CULTURAL NORTE JOVEN",
+        "nif_adjudicatario": "G78105756",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "CRUZ ROJA ESPAÑOLA",
+        "nif_adjudicatario": "Q2866001G",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN EOF",
+        "nif_adjudicatario": "G82398967",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN PARA LA INTEGRACIÓN DEL MENOR PAIDEIA",
+        "nif_adjudicatario": "G78437688",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN MURIALDO",
+        "nif_adjudicatario": "G80096449",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "INSTITUTO SAFMAN PARA LA F. Y LA I. S.L.",
+        "nif_adjudicatario": "B86965936",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "LA RUECA, ASOCIACIÓN SOCIAL Y CULTURAL",
+        "nif_adjudicatario": "G79772018",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "Fundación Juanjo Torrejón",
+        "nif_adjudicatario": "G84672930",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "FEDERACION PLATAFORMAS SOCIALES PINARDI",
+        "nif_adjudicatario": "G83169524",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "Fundación Bália para la Infancia",
+        "nif_adjudicatario": "G82920851",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "ASOCIACIÓN CENTRO TRAMA",
+        "nif_adjudicatario": "G80054760",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": null,
+        "adjudicatario": "FUNDACIÓN TOMILLO",
+        "nif_adjudicatario": "G28979136",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "YMCA MADRID",
+    "nif_adjudicatario": "G28659308",
+    "fecha_publicacion": "2019-09-23",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/atencion-integral-ninos-adolescentes-situacion-riesgo-social-programa-ii",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-30T09:56:19.095Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "G28659308",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "e88b91834ea4",
     "expediente": "SUM01/2019",
     "objeto": "Suministro para la renovación de 45 licencias CITRIX y su software de gestión",
@@ -15390,6 +15546,41 @@
     "categoria_organismo": "investigacion"
   },
   {
+    "id": "b02f3d2b4014",
+    "expediente": "001/2020",
+    "objeto": "El servicio para la gestión de la residencia para personas mayores dependientes Orcasur de Madrid",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 4016768.65,
+    "importe_iva": null,
+    "valor_estimado": 8060305.4,
+    "cpv": "85311000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 3,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "Grupo 5 Acción y Gestión Social S.A.U.",
+    "nif_adjudicatario": "A78867371",
+    "fecha_publicacion": "2019-07-10",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/gestion-residencia-personas-mayores-dependientes-orcasur-madrid",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-10T07:55:51.187Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A78867371",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "721a9ec29145",
     "expediente": "EXP10.2019",
     "objeto": "Alquiler de tres barredoras de aspiración de gran capacidad para el servicio de limpieza viaria",
@@ -20512,6 +20703,106 @@
     "ted_publication_number": null,
     "entity_id": null,
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "4ded9bf01394",
+    "expediente": "A/SER-000771/2019",
+    "objeto": "Servicio de mantenimiento de los aparatos elevadores de los centros de Salud, consultorios locales y otros edificios dependientes de la Gerencia Asistencial de Atención Primaria del Servicio Madrileño de Salud",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Gerencia Asistencial de Atención Primaria",
+    "importe": 802039.16,
+    "importe_iva": null,
+    "valor_estimado": 2072862.01,
+    "cpv": "50750000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 24,
+    "num_lotes": 8,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "SCHINDLER, S.A.",
+        "nif_adjudicatario": "A50001726",
+        "importe": 123276,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "KONE ELEVADORES, S.A",
+        "nif_adjudicatario": "A28791069",
+        "importe": 82879.68,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "THYSSENKRUPP ELEVADORES S.L.U.",
+        "nif_adjudicatario": "B46001897",
+        "importe": 142524.72,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "ORONA, SDAD.COOP.LTDA.",
+        "nif_adjudicatario": "F20025318",
+        "importe": 118298.26,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "FAIN ASCENSORES, S.A.",
+        "nif_adjudicatario": "A28303485",
+        "importe": 110506.32,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": "INDACO, S.A.",
+        "nif_adjudicatario": "A28330678",
+        "importe": 145216.56,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "7",
+        "adjudicatario": null,
+        "nif_adjudicatario": null,
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "8",
+        "adjudicatario": "DUPLEX ELEVACION S.L.",
+        "nif_adjudicatario": "B82839366",
+        "importe": 79337.62,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "SCHINDLER, S.A.",
+    "nif_adjudicatario": "A50001726",
+    "fecha_publicacion": "2019-05-21",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-mantenimiento-aparatos-elevadores-centros-salud-consultorios-locales",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T07:26:13.923Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A50001726",
+    "categoria_organismo": "salud"
   },
   {
     "id": "599dd2874b78",

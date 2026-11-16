@@ -1753,6 +1753,58 @@
     "categoria_organismo": "investigacion"
   },
   {
+    "id": "2cd1a1b0d8ec",
+    "expediente": "046/2022 (A/SER-040022/2021)",
+    "objeto": "Prestación de servicios de atención integral dirigidos a víctimas de violencia de género, sus hijos e hijas y personas dependientes de la mujer, proporcionándoles alojamiento temporal seguro, manutención y otros gastos así como un tratamiento integral de recuperación que desde los ámbitos psicológico, educativo, socio-laboral y jurídico, favorezca la normalización de la unidad familiar y la superación de los efectos de la violencia, por el tiempo necesario para llevar a cabo su recuperación, sin que pueda exceder de doce meses.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 1978083.6,
+    "importe_iva": null,
+    "valor_estimado": 4732112,
+    "cpv": "85311000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 2,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "ASOCIACIÓN CENTRO TRAMA",
+        "nif_adjudicatario": "G80054760",
+        "importe": 1201602.24,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ASOC. CENTRO TRAMA",
+        "nif_adjudicatario": "G80054760",
+        "importe": 776481.36,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "Asociacion Centro Trama",
+    "nif_adjudicatario": "G80054760",
+    "fecha_publicacion": "2021-12-16",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/gestion-dos-centros-acogida-mujeres-victimas-violencia-genero-hijos-e-hijas",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-04T09:56:37.096Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "G80054760",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "90643bc57698",
     "expediente": "300/2021/00593",
     "objeto": "Suministro de vacunas con destino al Servicio de Farmacia de Madrid Salud para su dispensación al Centro de Salud Internacional, perteneciente al Organismo Autónomo Madrid Salud (5 lotes)",
@@ -6092,6 +6144,41 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "b93f151ea6c1",
+    "expediente": "P.N. s/p 23/2021 HUP",
+    "objeto": "Servicio de&nbsp;asistencia técnica y mantenimiento con cobertura plena de los equipos marca Varian del Servicio de Oncología Radioterápica &nbsp;instalados en el Hospital Universitario de la Princesa",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "negociado",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario de La Princesa",
+    "importe": 1092326.93,
+    "importe_iva": null,
+    "valor_estimado": 1669840.46,
+    "cpv": "50400000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 47,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "VARIAN MEDICAL SYSTEMS IBÉRICA, S.L.",
+    "nif_adjudicatario": "B82246422",
+    "fecha_publicacion": "2021-11-11",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-asistencia-tecnica-mantenimiento-cobertura-plena-equipos-marca-varian",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-03T11:26:22.895Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B82246422",
+    "categoria_organismo": "salud"
+  },
+  {
     "id": "098e8ca9043f",
     "expediente": "2019006OBR",
     "objeto": "Ampliación y sustitución de césped, en el campo de fútbol del Polideportivo San José.",
@@ -6737,6 +6824,41 @@
     "ted_publication_number": null,
     "entity_id": "B87624326",
     "categoria_organismo": "aytos_junta"
+  },
+  {
+    "id": "b35f39752d54",
+    "expediente": "A/SER-037564/2021 (232A-007-21)",
+    "objeto": "El presente contrato tendrá como objeto el servicio de gestión del centro “Metrónomo”, sito en calle Áncora 41-43 de Madrid, en el que se ubican 10 locales de ensayo y un estudio de grabación, así como la supervisión de las instalaciones y el desarrollo de un programa de dinamización del centro para las personas usuarias del mismo, todo ello de conformidad a las especificaciones que se contienen en el Pliego de Prescripciones Técnicas.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 180000,
+    "importe_iva": null,
+    "valor_estimado": 730012,
+    "cpv": "92320000",
+    "cpv_descripcion": "Servicios recreativos y culturales",
+    "duracion_meses": 12,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "BOXINBOX SERVICIOS MUSICALES, S.L",
+    "nif_adjudicatario": "B86267242",
+    "fecha_publicacion": "2021-11-04",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/gestion-dinamizacion-metronomo-locales-ensayo-musica-jovenes",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T09:56:07.936Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B86267242",
+    "categoria_organismo": "consejerias"
   },
   {
     "id": "dec41cc7e172",
@@ -12521,6 +12643,922 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "05b5eb3c3b32",
+    "expediente": "AM-002/2021 (A/SER-012771/2021)",
+    "objeto": "Describir el contenido del servicio de atención a personas mayores dependientes en residencia y establecer las obligaciones y condiciones técnicas y actividades específicas que deben ser asumidas y desarrolladas por las empresas o entidades que puedan ser adjudicatarias de la prestación del servicio en residencia para la atención a personas mayores dependientes, en la modalidad de financiación total y financiación parcial.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": null,
+    "importe_iva": null,
+    "valor_estimado": 85428650.1,
+    "cpv": "85311000",
+    "cpv_descripcion": "Servicios sanitarios y sociales",
+    "duracion_meses": 24,
+    "num_lotes": 1,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "R para mayores Altagracia, S.L.(C4333)",
+        "nif_adjudicatario": "B85958486",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Serviger XXI Alcalá, S.L.(C3757)",
+        "nif_adjudicatario": "B47764238",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriatría y Sanidad, S.A.(C0765)",
+        "nif_adjudicatario": "A28770659",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R de Mayores San Marcos, S.L.(C3468)",
+        "nif_adjudicatario": "B84355999",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Albertia Servicios Sociosanitarios, S.A.(C2619)",
+        "nif_adjudicatario": "A99327686",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C1737)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Clínica Geriátrica Los Ángeles, S.L.(C2367)",
+        "nif_adjudicatario": "B82010604",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro Geriátrico Madre Maravillas, S.A.(C0018)",
+        "nif_adjudicatario": "A78679669",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fund R A Mª Leonor y Legado de los Pobres Hdez Muriel(C0695)",
+        "nif_adjudicatario": "G28626471",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Vitalia Suite, S.L.U. (C2452)",
+        "nif_adjudicatario": "B99136558",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sucesores de Gancedo Rodríguez, S.A.(C0082)",
+        "nif_adjudicatario": "A28029692",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Quavitae Servicios Asistenciales, S.A.U.(C2617)",
+        "nif_adjudicatario": "A80106842",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro de Mayores Rivas, S.L.(C3365)",
+        "nif_adjudicatario": "B86794278",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanyres sur,S.L.(C3286)",
+        "nif_adjudicatario": "B14601413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Florje, S.L.(C0719)",
+        "nif_adjudicatario": "B80772817",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "María del Carmen Martín Jiménez(C0779)",
+        "nif_adjudicatario": "07487228S",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanitas Mayores, S.L.(C3242)",
+        "nif_adjudicatario": "B58937178",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Nogales XXI, S.A.(C5125)",
+        "nif_adjudicatario": "A84546696",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Hospitales y Centros Casaverde Madrid, S.L(C1899)",
+        "nif_adjudicatario": "B80832082",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriatel, S.A.(C1078)",
+        "nif_adjudicatario": "A81233579",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asermut S. Coop(C1730)",
+        "nif_adjudicatario": "F79011003",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanitas Mayores, S.L.(C2620)",
+        "nif_adjudicatario": "B58937178",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asociación Edad Dorada Mensajeros de la Paz(C3340)",
+        "nif_adjudicatario": "G81594962",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asociación Edad Dorada Mensajeros de la Paz Madrid(C0707)",
+        "nif_adjudicatario": "G83038794",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Nogales XXI, S.A.(C1606)",
+        "nif_adjudicatario": "A84546696",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R 3ª Edad Las Matas, S.A.(C1285)",
+        "nif_adjudicatario": "A80966419",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R Tercera Edat L'Onada, SL(C7841)",
+        "nif_adjudicatario": "B43514504",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A(C0288)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A.(C2869)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Las Celindas R para Mayores, S.L.(C3422)",
+        "nif_adjudicatario": "B83924019",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Gecovaz, S.L.(C1572)",
+        "nif_adjudicatario": "B80844301",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "RR. Camilos - R Asistida San Camilo(C0007)",
+        "nif_adjudicatario": "R2800714D",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Vitalia Home, S.L.U.(C3318)",
+        "nif_adjudicatario": "B99438806",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Servicios Sanitarios y Sociales Galdama, S.L.(C4318)",
+        "nif_adjudicatario": "B82370446",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C2866)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R 3ª edad La Merced de los Peñascales, S.L.(C0637)",
+        "nif_adjudicatario": "B78860004",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R Nuestra Señora del Rosario, S.L.(C2184)",
+        "nif_adjudicatario": "B82810706",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A.(C2296)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Casablanca Griñón(C5071)",
+        "nif_adjudicatario": "B02960045",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A(C0261)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanitas Mayores, S.L.(C3031)",
+        "nif_adjudicatario": "B58937178",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Edificios Gerontológicos, S.A.(C2493)",
+        "nif_adjudicatario": "A83000133",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Clinica Madrid, S.A.(C2737)",
+        "nif_adjudicatario": "A78139268",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanitas Mayores, S.L.(C0248)",
+        "nif_adjudicatario": "B58937178",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rosalba Gestión, S.A.(C1824)",
+        "nif_adjudicatario": "A84847524",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación R de Ancianos San Miguel Arcángel(C2268)",
+        "nif_adjudicatario": "G79285409",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación Summa Humanitate(C2280)",
+        "nif_adjudicatario": "G84657295",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R Geriatrica Bellas Vistas, S.L.(C0716)",
+        "nif_adjudicatario": "B81113862",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C3322)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Montesalud, S.A.(C0219)",
+        "nif_adjudicatario": "A78382132",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanyres sur,S.L.(C2622)",
+        "nif_adjudicatario": "B14601413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Quavitae Servicios Asistenciales, S.A.U.(C0124)",
+        "nif_adjudicatario": "A80106842",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Primar Centro Geriátrico, S.L.(C2646)",
+        "nif_adjudicatario": "B81885360",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A.(C2185)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R Guadarrama Escorial, S.L.(C2557)",
+        "nif_adjudicatario": "B82830837",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "La Solana Servicios Asistenciales, S.L.(C1993)",
+        "nif_adjudicatario": "B87260360",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación Santa Lucia(C2279)",
+        "nif_adjudicatario": "G28801553",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriatel, S.A.(C4276)",
+        "nif_adjudicatario": "A81233579",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro para Mayores Santa Isabel,S.L.(C1978)",
+        "nif_adjudicatario": "B81210171",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asociación Edad Dorada Mensajeros de la Paz(C0099)",
+        "nif_adjudicatario": "G81594962",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asociación Edad Dorada Mensajeros de la Paz(C2362)",
+        "nif_adjudicatario": "G81594962",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Planiger, S.A.(C1999)",
+        "nif_adjudicatario": "A83151977",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanyres sur,S.L.(C2263)",
+        "nif_adjudicatario": "B14601413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sogerasa, S.L.(C0468)",
+        "nif_adjudicatario": "B80314982",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro de Mayores Avenida de Andalucía,S.L.(C0519)",
+        "nif_adjudicatario": "B88188909",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Visiboleo Gestión, S.L.(C0636)",
+        "nif_adjudicatario": "B84567148",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación Basílica de Colmenar Viejo(C0763)",
+        "nif_adjudicatario": "G78271434",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriátricos del Principado, S.A.(C2470)",
+        "nif_adjudicatario": "A33923533",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Servicios Integrales de Atención Geriátrica, S.L.(C0287)",
+        "nif_adjudicatario": "B84192269",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "R Nava Real, S.L.(C0724)",
+        "nif_adjudicatario": "B87346169",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rosalba Gestión, S.A.(C3368)",
+        "nif_adjudicatario": "A84847524",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "WSenior Asistencia Integral 1, SL(C2394)",
+        "nif_adjudicatario": "B88240502",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Arias Montano S.N., S.L.(C1792)",
+        "nif_adjudicatario": "B81934077",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "UTE Asispa / Asispa S.L.(C2212)",
+        "nif_adjudicatario": "U09626706",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación Catalina Laboure(C0760)",
+        "nif_adjudicatario": "G78577103",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriatría y Sanidad, S.A.(C7836)",
+        "nif_adjudicatario": "A28770659",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Asociación Colegio de Huérfanos Ferroviarios(C3149)",
+        "nif_adjudicatario": "G28255958",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Mial, S.L.(C7869)",
+        "nif_adjudicatario": "B78823200",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Ecoplar, S.A.(C3295)",
+        "nif_adjudicatario": "A80163611",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro Asistencial Médico Geriátrico,S.A.(C3145)",
+        "nif_adjudicatario": "A85026888",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Monte Hermoso, S.A.(C2811)",
+        "nif_adjudicatario": "A28210771",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sereni Orizzonti 1 S.P.A.Sucursal España(C2151)",
+        "nif_adjudicatario": "W0057832H",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Vitalia Suite, S.L.U. (C7806)",
+        "nif_adjudicatario": "B99136558",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Casablanca Valdemoro, S.L.(C2436)",
+        "nif_adjudicatario": "B02960763",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Vitalia Home, S.L.U.(C2453)",
+        "nif_adjudicatario": "B99438806",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Mial, S.L.(C3740)",
+        "nif_adjudicatario": "B78823200",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Gesresan Siglo XXI, S.A.(C0667)",
+        "nif_adjudicatario": "A82522988",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C2753)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Tar 2022 Gestión Madrid, S.L.(C0160)",
+        "nif_adjudicatario": "B06937221",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C2878)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Tosande, S. Coop. Mad.(C3293)",
+        "nif_adjudicatario": "F84667161",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Servicios Sanitarios y Sociales Galdama, S.L.(C3077)",
+        "nif_adjudicatario": "B82370446",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Inarejos 2010,S.L.U.(C0722)",
+        "nif_adjudicatario": "B85993632",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Geriátricos del Principado, S.A.(C3323)",
+        "nif_adjudicatario": "A33923533",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Nogales XXI, S.A.(C0453)",
+        "nif_adjudicatario": "A84546696",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Rl Senior 2000 S.L.U.(C2561)",
+        "nif_adjudicatario": "B82572413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanyres sur,S.L.(C2422)",
+        "nif_adjudicatario": "B14601413",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Monte Hermoso, S.A.(C3085)",
+        "nif_adjudicatario": "A28210771",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Alba II R Geriátrica, S.L.(C2469)",
+        "nif_adjudicatario": "B81794265",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Fundación Catalina Laboure(C0203)",
+        "nif_adjudicatario": "G78577103",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Centro Geriátrico Campodon, S.A.(C2069)",
+        "nif_adjudicatario": "A85026888",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Gersmile, S.L.(C1750)",
+        "nif_adjudicatario": "B45886652",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Mayorus, S.L.(C3484)",
+        "nif_adjudicatario": "B63634562",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Sanitas Mayores, S.L.(C2762)",
+        "nif_adjudicatario": "B58937178",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Real Asociación de Hidalgos de España(C1146)",
+        "nif_adjudicatario": "G28493211",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Riosalud, S.A.(C0471)",
+        "nif_adjudicatario": "A79379491",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A(C2037)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Intercentros Ballesol, S.A.(C1849)",
+        "nif_adjudicatario": "A79370599",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Ecoplar Serranillos, S.A.(C2369)",
+        "nif_adjudicatario": "A82659442",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "1",
+        "adjudicatario": "Tar 2022 Gestión Madrid, S.L.(C0159)",
+        "nif_adjudicatario": "B06937221",
+        "importe": null,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "R para mayores Altagracia, S.L.(C4333)",
+    "nif_adjudicatario": "B85958486",
+    "fecha_publicacion": "2021-09-06",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/acuerdo-marco-fija-condiciones-habran-ajustarse-contratos-servicios-atencion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-11T12:56:18.600Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "B85958486",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "4c0db800fea4",
     "expediente": "28/2021",
     "objeto": "Asistencia técnica para el desarrollo turístico del territorio de ARACOVE en el marco del proyecto de cooperación Madrid Destino Rural",
@@ -17051,6 +18089,41 @@
     "ted_publication_number": null,
     "entity_id": "71142547M",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "fc9e6ebc49ed",
+    "expediente": "P.A. 15/2021",
+    "objeto": "Contrato mixto de servicios y concesión para la alimentación de pacientes y explotación de cafeterías y máquinas expendedoras en el Hospital Carlos III",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario La Paz",
+    "importe": 1418181.82,
+    "importe_iva": null,
+    "valor_estimado": 2647272.73,
+    "cpv": "55300000",
+    "cpv_descripcion": "Servicios de hostelería y restauración",
+    "duracion_meses": 36,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "SERUNION, S.A.",
+    "nif_adjudicatario": "A59376574",
+    "fecha_publicacion": "2021-07-21",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/pa-152021-contrato-mixto-servicios-concesion-alimentacion-pacientes-explotacion",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-10-29T10:56:16.059Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A59376574",
+    "categoria_organismo": "salud"
   },
   {
     "id": "43681a9cc8b4",
@@ -23079,6 +24152,98 @@
     "categoria_organismo": "ayto_madrid"
   },
   {
+    "id": "a34463479e53",
+    "expediente": "ECON/000293/2020",
+    "objeto": "Servicios de telecomunicaciones de la Comunidad de Madrid (7 lotes)",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Agencia para la Administración Digital de la Comunidad de Madrid",
+    "importe": 97144700.88,
+    "importe_iva": null,
+    "valor_estimado": 197033058.34,
+    "cpv": "32500000",
+    "cpv_descripcion": "Equipos de telecomunicaciones",
+    "duracion_meses": 42,
+    "num_lotes": 7,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "TELEFONICA DE ESPAÑA, S.A.U.",
+        "nif_adjudicatario": "A82018474",
+        "importe": 19611465.76,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "ORANGE ESPAGNE S.A.U.",
+        "nif_adjudicatario": "A82009812",
+        "importe": 4469519.72,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "3",
+        "adjudicatario": "INETUM ESPAÑA, S.A.",
+        "nif_adjudicatario": "A28855260",
+        "importe": 21824502.29,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "4",
+        "adjudicatario": "ORANGE ESPAGNE S.A.U.",
+        "nif_adjudicatario": "A82009812",
+        "importe": 42975482.91,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "5",
+        "adjudicatario": "UTE: TELEFONICA DE ESPAÑA S.A.U - TELEFÓNICA MÓVILES ESPAÑA, S.A.U.",
+        "nif_adjudicatario": "A82018474",
+        "importe": 4845066.45,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "6",
+        "adjudicatario": "PROSODIE IBERICA, S.L.U.",
+        "nif_adjudicatario": "B83071290",
+        "importe": 1298023.75,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "7",
+        "adjudicatario": "SAYOS AND CARRERA, S.L.",
+        "nif_adjudicatario": "B60900214",
+        "importe": 2120640,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "TELEFONICA DE ESPAÑA, S.A.U.",
+    "nif_adjudicatario": "A82018474",
+    "fecha_publicacion": "2021-05-31",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicios-telecomunicaciones-comunidad-madrid-7-lotes",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T11:26:12.411Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A82018474",
+    "categoria_organismo": "entes_cam"
+  },
+  {
     "id": "ca8f46836afc",
     "expediente": "2021004SER",
     "objeto": "Servicio para la dirección facultativa y coordinación de seguridad y salud de las obras de construcción de piscina en el Polideportivo Entremontes",
@@ -27987,6 +29152,41 @@
     "es_ute": true
   },
   {
+    "id": "666172d17398",
+    "expediente": "082/2020 (A/OBR-015629/2020)",
+    "objeto": "Ejecución de obras de sustitución, modificación, ampliación y mejora de las instalaciones de climatización y ventilación en el edificio que alberga la Residencia y Centro de día incluyendo todos los trabajos necesarios para el desmontaje de equipos existentes, y la colocación, instalación y puesta en marcha de los nuevos equipos climatizadores.",
+    "tipo": "obras",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Consejería de Familia, Juventud y Asuntos Sociales",
+    "importe": 449992.8,
+    "importe_iva": null,
+    "valor_estimado": 778198.91,
+    "cpv": "45331000",
+    "cpv_descripcion": "Trabajos de construcción",
+    "duracion_meses": 8,
+    "num_lotes": null,
+    "lotes": null,
+    "adjudicatario": "NOVOCLIMA, S.A.",
+    "nif_adjudicatario": "A28432870",
+    "fecha_publicacion": "2021-04-09",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/modificacion-instalacion-climatizacion-centro-atencion-personas-mayores-0",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-12T10:10:58.853Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28432870",
+    "categoria_organismo": "consejerias"
+  },
+  {
     "id": "76199a2c0f9f",
     "expediente": "65",
     "objeto": "Mantenimiento de instalaciones eléctricas.",
@@ -29887,7 +31087,7 @@
         "fecha_adjudicacion": "2021-03-01"
       }
     ],
-    "adjudicatario": "Actiem-Air, SL",
+    "adjudicatario": "actiem-air slu",
     "nif_adjudicatario": "B86349008",
     "fecha_publicacion": "2021-03-24",
     "fecha_adjudicacion": "2021-03-01",
@@ -33331,6 +34531,58 @@
     "ted_publication_number": null,
     "entity_id": "B83029439",
     "categoria_organismo": "ayto_madrid"
+  },
+  {
+    "id": "9967b1880103",
+    "expediente": "ECON/000179/2020",
+    "objeto": "Servicios de mantenimiento y evolución del producto NEXUS ECCL y su plataforma asociada y de transformación, revisión y mejora de los procesos de gestión y de la calidad del servicio y producto NEXUS ECCL (2 LOTES)",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": "abierto",
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Agencia para la Administración Digital de la Comunidad de Madrid",
+    "importe": 30942289.72,
+    "importe_iva": null,
+    "valor_estimado": 52131246.71,
+    "cpv": "72420000",
+    "cpv_descripcion": "Servicios informáticos y TI",
+    "duracion_meses": 40,
+    "num_lotes": 2,
+    "lotes": [
+      {
+        "lote": "1",
+        "adjudicatario": "INETUM ESPAÑA, S.A.",
+        "nif_adjudicatario": "A28855260",
+        "importe": 28342789.72,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      },
+      {
+        "lote": "2",
+        "adjudicatario": "TECHEDGE ESPAÑA S.L.",
+        "nif_adjudicatario": "B82276585",
+        "importe": 2599500,
+        "importe_iva": null,
+        "fecha_adjudicacion": null
+      }
+    ],
+    "adjudicatario": "INETUM ESPAÑA, S.A.",
+    "nif_adjudicatario": "A28855260",
+    "fecha_publicacion": "2021-03-04",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicios-mantenimiento-evolucion-producto-nexus-eccl-su-plataforma-asociada",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-04T14:11:04.696Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A28855260",
+    "categoria_organismo": "entes_cam"
   },
   {
     "id": "03b37411c591",
@@ -38255,6 +39507,41 @@
     "ted_publication_number": null,
     "entity_id": "A78498193",
     "categoria_organismo": "empresas_municipales"
+  },
+  {
+    "id": "c34f14fb12c6",
+    "expediente": "P.A.S.A. 19/2021 HUP",
+    "objeto": "Servicio de Asistencia técnica y mantenimiento del Sistema de Alimentación Ininterrumpida de la marca ABB-NEWAVE del Servicio de Informática del Hospital Universitario de&nbsp;La Princesa.",
+    "tipo": "servicios",
+    "subtipo": null,
+    "procedimiento": null,
+    "estado": "resuelto",
+    "estado_xml": "resuelto",
+    "estado_verificado_en": null,
+    "organismo": "Hospital Universitario de La Princesa",
+    "importe": 3041,
+    "importe_iva": null,
+    "valor_estimado": 15205,
+    "cpv": "50711000",
+    "cpv_descripcion": "Servicios de reparación y mantenimiento",
+    "duracion_meses": 12,
+    "num_lotes": 1,
+    "lotes": null,
+    "adjudicatario": "ASEA BROWN BOVERI S.A.",
+    "nif_adjudicatario": "A08002883",
+    "fecha_publicacion": "2021-01-13",
+    "fecha_adjudicacion": null,
+    "fecha_formalizacion": null,
+    "url_origen": "https://contratos-publicos.comunidad.madrid/contrato-publico/servicio-asistencia-tecnica-mantenimiento-sistema-alimentacion-ininterrumpida",
+    "fuente": "placsp_agregadas",
+    "fuentes": [
+      "placsp_agregadas"
+    ],
+    "fecha_actualizacion": "2026-11-06T12:55:56.825Z",
+    "num_ofertas": null,
+    "ted_publication_number": null,
+    "entity_id": "A08002883",
+    "categoria_organismo": "salud"
   },
   {
     "id": "c8c6aeb3a136",
